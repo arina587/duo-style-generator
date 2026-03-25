@@ -40,6 +40,12 @@ const styles = [
 
 export default function Home({ onStyleSelect }: HomeProps) {
   const [hoveredStyle, setHoveredStyle] = useState<string | null>(null);
+  const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
+
+  const handleStyleClick = (styleId: string, referenceImages: string[]) => {
+    setSelectedStyle(styleId);
+    onStyleSelect(styleId, referenceImages);
+  };
 
   return (
     <div className="min-h-screen bg-[#F5F1ED]">
@@ -54,21 +60,27 @@ export default function Home({ onStyleSelect }: HomeProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {styles.map((style) => (
             <button
               key={style.id}
-              onClick={() => onStyleSelect(style.id, style.referenceImages)}
+              onClick={() => handleStyleClick(style.id, style.referenceImages)}
               onMouseEnter={() => setHoveredStyle(style.id)}
               onMouseLeave={() => setHoveredStyle(null)}
-              className="group relative matte-card rounded-2xl soft-shadow hover:soft-shadow-lg transition-all duration-500 overflow-hidden"
+              className={`group relative matte-card rounded-2xl soft-shadow transition-all duration-500 overflow-hidden border-2 ${
+                selectedStyle === style.id
+                  ? 'border-[#6B8FA3] scale-105 soft-shadow-lg'
+                  : 'border-transparent hover:border-[#6B8FA3]/30 hover:soft-shadow-lg'
+              }`}
             >
-              <div className="h-80 w-full overflow-hidden bg-slate-100/50 rounded-t-2xl">
-                <img
-                  src={style.referenceImages[0]}
-                  alt={style.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
+              <div className="aspect-[4/5] w-full overflow-hidden bg-slate-100/50 rounded-t-2xl relative">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <img
+                    src={style.referenceImages[0]}
+                    alt={style.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
                 <div className={`absolute inset-0 bg-[#6B8FA3]/0 transition-all duration-500 flex items-center justify-center ${
                   hoveredStyle === style.id ? 'bg-[#6B8FA3]/10' : ''
                 }`}>
@@ -81,8 +93,8 @@ export default function Home({ onStyleSelect }: HomeProps) {
                   </div>
                 </div>
               </div>
-              <div className="p-8">
-                <h3 className="font-medium text-[#8B6B4E] text-2xl mb-3 tracking-wide">{style.name}</h3>
+              <div className="p-6">
+                <h3 className="font-medium text-[#8B6B4E] text-xl mb-2 tracking-wide">{style.name}</h3>
                 <p className="text-sm text-slate-500 font-light leading-relaxed">{style.description}</p>
               </div>
             </button>
