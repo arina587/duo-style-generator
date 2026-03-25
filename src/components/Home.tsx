@@ -1,27 +1,39 @@
 import { Sparkles } from 'lucide-react';
 
 interface HomeProps {
-  onStyleSelect: (style: string) => void;
+  onStyleSelect: (style: string, referenceImages: string[]) => void;
 }
 
 const styles = [
   {
     id: 'zootopia',
     name: 'Zootopia',
-    preview: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-    description: 'Animated animal character style'
+    description: 'Animated animal character style',
+    referenceImages: [
+      '/src/assets/styles/zootopia/ref1.jpg',
+      '/src/assets/styles/zootopia/ref2.jpg',
+      '/src/assets/styles/zootopia/ref3.jpg'
+    ]
   },
   {
     id: 'euphoria',
     name: 'Euphoria',
-    preview: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-    description: 'Vibrant dramatic aesthetic'
+    description: 'Vibrant dramatic aesthetic',
+    referenceImages: [
+      '/src/assets/styles/euphoria/ref1.jpg',
+      '/src/assets/styles/euphoria/ref2.jpg',
+      '/src/assets/styles/euphoria/ref3.jpg'
+    ]
   },
   {
     id: 'titanic',
     name: 'Titanic',
-    preview: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    description: 'Classic cinematic romance'
+    description: 'Classic cinematic romance',
+    referenceImages: [
+      '/src/assets/styles/titanic/ref1.jpg',
+      '/src/assets/styles/titanic/ref2.jpg',
+      '/src/assets/styles/titanic/ref3.jpg'
+    ]
   }
 ];
 
@@ -43,13 +55,15 @@ export default function Home({ onStyleSelect }: HomeProps) {
           {styles.map((style) => (
             <button
               key={style.id}
-              onClick={() => onStyleSelect(style.id)}
+              onClick={() => onStyleSelect(style.id, style.referenceImages)}
               className="group relative bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1"
             >
-              <div
-                className="h-64 w-full"
-                style={{ background: style.preview }}
-              >
+              <div className="h-64 w-full overflow-hidden bg-slate-200">
+                <img
+                  src={style.referenceImages[0]}
+                  alt={style.name}
+                  className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
                   <span className="text-white font-semibold text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     Select

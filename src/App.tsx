@@ -8,9 +8,11 @@ type View = 'home' | 'upload' | 'result';
 function App() {
   const [currentView, setCurrentView] = useState<View>('home');
   const [selectedStyle, setSelectedStyle] = useState<string>('');
+  const [referenceImages, setReferenceImages] = useState<string[]>([]);
 
-  const handleStyleSelect = (style: string) => {
+  const handleStyleSelect = (style: string, refImages: string[]) => {
     setSelectedStyle(style);
+    setReferenceImages(refImages);
     setCurrentView('upload');
   };
 
@@ -21,6 +23,7 @@ function App() {
   const handleBackToHome = () => {
     setCurrentView('home');
     setSelectedStyle('');
+    setReferenceImages([]);
   };
 
   const handleBackToUpload = () => {
@@ -35,6 +38,7 @@ function App() {
       {currentView === 'upload' && (
         <Upload
           selectedStyle={selectedStyle}
+          referenceImages={referenceImages}
           onBack={handleBackToHome}
           onGenerate={handleGenerate}
         />

@@ -3,11 +3,12 @@ import { useState } from 'react';
 
 interface UploadProps {
   selectedStyle: string;
+  referenceImages: string[];
   onBack: () => void;
   onGenerate: (photo1: File, photo2: File) => void;
 }
 
-export default function Upload({ selectedStyle, onBack, onGenerate }: UploadProps) {
+export default function Upload({ selectedStyle, referenceImages, onBack, onGenerate }: UploadProps) {
   const [photo1, setPhoto1] = useState<File | null>(null);
   const [photo2, setPhoto2] = useState<File | null>(null);
   const [preview1, setPreview1] = useState<string>('');
@@ -55,6 +56,23 @@ export default function Upload({ selectedStyle, onBack, onGenerate }: UploadProp
             Selected Style: {selectedStyle}
           </div>
         </div>
+
+        {referenceImages.length > 0 && (
+          <div className="mb-12 bg-white rounded-xl shadow-sm p-6">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4 text-center">Style Reference Images</h3>
+            <div className="grid grid-cols-3 gap-4">
+              {referenceImages.map((img, index) => (
+                <div key={index} className="rounded-lg overflow-hidden">
+                  <img
+                    src={img}
+                    alt={`Reference ${index + 1}`}
+                    className="w-full h-32 object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           <div className="bg-white rounded-xl shadow-sm p-6">
