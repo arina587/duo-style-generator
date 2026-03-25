@@ -5,7 +5,7 @@ interface UploadProps {
   selectedStyle: string;
   referenceImages: string[];
   onBack: () => void;
-  onGenerate: (photo1: File, photo2: File) => void;
+  onGenerate: (photo1: File, photo2: File, styleBoard: File) => void;
 }
 
 export default function Upload({ selectedStyle, referenceImages, onBack, onGenerate }: UploadProps) {
@@ -30,9 +30,64 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
     }
   };
 
-  const handleGenerate = () => {
+  const combineStyleImages = async (): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('Could not get canvas context'));
+        return;
+      }
+
+      const images: HTMLImageElement[] = [];
+      let loadedCount = 0;
+
+      const checkAllLoaded = () => {
+        if (loadedCount === referenceImages.length) {
+          const imgWidth = images[0].width;
+          const imgHeight = images[0].height;
+
+          canvas.width = imgWidth * 3;
+          canvas.height = imgHeight;
+
+          images.forEach((img, index) => {
+            ctx.drawImage(img, imgWidth * index, 0, imgWidth, imgHeight);
+          });
+
+          canvas.toBlob((blob) => {
+            if (blob) {
+              const file = new File([blob], 'style-board.jpg', { type: 'image/jpeg' });
+              resolve(file);
+            } else {
+              reject(new Error('Could not create blob from canvas'));
+            }
+          }, 'image/jpeg', 0.95);
+        }
+      };
+
+      referenceImages.forEach((src) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          images.push(img);
+          loadedCount++;
+          checkAllLoaded();
+        };
+        img.onerror = () => reject(new Error(`Failed to load image: ${src}`));
+        img.src = src;
+      });
+    });
+  };
+
+  const handleGenerate = async () => {
     if (photo1 && photo2) {
-      onGenerate(photo1, photo2);
+      try {
+        const styleBoard = await combineStyleImages();
+        console.log('Style board created:', styleBoard);
+        onGenerate(photo1, photo2, styleBoard);
+      } catch (error) {
+        console.error('Error combining style images:', error);
+      }
     }
   };
 

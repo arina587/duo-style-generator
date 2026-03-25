@@ -9,6 +9,7 @@ function App() {
   const [currentView, setCurrentView] = useState<View>('home');
   const [selectedStyle, setSelectedStyle] = useState<string>('');
   const [referenceImages, setReferenceImages] = useState<string[]>([]);
+  const [styleBoard, setStyleBoard] = useState<File | null>(null);
 
   const handleStyleSelect = (style: string, refImages: string[]) => {
     setSelectedStyle(style);
@@ -16,7 +17,8 @@ function App() {
     setCurrentView('upload');
   };
 
-  const handleGenerate = (_photo1: File, _photo2: File) => {
+  const handleGenerate = (_photo1: File, _photo2: File, combinedStyleBoard: File) => {
+    setStyleBoard(combinedStyleBoard);
     setCurrentView('result');
   };
 
