@@ -67,20 +67,18 @@ export default function Home({ onStyleSelect }: HomeProps) {
               onClick={() => handleStyleClick(style.id, style.referenceImages)}
               onMouseEnter={() => setHoveredStyle(style.id)}
               onMouseLeave={() => setHoveredStyle(null)}
-              className={`group relative matte-card rounded-2xl soft-shadow transition-all duration-500 overflow-hidden border-2 ${
+              className={`group relative flex flex-col matte-card rounded-2xl soft-shadow transition-all duration-500 overflow-hidden border-2 ${
                 selectedStyle === style.id
                   ? 'border-[#6B8FA3] scale-105 soft-shadow-lg'
                   : 'border-transparent hover:border-[#6B8FA3]/30 hover:soft-shadow-lg'
               }`}
             >
-              <div className="aspect-[4/5] w-full overflow-hidden bg-slate-100/50 rounded-t-2xl relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <img
-                    src={style.referenceImages[0]}
-                    alt={style.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                </div>
+              <div className="aspect-square w-full overflow-hidden bg-slate-100/50 relative">
+                <img
+                  src={style.referenceImages[0]}
+                  alt={style.name}
+                  className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                />
                 <div className={`absolute inset-0 bg-[#6B8FA3]/0 transition-all duration-500 flex items-center justify-center ${
                   hoveredStyle === style.id ? 'bg-[#6B8FA3]/10' : ''
                 }`}>
