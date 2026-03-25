@@ -6,52 +6,22 @@ interface HomeProps {
 
 const styles = [
   {
-    id: 'artistic',
-    name: 'Artistic Portrait',
-    preview: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    description: 'Transform into an artistic masterpiece'
-  },
-  {
-    id: 'vintage',
-    name: 'Vintage Film',
-    preview: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-    description: 'Classic film photography aesthetic'
-  },
-  {
-    id: 'cinematic',
-    name: 'Cinematic',
-    preview: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    description: 'Hollywood movie poster style'
-  },
-  {
-    id: 'oil-painting',
-    name: 'Oil Painting',
+    id: 'zootopia',
+    name: 'Zootopia',
     preview: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-    description: 'Renaissance oil painting effect'
+    description: 'Animated animal character style'
   },
   {
-    id: 'modern',
-    name: 'Modern Pop',
+    id: 'euphoria',
+    name: 'Euphoria',
     preview: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-    description: 'Bold and vibrant pop art style'
+    description: 'Vibrant dramatic aesthetic'
   },
   {
-    id: 'noir',
-    name: 'Film Noir',
-    preview: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
-    description: 'Classic black and white drama'
-  },
-  {
-    id: 'dreamy',
-    name: 'Dreamy Soft',
-    preview: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
-    description: 'Soft, ethereal dream-like quality'
-  },
-  {
-    id: 'neon',
-    name: 'Neon Glow',
-    preview: 'linear-gradient(135deg, #ff0844 0%, #ffb199 100%)',
-    description: 'Futuristic neon lighting effect'
+    id: 'titanic',
+    name: 'Titanic',
+    preview: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    description: 'Classic cinematic romance'
   }
 ];
 
@@ -69,7 +39,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {styles.map((style) => (
             <button
               key={style.id}
@@ -77,7 +47,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
               className="group relative bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1"
             >
               <div
-                className="h-48 w-full"
+                className="h-64 w-full"
                 style={{ background: style.preview }}
               >
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
@@ -86,8 +56,8 @@ export default function Home({ onStyleSelect }: HomeProps) {
                   </span>
                 </div>
               </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-slate-900 mb-1">{style.name}</h3>
+              <div className="p-6">
+                <h3 className="font-semibold text-slate-900 text-xl mb-2">{style.name}</h3>
                 <p className="text-sm text-slate-600">{style.description}</p>
               </div>
             </button>
