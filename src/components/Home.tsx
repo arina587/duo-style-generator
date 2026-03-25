@@ -11,9 +11,9 @@ const styles = [
     name: 'Zootopia',
     description: 'Animated animal character style',
     referenceImages: [
-      '/src/assets/styles/zootopia/ref1.jpg',
-      '/src/assets/styles/zootopia/ref2.jpg',
-      '/src/assets/styles/zootopia/ref3.jpg'
+      '/styles/zootopia/ref1.jpg',
+      '/styles/zootopia/ref2.jpg',
+      '/styles/zootopia/ref3.jpg'
     ]
   },
   {
@@ -21,9 +21,9 @@ const styles = [
     name: 'Euphoria',
     description: 'Vibrant dramatic aesthetic',
     referenceImages: [
-      '/src/assets/styles/euphoria/ref1.jpg',
-      '/src/assets/styles/euphoria/ref2.jpg',
-      '/src/assets/styles/euphoria/ref3.jpg'
+      '/styles/euphoria/ref1.jpg',
+      '/styles/euphoria/ref2.jpg',
+      '/styles/euphoria/ref3.jpg'
     ]
   },
   {
@@ -31,9 +31,9 @@ const styles = [
     name: 'Titanic',
     description: 'Classic cinematic romance',
     referenceImages: [
-      '/src/assets/styles/titanic/ref1.jpg',
-      '/src/assets/styles/titanic/ref2.jpg',
-      '/src/assets/styles/titanic/ref3.jpg'
+      '/styles/titanic/ref1.jpg',
+      '/styles/titanic/ref2.jpg',
+      '/styles/titanic/ref3.jpg'
     ]
   }
 ];
