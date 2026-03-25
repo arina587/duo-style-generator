@@ -1,4 +1,4 @@
-import { Upload as UploadIcon, ArrowLeft, ArrowRight, Image } from 'lucide-react';
+import { Upload as UploadIcon, ArrowLeft, ArrowRight, Image, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
 interface UploadProps {
@@ -92,36 +92,40 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen bg-[#F5F1ED]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-8 transition-colors"
+          className="flex items-center gap-2 text-[#6B8FA3] hover:text-[#8B6B4E] mb-12 transition-colors duration-300"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span>Back to styles</span>
+          <span className="font-light">Back to styles</span>
         </button>
 
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">Upload Your Photos</h1>
-          <p className="text-lg text-slate-600">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-3 mb-6">
+            <Sparkles className="w-7 h-7 text-[#6B8FA3]" />
+            <h1 className="text-5xl font-light tracking-wide text-[#8B6B4E]">DuoStyle</h1>
+          </div>
+          <h2 className="text-3xl font-light text-slate-700 mb-4">Upload Your Photos</h2>
+          <p className="text-lg text-slate-600 font-light leading-relaxed">
             Upload two photos to create your styled fusion
           </p>
-          <div className="inline-block mt-4 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
-            Selected Style: {selectedStyle}
+          <div className="inline-block mt-6 px-6 py-3 matte-card rounded-full text-sm font-light text-[#6B8FA3] soft-shadow">
+            Selected Style: <span className="font-medium">{selectedStyle}</span>
           </div>
         </div>
 
         {referenceImages.length > 0 && (
-          <div className="mb-12 bg-white rounded-xl shadow-sm p-6">
-            <h3 className="text-lg font-semibold text-slate-900 mb-4 text-center">Style Reference Images</h3>
-            <div className="grid grid-cols-3 gap-4">
+          <div className="mb-16 matte-card rounded-2xl soft-shadow p-8">
+            <h3 className="text-xl font-light text-[#8B6B4E] mb-8 text-center tracking-wide">Style Reference Images</h3>
+            <div className="grid grid-cols-3 gap-6">
               {referenceImages.map((img, index) => (
-                <div key={index} className="rounded-lg overflow-hidden">
+                <div key={index} className="rounded-xl overflow-hidden soft-shadow aspect-[3/4]">
                   <img
                     src={img}
                     alt={`Reference ${index + 1}`}
-                    className="w-full h-32 object-cover"
+                    className="w-full h-full object-contain bg-slate-50"
                   />
                 </div>
               ))}
@@ -129,9 +133,9 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="text-lg font-semibold text-slate-900 mb-4">Your Photo</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <div className="matte-card rounded-2xl soft-shadow p-8">
+            <h3 className="text-xl font-light text-[#8B6B4E] mb-6 tracking-wide">Your Photo</h3>
             <label className="block cursor-pointer">
               <input
                 type="file"
@@ -139,26 +143,26 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
                 onChange={(e) => handleFileChange(e, setPhoto1, setPreview1)}
                 className="hidden"
               />
-              <div className="border-2 border-dashed border-slate-300 rounded-lg p-8 hover:border-blue-500 transition-colors">
+              <div className="border-2 border-dashed border-[#6B8FA3]/20 rounded-xl p-8 hover:border-[#6B8FA3]/40 transition-all duration-500 bg-white/50">
                 {preview1 ? (
                   <img
                     src={preview1}
                     alt="Preview 1"
-                    className="w-full h-64 object-cover rounded-lg"
+                    className="w-full h-72 object-contain rounded-lg"
                   />
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-64 text-slate-400">
-                    <UploadIcon className="w-12 h-12 mb-4" />
-                    <p className="text-sm font-medium">Click to upload</p>
-                    <p className="text-xs mt-1">PNG, JPG up to 10MB</p>
+                  <div className="flex flex-col items-center justify-center h-72 text-slate-400">
+                    <UploadIcon className="w-12 h-12 mb-4 text-[#6B8FA3]/40" />
+                    <p className="text-sm font-light text-slate-500">Click to upload</p>
+                    <p className="text-xs mt-2 font-light text-slate-400">PNG, JPG up to 10MB</p>
                   </div>
                 )}
               </div>
             </label>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="text-lg font-semibold text-slate-900 mb-4">Second Person Photo</h3>
+          <div className="matte-card rounded-2xl soft-shadow p-8">
+            <h3 className="text-xl font-light text-[#8B6B4E] mb-6 tracking-wide">Second Person Photo</h3>
             <label className="block cursor-pointer">
               <input
                 type="file"
@@ -166,18 +170,18 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
                 onChange={(e) => handleFileChange(e, setPhoto2, setPreview2)}
                 className="hidden"
               />
-              <div className="border-2 border-dashed border-slate-300 rounded-lg p-8 hover:border-blue-500 transition-colors">
+              <div className="border-2 border-dashed border-[#6B8FA3]/20 rounded-xl p-8 hover:border-[#6B8FA3]/40 transition-all duration-500 bg-white/50">
                 {preview2 ? (
                   <img
                     src={preview2}
                     alt="Preview 2"
-                    className="w-full h-64 object-cover rounded-lg"
+                    className="w-full h-72 object-contain rounded-lg"
                   />
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-64 text-slate-400">
-                    <Image className="w-12 h-12 mb-4" />
-                    <p className="text-sm font-medium">Click to upload</p>
-                    <p className="text-xs mt-1">PNG, JPG up to 10MB</p>
+                  <div className="flex flex-col items-center justify-center h-72 text-slate-400">
+                    <Image className="w-12 h-12 mb-4 text-[#6B8FA3]/40" />
+                    <p className="text-sm font-light text-slate-500">Click to upload</p>
+                    <p className="text-xs mt-2 font-light text-slate-400">PNG, JPG up to 10MB</p>
                   </div>
                 )}
               </div>
@@ -189,7 +193,7 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
           <button
             onClick={handleGenerate}
             disabled={!photo1 || !photo2}
-            className="flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+            className="flex items-center gap-3 px-10 py-4 bg-[#6B8FA3] text-white rounded-full font-light tracking-wide hover:bg-[#8B6B4E] disabled:bg-slate-300 disabled:cursor-not-allowed transition-all duration-500 soft-shadow-lg hover:scale-105"
           >
             <span>Generate Fusion</span>
             <ArrowRight className="w-5 h-5" />

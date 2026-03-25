@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#F5F1ED] text-slate-800;
+  }
+}
+
+@layer utilities {
+  .soft-shadow {
+    box-shadow: 0 2px 12px rgba(107, 143, 163, 0.08);
+  }
+
+  .soft-shadow-lg {
+    box-shadow: 0 4px 24px rgba(107, 143, 163, 0.12);
+  }
+
+  .matte-card {
+    @apply bg-white/90 backdrop-blur-sm;
+  }
+}
