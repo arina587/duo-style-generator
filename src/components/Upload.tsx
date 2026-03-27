@@ -13,6 +13,7 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
   const [photo2, setPhoto2] = useState<File | null>(null);
   const [preview1, setPreview1] = useState<string>('');
   const [preview2, setPreview2] = useState<string>('');
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -40,12 +41,18 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
   };
 
   const handleGenerate = async () => {
+    if (isGenerating) {
+      return;
+    }
+
     console.log('Generate clicked');
 
     if (!photo1 || !photo2) {
       console.error('Missing images: photo1 or photo2');
       return;
     }
+
+    setIsGenerating(true);
 
     try {
       const styleBoard = await getStyleImageAsFile();
@@ -78,6 +85,8 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
       console.log('Response data:', data);
     } catch (error) {
       console.error('Error:', error);
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -182,9 +191,10 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
         <div className="flex justify-center">
           <button
             onClick={handleGenerate}
-            className="flex items-center gap-3 px-10 py-4 bg-[#6B8FA3] text-white rounded-full font-light tracking-wide hover:bg-[#8B6B4E] transition-all duration-500 soft-shadow-lg hover:scale-105"
+            disabled={isGenerating || !photo1 || !photo2}
+            className="flex items-center gap-3 px-10 py-4 bg-[#6B8FA3] text-white rounded-full font-light tracking-wide hover:bg-[#8B6B4E] transition-all duration-500 soft-shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-[#6B8FA3]"
           >
-            <span>Generate Fusion</span>
+            <span>{isGenerating ? 'Generating...' : 'Generate Fusion'}</span>
             <ArrowRight className="w-5 h-5" />
           </button>
         </div>
