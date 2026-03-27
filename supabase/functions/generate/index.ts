@@ -6,12 +6,6 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
-interface GenerateRequest {
-  person1: string;
-  person2: string;
-  styleBoard: string;
-}
-
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, {
@@ -21,11 +15,33 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const { person1, person2, styleBoard }: GenerateRequest = await req.json();
+    // Read FormData
+    const formData = await req.formData();
 
+    const person1 = formData.get("person1");
+    const person2 = formData.get("person2");
+    const styleBoard = formData.get("styleBoard");
+
+    console.log("Received FormData:", {
+      person1: person1 ? `File (${(person1 as File).name}, ${(person1 as File).size} bytes)` : null,
+      person2: person2 ? `File (${(person2 as File).name}, ${(person2 as File).size} bytes)` : null,
+      styleBoard: styleBoard ? `File (${(styleBoard as File).name}, ${(styleBoard as File).size} bytes)` : null,
+    });
+
+    // Validate all required images are present
     if (!person1 || !person2 || !styleBoard) {
+      const missing = [];
+      if (!person1) missing.push("person1");
+      if (!person2) missing.push("person2");
+      if (!styleBoard) missing.push("styleBoard");
+
+      console.error("Missing required images:", missing);
+
       return new Response(
-        JSON.stringify({ error: "Missing required images" }),
+        JSON.stringify({
+          error: "Missing required images",
+          missing: missing
+        }),
         {
           status: 400,
           headers: {
@@ -35,6 +51,17 @@ Deno.serve(async (req: Request) => {
         }
       );
     }
+
+    // Convert Files to base64
+    const person1File = person1 as File;
+    const person2File = person2 as File;
+    const styleBoardFile = styleBoard as File;
+
+    const person1Base64 = `data:${person1File.type};base64,${btoa(String.fromCharCode(...new Uint8Array(await person1File.arrayBuffer())))}`;
+    const person2Base64 = `data:${person2File.type};base64,${btoa(String.fromCharCode(...new Uint8Array(await person2File.arrayBuffer())))}`;
+    const styleBoardBase64 = `data:${styleBoardFile.type};base64,${btoa(String.fromCharCode(...new Uint8Array(await styleBoardFile.arrayBuffer())))}`;
+
+    console.log("Converted images to base64 successfully");
 
     const replicateToken = Deno.env.get("REPLICATE_API_TOKEN");
 
@@ -61,9 +88,9 @@ Deno.serve(async (req: Request) => {
       body: JSON.stringify({
         version: "qwen/qwen-image-edit-plus",
         input: {
-          image: person1,
-          image2: person2,
-          style_image: styleBoard,
+          image: person1Base64,
+          image2: person2Base64,
+          style_image: styleBoardBase64,
         },
       }),
     });
