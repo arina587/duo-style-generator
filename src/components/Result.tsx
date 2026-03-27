@@ -1,26 +1,23 @@
-import { Download, ArrowLeft, Sparkles, Loader2 } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Download, ArrowLeft, Sparkles, Loader2, AlertCircle } from 'lucide-react';
 
 interface ResultProps {
   onBack: () => void;
   onStartOver: () => void;
+  generatedImageUrl: string;
+  isGenerating: boolean;
+  error: string;
 }
 
-export default function Result({ onBack, onStartOver }: ResultProps) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [resultImage, setResultImage] = useState<string | null>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      setResultImage('https://images.pexels.com/photos/1145434/pexels-photo-1145434.jpeg?auto=compress&cs=tinysrgb&w=800');
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
+export default function Result({ onBack, onStartOver, generatedImageUrl, isGenerating, error }: ResultProps) {
   const handleDownload = () => {
-    console.log('Download triggered');
+    if (generatedImageUrl) {
+      const link = document.createElement('a');
+      link.href = generatedImageUrl;
+      link.download = 'duo-style-fusion.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   return (
@@ -40,16 +37,16 @@ export default function Result({ onBack, onStartOver }: ResultProps) {
             <h1 className="text-5xl font-light tracking-wide text-[#8B6B4E]">DuoStyle</h1>
           </div>
           <h2 className="text-3xl font-light text-slate-700 mb-4">
-            {isLoading ? 'Creating Your Fusion' : 'Your Styled Fusion'}
+            {isGenerating ? 'Creating Your Fusion' : error ? 'Generation Failed' : 'Your Styled Fusion'}
           </h2>
           <p className="text-lg text-slate-600 font-light leading-relaxed">
-            {isLoading ? 'AI is generating your styled photo...' : 'Your AI-generated fusion is ready!'}
+            {isGenerating ? 'AI is generating your styled photo...' : error ? 'Something went wrong' : 'Your AI-generated fusion is ready!'}
           </p>
         </div>
 
         <div className="matte-card rounded-2xl soft-shadow-lg overflow-hidden mb-12">
           <div className="aspect-square bg-slate-100/50 flex items-center justify-center relative">
-            {isLoading ? (
+            {isGenerating ? (
               <div className="relative text-center p-8">
                 <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-white/60 backdrop-blur-sm flex items-center justify-center soft-shadow">
                   <Loader2 className="w-16 h-16 text-[#6B8FA3] animate-spin" />
@@ -61,9 +58,21 @@ export default function Result({ onBack, onStartOver }: ResultProps) {
                   This may take a few moments
                 </p>
               </div>
-            ) : resultImage ? (
+            ) : error ? (
+              <div className="relative text-center p-8">
+                <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-red-50 flex items-center justify-center soft-shadow">
+                  <AlertCircle className="w-16 h-16 text-red-400" />
+                </div>
+                <p className="text-red-600 font-light text-xl tracking-wide mb-2">
+                  Generation Error
+                </p>
+                <p className="text-sm text-slate-600 mt-3 font-light max-w-md mx-auto">
+                  {error}
+                </p>
+              </div>
+            ) : generatedImageUrl ? (
               <img
-                src={resultImage}
+                src={generatedImageUrl}
                 alt="Generated fusion result"
                 className="w-full h-full object-contain"
               />
@@ -75,9 +84,6 @@ export default function Result({ onBack, onStartOver }: ResultProps) {
                 <p className="text-[#8B6B4E] font-light text-xl tracking-wide">
                   Generated result will appear here
                 </p>
-                <p className="text-sm text-slate-500 mt-3 font-light">
-                  This is a placeholder for your styled photo
-                </p>
               </div>
             )}
           </div>
@@ -86,7 +92,7 @@ export default function Result({ onBack, onStartOver }: ResultProps) {
         <div className="flex flex-col sm:flex-row gap-6 justify-center">
           <button
             onClick={handleDownload}
-            disabled={isLoading}
+            disabled={isGenerating || !generatedImageUrl || !!error}
             className="flex items-center justify-center gap-3 px-10 py-4 bg-[#6B8FA3] text-white rounded-full font-light tracking-wide hover:bg-[#8B6B4E] transition-all duration-500 soft-shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             <Download className="w-5 h-5" />
@@ -94,7 +100,7 @@ export default function Result({ onBack, onStartOver }: ResultProps) {
           </button>
           <button
             onClick={onStartOver}
-            disabled={isLoading}
+            disabled={isGenerating}
             className="px-10 py-4 matte-card text-[#8B6B4E] rounded-full font-light tracking-wide hover:bg-white transition-all duration-500 soft-shadow hover:soft-shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Create Another
