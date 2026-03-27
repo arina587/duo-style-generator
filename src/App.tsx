@@ -20,17 +20,47 @@ function App() {
   };
 
   const handleGenerate = async (photo1: File, photo2: File, combinedStyleBoard: File) => {
+    console.log('=== APP HANDLEGENERATE START ===');
+
+    if (isGenerating) {
+      console.log('BLOCKED: Already generating in App');
+      return;
+    }
+
+    if (!photo1 || !photo2 || !combinedStyleBoard || !selectedStyle) {
+      console.error('BLOCKED: Missing required fields', {
+        person1: !!photo1,
+        person2: !!photo2,
+        styleBoard: !!combinedStyleBoard,
+        selectedStyle: !!selectedStyle,
+      });
+      setError('Missing required data. Please try again.');
+      return;
+    }
+
     setIsGenerating(true);
     setError('');
     setCurrentView('result');
+
+    console.log('=== REQUEST START ===');
+    console.log('selectedStyle:', selectedStyle);
 
     try {
       const formData = new FormData();
       formData.append('person1', photo1);
       formData.append('person2', photo2);
       formData.append('styleBoard', combinedStyleBoard);
+      formData.append('selectedStyle', selectedStyle);
+
+      console.log('FormData built with:', {
+        person1: photo1.name,
+        person2: photo2.name,
+        styleBoard: combinedStyleBoard.name,
+        selectedStyle: selectedStyle,
+      });
 
       const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
+      console.log('=== REQUEST SENT ===');
 
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -40,29 +70,30 @@ function App() {
         body: formData,
       });
 
+      console.log('=== RESPONSE RECEIVED ===', { status: response.status });
+
       const data = await response.json();
-      console.log('App received response:', JSON.stringify(data, null, 2));
+      console.log('Response data:', data);
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to generate image');
       }
 
       if (data.success && data.imageUrl) {
-        if (typeof data.imageUrl !== 'string') {
-          console.error('imageUrl is not a string:', data.imageUrl);
-          throw new Error('Generation failed. Invalid image URL.');
-        }
-
-        console.log('Final imageUrl to render:', data.imageUrl);
+        console.log('SUCCESS: Setting imageUrl:', data.imageUrl);
         setGeneratedImageUrl(data.imageUrl);
+        setError('');
       } else {
-        throw new Error('Generation failed. Invalid image URL.');
+        throw new Error('Generation failed. Invalid response.');
       }
     } catch (err) {
       console.error('Generation error:', err);
-      setError(err instanceof Error ? err.message : 'An error occurred during generation');
+      if (!generatedImageUrl) {
+        setError(err instanceof Error ? err.message : 'An error occurred during generation');
+      }
     } finally {
       setIsGenerating(false);
+      console.log('=== REQUEST COMPLETE ===');
     }
   };
 

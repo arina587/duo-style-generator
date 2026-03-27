@@ -1,5 +1,5 @@
 import { Upload as UploadIcon, ArrowLeft, ArrowRight, Image, Sparkles } from 'lucide-react';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 interface UploadProps {
   selectedStyle: string;
@@ -15,7 +15,6 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
   const [preview2, setPreview2] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string>('');
-  const requestIdRef = useRef<number>(0);
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -40,7 +39,10 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
     return new File([blob], 'style-reference.jpg', { type: blob.type });
   };
 
-  const handleGenerate = async () => {
+  const handleGenerate = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     console.log('=== GENERATE BUTTON CLICKED ===');
 
     if (isGenerating) {
@@ -69,10 +71,6 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
     setIsGenerating(true);
     setError('');
 
-    const currentRequestId = Date.now();
-    requestIdRef.current = currentRequestId;
-    console.log('=== REQUEST START ===', { requestId: currentRequestId });
-
     try {
       const styleBoard = await getStyleImageAsFile();
 
@@ -83,77 +81,11 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
         return;
       }
 
-      if (requestIdRef.current !== currentRequestId) {
-        console.log('BLOCKED: Request cancelled, newer request exists');
-        return;
-      }
-
-      console.log('Building FormData with:', {
-        person1: photo1.name,
-        person2: photo2.name,
-        styleBoard: styleBoard.name,
-        selectedStyle: selectedStyle,
-      });
-
-      const formData = new FormData();
-      formData.append('person1', photo1);
-      formData.append('person2', photo2);
-      formData.append('styleBoard', styleBoard);
-      formData.append('selectedStyle', selectedStyle);
-
-      console.log('FormData validation:', {
-        person1: formData.has('person1'),
-        person2: formData.has('person2'),
-        styleBoard: formData.has('styleBoard'),
-        selectedStyle: formData.has('selectedStyle'),
-      });
-
-      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
-      console.log('Sending POST request to:', apiUrl);
-
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: formData,
-      });
-
-      if (requestIdRef.current !== currentRequestId) {
-        console.log('BLOCKED: Response ignored, newer request exists');
-        return;
-      }
-
-      console.log('=== REQUEST END ===', {
-        requestId: currentRequestId,
-        status: response.status,
-      });
-
-      const data = await response.json();
-      console.log('Response data:', data);
-
-      if (!response.ok) {
-        console.error('Request failed:', data);
-        setError('Generation failed. Try again.');
-        setIsGenerating(false);
-        return;
-      }
-
-      if (data.success && data.imageUrl) {
-        console.log('SUCCESS: Image generated:', data.imageUrl);
-        onGenerate(photo1, photo2, styleBoard);
-      } else {
-        console.error('Response missing success or imageUrl');
-        setError('Generation failed. Try again.');
-        setIsGenerating(false);
-      }
+      console.log('=== PASSING TO PARENT - NO REQUEST HERE ===');
+      onGenerate(photo1, photo2, styleBoard);
     } catch (error) {
-      if (requestIdRef.current !== currentRequestId) {
-        console.log('BLOCKED: Error ignored, newer request exists');
-        return;
-      }
-      console.error('Request error:', error);
-      setError('Generation failed. Try again.');
+      console.error('Error preparing files:', error);
+      setError('Failed to prepare files. Try again.');
       setIsGenerating(false);
     }
   };
@@ -264,6 +196,7 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
 
         <div className="flex justify-center">
           <button
+            type="button"
             onClick={handleGenerate}
             disabled={isGenerating || !photo1 || !photo2}
             className="flex items-center gap-3 px-10 py-4 bg-[#6B8FA3] text-white rounded-full font-light tracking-wide hover:bg-[#8B6B4E] transition-all duration-500 soft-shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-[#6B8FA3]"
