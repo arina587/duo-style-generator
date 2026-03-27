@@ -65,11 +65,13 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
       formData.append('person1', photo1);
       formData.append('person2', photo2);
       formData.append('styleBoard', styleBoard);
+      formData.append('selectedStyle', selectedStyle);
 
       console.log('Request started - FormData contents:', {
         person1: photo1.name,
         person2: photo2.name,
         styleBoard: styleBoard.name,
+        selectedStyle: selectedStyle,
       });
 
       const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;

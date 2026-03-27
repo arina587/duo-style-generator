@@ -21,25 +21,45 @@ Deno.serve(async (req: Request) => {
     const person1 = formData.get("person1");
     const person2 = formData.get("person2");
     const styleBoard = formData.get("styleBoard");
+    const selectedStyle = formData.get("selectedStyle") as string;
 
     console.log("Received FormData:", {
       person1: person1 ? `File (${(person1 as File).name}, ${(person1 as File).size} bytes)` : null,
       person2: person2 ? `File (${(person2 as File).name}, ${(person2 as File).size} bytes)` : null,
       styleBoard: styleBoard ? `File (${(styleBoard as File).name}, ${(styleBoard as File).size} bytes)` : null,
+      selectedStyle: selectedStyle
     });
 
-    if (!person1 || !person2 || !styleBoard) {
+    if (!person1 || !person2 || !styleBoard || !selectedStyle) {
       const missing = [];
       if (!person1) missing.push("person1");
       if (!person2) missing.push("person2");
       if (!styleBoard) missing.push("styleBoard");
+      if (!selectedStyle) missing.push("selectedStyle");
 
-      console.error("Missing required images:", missing);
+      console.error("Missing required fields:", missing);
 
       return new Response(
         JSON.stringify({
-          error: "Missing required images",
+          error: "Missing required fields",
           details: `The following fields are missing: ${missing.join(", ")}`
+        }),
+        {
+          status: 400,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    if (!["zootopia", "euphoria", "titanic"].includes(selectedStyle)) {
+      console.error("Invalid selectedStyle:", selectedStyle);
+      return new Response(
+        JSON.stringify({
+          error: "Invalid style",
+          details: `selectedStyle must be one of: zootopia, euphoria, titanic. Received: ${selectedStyle}`
         }),
         {
           status: 400,
@@ -91,13 +111,25 @@ Deno.serve(async (req: Request) => {
       useFileOutput: false,
     });
 
+    let prompt = "";
+
+    if (selectedStyle === "zootopia") {
+      prompt = "Create one image combining two people into a single scene. STYLE (STRICT): This image MUST look like an animated film world similar to Zootopia. Use cartoon rendering, stylized lighting, smooth shading. Match the exact colors, tones, and atmosphere of the reference image. Recreate animated cinematic composition. Use bold, clean, non-realistic visual style. IDENTITY: Preserve both faces accurately. Do not merge or distort faces. STRICT RULES: Ignore realism from input photos. Do not mix styles. The reference image defines EVERYTHING.";
+    } else if (selectedStyle === "euphoria") {
+      prompt = "Create one image combining two people into a single scene. STYLE (STRICT): This image MUST match the cinematic atmosphere of Euphoria. Copy neon tones, soft gradients, dramatic lighting. Match mood, color grading, shadows, glow, contrast. Recreate emotional, moody, cinematic environment. IDENTITY: Preserve both faces accurately. Keep them realistic and recognizable. STRICT RULES: Ignore original lighting of input photos. Do not mix styles. The reference image defines EVERYTHING.";
+    } else if (selectedStyle === "titanic") {
+      prompt = "Create one image combining two people into a single scene. STYLE (STRICT): This image MUST match a classic cinematic Titanic-like atmosphere. Match color palette, lighting, shadows, and depth. Recreate romantic, dramatic film tone. Use cinematic realism with stylized mood. IDENTITY: Preserve both faces accurately. Keep them recognizable. STRICT RULES: Ignore modern photo look. Do not mix styles. The reference image defines EVERYTHING.";
+    }
+
     console.log("Starting Replicate prediction...");
+    console.log("Selected style:", selectedStyle);
+    console.log("Using prompt:", prompt);
 
     const output = await replicate.run(
       "qwen/qwen-image-edit-plus",
       {
         input: {
-          prompt: "Create one final image using three inputs: Image 1 (person1 face must be preserved), Image 2 (person2 face must be preserved), Image 3 (style reference - this is the ONLY source of style). PRIMARY GOAL: The final image must look as if it was created inside the world of Image 3. STYLE (STRICT AND DOMINANT): Fully replicate the atmosphere of Image 3. Match its color palette exactly. Match lighting conditions, shadows, and highlights. Match textures, materials, and rendering style. Match environment, mood, and visual tone. Match composition feeling (cinematic, cartoon, etc). Reuse visual elements if present (background style, color grading, depth). IMPORTANT: The third image defines EVERYTHING about style. Do NOT use style from the first two images. Do NOT create a neutral or mixed style. The result must clearly belong to the same visual universe as Image 3. IDENTITY: Keep both faces recognizable and realistic. Preserve facial structure and identity. Do not merge faces. Do not distort facial features. INTEGRATION: Place both people naturally inside the world of Image 3. Adjust their clothing, lighting, and colors to match the environment. Make them feel like part of that scene, not pasted on top. RENDERING: matte finish, no glossy or plastic skin, no generic realism if style is stylized. NEGATIVE: ignore original lighting of input photos, ignore original background, no style mixing, no weak stylization, no realism override. If the final image does not clearly match the style of Image 3, the result is incorrect.",
+          prompt: prompt,
           image: [person1DataURL, person2DataURL, styleBoardDataURL]
         }
       }
