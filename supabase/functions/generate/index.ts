@@ -131,7 +131,7 @@ Deno.serve(async (req: Request) => {
       useFileOutput: false,
     });
 
-    const prompt = `Create one final image from three inputs:
+    let prompt = `Create one final image from three inputs:
 - image1: first person (identity)
 - image2: second person (identity)
 - image3: MASTER REFERENCE (exact scene to recreate)
@@ -168,7 +168,41 @@ INTEGRATION:
 - adapt faces into the lighting of image3
 - match skin tones to scene lighting
 - match shadows and highlights exactly
+`;
 
+    if (selectedStyle === "titanic") {
+      prompt += `
+TITANIC MODE:
+- cinematic realism
+- golden hour lighting
+- warm tones
+- romantic atmosphere
+- film-like rendering
+- realistic skin
+`;
+    } else if (selectedStyle === "euphoria") {
+      prompt += `
+EUPHORIA MODE:
+- moody cinematic lighting
+- strong color grading
+- intimate close-up feeling
+- soft shadows
+- emotional tone
+`;
+    } else if (selectedStyle === "zootopia") {
+      prompt += `
+ZOOTOPIA MODE:
+- fully transform into animated characters
+- 3D animated rendering
+- smooth shading
+- stylized proportions
+- large expressive eyes
+- vibrant clean colors
+- no realism
+`;
+    }
+
+    prompt += `
 STRICT RULE: Do NOT create a new scene. Do NOT change pose. Do NOT change lighting. Do NOT simplify style.
 
 PRIORITY: image3 (scene, style, pose) = 90%, identity = 10%
