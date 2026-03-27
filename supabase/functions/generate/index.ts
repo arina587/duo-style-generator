@@ -136,92 +136,90 @@ Deno.serve(async (req: Request) => {
 - image2: second person
 - image3: MASTER REFERENCE
 
-PRIMARY GOAL: Recreate image3 as closely as possible with ONLY the two provided people.
+PRIMARY GOAL: Recreate image3 exactly, but REPLACE all original characters with ONLY the two provided people.
 
-CRITICAL RULE (NO EXTRA CHARACTERS):
-- The image must contain EXACTLY TWO characters
-- Only the two people from image1 and image2 are allowed
-- Do NOT add any extra people
-- Do NOT add background characters
-- Do NOT generate animals or additional figures
-- If image3 contains other characters → REMOVE them
+CRITICAL CHARACTER RULE (VERY STRICT):
+- There must be EXACTLY TWO characters in the final image
+- These must be ONLY the two people from image1 and image2
+- ALL characters from image3 must be COMPLETELY REMOVED
+- This includes: people, animals, background figures, silhouettes, reflections
+- DO NOT keep or partially keep any original character from image3
+- DO NOT add any new characters
+- DO NOT generate background people or animals
+- If any extra character appears → result is incorrect
 
-POSE LOCK (VERY STRICT):
-- replicate the exact pose from image3
-- match body positions precisely
-- match interaction between the two characters
-- match distance between them
-- match camera angle and framing
+POSE LOCK (ULTRA STRICT):
+- COPY the exact pose from image3
+- COPY body positions exactly
+- COPY interaction between characters
+- COPY distance between them
+- COPY camera angle and framing
+- This is a pose reconstruction task, not generation
 
-IDENTITY PRESERVATION (IMPROVED):
-- strongly preserve facial structure from image1 and image2
-- preserve eyes, nose, mouth, and face shape
-- preserve hairstyle and hair color
-- preserve proportions and key traits
-- faces must remain clearly recognizable
-- do NOT over-stylize faces
-- do NOT distort identity
-- do NOT merge faces together
+BACKGROUND RECONSTRUCTION:
+- KEEP the background from image3
+- RECREATE the same environment
+- MATCH depth, blur, perspective
+- DO NOT add new objects
+- DO NOT change composition
 
 STYLE REPLICATION:
-- copy lighting from image3
-- copy colors and color grading
-- copy shadows and highlights
-- copy depth and background blur
-- copy overall atmosphere
+- COPY lighting from image3
+- COPY colors and color grading
+- COPY shadows and highlights
+- COPY atmosphere
 
-ENVIRONMENT:
-- replicate background structure
-- match depth of field
-- match atmosphere exactly
-
-INTEGRATION:
-- match lighting on faces to scene
-- match skin tones to environment
-- blend naturally into scene
+IDENTITY (IMPROVED):
+- strongly preserve facial structure from image1 and image2
+- preserve eyes, nose, mouth, face shape
+- preserve hairstyle
+- faces must remain recognizable
+- do NOT distort faces
 `;
 
     if (selectedStyle === "titanic") {
       prompt += `
 STYLE MODE - TITANIC:
 - cinematic realism
-- warm golden-hour lighting
-- soft romantic atmosphere
-- realistic skin and light interaction
-- film-like rendering
+- golden hour lighting
+- warm tones
+- romantic film atmosphere
 `;
     } else if (selectedStyle === "euphoria") {
       prompt += `
 STYLE MODE - EUPHORIA:
 - moody cinematic lighting
 - strong color grading
-- intimate close composition
-- soft shadows and contrast
-- emotional tone
+- intimate close-up feel
+- soft shadows
 `;
     } else if (selectedStyle === "zootopia") {
       prompt += `
 STYLE MODE - ZOOTOPIA:
-- transform BOTH people into animated characters
-- BUT keep ONLY TWO characters total
-- do NOT add extra animals
-- stylized 3D animation style
-- expressive eyes, smooth shading, clean geometry
-- vibrant colors
-- keep recognizable traits from original faces
+- FULL transformation into animated characters
+- BUT keep EXACTLY TWO characters only
+- COPY animal poses from image3 EXACTLY
+- COPY body language and gesture from animals
+- transform humans into stylized animated characters
+- smooth shading, soft light, stylized proportions
+- expressive eyes, clean geometry
+- DO NOT generate any extra animals
+- DO NOT keep original animals from image3
+- ONLY two animated characters allowed
 `;
     }
 
     prompt += `
-STRICT RULES:
-- do NOT create new composition
-- do NOT add extra elements or characters
-- do NOT weaken pose accuracy
-- do NOT change number of characters from TWO
+STRICT GLOBAL RULES:
+- DO NOT add extra characters
+- DO NOT keep original characters
+- DO NOT change pose
+- DO NOT change composition
+- DO NOT weaken style
 
-NEGATIVE: extra people, extra animals, background characters, crowd, wrong pose, distorted faces, merged faces, weak style, flat lighting, three or more people
+NEGATIVE: extra people, extra animals, background characters, crowd, silhouettes, reflections with people, wrong pose, distorted faces, merged faces, weak lighting, generic look
 
-FINAL RULE: The result must look like the SAME scene as image3, recreated with ONLY the two provided people.`;
+FINAL RULE: The final image must look like the SAME scene as image3, but with ALL original characters REMOVED and ONLY the two provided people present.`;
 
     console.log("Starting Replicate prediction...");
     console.log("Selected style:", selectedStyle);
