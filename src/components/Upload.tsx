@@ -82,20 +82,35 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
   const handleGenerate = async () => {
     console.log('clicked');
 
-    try {
-      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
+    if (!photo1 || !photo2) {
+      console.error('Missing images: photo1 or photo2');
+      return;
+    }
 
+    try {
+      const styleBoard = await combineStyleImages();
+      console.log('Style board created:', styleBoard);
+
+      const formData = new FormData();
+      formData.append('person1', photo1);
+      formData.append('person2', photo2);
+      formData.append('styleBoard', styleBoard);
+
+      console.log('FormData contents:', {
+        person1: photo1.name,
+        person2: photo2.name,
+        styleBoard: styleBoard.name,
+      });
+
+      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
       console.log('Sending request to:', apiUrl);
 
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          test: 'simple test',
-        }),
+        body: formData,
       });
 
       console.log('Response status:', response.status);
