@@ -18,16 +18,26 @@ Deno.serve(async (req: Request) => {
   try {
     const formData = await req.formData();
 
+    console.log("=== BACKEND RECEIVING REQUEST ===");
+    console.log("FormData keys:", Array.from(formData.keys()));
+
     const person1 = formData.get("person1");
     const person2 = formData.get("person2");
     const styleBoard = formData.get("styleBoard");
     const selectedStyle = formData.get("selectedStyle") as string;
 
-    console.log("Received FormData:", {
-      person1: person1 ? `File (${(person1 as File).name}, ${(person1 as File).size} bytes)` : null,
-      person2: person2 ? `File (${(person2 as File).name}, ${(person2 as File).size} bytes)` : null,
-      styleBoard: styleBoard ? `File (${(styleBoard as File).name}, ${(styleBoard as File).size} bytes)` : null,
-      selectedStyle: selectedStyle
+    console.log("Extracted values:", {
+      person1: person1 ? `File (${(person1 as File).name}, ${(person1 as File).size} bytes)` : "MISSING",
+      person2: person2 ? `File (${(person2 as File).name}, ${(person2 as File).size} bytes)` : "MISSING",
+      styleBoard: styleBoard ? `File (${(styleBoard as File).name}, ${(styleBoard as File).size} bytes)` : "MISSING",
+      selectedStyle: selectedStyle || "MISSING"
+    });
+
+    console.log("Validation check:", {
+      person1Present: !!person1,
+      person2Present: !!person2,
+      styleBoardPresent: !!styleBoard,
+      selectedStylePresent: !!selectedStyle
     });
 
     if (!person1 || !person2 || !styleBoard || !selectedStyle) {
@@ -37,12 +47,20 @@ Deno.serve(async (req: Request) => {
       if (!styleBoard) missing.push("styleBoard");
       if (!selectedStyle) missing.push("selectedStyle");
 
+      console.error("=== VALIDATION FAILED ===");
       console.error("Missing required fields:", missing);
 
       return new Response(
         JSON.stringify({
+          success: false,
           error: "Missing required fields",
-          details: `The following fields are missing: ${missing.join(", ")}`
+          details: `The following fields are missing: ${missing.join(", ")}`,
+          received: {
+            person1: !!person1,
+            person2: !!person2,
+            styleBoard: !!styleBoard,
+            selectedStyle: !!selectedStyle
+          }
         }),
         {
           status: 400,
@@ -53,6 +71,8 @@ Deno.serve(async (req: Request) => {
         }
       );
     }
+
+    console.log("=== VALIDATION PASSED ===");
 
     if (!["zootopia", "euphoria", "titanic"].includes(selectedStyle)) {
       console.error("Invalid selectedStyle:", selectedStyle);

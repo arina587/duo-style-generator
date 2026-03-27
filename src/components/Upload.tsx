@@ -47,10 +47,21 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
     }
 
     console.log('Generate clicked');
+    console.log('Current state:', {
+      photo1: !!photo1,
+      photo2: !!photo2,
+      selectedStyle: selectedStyle,
+    });
 
     if (!photo1 || !photo2) {
       console.error('Missing images: photo1 or photo2');
       setError('Please upload both photos before generating');
+      return;
+    }
+
+    if (!selectedStyle) {
+      console.error('Missing selectedStyle');
+      setError('Style selection is missing. Please go back and select a style.');
       return;
     }
 
@@ -61,17 +72,31 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
       const styleBoard = await getStyleImageAsFile();
       console.log('Style image loaded:', styleBoard);
 
+      if (!styleBoard) {
+        console.error('Failed to load style board');
+        setError('Failed to load style reference. Please try again.');
+        setIsGenerating(false);
+        return;
+      }
+
       const formData = new FormData();
       formData.append('person1', photo1);
       formData.append('person2', photo2);
       formData.append('styleBoard', styleBoard);
       formData.append('selectedStyle', selectedStyle);
 
-      console.log('Request started - FormData contents:', {
+      console.log('=== SENDING REQUEST ===');
+      console.log('FormData contents:', {
         person1: photo1.name,
         person2: photo2.name,
         styleBoard: styleBoard.name,
         selectedStyle: selectedStyle,
+      });
+      console.log('All fields present:', {
+        person1: formData.has('person1'),
+        person2: formData.has('person2'),
+        styleBoard: formData.has('styleBoard'),
+        selectedStyle: formData.has('selectedStyle'),
       });
 
       const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
