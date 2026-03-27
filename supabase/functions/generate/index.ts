@@ -132,84 +132,96 @@ Deno.serve(async (req: Request) => {
     });
 
     let prompt = `Create one final image from three inputs:
-- image1: first person (identity)
-- image2: second person (identity)
-- image3: MASTER REFERENCE (exact scene to recreate)
+- image1: first person
+- image2: second person
+- image3: MASTER REFERENCE
 
-PRIMARY GOAL: Recreate image3 as closely as possible with new people.
+PRIMARY GOAL: Recreate image3 as closely as possible with ONLY the two provided people.
 
-HARD CONSTRAINT: This is NOT a new composition. This is a reconstruction of image3.
+CRITICAL RULE (NO EXTRA CHARACTERS):
+- The image must contain EXACTLY TWO characters
+- Only the two people from image1 and image2 are allowed
+- Do NOT add any extra people
+- Do NOT add background characters
+- Do NOT generate animals or additional figures
+- If image3 contains other characters → REMOVE them
 
-SCENE RECONSTRUCTION:
+POSE LOCK (VERY STRICT):
 - replicate the exact pose from image3
-- replicate exact body positions
-- replicate character interaction
-- replicate framing and camera angle
-- replicate distance between subjects
+- match body positions precisely
+- match interaction between the two characters
+- match distance between them
+- match camera angle and framing
 
-STYLE REPLICATION (STRICT):
-- copy exact colors from image3
-- copy lighting direction and intensity
+IDENTITY PRESERVATION (IMPROVED):
+- strongly preserve facial structure from image1 and image2
+- preserve eyes, nose, mouth, and face shape
+- preserve hairstyle and hair color
+- preserve proportions and key traits
+- faces must remain clearly recognizable
+- do NOT over-stylize faces
+- do NOT distort identity
+- do NOT merge faces together
+
+STYLE REPLICATION:
+- copy lighting from image3
+- copy colors and color grading
 - copy shadows and highlights
-- copy contrast and color grading
-- copy rendering style (cinematic / animated)
+- copy depth and background blur
+- copy overall atmosphere
 
 ENVIRONMENT:
-- replicate background structure and depth
-- match blur / depth of field
+- replicate background structure
+- match depth of field
 - match atmosphere exactly
 
-CHARACTERS:
-- replace people with image1 and image2 identities
-- keep faces recognizable
-- preserve hair, proportions, and key traits
-
 INTEGRATION:
-- adapt faces into the lighting of image3
-- match skin tones to scene lighting
-- match shadows and highlights exactly
+- match lighting on faces to scene
+- match skin tones to environment
+- blend naturally into scene
 `;
 
     if (selectedStyle === "titanic") {
       prompt += `
-TITANIC MODE:
+STYLE MODE - TITANIC:
 - cinematic realism
-- golden hour lighting
-- warm tones
-- romantic atmosphere
+- warm golden-hour lighting
+- soft romantic atmosphere
+- realistic skin and light interaction
 - film-like rendering
-- realistic skin
 `;
     } else if (selectedStyle === "euphoria") {
       prompt += `
-EUPHORIA MODE:
+STYLE MODE - EUPHORIA:
 - moody cinematic lighting
 - strong color grading
-- intimate close-up feeling
-- soft shadows
+- intimate close composition
+- soft shadows and contrast
 - emotional tone
 `;
     } else if (selectedStyle === "zootopia") {
       prompt += `
-ZOOTOPIA MODE:
-- fully transform into animated characters
-- 3D animated rendering
-- smooth shading
-- stylized proportions
-- large expressive eyes
-- vibrant clean colors
-- no realism
+STYLE MODE - ZOOTOPIA:
+- transform BOTH people into animated characters
+- BUT keep ONLY TWO characters total
+- do NOT add extra animals
+- stylized 3D animation style
+- expressive eyes, smooth shading, clean geometry
+- vibrant colors
+- keep recognizable traits from original faces
 `;
     }
 
     prompt += `
-STRICT RULE: Do NOT create a new scene. Do NOT change pose. Do NOT change lighting. Do NOT simplify style.
+STRICT RULES:
+- do NOT create new composition
+- do NOT add extra elements or characters
+- do NOT weaken pose accuracy
+- do NOT change number of characters from TWO
 
-PRIORITY: image3 (scene, style, pose) = 90%, identity = 10%
+NEGATIVE: extra people, extra animals, background characters, crowd, wrong pose, distorted faces, merged faces, weak style, flat lighting, three or more people
 
-NEGATIVE: different pose, different lighting, weak colors, generic look, flat image, modern portrait style
-
-FINAL CHECK: The result must look like the SAME image as image3, with different people inserted. If it looks like a different scene it is incorrect.`;
+FINAL RULE: The result must look like the SAME scene as image3, recreated with ONLY the two provided people.`;
 
     console.log("Starting Replicate prediction...");
     console.log("Selected style:", selectedStyle);
