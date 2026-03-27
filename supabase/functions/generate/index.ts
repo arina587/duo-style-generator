@@ -69,6 +69,23 @@ Deno.serve(async (req: Request) => {
       );
     }
 
+    const fileToDataURL = async (file: File): Promise<string> => {
+      const arrayBuffer = await file.arrayBuffer();
+      const bytes = new Uint8Array(arrayBuffer);
+      let binary = '';
+      for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      const base64 = btoa(binary);
+      return `data:${file.type};base64,${base64}`;
+    };
+
+    console.log("Converting files to data URLs...");
+    const person1DataURL = await fileToDataURL(person1 as File);
+    const person2DataURL = await fileToDataURL(person2 as File);
+    const styleBoardDataURL = await fileToDataURL(styleBoard as File);
+    console.log("Files converted successfully");
+
     const replicate = new Replicate({
       auth: replicateToken,
     });
@@ -79,9 +96,8 @@ Deno.serve(async (req: Request) => {
       "qwen/qwen-image-edit-plus",
       {
         input: {
-          image: person1 as File,
-          image2: person2 as File,
-          style_image: styleBoard as File,
+          prompt: "Create one coherent image with the two people from the first two images together in one scene. Preserve both facial identities, keep both people clearly distinct, do not merge faces, avoid distortion. Use the third image as the primary style source. Match its rendering, texture, colors, lighting, shapes, and finish. Matte look only. No glossy look. No pastel look.",
+          image: [person1DataURL, person2DataURL, styleBoardDataURL]
         }
       }
     );

@@ -66,14 +66,13 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
       formData.append('person2', photo2);
       formData.append('styleBoard', styleBoard);
 
-      console.log('FormData contents:', {
+      console.log('Request started - FormData contents:', {
         person1: photo1.name,
         person2: photo2.name,
         styleBoard: styleBoard.name,
       });
 
       const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
-      console.log('Sending request to:', apiUrl);
 
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -85,23 +84,26 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
 
       console.log('Response status:', response.status);
       const data = await response.json();
-      console.log('Response data:', data);
+      console.log('Response JSON:', JSON.stringify(data, null, 2));
 
       if (!response.ok) {
         const errorMsg = data.details || data.error || `Request failed with status ${response.status}`;
-        console.error('Error response:', data);
-        setError(errorMsg);
+        console.error('Error response:', JSON.stringify(data, null, 2));
+        setError('Generation failed. Try again.');
+        setIsGenerating(false);
         return;
       }
 
       if (data.success && data.imageUrl) {
         console.log('Generation successful:', data.imageUrl);
+        onGenerate(photo1, photo2, styleBoard);
+      } else {
+        setError('Generation failed. Try again.');
+        setIsGenerating(false);
       }
     } catch (error) {
       console.error('Error:', error);
-      const errorMsg = error instanceof Error ? error.message : 'An unexpected error occurred';
-      setError(errorMsg);
-    } finally {
+      setError('Generation failed. Try again.');
       setIsGenerating(false);
     }
   };
