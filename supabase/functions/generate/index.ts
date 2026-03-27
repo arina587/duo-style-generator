@@ -1,4 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import Replicate from "npm:replicate";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -15,7 +16,6 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    // Read FormData
     const formData = await req.formData();
 
     const person1 = formData.get("person1");
@@ -28,7 +28,6 @@ Deno.serve(async (req: Request) => {
       styleBoard: styleBoard ? `File (${(styleBoard as File).name}, ${(styleBoard as File).size} bytes)` : null,
     });
 
-    // Validate all required images are present
     if (!person1 || !person2 || !styleBoard) {
       const missing = [];
       if (!person1) missing.push("person1");
@@ -40,7 +39,7 @@ Deno.serve(async (req: Request) => {
       return new Response(
         JSON.stringify({
           error: "Missing required images",
-          missing: missing
+          details: `The following fields are missing: ${missing.join(", ")}`
         }),
         {
           status: 400,
@@ -52,22 +51,14 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // Convert Files to base64
-    const person1File = person1 as File;
-    const person2File = person2 as File;
-    const styleBoardFile = styleBoard as File;
-
-    const person1Base64 = `data:${person1File.type};base64,${btoa(String.fromCharCode(...new Uint8Array(await person1File.arrayBuffer())))}`;
-    const person2Base64 = `data:${person2File.type};base64,${btoa(String.fromCharCode(...new Uint8Array(await person2File.arrayBuffer())))}`;
-    const styleBoardBase64 = `data:${styleBoardFile.type};base64,${btoa(String.fromCharCode(...new Uint8Array(await styleBoardFile.arrayBuffer())))}`;
-
-    console.log("Converted images to base64 successfully");
-
     const replicateToken = Deno.env.get("REPLICATE_API_TOKEN");
 
     if (!replicateToken) {
       return new Response(
-        JSON.stringify({ error: "Replicate API token not configured" }),
+        JSON.stringify({
+          error: "Replicate API token not configured",
+          details: "The REPLICATE_API_TOKEN environment variable is missing. Please configure it in your Supabase project settings."
+        }),
         {
           status: 500,
           headers: {
@@ -78,95 +69,28 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // Start prediction
-    const predictionResponse = await fetch("https://api.replicate.com/v1/predictions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${replicateToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        version: "qwen/qwen-image-edit-plus",
-        input: {
-          image: person1Base64,
-          image2: person2Base64,
-          style_image: styleBoardBase64,
-        },
-      }),
+    const replicate = new Replicate({
+      auth: replicateToken,
     });
 
-    if (!predictionResponse.ok) {
-      const errorText = await predictionResponse.text();
-      console.error("Replicate API error:", errorText);
-      return new Response(
-        JSON.stringify({ error: "Failed to start image generation" }),
-        {
-          status: predictionResponse.status,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
+    console.log("Starting Replicate prediction...");
+
+    const output = await replicate.run(
+      "qwen/qwen-image-edit-plus",
+      {
+        input: {
+          image: person1 as File,
+          image2: person2 as File,
+          style_image: styleBoard as File,
         }
-      );
-    }
-
-    const prediction = await predictionResponse.json();
-    const predictionId = prediction.id;
-
-    // Poll for result
-    let result = prediction;
-    let attempts = 0;
-    const maxAttempts = 60; // 60 attempts * 2 seconds = 2 minutes max
-
-    while (result.status !== "succeeded" && result.status !== "failed" && attempts < maxAttempts) {
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds
-
-      const statusResponse = await fetch(
-        `https://api.replicate.com/v1/predictions/${predictionId}`,
-        {
-          headers: {
-            "Authorization": `Bearer ${replicateToken}`,
-          },
-        }
-      );
-
-      if (!statusResponse.ok) {
-        throw new Error("Failed to check prediction status");
       }
+    );
 
-      result = await statusResponse.json();
-      attempts++;
-    }
-
-    if (result.status === "failed") {
-      return new Response(
-        JSON.stringify({ error: "Image generation failed", details: result.error }),
-        {
-          status: 500,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
-
-    if (result.status !== "succeeded") {
-      return new Response(
-        JSON.stringify({ error: "Image generation timed out" }),
-        {
-          status: 408,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
+    console.log("Replicate output:", output);
 
     return new Response(
       JSON.stringify({
-        imageUrl: result.output,
+        imageUrl: output,
         success: true
       }),
       {
@@ -179,10 +103,13 @@ Deno.serve(async (req: Request) => {
 
   } catch (error) {
     console.error("Generation error:", error);
+
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
     return new Response(
       JSON.stringify({
-        error: "Internal server error",
-        details: error instanceof Error ? error.message : "Unknown error"
+        error: "Image generation failed",
+        details: errorMessage
       }),
       {
         status: 500,

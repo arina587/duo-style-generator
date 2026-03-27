@@ -14,6 +14,7 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
   const [preview1, setPreview1] = useState<string>('');
   const [preview2, setPreview2] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState<string>('');
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -49,10 +50,12 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
 
     if (!photo1 || !photo2) {
       console.error('Missing images: photo1 or photo2');
+      setError('Please upload both photos before generating');
       return;
     }
 
     setIsGenerating(true);
+    setError('');
 
     try {
       const styleBoard = await getStyleImageAsFile();
@@ -83,8 +86,21 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
       console.log('Response status:', response.status);
       const data = await response.json();
       console.log('Response data:', data);
+
+      if (!response.ok) {
+        const errorMsg = data.details || data.error || `Request failed with status ${response.status}`;
+        console.error('Error response:', data);
+        setError(errorMsg);
+        return;
+      }
+
+      if (data.success && data.imageUrl) {
+        console.log('Generation successful:', data.imageUrl);
+      }
     } catch (error) {
       console.error('Error:', error);
+      const errorMsg = error instanceof Error ? error.message : 'An unexpected error occurred';
+      setError(errorMsg);
     } finally {
       setIsGenerating(false);
     }
@@ -187,6 +203,12 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
             </label>
           </div>
         </div>
+
+        {error && (
+          <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-xl">
+            <p className="text-red-700 text-center font-light">{error}</p>
+          </div>
+        )}
 
         <div className="flex justify-center">
           <button
