@@ -88,6 +88,7 @@ Deno.serve(async (req: Request) => {
 
     const replicate = new Replicate({
       auth: replicateToken,
+      useFileOutput: false,
     });
 
     console.log("Starting Replicate prediction...");
@@ -106,30 +107,30 @@ Deno.serve(async (req: Request) => {
     console.log("Output type:", typeof output);
     console.log("Output is array:", Array.isArray(output));
 
-    let imageUrl: string;
+    let imageUrl: string | null = null;
 
-    if (Array.isArray(output)) {
-      console.log("Output is array, extracting first element");
-      imageUrl = output[0];
-    } else if (typeof output === 'string') {
-      console.log("Output is string, using directly");
-      imageUrl = output;
-    } else {
-      console.error("Invalid output format:", output);
-      return new Response(
-        JSON.stringify({
-          success: false,
-          error: "Invalid Replicate output",
-          details: "No valid image URL was returned"
-        }),
-        {
-          status: 500,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+    let firstItem = Array.isArray(output) ? output[0] : output;
+    console.log("First item:", firstItem);
+    console.log("First item type:", typeof firstItem);
+
+    if (typeof firstItem === 'string') {
+      console.log("First item is string, using directly");
+      imageUrl = firstItem;
+    } else if (firstItem && typeof firstItem === 'object') {
+      console.log("First item is object, checking for URL");
+
+      if (typeof firstItem.url === 'function') {
+        console.log("First item has url() method, calling it");
+        imageUrl = await firstItem.url();
+      } else if (typeof firstItem.url === 'string') {
+        console.log("First item has url property as string");
+        imageUrl = firstItem.url;
+      } else if (firstItem.toString && firstItem.toString() !== '[object Object]') {
+        console.log("Attempting to convert object to string");
+        imageUrl = firstItem.toString();
+      } else {
+        console.error("Object does not have url method or property:", Object.keys(firstItem));
+      }
     }
 
     console.log("Parsed imageUrl:", imageUrl);
