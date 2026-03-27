@@ -4,11 +4,13 @@ import { useState } from 'react';
 interface UploadProps {
   selectedStyle: string;
   referenceImages: string[];
+  selectedReference: string;
+  onReferenceSelect: (reference: string) => void;
   onBack: () => void;
   onGenerate: (photo1: File, photo2: File, styleBoard: File) => void;
 }
 
-export default function Upload({ selectedStyle, referenceImages, onBack, onGenerate }: UploadProps) {
+export default function Upload({ selectedStyle, referenceImages, selectedReference, onReferenceSelect, onBack, onGenerate }: UploadProps) {
   const [photo1, setPhoto1] = useState<File | null>(null);
   const [photo2, setPhoto2] = useState<File | null>(null);
   const [preview1, setPreview1] = useState<string>('');
@@ -33,8 +35,7 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
   };
 
   const getStyleImageAsFile = async (): Promise<File> => {
-    const firstImageUrl = referenceImages[0];
-    const response = await fetch(firstImageUrl);
+    const response = await fetch(selectedReference);
     const blob = await response.blob();
     return new File([blob], 'style-reference.jpg', { type: blob.type });
   };
@@ -54,6 +55,7 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
       photo1: !!photo1,
       photo2: !!photo2,
       selectedStyle: selectedStyle,
+      selectedReference: selectedReference,
     });
 
     if (!photo1 || !photo2) {
@@ -65,6 +67,12 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
     if (!selectedStyle) {
       console.error('BLOCKED: Missing selectedStyle');
       setError('Style selection is missing. Please go back and select a style.');
+      return;
+    }
+
+    if (!selectedReference) {
+      console.error('BLOCKED: Missing selectedReference');
+      setError('Please select a reference image before generating');
       return;
     }
 
@@ -117,16 +125,33 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
 
         {referenceImages.length > 0 && (
           <div className="mb-16 matte-card rounded-2xl soft-shadow p-8">
-            <h3 className="text-xl font-light text-[#8B6B4E] mb-8 text-center tracking-wide">Style Reference Images</h3>
+            <h3 className="text-xl font-light text-[#8B6B4E] mb-4 text-center tracking-wide">Select Reference Image</h3>
+            <p className="text-sm text-slate-500 text-center mb-8 font-light">Choose one reference image for your style</p>
             <div className="grid grid-cols-3 gap-6">
               {referenceImages.map((img, index) => (
-                <div key={index} className="rounded-xl overflow-hidden soft-shadow aspect-[3/4]">
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => onReferenceSelect(img)}
+                  className={`rounded-xl overflow-hidden soft-shadow aspect-[3/4] transition-all duration-300 relative ${
+                    selectedReference === img
+                      ? 'ring-4 ring-[#6B8FA3] scale-105'
+                      : 'hover:ring-2 hover:ring-[#6B8FA3]/50 hover:scale-102'
+                  }`}
+                >
                   <img
                     src={img}
                     alt={`Reference ${index + 1}`}
                     className="w-full h-full object-contain bg-slate-50"
                   />
-                </div>
+                  {selectedReference === img && (
+                    <div className="absolute inset-0 bg-[#6B8FA3]/20 flex items-center justify-center">
+                      <div className="bg-white rounded-full p-3 soft-shadow">
+                        <Sparkles className="w-6 h-6 text-[#6B8FA3]" />
+                      </div>
+                    </div>
+                  )}
+                </button>
               ))}
             </div>
           </div>
@@ -198,7 +223,7 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
           <button
             type="button"
             onClick={handleGenerate}
-            disabled={isGenerating || !photo1 || !photo2}
+            disabled={isGenerating || !photo1 || !photo2 || !selectedReference}
             className="flex items-center gap-3 px-10 py-4 bg-[#6B8FA3] text-white rounded-full font-light tracking-wide hover:bg-[#8B6B4E] transition-all duration-500 soft-shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-[#6B8FA3]"
           >
             <span>{isGenerating ? 'Generating...' : 'Generate Fusion'}</span>

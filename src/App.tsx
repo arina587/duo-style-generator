@@ -9,6 +9,7 @@ function App() {
   const [currentView, setCurrentView] = useState<View>('home');
   const [selectedStyle, setSelectedStyle] = useState<string>('');
   const [referenceImages, setReferenceImages] = useState<string[]>([]);
+  const [selectedReference, setSelectedReference] = useState<string>('');
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -16,6 +17,7 @@ function App() {
   const handleStyleSelect = (style: string, refImages: string[]) => {
     setSelectedStyle(style);
     setReferenceImages(refImages);
+    setSelectedReference('');
     setCurrentView('upload');
   };
 
@@ -101,6 +103,7 @@ function App() {
     setCurrentView('home');
     setSelectedStyle('');
     setReferenceImages([]);
+    setSelectedReference('');
     setGeneratedImageUrl('');
     setError('');
   };
@@ -120,6 +123,8 @@ function App() {
         <Upload
           selectedStyle={selectedStyle}
           referenceImages={referenceImages}
+          selectedReference={selectedReference}
+          onReferenceSelect={setSelectedReference}
           onBack={handleBackToHome}
           onGenerate={handleGenerate}
         />
