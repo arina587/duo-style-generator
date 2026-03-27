@@ -30,57 +30,17 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
     }
   };
 
-  const combineStyleImages = async (): Promise<File> => {
-    return new Promise((resolve, reject) => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      if (!ctx) {
-        reject(new Error('Could not get canvas context'));
-        return;
-      }
+  const getStyleImageAsFile = async (): Promise<File> => {
+    // Use the first reference image directly
+    const firstImageUrl = referenceImages[0];
 
-      const images: HTMLImageElement[] = [];
-      let loadedCount = 0;
-
-      const checkAllLoaded = () => {
-        if (loadedCount === referenceImages.length) {
-          const imgWidth = images[0].width;
-          const imgHeight = images[0].height;
-
-          canvas.width = imgWidth * 3;
-          canvas.height = imgHeight;
-
-          images.forEach((img, index) => {
-            ctx.drawImage(img, imgWidth * index, 0, imgWidth, imgHeight);
-          });
-
-          canvas.toBlob((blob) => {
-            if (blob) {
-              const file = new File([blob], 'style-board.jpg', { type: 'image/jpeg' });
-              resolve(file);
-            } else {
-              reject(new Error('Could not create blob from canvas'));
-            }
-          }, 'image/jpeg', 0.95);
-        }
-      };
-
-      referenceImages.forEach((src) => {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => {
-          images.push(img);
-          loadedCount++;
-          checkAllLoaded();
-        };
-        img.onerror = () => reject(new Error(`Failed to load image: ${src}`));
-        img.src = src;
-      });
-    });
+    const response = await fetch(firstImageUrl);
+    const blob = await response.blob();
+    return new File([blob], 'style-reference.jpg', { type: blob.type });
   };
 
   const handleGenerate = async () => {
-    console.log('clicked');
+    console.log('Generate clicked');
 
     if (!photo1 || !photo2) {
       console.error('Missing images: photo1 or photo2');
@@ -88,8 +48,8 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
     }
 
     try {
-      const styleBoard = await combineStyleImages();
-      console.log('Style board created:', styleBoard);
+      const styleBoard = await getStyleImageAsFile();
+      console.log('Style image loaded:', styleBoard);
 
       const formData = new FormData();
       formData.append('person1', photo1);
