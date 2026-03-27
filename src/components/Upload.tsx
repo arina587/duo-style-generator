@@ -1,5 +1,5 @@
 import { Upload as UploadIcon, ArrowLeft, ArrowRight, Image, Sparkles } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 interface UploadProps {
   selectedStyle: string;
@@ -15,6 +15,7 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
   const [preview2, setPreview2] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string>('');
+  const requestIdRef = useRef<number>(0);
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -33,34 +34,34 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
   };
 
   const getStyleImageAsFile = async (): Promise<File> => {
-    // Use the first reference image directly
     const firstImageUrl = referenceImages[0];
-
     const response = await fetch(firstImageUrl);
     const blob = await response.blob();
     return new File([blob], 'style-reference.jpg', { type: blob.type });
   };
 
   const handleGenerate = async () => {
+    console.log('=== GENERATE BUTTON CLICKED ===');
+
     if (isGenerating) {
+      console.log('BLOCKED: Already generating, ignoring click');
       return;
     }
 
-    console.log('Generate clicked');
-    console.log('Current state:', {
+    console.log('Validation check:', {
       photo1: !!photo1,
       photo2: !!photo2,
       selectedStyle: selectedStyle,
     });
 
     if (!photo1 || !photo2) {
-      console.error('Missing images: photo1 or photo2');
+      console.error('BLOCKED: Missing photo1 or photo2');
       setError('Please upload both photos before generating');
       return;
     }
 
     if (!selectedStyle) {
-      console.error('Missing selectedStyle');
+      console.error('BLOCKED: Missing selectedStyle');
       setError('Style selection is missing. Please go back and select a style.');
       return;
     }
@@ -68,16 +69,31 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
     setIsGenerating(true);
     setError('');
 
+    const currentRequestId = Date.now();
+    requestIdRef.current = currentRequestId;
+    console.log('=== REQUEST START ===', { requestId: currentRequestId });
+
     try {
       const styleBoard = await getStyleImageAsFile();
-      console.log('Style image loaded:', styleBoard);
 
       if (!styleBoard) {
-        console.error('Failed to load style board');
+        console.error('BLOCKED: Failed to load style board');
         setError('Failed to load style reference. Please try again.');
         setIsGenerating(false);
         return;
       }
+
+      if (requestIdRef.current !== currentRequestId) {
+        console.log('BLOCKED: Request cancelled, newer request exists');
+        return;
+      }
+
+      console.log('Building FormData with:', {
+        person1: photo1.name,
+        person2: photo2.name,
+        styleBoard: styleBoard.name,
+        selectedStyle: selectedStyle,
+      });
 
       const formData = new FormData();
       formData.append('person1', photo1);
@@ -85,14 +101,7 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
       formData.append('styleBoard', styleBoard);
       formData.append('selectedStyle', selectedStyle);
 
-      console.log('=== SENDING REQUEST ===');
-      console.log('FormData contents:', {
-        person1: photo1.name,
-        person2: photo2.name,
-        styleBoard: styleBoard.name,
-        selectedStyle: selectedStyle,
-      });
-      console.log('All fields present:', {
+      console.log('FormData validation:', {
         person1: formData.has('person1'),
         person2: formData.has('person2'),
         styleBoard: formData.has('styleBoard'),
@@ -100,6 +109,7 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
       });
 
       const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
+      console.log('Sending POST request to:', apiUrl);
 
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -109,27 +119,40 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
         body: formData,
       });
 
-      console.log('Response status:', response.status);
+      if (requestIdRef.current !== currentRequestId) {
+        console.log('BLOCKED: Response ignored, newer request exists');
+        return;
+      }
+
+      console.log('=== REQUEST END ===', {
+        requestId: currentRequestId,
+        status: response.status,
+      });
+
       const data = await response.json();
-      console.log('Response JSON:', JSON.stringify(data, null, 2));
+      console.log('Response data:', data);
 
       if (!response.ok) {
-        const errorMsg = data.details || data.error || `Request failed with status ${response.status}`;
-        console.error('Error response:', JSON.stringify(data, null, 2));
+        console.error('Request failed:', data);
         setError('Generation failed. Try again.');
         setIsGenerating(false);
         return;
       }
 
       if (data.success && data.imageUrl) {
-        console.log('Generation successful:', data.imageUrl);
+        console.log('SUCCESS: Image generated:', data.imageUrl);
         onGenerate(photo1, photo2, styleBoard);
       } else {
+        console.error('Response missing success or imageUrl');
         setError('Generation failed. Try again.');
         setIsGenerating(false);
       }
     } catch (error) {
-      console.error('Error:', error);
+      if (requestIdRef.current !== currentRequestId) {
+        console.log('BLOCKED: Error ignored, newer request exists');
+        return;
+      }
+      console.error('Request error:', error);
       setError('Generation failed. Try again.');
       setIsGenerating(false);
     }
