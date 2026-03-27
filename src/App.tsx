@@ -48,9 +48,15 @@ function App() {
       }
 
       if (data.success && data.imageUrl) {
+        if (typeof data.imageUrl !== 'string') {
+          console.error('imageUrl is not a string:', data.imageUrl);
+          throw new Error('Generation failed. Invalid image URL.');
+        }
+
+        console.log('Final imageUrl to render:', data.imageUrl);
         setGeneratedImageUrl(data.imageUrl);
       } else {
-        throw new Error('No image URL returned');
+        throw new Error('Generation failed. Invalid image URL.');
       }
     } catch (err) {
       console.error('Generation error:', err);

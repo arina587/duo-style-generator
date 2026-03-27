@@ -102,12 +102,80 @@ Deno.serve(async (req: Request) => {
       }
     );
 
-    console.log("Replicate output:", output);
+    console.log("Replicate raw output:", JSON.stringify(output, null, 2));
+    console.log("Output type:", typeof output);
+    console.log("Output is array:", Array.isArray(output));
+
+    let imageUrl: string;
+
+    if (Array.isArray(output)) {
+      console.log("Output is array, extracting first element");
+      imageUrl = output[0];
+    } else if (typeof output === 'string') {
+      console.log("Output is string, using directly");
+      imageUrl = output;
+    } else {
+      console.error("Invalid output format:", output);
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "Invalid Replicate output",
+          details: "No valid image URL was returned"
+        }),
+        {
+          status: 500,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    console.log("Parsed imageUrl:", imageUrl);
+
+    if (!imageUrl || typeof imageUrl !== 'string' || imageUrl.trim() === '') {
+      console.error("Invalid imageUrl after parsing:", imageUrl);
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "Invalid Replicate output",
+          details: "No valid image URL was returned"
+        }),
+        {
+          status: 500,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    if (!imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
+      console.error("imageUrl is not a valid URL:", imageUrl);
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "Invalid Replicate output",
+          details: "Returned value is not a valid URL"
+        }),
+        {
+          status: 500,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    console.log("Final validated imageUrl:", imageUrl);
 
     return new Response(
       JSON.stringify({
-        imageUrl: output,
-        success: true
+        success: true,
+        imageUrl: imageUrl
       }),
       {
         headers: {
