@@ -80,14 +80,29 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
   };
 
   const handleGenerate = async () => {
-    if (photo1 && photo2) {
-      try {
-        const styleBoard = await combineStyleImages();
-        console.log('Style board created:', styleBoard);
-        onGenerate(photo1, photo2, styleBoard);
-      } catch (error) {
-        console.error('Error combining style images:', error);
-      }
+    console.log('clicked');
+
+    try {
+      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
+
+      console.log('Sending request to:', apiUrl);
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          test: 'simple test',
+        }),
+      });
+
+      console.log('Response status:', response.status);
+      const data = await response.json();
+      console.log('Response data:', data);
+    } catch (error) {
+      console.error('Error:', error);
     }
   };
 
@@ -192,8 +207,7 @@ export default function Upload({ selectedStyle, referenceImages, onBack, onGener
         <div className="flex justify-center">
           <button
             onClick={handleGenerate}
-            disabled={!photo1 || !photo2}
-            className="flex items-center gap-3 px-10 py-4 bg-[#6B8FA3] text-white rounded-full font-light tracking-wide hover:bg-[#8B6B4E] disabled:bg-slate-300 disabled:cursor-not-allowed transition-all duration-500 soft-shadow-lg hover:scale-105"
+            className="flex items-center gap-3 px-10 py-4 bg-[#6B8FA3] text-white rounded-full font-light tracking-wide hover:bg-[#8B6B4E] transition-all duration-500 soft-shadow-lg hover:scale-105"
           >
             <span>Generate Fusion</span>
             <ArrowRight className="w-5 h-5" />
