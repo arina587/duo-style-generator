@@ -160,343 +160,271 @@ Deno.serve(async (req: Request) => {
     // Define all prompts in a strict map structure
     const promptMap: Record<string, Record<string, string>> = {
       zootopia: {
-        ref1: `Generate an image from two identity references (image1 and image2).
+        ref1: `Create a premium Disney/Pixar-style 3D animated image using two uploaded people.
 
-IDENTITY (STRICT — DO NOT CHANGE):
-Preserve both people exactly as in the photos:
-- face shape, proportions, asymmetry
-- eyes, nose, lips
-- natural skin texture (no smoothing, no beautification)
-- hair color and hairstyle
-
-Faces must remain fully recognizable.
-
-CHARACTER RULES (CRITICAL):
-- EXACTLY TWO PEOPLE
-- NO third person
-- NO background people
-- NO silhouettes
-- NO animals
+IDENTITY:
+Preserve both faces recognizable and consistent.
 
 STYLE (LOCKED):
-High-end Disney/Pixar 3D animation:
-- smooth polished geometry
-- expressive slightly enlarged eyes
-- soft rounded facial features
-- clean materials
+- high-end Pixar animation
+- smooth geometry
+- expressive eyes
 - soft global illumination
-- cinematic animation lighting
-- vibrant but controlled colors
+- clean materials
+- vibrant controlled colors
 
-SCENE 1 (clean selfie portrait):
-Two characters very close together, facing camera.
+SCENE (VERY STRICT — CAMERA-DRIVEN SELFIE):
+
+- the GIRL is holding the camera with her arm extended forward
+- the camera is the viewpoint → image must look like taken from her hand
+- the frame is slightly wide-angle selfie perspective
 
 POSE:
-- heads aligned horizontally
-- shoulders slightly touching
-- both looking directly at camera
+- both faces VERY close together
+- cheek-to-cheek contact
+- heads touching
+- both looking directly into the camera
+- tight framing
 
 COMPOSITION:
-- tight shoulder-up framing
-- centered
+- selfie framing
+- slight perspective distortion from near camera
+- girl's arm partially visible
 
-LIGHTING:
-- soft studio lighting
-- minimal shadows
+LIGHT:
+- soft clean lighting
 
 BACKGROUND:
-- clean minimal gradient
+- minimal, clean
 
-FINAL OUTPUT:
-- match scene EXACTLY
-- preserve identity and pose
-- 4K quality
-- no text, no logos, no artifacts
+RULE:
+- exactly two characters
+- no animals
+- no extra people
 
 NEGATIVE:
 extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
 
-        ref2: `Generate an image from two identity references (image1 and image2).
+        ref2: `Create a premium Disney/Pixar-style 3D animated image using two uploaded people.
 
-IDENTITY (STRICT — DO NOT CHANGE):
-Preserve both people exactly as in the photos:
-- face shape, proportions, asymmetry
-- eyes, nose, lips
-- natural skin texture (no smoothing, no beautification)
-- hair color and hairstyle
-
-Faces must remain fully recognizable.
-
-CHARACTER RULES (CRITICAL):
-- EXACTLY TWO PEOPLE
-- NO third person
-- NO background people
-- NO silhouettes
-- NO animals
+IDENTITY:
+Preserve both faces exactly.
 
 STYLE (LOCKED):
-High-end Disney/Pixar 3D animation:
-- smooth polished geometry
-- expressive slightly enlarged eyes
-- soft rounded facial features
+- Pixar-level 3D rendering
+- smooth geometry
+- expressive eyes
+- soft lighting
 - clean materials
-- soft global illumination
-- cinematic animation lighting
-- vibrant but controlled colors
 
-SCENE 2 (friendly interaction):
-Two characters standing close together.
+SCENE (DUAL SELFIE — VERY IMPORTANT):
+
+- BOTH characters are holding the camera together (shared selfie moment)
+- camera is in front of them → viewpoint from that camera
 
 POSE:
-- one slightly leaning toward the other
-- heads slightly angled inward
-- relaxed expressions
+- girl slightly closer to camera
+- girl wrapping one arm around the guy (side hug)
+- guy leaning slightly toward her
+- heads angled inward
+- both looking into camera
 
 COMPOSITION:
-- medium close-up
+- selfie framing
+- upper torso visible
 - slight asymmetry
+- camera perspective visible
 
-LIGHTING:
+LIGHT:
 - soft balanced lighting
-- gentle shadows
 
 BACKGROUND:
-- minimal soft gradient
+- minimal
 
-FINAL OUTPUT:
-- match scene EXACTLY
-- preserve identity and pose
-- 4K quality
-- no text, no logos, no artifacts
+RULE:
+- exactly two characters
+- no animals
+- no extra people
 
 NEGATIVE:
 extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
 
-        ref3: `Generate an image from two identity references (image1 and image2).
+        ref3: `Create a premium Disney/Pixar-style 3D animated image using two uploaded people.
 
-IDENTITY (STRICT — DO NOT CHANGE):
-Preserve both people exactly as in the photos:
-- face shape, proportions, asymmetry
-- eyes, nose, lips
-- natural skin texture (no smoothing, no beautification)
-- hair color and hairstyle
-
-Faces must remain fully recognizable.
-
-CHARACTER RULES (CRITICAL):
-- EXACTLY TWO PEOPLE
-- NO third person
-- NO background people
-- NO silhouettes
-- NO animals
+IDENTITY:
+Preserve faces clearly.
 
 STYLE (LOCKED):
-High-end Disney/Pixar 3D animation:
-- smooth polished geometry
-- expressive slightly enlarged eyes
-- soft rounded facial features
-- clean materials
-- soft global illumination
-- cinematic animation lighting
-- vibrant but controlled colors
+- Pixar 3D animation
+- smooth geometry
+- expressive eyes
+- cinematic lighting
 
-SCENE 3 (club selfie):
-Two characters taking a selfie.
+SCENE (CARRY SELFIE — VERY STRICT):
+
+- the MAN is holding the GIRL in his arms (full lift)
+- the MAN is also holding the camera → selfie perspective
+- camera viewpoint comes from his extended arm
 
 POSE:
-- one holding camera with arm extended forward
-- camera slightly above eye level
-- both leaning inward
-- heads very close
+- girl lifted in his arms (not standing)
+- her body angled slightly upward
+- their faces close together
+- both looking toward camera
+- dynamic but controlled pose
 
 COMPOSITION:
-- close selfie framing
-- slight perspective distortion
+- selfie angle
+- slightly tilted framing
+- upper bodies visible
 
-LIGHTING:
-- purple and pink neon lighting
-- soft glow on faces
+LIGHT:
+- clean soft lighting
 
 BACKGROUND:
-- blurred nightclub
-- NO people
+- simple, no people
 
-FINAL OUTPUT:
-- match scene EXACTLY
-- preserve identity and pose
-- 4K quality
-- no text, no logos, no artifacts
+RULE:
+- exactly two characters
+- no animals
+- no extra people
 
 NEGATIVE:
 extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`
       },
 
       titanic: {
-        ref1: `Generate an image from two identity references (image1 and image2).
+        ref1: `Create an ultra-realistic cinematic image using two uploaded people.
 
-IDENTITY (STRICT — DO NOT CHANGE):
-Preserve both people exactly as in the photos:
-- face shape, proportions, asymmetry
-- eyes, nose, lips
-- natural skin texture (no smoothing, no beautification)
-- hair color and hairstyle
+IDENTITY:
+Preserve exact real faces with natural texture.
 
-Faces must remain fully recognizable.
+STYLE (LOCKED — 1990s FILM):
+- 35mm film look
+- soft grain
+- warm analog tones
+- no digital sharpness
+- no glossy skin
 
-CHARACTER RULES (CRITICAL):
-- EXACTLY TWO PEOPLE
-- NO third person
-- NO background people
-- NO silhouettes
-- NO animals
-
-STYLE (LOCKED):
-Ultra-realistic cinematic film still:
-- shot on 50mm lens
-- shallow depth of field
-- natural skin texture (NO plastic look)
-- cinematic lighting
-- film grain
-- high dynamic range
-
-SCENE 1 (ship bow iconic):
+SCENE (ICONIC SHIP — EXACT):
 
 POSE:
-- woman in front, arms fully extended horizontally
-- head slightly raised, eyes closed
-- wind in hair
+- woman stands at front
+- arms fully extended horizontally (perfect straight line)
+- chest open, chin slightly raised
+- wind pushing hair backward
 
-- man directly behind her
-- hands on her waist
-- close body contact
+- man stands directly behind her
+- his chest aligned with her back
+- both hands placed on her waist
+- close physical contact
 
 COMPOSITION:
-- medium-wide shot
-- ship rail visible
+- camera in front of them
+- medium-wide framing
+- both bodies visible from waist up
+- horizon line centered
 
-LIGHTING:
-- warm golden sunset
+LIGHT:
+- golden sunset
 - strong backlight
+- warm rim light
 
 BACKGROUND:
 - ocean horizon
+- ship railing visible
+- no people
 
-FINAL OUTPUT:
-- match scene EXACTLY
-- preserve identity and pose
-- 4K quality
-- no text, no logos, no artifacts
+RULE:
+- exactly two people
+- no crowd
 
 NEGATIVE:
 extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
 
-        ref2: `Generate an image from two identity references (image1 and image2).
+        ref2: `Create an ultra-realistic cinematic image using two uploaded people.
 
-IDENTITY (STRICT — DO NOT CHANGE):
-Preserve both people exactly as in the photos:
-- face shape, proportions, asymmetry
-- eyes, nose, lips
-- natural skin texture (no smoothing, no beautification)
-- hair color and hairstyle
+IDENTITY:
+Preserve faces with wet skin realism.
 
-Faces must remain fully recognizable.
-
-CHARACTER RULES (CRITICAL):
-- EXACTLY TWO PEOPLE
-- NO third person
-- NO background people
-- NO silhouettes
-- NO animals
-
-STYLE (LOCKED):
-Ultra-realistic cinematic film still:
-- shot on 50mm lens
-- shallow depth of field
-- natural skin texture (NO plastic look)
-- cinematic lighting
+STYLE (LOCKED — 1990s FILM):
+- cold blue tones
 - film grain
-- high dynamic range
+- natural lighting
+- no digital look
 
-SCENE 2 (water scene):
+SCENE (WATER — VERY PRECISE):
 
 POSE:
-- both in water
-- woman slightly above, leaning toward man
-- holding his hand near her face
+- both floating in water
+- water level around shoulders
 
-- man partially submerged
-- looking at her
+- woman positioned slightly higher
+- leaning down toward the man
+- her hand holding or touching his arm
+
+- man lower in frame
+- partially submerged
+- looking up at her
 
 COMPOSITION:
-- tight cinematic shot
+- tight framing
+- faces close
+- water visible in foreground
 
-LIGHTING:
-- cold blue lighting
+LIGHT:
+- cold dim blue light
 - reflections on water
 
 BACKGROUND:
-- dark ocean
+- dark open ocean only
+- no objects
+- no people
 
-FINAL OUTPUT:
-- match scene EXACTLY
-- preserve identity and pose
-- 4K quality
-- no text, no logos, no artifacts
+RULE:
+- exactly two people
 
 NEGATIVE:
 extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
 
-        ref3: `Generate an image from two identity references (image1 and image2).
+        ref3: `Create an ultra-realistic cinematic image using two uploaded people.
 
-IDENTITY (STRICT — DO NOT CHANGE):
-Preserve both people exactly as in the photos:
-- face shape, proportions, asymmetry
-- eyes, nose, lips
-- natural skin texture (no smoothing, no beautification)
-- hair color and hairstyle
+IDENTITY:
+Keep faces natural and recognizable.
 
-Faces must remain fully recognizable.
-
-CHARACTER RULES (CRITICAL):
-- EXACTLY TWO PEOPLE
-- NO third person
-- NO background people
-- NO silhouettes
-- NO animals
-
-STYLE (LOCKED):
-Ultra-realistic cinematic film still:
-- shot on 50mm lens
-- shallow depth of field
-- natural skin texture (NO plastic look)
-- cinematic lighting
+STYLE (LOCKED — 1990s FILM):
+- warm analog tones
 - film grain
-- high dynamic range
+- soft lens bloom
+- cinematic depth
 
-SCENE 3 (intimate close moment):
+SCENE (INTIMATE CLOSE — EXACT):
 
 POSE:
-- bodies very close
-- woman slightly leaning back
-- man leaning toward her
-- faces almost touching
+- bodies extremely close
+- woman leaning slightly backward
+- man leaning forward toward her
+
+- faces almost touching (near kiss distance)
+- man's hand placed around her waist
+- emotional tension in posture
 
 COMPOSITION:
 - medium close-up
 - shallow depth of field
+- focus on faces
 
-LIGHTING:
-- warm cinematic tones
-- soft shadows
+LIGHT:
+- warm soft light
+- subtle shadows
+- romantic tone
 
 BACKGROUND:
 - blurred ship environment
+- no people
 
-FINAL OUTPUT:
-- match scene EXACTLY
-- preserve identity and pose
-- 4K quality
-- no text, no logos, no artifacts
+RULE:
+- exactly two people
 
 NEGATIVE:
 extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`
