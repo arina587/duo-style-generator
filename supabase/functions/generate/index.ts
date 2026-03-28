@@ -131,95 +131,125 @@ Deno.serve(async (req: Request) => {
       useFileOutput: false,
     });
 
-    let prompt = `Create one final image from three inputs:
-- image1: first person
-- image2: second person
-- image3: MASTER REFERENCE
+    let prompt = `Create a deterministic, highly consistent image using three inputs:
+- image1: first person identity
+- image2: second person identity
+- image3: reference scene
 
-PRIMARY GOAL: Recreate image3 exactly, but REPLACE all original characters with ONLY the two provided people.
+CORE RULE:
+This is a reconstruction task, not generation.
+Recreate the SAME scene from image3 using ONLY the two provided people.
 
-CRITICAL CHARACTER RULE (VERY STRICT):
-- There must be EXACTLY TWO characters in the final image
-- These must be ONLY the two people from image1 and image2
-- ALL characters from image3 must be COMPLETELY REMOVED
-- This includes: people, animals, background figures, silhouettes, reflections
-- DO NOT keep or partially keep any original character from image3
-- DO NOT add any new characters
-- DO NOT generate background people or animals
-- If any extra character appears → result is incorrect
+IDENTITY LOCK (ABSOLUTE):
+Preserve BOTH people EXACTLY as in uploaded photos.
 
-POSE LOCK (ULTRA STRICT):
-- COPY the exact pose from image3
-- COPY body positions exactly
-- COPY interaction between characters
-- COPY distance between them
-- COPY camera angle and framing
-- This is a pose reconstruction task, not generation
+Do NOT change:
+- face shape and asymmetry
+- eyes, nose, lips
+- proportions and structure
+- skin tone and natural skin texture
+- hair color, tone, highlights, length and hairstyle
 
-BACKGROUND RECONSTRUCTION:
-- KEEP the background from image3
-- RECREATE the same environment
-- MATCH depth, blur, perspective
-- DO NOT add new objects
-- DO NOT change composition
+Do NOT beautify, retouch, smooth, enhance, stylize or modify faces in any way.
+Faces must remain 100% recognizable.
 
-STYLE REPLICATION:
-- COPY lighting from image3
-- COPY colors and color grading
-- COPY shadows and highlights
-- COPY atmosphere
+CHARACTER LIMIT (CRITICAL):
+The final image must contain EXACTLY TWO characters.
+- Use ONLY the two uploaded people
+- Completely REMOVE all characters from the reference image
+- Do NOT add people
+- Do NOT add animals
+- Do NOT add background silhouettes or reflections
 
-IDENTITY (IMPROVED):
-- strongly preserve facial structure from image1 and image2
-- preserve eyes, nose, mouth, face shape
-- preserve hairstyle
-- faces must remain recognizable
-- do NOT distort faces
+POSE LOCK (VERY STRICT):
+- EXACTLY replicate pose from reference image
+- match body positions precisely
+- match interaction and gesture
+- match distance between subjects
+- match camera angle and framing
+- match perspective and crop
+
+No interpretation allowed.
+
+SCENE RECONSTRUCTION:
+- recreate the same environment from the reference
+- match background layout
+- match depth and perspective
+- match blur and focus
+- do NOT add new objects
+- do NOT change composition
+
+LIGHTING LOCK:
+- match exact light direction
+- match softness and intensity
+- match highlights and shadows
+- match color temperature
+
+COLOR GRADING LOCK:
+- match exact color palette
+- match contrast and saturation
+- match tone (warm / cold / neon)
+
+CONSISTENCY ENGINE:
+All images within the same selectedStyle MUST:
+- have identical rendering style
+- use identical lighting behavior
+- use identical color grading pipeline
+- look like frames from the same film universe
+
+Always use a fixed seed value and deterministic generation settings to minimize variation.
 `;
 
-    if (selectedStyle === "titanic") {
+    if (selectedStyle === "zootopia") {
       prompt += `
-STYLE MODE - TITANIC:
-- cinematic realism
-- golden hour lighting
-- warm tones
-- romantic film atmosphere
+STYLE MODE - ZOOTOPIA:
+- transform both people into high-end Pixar/Disney style 3D animated characters
+- smooth clean geometry
+- stylized proportions
+- large expressive eyes
+- soft global illumination
+- subsurface scattering
+- high-quality materials
+- vibrant clean colors
+- copy exact pose from reference
+- convert environment into animated version
+- DO NOT generate animals
+- ONLY two characters allowed
 `;
     } else if (selectedStyle === "euphoria") {
       prompt += `
 STYLE MODE - EUPHORIA:
-- moody cinematic lighting
-- strong color grading
-- intimate close-up feel
-- soft shadows
+- cinematic photorealistic film still
+- intimate emotional scene
+- warm dim lighting or soft golden tones
+- soft shadows and realistic contrast
+- shallow depth of field
+- slight film grain
+- natural unretouched skin
+- realistic interior environment from reference
 `;
-    } else if (selectedStyle === "zootopia") {
+    } else if (selectedStyle === "titanic") {
       prompt += `
-STYLE MODE - ZOOTOPIA:
-- FULL transformation into animated characters
-- BUT keep EXACTLY TWO characters only
-- COPY animal poses from image3 EXACTLY
-- COPY body language and gesture from animals
-- transform humans into stylized animated characters
-- smooth shading, soft light, stylized proportions
-- expressive eyes, clean geometry
-- DO NOT generate any extra animals
-- DO NOT keep original animals from image3
-- ONLY two animated characters allowed
+STYLE MODE - TITANIC:
+- cinematic epic realism
+- golden hour sunset OR cold dramatic tones depending on reference
+- strong cinematic lighting
+- romantic dramatic atmosphere
+- exact pose replication
+- wind and motion if present
+- realistic environment (ship, ocean, horizon)
 `;
     }
 
     prompt += `
-STRICT GLOBAL RULES:
-- DO NOT add extra characters
-- DO NOT keep original characters
+FINAL RULES:
 - DO NOT change pose
-- DO NOT change composition
+- DO NOT change number of characters
 - DO NOT weaken style
+- DO NOT create generic output
 
-NEGATIVE: extra people, extra animals, background characters, crowd, silhouettes, reflections with people, wrong pose, distorted faces, merged faces, weak lighting, generic look
-
-FINAL RULE: The final image must look like the SAME scene as image3, but with ALL original characters REMOVED and ONLY the two provided people present.`;
+NEGATIVE PROMPT:
+extra people, extra characters, animals, background crowd, silhouettes, reflections, distorted faces, merged faces, bad anatomy, extra limbs, blur, noise, low quality`;
 
     console.log("Starting Replicate prediction...");
     console.log("Selected style:", selectedStyle);
