@@ -134,80 +134,181 @@ Deno.serve(async (req: Request) => {
     console.log("=== Single-Step Generation with Identity Preservation ===");
     console.log("Selected style:", selectedStyle);
 
-    let prompt = `Create an image using three inputs:
+    const sceneNumber = (styleBoard as File).name.includes('ref1') ? 1 :
+                        (styleBoard as File).name.includes('ref2') ? 2 : 3;
 
-- image1: first person
-- image2: second person
-- image3: pose reference ONLY
+    console.log("Detected scene number:", sceneNumber);
 
-CORE RULE:
-This is a pose reconstruction with identity preservation and controlled style enhancement.
+    let prompt = `Generate an image from two identity references (image1 and image2).
 
-- image3 controls ONLY pose and composition
-- style must NOT be copied from image3
-- style must be applied carefully from selectedStyle
+IDENTITY (STRICT — DO NOT CHANGE):
+Preserve both people exactly as in the photos:
+- face shape, proportions, asymmetry
+- eyes, nose, lips
+- natural skin texture (no smoothing, no beautification)
+- hair color and hairstyle
 
-SUBJECT RULE (ABSOLUTE):
-EXACTLY TWO people in the final image.
-DO NOT add any extra person.
-DO NOT add animals.
-DO NOT add background people, silhouettes, reflections.
+Faces must remain fully recognizable.
 
-If more than two people appear, regenerate.
-
-IDENTITY (HIGHEST PRIORITY):
-Preserve both people as accurately as possible:
-
-- original face shape and asymmetry
-- eyes, nose, lips proportions
-- skin tone and natural texture
-- hair color, length, and structure
-
-STRICT:
-- no beautification
-- no smoothing
-- no plastic skin
-- no stylization of identity
-
-Faces must remain clearly recognizable.
-
-POSE (SECOND PRIORITY):
-- copy pose EXACTLY from image3
-- match body positions precisely
-- match interaction and gesture
-- match distance between subjects
-- match camera angle
-- match framing and crop
-
-No pose deviation allowed.
-
-BACKGROUND:
-- use spatial structure from image3
-- keep environment consistent
-- remove all people from background
-
-STYLE APPLICATION (CONTROLLED — DO NOT OVERRIDE IDENTITY):
-Apply style AFTER identity and pose are preserved.
+CHARACTER RULES (CRITICAL):
+- EXACTLY TWO PEOPLE
+- NO third person
+- NO background people
+- NO silhouettes
+- NO animals
 
 `;
 
     if (selectedStyle === "zootopia") {
-      prompt += `IF selectedStyle is "zootopia":
-Apply clean Disney/Pixar-inspired animation style:
-
-- soft stylization ONLY (do not distort faces)
-- slightly enlarged expressive eyes
-- smooth geometry
+      prompt += `STYLE (LOCKED):
+High-end Disney/Pixar 3D animation:
+- smooth polished geometry
+- expressive slightly enlarged eyes
+- soft rounded facial features
+- clean materials
 - soft global illumination
-- vibrant but balanced colors
+- cinematic animation lighting
+- vibrant but controlled colors
 
-IMPORTANT:
-- keep facial identity recognizable
-- avoid over-cartoon distortion`;
+`;
+
+      if (sceneNumber === 1) {
+        prompt += `SCENE 1 (clean selfie portrait):
+Two characters very close together, facing camera.
+
+POSE:
+- heads aligned horizontally
+- shoulders slightly touching
+- both looking directly at camera
+
+COMPOSITION:
+- tight shoulder-up framing
+- centered
+
+LIGHTING:
+- soft studio lighting
+- minimal shadows
+
+BACKGROUND:
+- clean minimal gradient`;
+      } else if (sceneNumber === 2) {
+        prompt += `SCENE 2 (friendly interaction):
+Two characters standing close together.
+
+POSE:
+- one slightly leaning toward the other
+- heads slightly angled inward
+- relaxed expressions
+
+COMPOSITION:
+- medium close-up
+- slight asymmetry
+
+LIGHTING:
+- soft balanced lighting
+- gentle shadows
+
+BACKGROUND:
+- minimal soft gradient`;
+      } else {
+        prompt += `SCENE 3 (club selfie):
+Two characters taking a selfie.
+
+POSE:
+- one holding camera with arm extended forward
+- camera slightly above eye level
+- both leaning inward
+- heads very close
+
+COMPOSITION:
+- close selfie framing
+- slight perspective distortion
+
+LIGHTING:
+- purple and pink neon lighting
+- soft glow on faces
+
+BACKGROUND:
+- blurred nightclub
+- NO people`;
+      }
+    } else if (selectedStyle === "titanic") {
+      prompt += `STYLE (LOCKED):
+Ultra-realistic cinematic film still:
+- shot on 50mm lens
+- shallow depth of field
+- natural skin texture (NO plastic look)
+- cinematic lighting
+- film grain
+- high dynamic range
+
+`;
+
+      if (sceneNumber === 1) {
+        prompt += `SCENE 1 (ship bow iconic):
+
+POSE:
+- woman in front, arms fully extended horizontally
+- head slightly raised, eyes closed
+- wind in hair
+
+- man directly behind her
+- hands on her waist
+- close body contact
+
+COMPOSITION:
+- medium-wide shot
+- ship rail visible
+
+LIGHTING:
+- warm golden sunset
+- strong backlight
+
+BACKGROUND:
+- ocean horizon`;
+      } else if (sceneNumber === 2) {
+        prompt += `SCENE 2 (water scene):
+
+POSE:
+- both in water
+- woman slightly above, leaning toward man
+- holding his hand near her face
+
+- man partially submerged
+- looking at her
+
+COMPOSITION:
+- tight cinematic shot
+
+LIGHTING:
+- cold blue lighting
+- reflections on water
+
+BACKGROUND:
+- dark ocean`;
+      } else {
+        prompt += `SCENE 3 (intimate close moment):
+
+POSE:
+- bodies very close
+- woman slightly leaning back
+- man leaning toward her
+- faces almost touching
+
+COMPOSITION:
+- medium close-up
+- shallow depth of field
+
+LIGHTING:
+- warm cinematic tones
+- soft shadows
+
+BACKGROUND:
+- blurred ship environment`;
+      }
     } else if (selectedStyle === "euphoria") {
-      prompt += `IF selectedStyle is "euphoria":
-Apply cinematic realism:
-
+      prompt += `STYLE (LOCKED):
+Ultra-realistic cinematic TV drama:
 - natural skin texture with visible pores
 - NO plastic or glossy skin
 - moody lighting (warm / pink / purple tones)
@@ -217,34 +318,28 @@ Apply cinematic realism:
 
 IMPORTANT:
 - realism must dominate
-- avoid AI-generated beauty look`;
-    } else if (selectedStyle === "titanic") {
-      prompt += `IF selectedStyle is "titanic":
-Apply cinematic realistic film look:
+- avoid AI-generated beauty look
 
-- natural skin texture (no smoothing)
-- golden hour OR cold dramatic lighting
-- soft atmospheric glow
-- realistic shadows and highlights
+POSE:
+- copy pose EXACTLY from reference image
+- match body positions precisely
+- match interaction and gesture
+- match distance between subjects
+- match camera angle
 
-IMPORTANT:
-- must look like real photographed scene
-- no CGI appearance`;
+BACKGROUND:
+- use spatial structure from reference
+- keep environment consistent
+- remove all people from background`;
     }
 
     prompt += `
 
-STYLE PRIORITY RULE:
-If there is any conflict:
-- keep identity
-- keep pose
-- apply style gently
-
-CONSISTENCY RULE:
-All images within the same selectedStyle must:
-- share similar lighting behavior
-- share similar color grading
-- feel like part of the same visual world
+FINAL OUTPUT:
+- match scene EXACTLY
+- preserve identity and pose
+- 4K quality
+- no text, no logos, no artifacts
 
 NEGATIVE:
 extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`;
