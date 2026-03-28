@@ -131,206 +131,161 @@ Deno.serve(async (req: Request) => {
       useFileOutput: false,
     });
 
-    // STEP 1: QWEN - Structure and Pose
-    console.log("=== STEP 1: QWEN (Structure + Pose) ===");
+    console.log("=== Single-Step Generation with Identity Preservation ===");
+    console.log("Selected style:", selectedStyle);
 
-    const qwenPrompt = `Create an image from three inputs:
+    let prompt = `Create an image using three inputs:
 
 - image1: first person
 - image2: second person
-- image3: pose reference
+- image3: pose reference ONLY
 
 CORE RULE:
-This is a strict reconstruction task.
+This is a pose reconstruction with identity preservation and controlled style enhancement.
+
+- image3 controls ONLY pose and composition
+- style must NOT be copied from image3
+- style must be applied carefully from selectedStyle
 
 SUBJECT RULE (ABSOLUTE):
-The image must contain EXACTLY TWO people.
-Remove ALL people from the reference.
+EXACTLY TWO people in the final image.
 DO NOT add any extra person.
 DO NOT add animals.
-DO NOT generate background characters, silhouettes, reflections.
+DO NOT add background people, silhouettes, reflections.
 
-If more than two people appear, the result is invalid.
+If more than two people appear, regenerate.
 
-IDENTITY:
-Keep both people recognizable:
-- preserve face structure, proportions, hair, skin tone
+IDENTITY (HIGHEST PRIORITY):
+Preserve both people as accurately as possible:
+
+- original face shape and asymmetry
+- eyes, nose, lips proportions
+- skin tone and natural texture
+- hair color, length, and structure
+
+STRICT:
 - no beautification
+- no smoothing
+- no plastic skin
+- no stylization of identity
 
-POSE (CRITICAL):
-Copy pose EXACTLY from reference:
+Faces must remain clearly recognizable.
+
+POSE (SECOND PRIORITY):
+- copy pose EXACTLY from image3
 - match body positions precisely
-- match distance and interaction
+- match interaction and gesture
+- match distance between subjects
 - match camera angle
 - match framing and crop
 
+No pose deviation allowed.
+
 BACKGROUND:
-Recreate environment layout from reference, but keep it empty except for the two people.
+- use spatial structure from image3
+- keep environment consistent
+- remove all people from background
+
+STYLE APPLICATION (CONTROLLED — DO NOT OVERRIDE IDENTITY):
+Apply style AFTER identity and pose are preserved.
+
+`;
+
+    if (selectedStyle === "zootopia") {
+      prompt += `IF selectedStyle is "zootopia":
+Apply clean Disney/Pixar-inspired animation style:
+
+- soft stylization ONLY (do not distort faces)
+- slightly enlarged expressive eyes
+- smooth geometry
+- soft global illumination
+- vibrant but balanced colors
+
+IMPORTANT:
+- keep facial identity recognizable
+- avoid over-cartoon distortion`;
+    } else if (selectedStyle === "euphoria") {
+      prompt += `IF selectedStyle is "euphoria":
+Apply cinematic realism:
+
+- natural skin texture with visible pores
+- NO plastic or glossy skin
+- moody lighting (warm / pink / purple tones)
+- soft shadows
+- shallow depth of field
+- subtle film grain
+
+IMPORTANT:
+- realism must dominate
+- avoid AI-generated beauty look`;
+    } else if (selectedStyle === "titanic") {
+      prompt += `IF selectedStyle is "titanic":
+Apply cinematic realistic film look:
+
+- natural skin texture (no smoothing)
+- golden hour OR cold dramatic lighting
+- soft atmospheric glow
+- realistic shadows and highlights
+
+IMPORTANT:
+- must look like real photographed scene
+- no CGI appearance`;
+    }
+
+    prompt += `
+
+STYLE PRIORITY RULE:
+If there is any conflict:
+- keep identity
+- keep pose
+- apply style gently
+
+CONSISTENCY RULE:
+All images within the same selectedStyle must:
+- share similar lighting behavior
+- share similar color grading
+- feel like part of the same visual world
 
 NEGATIVE:
-extra people, third person, animals, background figures, silhouettes, reflections, distorted anatomy`;
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`;
 
-    console.log("Running QWEN with prompt:", qwenPrompt);
+    console.log("Running QWEN with prompt:", prompt);
 
-    const qwenOutput = await replicate.run(
+    const output = await replicate.run(
       "qwen/qwen-image-edit-plus",
       {
         input: {
-          prompt: qwenPrompt,
+          prompt: prompt,
           image: [person1DataURL, person2DataURL, styleBoardDataURL]
         }
       }
     );
 
-    console.log("QWEN raw output:", JSON.stringify(qwenOutput, null, 2));
-
-    let intermediateUrl: string | null = null;
-    let qwenFirstItem = Array.isArray(qwenOutput) ? qwenOutput[0] : qwenOutput;
-
-    if (typeof qwenFirstItem === 'string') {
-      intermediateUrl = qwenFirstItem;
-    } else if (qwenFirstItem && typeof qwenFirstItem === 'object') {
-      if (typeof qwenFirstItem.url === 'function') {
-        intermediateUrl = await qwenFirstItem.url();
-      } else if (typeof qwenFirstItem.url === 'string') {
-        intermediateUrl = qwenFirstItem.url;
-      } else if (qwenFirstItem.toString && qwenFirstItem.toString() !== '[object Object]') {
-        intermediateUrl = qwenFirstItem.toString();
-      }
-    }
-
-    if (!intermediateUrl || typeof intermediateUrl !== 'string' || !intermediateUrl.startsWith('http')) {
-      console.error("Invalid QWEN output:", intermediateUrl);
-      return new Response(
-        JSON.stringify({
-          success: false,
-          error: "QWEN step failed",
-          details: "No valid intermediate image was generated"
-        }),
-        {
-          status: 500,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
-
-    console.log("QWEN intermediate image:", intermediateUrl);
-
-    // STEP 2: FLUX - Style Lock
-    console.log("=== STEP 2: FLUX (Style Lock + Realism) ===");
-
-    let fluxPrompt = `Apply an extremely strong, recognizable cinematic or animation style.
-
-STRICT RULE:
-DO NOT change faces.
-DO NOT change pose.
-DO NOT add or remove people.
-DO NOT add animals.
-ONLY apply style, lighting, and rendering.
-
-`;
-
-    if (selectedStyle === "zootopia") {
-      fluxPrompt += `STYLE LOCK (HARD):
-Transform into a Disney/Pixar animated film frame.
-
-- high-end 3D animation rendering
-- smooth stylized geometry
-- expressive eyes
-- soft global illumination
-- vibrant clean colors
-- polished animation materials
-
-CRITICAL:
-Must clearly look like a Disney animated movie.
-Must NOT look like generic 3D.
-Must NOT look realistic.`;
-    } else if (selectedStyle === "euphoria") {
-      fluxPrompt += `STYLE LOCK (HARD):
-Ultra-realistic cinematic TV drama frame.
-
-- strong color grading (pink, purple, warm tones)
-- moody lighting
-- soft shadows
-- shallow depth of field
-- subtle film grain
-
-REALISM LOCK:
-- real skin texture (pores visible)
-- NO plastic skin
-- NO beauty retouch
-- NO glossy CGI look
-
-CRITICAL:
-Must look like a real filmed scene.`;
-    } else if (selectedStyle === "titanic") {
-      fluxPrompt += `STYLE LOCK (HARD):
-Ultra-realistic cinematic epic romance.
-
-- golden hour sunlight OR cold dramatic tones
-- strong directional lighting
-- film-grade color grading
-- atmospheric depth
-
-REALISM LOCK:
-- natural skin texture
-- no smoothing
-- no AI look
-- realistic lighting on faces and clothes
-
-CRITICAL:
-Must look like a real movie frame.`;
-    }
-
-    fluxPrompt += `
-
-GLOBAL NEGATIVE:
-extra people, third person, crowd, animals, pets, background characters, silhouettes, reflections of people, duplicated faces, plastic skin, CGI look, beauty retouch, wrong pose, incorrect composition`;
-
-    console.log("Running FLUX with prompt:", fluxPrompt);
-
-    const fluxOutput = await replicate.run(
-      "black-forest-labs/flux-2-pro",
-      {
-        input: {
-          prompt: fluxPrompt,
-          image: intermediateUrl,
-          prompt_strength: 0.85,
-          num_outputs: 1,
-          output_format: "jpg",
-          output_quality: 90
-        }
-      }
-    );
-
-    console.log("FLUX raw output:", JSON.stringify(fluxOutput, null, 2));
+    console.log("QWEN raw output:", JSON.stringify(output, null, 2));
 
     let imageUrl: string | null = null;
-    let fluxFirstItem = Array.isArray(fluxOutput) ? fluxOutput[0] : fluxOutput;
+    let firstItem = Array.isArray(output) ? output[0] : output;
 
-    if (typeof fluxFirstItem === 'string') {
-      imageUrl = fluxFirstItem;
-    } else if (fluxFirstItem && typeof fluxFirstItem === 'object') {
-      if (typeof fluxFirstItem.url === 'function') {
-        imageUrl = await fluxFirstItem.url();
-      } else if (typeof fluxFirstItem.url === 'string') {
-        imageUrl = fluxFirstItem.url;
-      } else if (fluxFirstItem.toString && fluxFirstItem.toString() !== '[object Object]') {
-        imageUrl = fluxFirstItem.toString();
+    if (typeof firstItem === 'string') {
+      imageUrl = firstItem;
+    } else if (firstItem && typeof firstItem === 'object') {
+      if (typeof firstItem.url === 'function') {
+        imageUrl = await firstItem.url();
+      } else if (typeof firstItem.url === 'string') {
+        imageUrl = firstItem.url;
+      } else if (firstItem.toString && firstItem.toString() !== '[object Object]') {
+        imageUrl = firstItem.toString();
       }
     }
 
-    console.log("Parsed final imageUrl:", imageUrl);
+    console.log("Parsed imageUrl:", imageUrl);
 
     if (!imageUrl || typeof imageUrl !== 'string' || imageUrl.trim() === '') {
       console.error("Invalid imageUrl after parsing:", imageUrl);
       return new Response(
         JSON.stringify({
           success: false,
-          error: "FLUX step failed",
+          error: "Invalid generation output",
           details: "No valid image URL was returned"
         }),
         {
@@ -348,7 +303,7 @@ extra people, third person, crowd, animals, pets, background characters, silhoue
       return new Response(
         JSON.stringify({
           success: false,
-          error: "Invalid FLUX output",
+          error: "Invalid generation output",
           details: "Returned value is not a valid URL"
         }),
         {
