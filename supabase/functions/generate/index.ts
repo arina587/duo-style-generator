@@ -131,112 +131,168 @@ Deno.serve(async (req: Request) => {
       useFileOutput: false,
     });
 
-    let prompt = `Create an image using three inputs:
-- image1: first person
-- image2: second person
-- image3: pose reference ONLY
+    let prompt = `Create one final image from three inputs:
+
+- image1: first person identity reference
+- image2: second person identity reference
+- image3: pose and composition reference only
 
 CORE RULE:
-The STYLE must be fully controlled by selectedStyle.
-The reference image MUST be used ONLY for pose, composition, and framing.
+Reconstruct the pose, framing, and background layout of image3, but REMOVE all original subjects from image3 and REPLACE them with ONLY the two people from image1 and image2.
 
-DO NOT copy style from image3.
+SUBJECT COUNT RULE (ABSOLUTE):
+The final image must contain EXACTLY TWO human characters.
+No third person.
+No crowd.
+No silhouette.
+No reflection of another person.
+No animals.
+No pets.
+No background figures.
+If any extra subject appears, the result is incorrect.
 
-IDENTITY (STRICT):
-Preserve both people recognizable:
+IDENTITY LOCK:
+Preserve both people from image1 and image2 as accurately as possible:
+
 - face shape
-- facial proportions
-- hair color and hairstyle
+- asymmetry
+- eyes, nose, lips
+- jawline
+- age
 - skin tone
+- natural skin texture
+- hair color, length, texture, and hairstyle
 
-Do NOT heavily stylize or distort identity.
+Do not beautify, idealize, smooth, retouch, or plasticize faces.
+Faces must remain clearly recognizable.
 
-CHARACTER RULE:
-- EXACTLY TWO characters
-- NO extra people
-- NO animals
-- NO background figures
+POSE AND COMPOSITION LOCK:
+Use image3 ONLY for:
 
-POSE (STRICT):
-- copy pose EXACTLY from image3
-- match body positions
-- match interaction
-- match camera angle
-- match framing
+- exact pose
+- body positions
+- subject interaction
+- distance between subjects
+- camera angle
+- crop and framing
+- background structure and perspective
 
-BACKGROUND:
-- recreate environment structure from image3
-- but adapt it to the selectedStyle visual world
+Do not copy any characters from image3.
+Do not copy any animals from image3.
+
+BACKGROUND RULE:
+Rebuild the same environment layout from image3, but keep it empty except for the two provided people.
+No extra subjects in the background.
+
+STYLE BIBLE:
+selectedStyle fully controls rendering style, lighting style, realism level, color grading, and overall visual world.
 `;
 
     if (selectedStyle === "zootopia") {
       prompt += `
-STYLE LOCK - ZOOTOPIA:
-Create a Disney/Pixar animated film style that is instantly recognizable.
+IF selectedStyle is "zootopia":
+Create a premium Disney/Pixar-style 3D animated image.
 
-- high-end 3D animation rendering
-- smooth rounded geometry
-- large expressive eyes
-- stylized proportions
+- same visual style every time within this category
+- polished family-feature animation quality
+- smooth clean geometry
+- expressive eyes
+- stylized but consistent facial design
 - soft global illumination
-- subsurface scattering
-- clean vibrant color palette
-- slightly glossy materials
-- cinematic animation lighting
+- vibrant clean color palette
+- high-end animated shading
+- no realism
+- no random style drift
 
-IMPORTANT:
-The result must look like it is from the SAME Disney animated movie every time.
+The final image must look like it belongs to the same animated movie every time.
 `;
     } else if (selectedStyle === "euphoria") {
       prompt += `
-STYLE LOCK - EUPHORIA:
-Create a cinematic style that clearly resembles the visual identity of the Euphoria TV series.
+IF selectedStyle is "euphoria":
+Create an ultra-realistic cinematic drama frame.
 
-- strong stylized color grading
-- warm, pink, purple, and golden tones
-- soft but contrast-rich lighting
-- glowing highlights
+- same visual style every time within this category
+- highly realistic skin texture
+- moody premium cinematography
+- warm, pink, amber, and low-light tones
+- realistic falloff in shadows
+- subtle film grain
+- soft lens bloom
 - shallow depth of field
-- skin with realistic texture but cinematic glow
-- emotional, intimate atmosphere
+- natural imperfections
+- absolutely no plastic skin
+- absolutely no AI glamour look
+- absolutely no glossy CGI feel
 
-IMPORTANT:
-All outputs must look like scenes from the SAME TV episode.
+The final image must look like it belongs to the same prestige drama series every time.
+
+REALISM LOCK FOR EUPHORIA:
+Realism is mandatory.
+Use:
+- realistic skin pores
+- realistic facial micro-texture
+- realistic fabric behavior
+- realistic shadows
+- natural lens look
+
+Avoid:
+- plastic skin
+- over-smoothing
+- doll-like faces
+- artificial fashion retouch
+- hyper-clean AI portrait look
 `;
     } else if (selectedStyle === "titanic") {
       prompt += `
-STYLE LOCK - TITANIC:
-Create a cinematic style that clearly resembles Titanic film visuals.
+IF selectedStyle is "titanic":
+Create an ultra-realistic romantic epic film frame.
 
-- golden hour sunlight OR cold blue dramatic tones
-- strong cinematic lighting direction
-- soft glow around highlights
-- romantic, epic atmosphere
-- film-grade color grading
-- realistic materials and textures
+- same visual style every time within this category
+- realistic skin texture
+- cinematic golden-hour or cold dramatic marine lighting depending on composition
+- film-grade contrast
+- soft atmospheric glow
+- realistic wind, fabric, and light interaction
+- natural human rendering
+- absolutely no plastic skin
+- absolutely no beauty retouching
+- absolutely no glossy CGI feel
 
-IMPORTANT:
-All outputs must look like scenes from the SAME movie.
+The final image must look like it belongs to the same epic romance film every time.
+
+REALISM LOCK FOR TITANIC:
+Realism is mandatory.
+Use:
+- realistic skin pores
+- realistic facial micro-texture
+- realistic fabric behavior
+- realistic shadows
+- natural lens look
+
+Avoid:
+- plastic skin
+- over-smoothing
+- doll-like faces
+- artificial fashion retouch
+- hyper-clean AI portrait look
 `;
     }
 
     prompt += `
-LIGHTING:
-Follow STYLE rules, NOT the reference image.
+CONSISTENCY LOCK:
+All outputs inside the same selectedStyle must use the same visual pipeline:
 
-COLOR:
-Follow STYLE rules strictly.
-Do NOT inherit colors from reference.
-
-CONSISTENCY RULE (VERY IMPORTANT):
-All images within the same selectedStyle must:
-- have identical rendering style
-- have identical lighting behavior
-- have identical color grading
-- feel like frames from the same film universe
+- same rendering language
+- same lighting behavior
+- same realism level
+- same color grading family
+- same atmosphere family
 
 NEGATIVE:
-extra people, animals, mixed styles, inconsistent lighting, wrong color palette, distorted faces, bad anatomy`;
+extra people, third person, crowd, animal, pet, background figure, silhouette, reflection person, duplicate body, duplicate face, plastic skin, glossy skin, CGI portrait, beauty retouch, AI glamour look, wrong pose, weak realism, style drift`;
+
+    // Use deterministic settings for consistency
+    console.log("Using deterministic generation settings for style consistency");
 
     console.log("Starting Replicate prediction...");
     console.log("Selected style:", selectedStyle);
