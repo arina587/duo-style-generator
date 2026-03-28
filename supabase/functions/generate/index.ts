@@ -160,274 +160,274 @@ Deno.serve(async (req: Request) => {
     // Define all prompts in a strict map structure
     const promptMap: Record<string, Record<string, string>> = {
       zootopia: {
-        ref1: `Create a premium Disney/Pixar-style 3D animated image using two uploaded people.
+        ref1: `Create a Disney Zootopia-style 3D animated image using two uploaded people.
 
-IDENTITY:
-Preserve both faces recognizable and consistent.
+IDENTITY (STRICT):
+- preserve exact facial structure
+- preserve beard, piercings, unique features
+- preserve face proportions
+- DO NOT beautify
+- DO NOT change identity
 
-STYLE (LOCKED):
-- high-end Pixar animation
-- smooth geometry
-- expressive eyes
-- soft global illumination
-- clean materials
-- vibrant controlled colors
+EYES (CRITICAL):
+- both characters must look directly into the camera
+- eyes must be perfectly aligned
+- no cross-eye, no lazy eye, no asymmetry
 
-SCENE (VERY STRICT — CAMERA-DRIVEN SELFIE):
+STYLE (ZOOTOPIA SPECIFIC):
+- anthropomorphic Zootopia-style adaptation
+- stylized but grounded anatomy
+- slightly enlarged eyes but natural alignment
+- realistic fur-like shading but adapted from human skin
+- cinematic Disney lighting (not generic 3D)
 
-- the GIRL is holding the camera with her arm extended forward
-- the camera is the viewpoint → image must look like taken from her hand
-- the frame is slightly wide-angle selfie perspective
+EMOTION:
+- playful, happy, energetic
+- natural smiling expressions
+
+CAMERA (VERY IMPORTANT):
+- BOTH characters holding the camera together
+- camera is physically in their hands
+- shot MUST feel taken from their hands (selfie POV)
 
 POSE:
-- both faces VERY close together
 - cheek-to-cheek contact
 - heads touching
-- both looking directly into the camera
-- tight framing
+- both leaning toward camera
+
+CLOTHING:
+- casual modern clothing
+- girl: light fitted top, soft fabric, minimalistic style
+- guy: casual t-shirt or hoodie, neutral colors
 
 COMPOSITION:
-- selfie framing
-- slight perspective distortion from near camera
-- girl's arm partially visible
-
-LIGHT:
-- soft clean lighting
+- tight selfie framing
+- slight wide-angle distortion
 
 BACKGROUND:
-- minimal, clean
+- clean soft environment
 
 RULE:
 - exactly two characters
-- no animals
-- no extra people
+- no floating camera
 
 NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose, misaligned eyes`,
 
-        ref2: `Create a premium Disney/Pixar-style 3D animated image using two uploaded people.
+        ref2: `Create a Disney Zootopia-style 3D animated image using two uploaded people.
 
 IDENTITY:
-Preserve both faces exactly.
+Preserve all unique features including beard, piercings.
 
-STYLE (LOCKED):
-- Pixar-level 3D rendering
-- smooth geometry
-- expressive eyes
-- soft lighting
-- clean materials
+EYES:
+- both looking into camera
+- perfectly aligned gaze
 
-SCENE (DUAL SELFIE — VERY IMPORTANT):
+STYLE:
+- Zootopia-style characters
+- soft but realistic materials
+- expressive but not exaggerated
 
-- BOTH characters are holding the camera together (shared selfie moment)
-- camera is in front of them → viewpoint from that camera
+EMOTION:
+- warm, affectionate, calm happiness
+
+CAMERA:
+- ONLY the girl holds the camera
+- camera clearly in her hand
+- perspective must match her arm position
 
 POSE:
-- girl slightly closer to camera
-- girl wrapping one arm around the guy (side hug)
-- guy leaning slightly toward her
+- girl hugging the guy from the side
+- guy slightly leaning toward her
 - heads angled inward
-- both looking into camera
+
+CLOTHING:
+- girl: soft pastel sweater or fitted top
+- guy: casual jacket or hoodie layered over t-shirt
 
 COMPOSITION:
 - selfie framing
 - upper torso visible
-- slight asymmetry
-- camera perspective visible
-
-LIGHT:
-- soft balanced lighting
 
 BACKGROUND:
-- minimal
+- soft neutral background
 
 RULE:
 - exactly two characters
-- no animals
-- no extra people
+- no floating objects
 
 NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose, misaligned eyes`,
 
-        ref3: `Create a premium Disney/Pixar-style 3D animated image using two uploaded people.
+        ref3: `Create a Disney Zootopia-style 3D animated image using two uploaded people.
 
 IDENTITY:
-Preserve faces clearly.
+Keep all features (beard, piercings, hair).
 
-STYLE (LOCKED):
-- Pixar 3D animation
-- smooth geometry
-- expressive eyes
-- cinematic lighting
+EYES:
+- both looking at camera
+- no misalignment
 
-SCENE (CARRY SELFIE — VERY STRICT):
+STYLE:
+- strong Zootopia look (anthropomorphic realism)
+- cinematic animated lighting
 
-- the MAN is holding the GIRL in his arms (full lift)
-- the MAN is also holding the camera → selfie perspective
-- camera viewpoint comes from his extended arm
+EMOTION:
+- joyful, dynamic, playful
+
+CAMERA:
+- MAN is holding the camera
+- camera in his hand
+- clear selfie POV from his arm
 
 POSE:
-- girl lifted in his arms (not standing)
-- her body angled slightly upward
-- their faces close together
-- both looking toward camera
-- dynamic but controlled pose
+- man holding girl in arms (full lift)
+- girl slightly elevated
+- bodies close together
+- faces near each other
+
+CLOTHING:
+- girl: light casual outfit, fitted top + light pants
+- guy: casual streetwear, t-shirt + jacket
 
 COMPOSITION:
-- selfie angle
-- slightly tilted framing
-- upper bodies visible
-
-LIGHT:
-- clean soft lighting
+- dynamic selfie angle
+- slight tilt
 
 BACKGROUND:
-- simple, no people
+- simple environment
 
 RULE:
 - exactly two characters
-- no animals
-- no extra people
 
 NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose, misaligned eyes`
       },
 
       titanic: {
-        ref1: `Create an ultra-realistic cinematic image using two uploaded people.
+        ref1: `Create a cinematic 1990s film-style image using two uploaded people.
 
 IDENTITY:
-Preserve exact real faces with natural texture.
+- preserve exact real faces
+- preserve beard, piercings
+- no smoothing
 
-STYLE (LOCKED — 1990s FILM):
-- 35mm film look
-- soft grain
-- warm analog tones
+EYES:
+- natural gaze alignment
+- no distortion
+
+STYLE (VERY IMPORTANT):
+- shot like 1996 film on 35mm
+- soft film grain
+- warm Kodak tones
 - no digital sharpness
-- no glossy skin
+- slight lens softness
 
-SCENE (ICONIC SHIP — EXACT):
+EMOTION:
+- freedom, exhilaration, romance
+
+CAMERA (CRITICAL):
+- side angle (NOT front)
+- camera slightly to the side of subjects
+- perspective matches Titanic reference
 
 POSE:
-- woman stands at front
-- arms fully extended horizontally (perfect straight line)
-- chest open, chin slightly raised
-- wind pushing hair backward
-
-- man stands directly behind her
-- his chest aligned with her back
-- both hands placed on her waist
-- close physical contact
-
-COMPOSITION:
-- camera in front of them
-- medium-wide framing
-- both bodies visible from waist up
-- horizon line centered
+- woman in front with arms fully extended
+- man directly behind
+- hands on her waist
+- bodies aligned
 
 LIGHT:
 - golden sunset
-- strong backlight
-- warm rim light
+- strong rim light
 
 BACKGROUND:
-- ocean horizon
-- ship railing visible
-- no people
+- ship edge visible
+- ocean
 
 RULE:
 - exactly two people
-- no crowd
 
 NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose, misaligned eyes`,
 
-        ref2: `Create an ultra-realistic cinematic image using two uploaded people.
+        ref2: `Create a cinematic 1990s film-style image using two uploaded people.
 
 IDENTITY:
-Preserve faces with wet skin realism.
+Preserve full realism and features.
 
-STYLE (LOCKED — 1990s FILM):
-- cold blue tones
-- film grain
-- natural lighting
-- no digital look
+EYES:
+- emotional gaze
+- no misalignment
 
-SCENE (WATER — VERY PRECISE):
+STYLE:
+- cold blue film tone
+- grain
+- analog contrast
+
+EMOTION:
+- sadness, tension, intimacy
 
 POSE:
-- both floating in water
-- water level around shoulders
+- both in water
+- woman slightly higher
+- leaning toward man
+- holding his arm
 
-- woman positioned slightly higher
-- leaning down toward the man
-- her hand holding or touching his arm
-
-- man lower in frame
-- partially submerged
-- looking up at her
-
-COMPOSITION:
-- tight framing
-- faces close
-- water visible in foreground
+CAMERA:
+- close shot
+- slightly unstable handheld feeling
 
 LIGHT:
-- cold dim blue light
-- reflections on water
+- dim blue light
+- reflections
 
 BACKGROUND:
-- dark open ocean only
-- no objects
-- no people
+- dark ocean
 
 RULE:
 - exactly two people
 
 NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose, misaligned eyes`,
 
-        ref3: `Create an ultra-realistic cinematic image using two uploaded people.
+        ref3: `Create a cinematic 1990s film-style image using two uploaded people.
 
 IDENTITY:
-Keep faces natural and recognizable.
+Keep faces realistic and detailed.
 
-STYLE (LOCKED — 1990s FILM):
-- warm analog tones
-- film grain
-- soft lens bloom
-- cinematic depth
+EYES:
+- focused gaze
+- aligned
 
-SCENE (INTIMATE CLOSE — EXACT):
+STYLE:
+- warm 90s film tone
+- soft bloom
+- grain
+
+EMOTION:
+- intense romantic tension
 
 POSE:
-- bodies extremely close
-- woman leaning slightly backward
-- man leaning forward toward her
+- bodies very close
+- near kiss distance
+- hand on waist
 
-- faces almost touching (near kiss distance)
-- man's hand placed around her waist
-- emotional tension in posture
-
-COMPOSITION:
-- medium close-up
-- shallow depth of field
-- focus on faces
+CAMERA:
+- close-up cinematic framing
 
 LIGHT:
 - warm soft light
-- subtle shadows
-- romantic tone
+- shadow contrast
 
 BACKGROUND:
 - blurred ship environment
-- no people
 
 RULE:
 - exactly two people
 
 NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose, misaligned eyes`
       },
 
       euphoria: {
