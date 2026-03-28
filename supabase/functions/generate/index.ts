@@ -131,125 +131,112 @@ Deno.serve(async (req: Request) => {
       useFileOutput: false,
     });
 
-    let prompt = `Create a deterministic, highly consistent image using three inputs:
-- image1: first person identity
-- image2: second person identity
-- image3: reference scene
+    let prompt = `Create an image using three inputs:
+- image1: first person
+- image2: second person
+- image3: pose reference ONLY
 
 CORE RULE:
-This is a reconstruction task, not generation.
-Recreate the SAME scene from image3 using ONLY the two provided people.
+The STYLE must be fully controlled by selectedStyle.
+The reference image MUST be used ONLY for pose, composition, and framing.
 
-IDENTITY LOCK (ABSOLUTE):
-Preserve BOTH people EXACTLY as in uploaded photos.
+DO NOT copy style from image3.
 
-Do NOT change:
-- face shape and asymmetry
-- eyes, nose, lips
-- proportions and structure
-- skin tone and natural skin texture
-- hair color, tone, highlights, length and hairstyle
+IDENTITY (STRICT):
+Preserve both people recognizable:
+- face shape
+- facial proportions
+- hair color and hairstyle
+- skin tone
 
-Do NOT beautify, retouch, smooth, enhance, stylize or modify faces in any way.
-Faces must remain 100% recognizable.
+Do NOT heavily stylize or distort identity.
 
-CHARACTER LIMIT (CRITICAL):
-The final image must contain EXACTLY TWO characters.
-- Use ONLY the two uploaded people
-- Completely REMOVE all characters from the reference image
-- Do NOT add people
-- Do NOT add animals
-- Do NOT add background silhouettes or reflections
+CHARACTER RULE:
+- EXACTLY TWO characters
+- NO extra people
+- NO animals
+- NO background figures
 
-POSE LOCK (VERY STRICT):
-- EXACTLY replicate pose from reference image
-- match body positions precisely
-- match interaction and gesture
-- match distance between subjects
-- match camera angle and framing
-- match perspective and crop
+POSE (STRICT):
+- copy pose EXACTLY from image3
+- match body positions
+- match interaction
+- match camera angle
+- match framing
 
-No interpretation allowed.
-
-SCENE RECONSTRUCTION:
-- recreate the same environment from the reference
-- match background layout
-- match depth and perspective
-- match blur and focus
-- do NOT add new objects
-- do NOT change composition
-
-LIGHTING LOCK:
-- match exact light direction
-- match softness and intensity
-- match highlights and shadows
-- match color temperature
-
-COLOR GRADING LOCK:
-- match exact color palette
-- match contrast and saturation
-- match tone (warm / cold / neon)
-
-CONSISTENCY ENGINE:
-All images within the same selectedStyle MUST:
-- have identical rendering style
-- use identical lighting behavior
-- use identical color grading pipeline
-- look like frames from the same film universe
-
-Always use a fixed seed value and deterministic generation settings to minimize variation.
+BACKGROUND:
+- recreate environment structure from image3
+- but adapt it to the selectedStyle visual world
 `;
 
     if (selectedStyle === "zootopia") {
       prompt += `
-STYLE MODE - ZOOTOPIA:
-- transform both people into high-end Pixar/Disney style 3D animated characters
-- smooth clean geometry
-- stylized proportions
+STYLE LOCK - ZOOTOPIA:
+Create a Disney/Pixar animated film style that is instantly recognizable.
+
+- high-end 3D animation rendering
+- smooth rounded geometry
 - large expressive eyes
+- stylized proportions
 - soft global illumination
 - subsurface scattering
-- high-quality materials
-- vibrant clean colors
-- copy exact pose from reference
-- convert environment into animated version
-- DO NOT generate animals
-- ONLY two characters allowed
+- clean vibrant color palette
+- slightly glossy materials
+- cinematic animation lighting
+
+IMPORTANT:
+The result must look like it is from the SAME Disney animated movie every time.
 `;
     } else if (selectedStyle === "euphoria") {
       prompt += `
-STYLE MODE - EUPHORIA:
-- cinematic photorealistic film still
-- intimate emotional scene
-- warm dim lighting or soft golden tones
-- soft shadows and realistic contrast
+STYLE LOCK - EUPHORIA:
+Create a cinematic style that clearly resembles the visual identity of the Euphoria TV series.
+
+- strong stylized color grading
+- warm, pink, purple, and golden tones
+- soft but contrast-rich lighting
+- glowing highlights
 - shallow depth of field
-- slight film grain
-- natural unretouched skin
-- realistic interior environment from reference
+- skin with realistic texture but cinematic glow
+- emotional, intimate atmosphere
+
+IMPORTANT:
+All outputs must look like scenes from the SAME TV episode.
 `;
     } else if (selectedStyle === "titanic") {
       prompt += `
-STYLE MODE - TITANIC:
-- cinematic epic realism
-- golden hour sunset OR cold dramatic tones depending on reference
-- strong cinematic lighting
-- romantic dramatic atmosphere
-- exact pose replication
-- wind and motion if present
-- realistic environment (ship, ocean, horizon)
+STYLE LOCK - TITANIC:
+Create a cinematic style that clearly resembles Titanic film visuals.
+
+- golden hour sunlight OR cold blue dramatic tones
+- strong cinematic lighting direction
+- soft glow around highlights
+- romantic, epic atmosphere
+- film-grade color grading
+- realistic materials and textures
+
+IMPORTANT:
+All outputs must look like scenes from the SAME movie.
 `;
     }
 
     prompt += `
-FINAL RULES:
-- DO NOT change pose
-- DO NOT change number of characters
-- DO NOT weaken style
-- DO NOT create generic output
+LIGHTING:
+Follow STYLE rules, NOT the reference image.
 
-NEGATIVE PROMPT:
-extra people, extra characters, animals, background crowd, silhouettes, reflections, distorted faces, merged faces, bad anatomy, extra limbs, blur, noise, low quality`;
+COLOR:
+Follow STYLE rules strictly.
+Do NOT inherit colors from reference.
+
+CONSISTENCY RULE (VERY IMPORTANT):
+All images within the same selectedStyle must:
+- have identical rendering style
+- have identical lighting behavior
+- have identical color grading
+- feel like frames from the same film universe
+
+NEGATIVE:
+extra people, animals, mixed styles, inconsistent lighting, wrong color palette, distorted faces, bad anatomy`;
 
     console.log("Starting Replicate prediction...");
     console.log("Selected style:", selectedStyle);
