@@ -131,221 +131,206 @@ Deno.serve(async (req: Request) => {
       useFileOutput: false,
     });
 
-    let prompt = `Create one final image from three inputs:
+    // STEP 1: QWEN - Structure and Pose
+    console.log("=== STEP 1: QWEN (Structure + Pose) ===");
 
-- image1: first person identity reference
-- image2: second person identity reference
-- image3: pose and composition reference only
+    const qwenPrompt = `Create an image from three inputs:
+
+- image1: first person
+- image2: second person
+- image3: pose reference
 
 CORE RULE:
-Reconstruct the pose, framing, and background layout of image3, but REMOVE all original subjects from image3 and REPLACE them with ONLY the two people from image1 and image2.
+This is a strict reconstruction task.
 
-SUBJECT COUNT RULE (ABSOLUTE):
-The final image must contain EXACTLY TWO human characters.
-No third person.
-No crowd.
-No silhouette.
-No reflection of another person.
-No animals.
-No pets.
-No background figures.
-If any extra subject appears, the result is incorrect.
+SUBJECT RULE (ABSOLUTE):
+The image must contain EXACTLY TWO people.
+Remove ALL people from the reference.
+DO NOT add any extra person.
+DO NOT add animals.
+DO NOT generate background characters, silhouettes, reflections.
 
-IDENTITY LOCK:
-Preserve both people from image1 and image2 as accurately as possible:
+If more than two people appear, the result is invalid.
 
-- face shape
-- asymmetry
-- eyes, nose, lips
-- jawline
-- age
-- skin tone
-- natural skin texture
-- hair color, length, texture, and hairstyle
+IDENTITY:
+Keep both people recognizable:
+- preserve face structure, proportions, hair, skin tone
+- no beautification
 
-Do not beautify, idealize, smooth, retouch, or plasticize faces.
-Faces must remain clearly recognizable.
+POSE (CRITICAL):
+Copy pose EXACTLY from reference:
+- match body positions precisely
+- match distance and interaction
+- match camera angle
+- match framing and crop
 
-POSE AND COMPOSITION LOCK:
-Use image3 ONLY for:
-
-- exact pose
-- body positions
-- subject interaction
-- distance between subjects
-- camera angle
-- crop and framing
-- background structure and perspective
-
-Do not copy any characters from image3.
-Do not copy any animals from image3.
-
-BACKGROUND RULE:
-Rebuild the same environment layout from image3, but keep it empty except for the two provided people.
-No extra subjects in the background.
-
-STYLE BIBLE:
-selectedStyle fully controls rendering style, lighting style, realism level, color grading, and overall visual world.
-`;
-
-    if (selectedStyle === "zootopia") {
-      prompt += `
-IF selectedStyle is "zootopia":
-Create a premium Disney/Pixar-style 3D animated image.
-
-- same visual style every time within this category
-- polished family-feature animation quality
-- smooth clean geometry
-- expressive eyes
-- stylized but consistent facial design
-- soft global illumination
-- vibrant clean color palette
-- high-end animated shading
-- no realism
-- no random style drift
-
-The final image must look like it belongs to the same animated movie every time.
-`;
-    } else if (selectedStyle === "euphoria") {
-      prompt += `
-IF selectedStyle is "euphoria":
-Create an ultra-realistic cinematic drama frame.
-
-- same visual style every time within this category
-- highly realistic skin texture
-- moody premium cinematography
-- warm, pink, amber, and low-light tones
-- realistic falloff in shadows
-- subtle film grain
-- soft lens bloom
-- shallow depth of field
-- natural imperfections
-- absolutely no plastic skin
-- absolutely no AI glamour look
-- absolutely no glossy CGI feel
-
-The final image must look like it belongs to the same prestige drama series every time.
-
-REALISM LOCK FOR EUPHORIA:
-Realism is mandatory.
-Use:
-- realistic skin pores
-- realistic facial micro-texture
-- realistic fabric behavior
-- realistic shadows
-- natural lens look
-
-Avoid:
-- plastic skin
-- over-smoothing
-- doll-like faces
-- artificial fashion retouch
-- hyper-clean AI portrait look
-`;
-    } else if (selectedStyle === "titanic") {
-      prompt += `
-IF selectedStyle is "titanic":
-Create an ultra-realistic romantic epic film frame.
-
-- same visual style every time within this category
-- realistic skin texture
-- cinematic golden-hour or cold dramatic marine lighting depending on composition
-- film-grade contrast
-- soft atmospheric glow
-- realistic wind, fabric, and light interaction
-- natural human rendering
-- absolutely no plastic skin
-- absolutely no beauty retouching
-- absolutely no glossy CGI feel
-
-The final image must look like it belongs to the same epic romance film every time.
-
-REALISM LOCK FOR TITANIC:
-Realism is mandatory.
-Use:
-- realistic skin pores
-- realistic facial micro-texture
-- realistic fabric behavior
-- realistic shadows
-- natural lens look
-
-Avoid:
-- plastic skin
-- over-smoothing
-- doll-like faces
-- artificial fashion retouch
-- hyper-clean AI portrait look
-`;
-    }
-
-    prompt += `
-CONSISTENCY LOCK:
-All outputs inside the same selectedStyle must use the same visual pipeline:
-
-- same rendering language
-- same lighting behavior
-- same realism level
-- same color grading family
-- same atmosphere family
+BACKGROUND:
+Recreate environment layout from reference, but keep it empty except for the two people.
 
 NEGATIVE:
-extra people, third person, crowd, animal, pet, background figure, silhouette, reflection person, duplicate body, duplicate face, plastic skin, glossy skin, CGI portrait, beauty retouch, AI glamour look, wrong pose, weak realism, style drift`;
+extra people, third person, animals, background figures, silhouettes, reflections, distorted anatomy`;
 
-    // Use deterministic settings for consistency
-    console.log("Using deterministic generation settings for style consistency");
+    console.log("Running QWEN with prompt:", qwenPrompt);
 
-    console.log("Starting Replicate prediction...");
-    console.log("Selected style:", selectedStyle);
-    console.log("Using prompt:", prompt);
-
-    const output = await replicate.run(
+    const qwenOutput = await replicate.run(
       "qwen/qwen-image-edit-plus",
       {
         input: {
-          prompt: prompt,
+          prompt: qwenPrompt,
           image: [person1DataURL, person2DataURL, styleBoardDataURL]
         }
       }
     );
 
-    console.log("Replicate raw output:", JSON.stringify(output, null, 2));
-    console.log("Output type:", typeof output);
-    console.log("Output is array:", Array.isArray(output));
+    console.log("QWEN raw output:", JSON.stringify(qwenOutput, null, 2));
 
-    let imageUrl: string | null = null;
+    let intermediateUrl: string | null = null;
+    let qwenFirstItem = Array.isArray(qwenOutput) ? qwenOutput[0] : qwenOutput;
 
-    let firstItem = Array.isArray(output) ? output[0] : output;
-    console.log("First item:", firstItem);
-    console.log("First item type:", typeof firstItem);
-
-    if (typeof firstItem === 'string') {
-      console.log("First item is string, using directly");
-      imageUrl = firstItem;
-    } else if (firstItem && typeof firstItem === 'object') {
-      console.log("First item is object, checking for URL");
-
-      if (typeof firstItem.url === 'function') {
-        console.log("First item has url() method, calling it");
-        imageUrl = await firstItem.url();
-      } else if (typeof firstItem.url === 'string') {
-        console.log("First item has url property as string");
-        imageUrl = firstItem.url;
-      } else if (firstItem.toString && firstItem.toString() !== '[object Object]') {
-        console.log("Attempting to convert object to string");
-        imageUrl = firstItem.toString();
-      } else {
-        console.error("Object does not have url method or property:", Object.keys(firstItem));
+    if (typeof qwenFirstItem === 'string') {
+      intermediateUrl = qwenFirstItem;
+    } else if (qwenFirstItem && typeof qwenFirstItem === 'object') {
+      if (typeof qwenFirstItem.url === 'function') {
+        intermediateUrl = await qwenFirstItem.url();
+      } else if (typeof qwenFirstItem.url === 'string') {
+        intermediateUrl = qwenFirstItem.url;
+      } else if (qwenFirstItem.toString && qwenFirstItem.toString() !== '[object Object]') {
+        intermediateUrl = qwenFirstItem.toString();
       }
     }
 
-    console.log("Parsed imageUrl:", imageUrl);
+    if (!intermediateUrl || typeof intermediateUrl !== 'string' || !intermediateUrl.startsWith('http')) {
+      console.error("Invalid QWEN output:", intermediateUrl);
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "QWEN step failed",
+          details: "No valid intermediate image was generated"
+        }),
+        {
+          status: 500,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    console.log("QWEN intermediate image:", intermediateUrl);
+
+    // STEP 2: FLUX - Style Lock
+    console.log("=== STEP 2: FLUX (Style Lock + Realism) ===");
+
+    let fluxPrompt = `Apply an extremely strong, recognizable cinematic or animation style.
+
+STRICT RULE:
+DO NOT change faces.
+DO NOT change pose.
+DO NOT add or remove people.
+DO NOT add animals.
+ONLY apply style, lighting, and rendering.
+
+`;
+
+    if (selectedStyle === "zootopia") {
+      fluxPrompt += `STYLE LOCK (HARD):
+Transform into a Disney/Pixar animated film frame.
+
+- high-end 3D animation rendering
+- smooth stylized geometry
+- expressive eyes
+- soft global illumination
+- vibrant clean colors
+- polished animation materials
+
+CRITICAL:
+Must clearly look like a Disney animated movie.
+Must NOT look like generic 3D.
+Must NOT look realistic.`;
+    } else if (selectedStyle === "euphoria") {
+      fluxPrompt += `STYLE LOCK (HARD):
+Ultra-realistic cinematic TV drama frame.
+
+- strong color grading (pink, purple, warm tones)
+- moody lighting
+- soft shadows
+- shallow depth of field
+- subtle film grain
+
+REALISM LOCK:
+- real skin texture (pores visible)
+- NO plastic skin
+- NO beauty retouch
+- NO glossy CGI look
+
+CRITICAL:
+Must look like a real filmed scene.`;
+    } else if (selectedStyle === "titanic") {
+      fluxPrompt += `STYLE LOCK (HARD):
+Ultra-realistic cinematic epic romance.
+
+- golden hour sunlight OR cold dramatic tones
+- strong directional lighting
+- film-grade color grading
+- atmospheric depth
+
+REALISM LOCK:
+- natural skin texture
+- no smoothing
+- no AI look
+- realistic lighting on faces and clothes
+
+CRITICAL:
+Must look like a real movie frame.`;
+    }
+
+    fluxPrompt += `
+
+GLOBAL NEGATIVE:
+extra people, third person, crowd, animals, pets, background characters, silhouettes, reflections of people, duplicated faces, plastic skin, CGI look, beauty retouch, wrong pose, incorrect composition`;
+
+    console.log("Running FLUX with prompt:", fluxPrompt);
+
+    const fluxOutput = await replicate.run(
+      "black-forest-labs/flux-2-pro",
+      {
+        input: {
+          prompt: fluxPrompt,
+          image: intermediateUrl,
+          prompt_strength: 0.85,
+          num_outputs: 1,
+          output_format: "jpg",
+          output_quality: 90
+        }
+      }
+    );
+
+    console.log("FLUX raw output:", JSON.stringify(fluxOutput, null, 2));
+
+    let imageUrl: string | null = null;
+    let fluxFirstItem = Array.isArray(fluxOutput) ? fluxOutput[0] : fluxOutput;
+
+    if (typeof fluxFirstItem === 'string') {
+      imageUrl = fluxFirstItem;
+    } else if (fluxFirstItem && typeof fluxFirstItem === 'object') {
+      if (typeof fluxFirstItem.url === 'function') {
+        imageUrl = await fluxFirstItem.url();
+      } else if (typeof fluxFirstItem.url === 'string') {
+        imageUrl = fluxFirstItem.url;
+      } else if (fluxFirstItem.toString && fluxFirstItem.toString() !== '[object Object]') {
+        imageUrl = fluxFirstItem.toString();
+      }
+    }
+
+    console.log("Parsed final imageUrl:", imageUrl);
 
     if (!imageUrl || typeof imageUrl !== 'string' || imageUrl.trim() === '') {
       console.error("Invalid imageUrl after parsing:", imageUrl);
       return new Response(
         JSON.stringify({
           success: false,
-          error: "Invalid Replicate output",
+          error: "FLUX step failed",
           details: "No valid image URL was returned"
         }),
         {
@@ -363,7 +348,7 @@ extra people, third person, crowd, animal, pet, background figure, silhouette, r
       return new Response(
         JSON.stringify({
           success: false,
-          error: "Invalid Replicate output",
+          error: "Invalid FLUX output",
           details: "Returned value is not a valid URL"
         }),
         {
