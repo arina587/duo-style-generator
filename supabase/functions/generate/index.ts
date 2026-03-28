@@ -25,27 +25,31 @@ Deno.serve(async (req: Request) => {
     const person2 = formData.get("person2");
     const styleBoard = formData.get("styleBoard");
     const selectedStyle = formData.get("selectedStyle") as string;
+    const selectedReference = formData.get("selectedReference") as string;
 
     console.log("Extracted values:", {
       person1: person1 ? `File (${(person1 as File).name}, ${(person1 as File).size} bytes)` : "MISSING",
       person2: person2 ? `File (${(person2 as File).name}, ${(person2 as File).size} bytes)` : "MISSING",
       styleBoard: styleBoard ? `File (${(styleBoard as File).name}, ${(styleBoard as File).size} bytes)` : "MISSING",
-      selectedStyle: selectedStyle || "MISSING"
+      selectedStyle: selectedStyle || "MISSING",
+      selectedReference: selectedReference || "MISSING"
     });
 
     console.log("Validation check:", {
       person1Present: !!person1,
       person2Present: !!person2,
       styleBoardPresent: !!styleBoard,
-      selectedStylePresent: !!selectedStyle
+      selectedStylePresent: !!selectedStyle,
+      selectedReferencePresent: !!selectedReference
     });
 
-    if (!person1 || !person2 || !styleBoard || !selectedStyle) {
+    if (!person1 || !person2 || !styleBoard || !selectedStyle || !selectedReference) {
       const missing = [];
       if (!person1) missing.push("person1");
       if (!person2) missing.push("person2");
       if (!styleBoard) missing.push("styleBoard");
       if (!selectedStyle) missing.push("selectedStyle");
+      if (!selectedReference) missing.push("selectedReference");
 
       console.error("=== VALIDATION FAILED ===");
       console.error("Missing required fields:", missing);
@@ -59,7 +63,8 @@ Deno.serve(async (req: Request) => {
             person1: !!person1,
             person2: !!person2,
             styleBoard: !!styleBoard,
-            selectedStyle: !!selectedStyle
+            selectedStyle: !!selectedStyle,
+            selectedReference: !!selectedReference
           }
         }),
         {
@@ -80,6 +85,23 @@ Deno.serve(async (req: Request) => {
         JSON.stringify({
           error: "Invalid style",
           details: `selectedStyle must be one of: zootopia, euphoria, titanic. Received: ${selectedStyle}`
+        }),
+        {
+          status: 400,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    if (!["ref1", "ref2", "ref3"].includes(selectedReference)) {
+      console.error("Invalid selectedReference:", selectedReference);
+      return new Response(
+        JSON.stringify({
+          error: "Invalid reference",
+          details: `selectedReference must be one of: ref1, ref2, ref3. Received: ${selectedReference}`
         }),
         {
           status: 400,
@@ -131,15 +153,14 @@ Deno.serve(async (req: Request) => {
       useFileOutput: false,
     });
 
-    console.log("=== Single-Step Generation with Identity Preservation ===");
-    console.log("Selected style:", selectedStyle);
+    console.log("=== PROMPT MAP GENERATION ===");
+    console.log("STYLE:", selectedStyle);
+    console.log("REFERENCE:", selectedReference);
 
-    const sceneNumber = (styleBoard as File).name.includes('ref1') ? 1 :
-                        (styleBoard as File).name.includes('ref2') ? 2 : 3;
-
-    console.log("Detected scene number:", sceneNumber);
-
-    let prompt = `Generate an image from two identity references (image1 and image2).
+    // Define all prompts in a strict map structure
+    const promptMap: Record<string, Record<string, string>> = {
+      zootopia: {
+        ref1: `Generate an image from two identity references (image1 and image2).
 
 IDENTITY (STRICT — DO NOT CHANGE):
 Preserve both people exactly as in the photos:
@@ -157,10 +178,7 @@ CHARACTER RULES (CRITICAL):
 - NO silhouettes
 - NO animals
 
-`;
-
-    if (selectedStyle === "zootopia") {
-      prompt += `STYLE (LOCKED):
+STYLE (LOCKED):
 High-end Disney/Pixar 3D animation:
 - smooth polished geometry
 - expressive slightly enlarged eyes
@@ -170,10 +188,7 @@ High-end Disney/Pixar 3D animation:
 - cinematic animation lighting
 - vibrant but controlled colors
 
-`;
-
-      if (sceneNumber === 1) {
-        prompt += `SCENE 1 (clean selfie portrait):
+SCENE 1 (clean selfie portrait):
 Two characters very close together, facing camera.
 
 POSE:
@@ -190,9 +205,46 @@ LIGHTING:
 - minimal shadows
 
 BACKGROUND:
-- clean minimal gradient`;
-      } else if (sceneNumber === 2) {
-        prompt += `SCENE 2 (friendly interaction):
+- clean minimal gradient
+
+FINAL OUTPUT:
+- match scene EXACTLY
+- preserve identity and pose
+- 4K quality
+- no text, no logos, no artifacts
+
+NEGATIVE:
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
+
+        ref2: `Generate an image from two identity references (image1 and image2).
+
+IDENTITY (STRICT — DO NOT CHANGE):
+Preserve both people exactly as in the photos:
+- face shape, proportions, asymmetry
+- eyes, nose, lips
+- natural skin texture (no smoothing, no beautification)
+- hair color and hairstyle
+
+Faces must remain fully recognizable.
+
+CHARACTER RULES (CRITICAL):
+- EXACTLY TWO PEOPLE
+- NO third person
+- NO background people
+- NO silhouettes
+- NO animals
+
+STYLE (LOCKED):
+High-end Disney/Pixar 3D animation:
+- smooth polished geometry
+- expressive slightly enlarged eyes
+- soft rounded facial features
+- clean materials
+- soft global illumination
+- cinematic animation lighting
+- vibrant but controlled colors
+
+SCENE 2 (friendly interaction):
 Two characters standing close together.
 
 POSE:
@@ -209,9 +261,46 @@ LIGHTING:
 - gentle shadows
 
 BACKGROUND:
-- minimal soft gradient`;
-      } else {
-        prompt += `SCENE 3 (club selfie):
+- minimal soft gradient
+
+FINAL OUTPUT:
+- match scene EXACTLY
+- preserve identity and pose
+- 4K quality
+- no text, no logos, no artifacts
+
+NEGATIVE:
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
+
+        ref3: `Generate an image from two identity references (image1 and image2).
+
+IDENTITY (STRICT — DO NOT CHANGE):
+Preserve both people exactly as in the photos:
+- face shape, proportions, asymmetry
+- eyes, nose, lips
+- natural skin texture (no smoothing, no beautification)
+- hair color and hairstyle
+
+Faces must remain fully recognizable.
+
+CHARACTER RULES (CRITICAL):
+- EXACTLY TWO PEOPLE
+- NO third person
+- NO background people
+- NO silhouettes
+- NO animals
+
+STYLE (LOCKED):
+High-end Disney/Pixar 3D animation:
+- smooth polished geometry
+- expressive slightly enlarged eyes
+- soft rounded facial features
+- clean materials
+- soft global illumination
+- cinematic animation lighting
+- vibrant but controlled colors
+
+SCENE 3 (club selfie):
 Two characters taking a selfie.
 
 POSE:
@@ -230,10 +319,38 @@ LIGHTING:
 
 BACKGROUND:
 - blurred nightclub
-- NO people`;
-      }
-    } else if (selectedStyle === "titanic") {
-      prompt += `STYLE (LOCKED):
+- NO people
+
+FINAL OUTPUT:
+- match scene EXACTLY
+- preserve identity and pose
+- 4K quality
+- no text, no logos, no artifacts
+
+NEGATIVE:
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`
+      },
+
+      titanic: {
+        ref1: `Generate an image from two identity references (image1 and image2).
+
+IDENTITY (STRICT — DO NOT CHANGE):
+Preserve both people exactly as in the photos:
+- face shape, proportions, asymmetry
+- eyes, nose, lips
+- natural skin texture (no smoothing, no beautification)
+- hair color and hairstyle
+
+Faces must remain fully recognizable.
+
+CHARACTER RULES (CRITICAL):
+- EXACTLY TWO PEOPLE
+- NO third person
+- NO background people
+- NO silhouettes
+- NO animals
+
+STYLE (LOCKED):
 Ultra-realistic cinematic film still:
 - shot on 50mm lens
 - shallow depth of field
@@ -242,10 +359,7 @@ Ultra-realistic cinematic film still:
 - film grain
 - high dynamic range
 
-`;
-
-      if (sceneNumber === 1) {
-        prompt += `SCENE 1 (ship bow iconic):
+SCENE 1 (ship bow iconic):
 
 POSE:
 - woman in front, arms fully extended horizontally
@@ -265,9 +379,45 @@ LIGHTING:
 - strong backlight
 
 BACKGROUND:
-- ocean horizon`;
-      } else if (sceneNumber === 2) {
-        prompt += `SCENE 2 (water scene):
+- ocean horizon
+
+FINAL OUTPUT:
+- match scene EXACTLY
+- preserve identity and pose
+- 4K quality
+- no text, no logos, no artifacts
+
+NEGATIVE:
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
+
+        ref2: `Generate an image from two identity references (image1 and image2).
+
+IDENTITY (STRICT — DO NOT CHANGE):
+Preserve both people exactly as in the photos:
+- face shape, proportions, asymmetry
+- eyes, nose, lips
+- natural skin texture (no smoothing, no beautification)
+- hair color and hairstyle
+
+Faces must remain fully recognizable.
+
+CHARACTER RULES (CRITICAL):
+- EXACTLY TWO PEOPLE
+- NO third person
+- NO background people
+- NO silhouettes
+- NO animals
+
+STYLE (LOCKED):
+Ultra-realistic cinematic film still:
+- shot on 50mm lens
+- shallow depth of field
+- natural skin texture (NO plastic look)
+- cinematic lighting
+- film grain
+- high dynamic range
+
+SCENE 2 (water scene):
 
 POSE:
 - both in water
@@ -285,9 +435,45 @@ LIGHTING:
 - reflections on water
 
 BACKGROUND:
-- dark ocean`;
-      } else {
-        prompt += `SCENE 3 (intimate close moment):
+- dark ocean
+
+FINAL OUTPUT:
+- match scene EXACTLY
+- preserve identity and pose
+- 4K quality
+- no text, no logos, no artifacts
+
+NEGATIVE:
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
+
+        ref3: `Generate an image from two identity references (image1 and image2).
+
+IDENTITY (STRICT — DO NOT CHANGE):
+Preserve both people exactly as in the photos:
+- face shape, proportions, asymmetry
+- eyes, nose, lips
+- natural skin texture (no smoothing, no beautification)
+- hair color and hairstyle
+
+Faces must remain fully recognizable.
+
+CHARACTER RULES (CRITICAL):
+- EXACTLY TWO PEOPLE
+- NO third person
+- NO background people
+- NO silhouettes
+- NO animals
+
+STYLE (LOCKED):
+Ultra-realistic cinematic film still:
+- shot on 50mm lens
+- shallow depth of field
+- natural skin texture (NO plastic look)
+- cinematic lighting
+- film grain
+- high dynamic range
+
+SCENE 3 (intimate close moment):
 
 POSE:
 - bodies very close
@@ -304,10 +490,38 @@ LIGHTING:
 - soft shadows
 
 BACKGROUND:
-- blurred ship environment`;
-      }
-    } else if (selectedStyle === "euphoria") {
-      prompt += `STYLE (LOCKED):
+- blurred ship environment
+
+FINAL OUTPUT:
+- match scene EXACTLY
+- preserve identity and pose
+- 4K quality
+- no text, no logos, no artifacts
+
+NEGATIVE:
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`
+      },
+
+      euphoria: {
+        ref1: `Generate an image from two identity references (image1 and image2) matching the pose from a third reference image.
+
+IDENTITY (STRICT — DO NOT CHANGE):
+Preserve both people exactly as in the photos:
+- face shape, proportions, asymmetry
+- eyes, nose, lips
+- natural skin texture (no smoothing, no beautification)
+- hair color and hairstyle
+
+Faces must remain fully recognizable.
+
+CHARACTER RULES (CRITICAL):
+- EXACTLY TWO PEOPLE
+- NO third person
+- NO background people
+- NO silhouettes
+- NO animals
+
+STYLE (LOCKED):
 Ultra-realistic cinematic TV drama:
 - natural skin texture with visible pores
 - NO plastic or glossy skin
@@ -315,10 +529,6 @@ Ultra-realistic cinematic TV drama:
 - soft shadows
 - shallow depth of field
 - subtle film grain
-
-IMPORTANT:
-- realism must dominate
-- avoid AI-generated beauty look
 
 POSE:
 - copy pose EXACTLY from reference image
@@ -330,10 +540,7 @@ POSE:
 BACKGROUND:
 - use spatial structure from reference
 - keep environment consistent
-- remove all people from background`;
-    }
-
-    prompt += `
+- remove all people from background
 
 FINAL OUTPUT:
 - match scene EXACTLY
@@ -342,9 +549,128 @@ FINAL OUTPUT:
 - no text, no logos, no artifacts
 
 NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`;
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
 
-    console.log("Running QWEN with prompt:", prompt);
+        ref2: `Generate an image from two identity references (image1 and image2) matching the pose from a third reference image.
+
+IDENTITY (STRICT — DO NOT CHANGE):
+Preserve both people exactly as in the photos:
+- face shape, proportions, asymmetry
+- eyes, nose, lips
+- natural skin texture (no smoothing, no beautification)
+- hair color and hairstyle
+
+Faces must remain fully recognizable.
+
+CHARACTER RULES (CRITICAL):
+- EXACTLY TWO PEOPLE
+- NO third person
+- NO background people
+- NO silhouettes
+- NO animals
+
+STYLE (LOCKED):
+Ultra-realistic cinematic TV drama:
+- natural skin texture with visible pores
+- NO plastic or glossy skin
+- moody lighting (warm / pink / purple tones)
+- soft shadows
+- shallow depth of field
+- subtle film grain
+
+POSE:
+- copy pose EXACTLY from reference image
+- match body positions precisely
+- match interaction and gesture
+- match distance between subjects
+- match camera angle
+
+BACKGROUND:
+- use spatial structure from reference
+- keep environment consistent
+- remove all people from background
+
+FINAL OUTPUT:
+- match scene EXACTLY
+- preserve identity and pose
+- 4K quality
+- no text, no logos, no artifacts
+
+NEGATIVE:
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
+
+        ref3: `Generate an image from two identity references (image1 and image2) matching the pose from a third reference image.
+
+IDENTITY (STRICT — DO NOT CHANGE):
+Preserve both people exactly as in the photos:
+- face shape, proportions, asymmetry
+- eyes, nose, lips
+- natural skin texture (no smoothing, no beautification)
+- hair color and hairstyle
+
+Faces must remain fully recognizable.
+
+CHARACTER RULES (CRITICAL):
+- EXACTLY TWO PEOPLE
+- NO third person
+- NO background people
+- NO silhouettes
+- NO animals
+
+STYLE (LOCKED):
+Ultra-realistic cinematic TV drama:
+- natural skin texture with visible pores
+- NO plastic or glossy skin
+- moody lighting (warm / pink / purple tones)
+- soft shadows
+- shallow depth of field
+- subtle film grain
+
+POSE:
+- copy pose EXACTLY from reference image
+- match body positions precisely
+- match interaction and gesture
+- match distance between subjects
+- match camera angle
+
+BACKGROUND:
+- use spatial structure from reference
+- keep environment consistent
+- remove all people from background
+
+FINAL OUTPUT:
+- match scene EXACTLY
+- preserve identity and pose
+- 4K quality
+- no text, no logos, no artifacts
+
+NEGATIVE:
+extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`
+      }
+    };
+
+    // Get the EXACT prompt for this style + reference combination
+    const prompt = promptMap[selectedStyle]?.[selectedReference];
+
+    if (!prompt) {
+      console.error("No prompt found for:", { selectedStyle, selectedReference });
+      return new Response(
+        JSON.stringify({
+          error: "Invalid style/reference combination",
+          details: `No prompt defined for ${selectedStyle}/${selectedReference}`
+        }),
+        {
+          status: 400,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    console.log("PROMPT USED (first 200 chars):", prompt.substring(0, 200));
+    console.log("Running QWEN with single isolated prompt");
 
     const output = await replicate.run(
       "qwen/qwen-image-edit-plus",
