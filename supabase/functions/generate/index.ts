@@ -7,34 +7,6 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
-const SUBJECT_CONSTRAINT = `
-The image must contain EXACTLY TWO PEOPLE ONLY — the two individuals from the uploaded images.
-
-Hard requirement:
-* no more than two human subjects
-
-Strictly forbidden:
-* any third person
-* any background people
-* any silhouettes
-* any distant figures
-* any blurred figures
-* any reflections showing people
-* any crowd
-* any animals or creatures
-
-Environment must be completely empty:
-* no passengers
-* no crew
-* no background characters
-* no silhouettes on horizon
-* no reflections in water or glass
-
-Only the two main subjects exist in the entire scene.
-
-If any extra subject appears, the result is incorrect.
-`;
-
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, {
@@ -606,9 +578,9 @@ extra people, third person, animals, crowd, background figures, distorted faces,
     };
 
     // Get the EXACT prompt for this style + reference combination
-    const basePrompt = promptMap[selectedStyle]?.[selectedReference];
+    const prompt = promptMap[selectedStyle]?.[selectedReference];
 
-    if (!basePrompt) {
+    if (!prompt) {
       console.error("No prompt found for:", { selectedStyle, selectedReference });
       return new Response(
         JSON.stringify({
@@ -625,17 +597,14 @@ extra people, third person, animals, crowd, background figures, distorted faces,
       );
     }
 
-    // Inject strict subject constraint into every prompt
-    const finalPrompt = basePrompt + "\n\n" + SUBJECT_CONSTRAINT;
-
-    console.log("FINAL PROMPT:", finalPrompt);
+    console.log("PROMPT USED (first 200 chars):", prompt.substring(0, 200));
     console.log("Running QWEN with single isolated prompt");
 
     const output = await replicate.run(
       "qwen/qwen-image-edit-plus",
       {
         input: {
-          prompt: finalPrompt,
+          prompt: prompt,
           image: [person1DataURL, person2DataURL, styleBoardDataURL]
         }
       }
