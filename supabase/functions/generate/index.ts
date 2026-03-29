@@ -116,20 +116,27 @@ Period-appropriate styling.
 Golden hour lighting.
 
 SCENE:
-Person A in front with arms extended horizontally.
-Person B behind holding person A's waist.
-Side camera angle.
-Ship bow visible.
-Ocean in background.
-Period 1912 clothing.
+Girl standing at the front of the ship.
+Arms extended wide.
+Body facing the ocean.
+
+Man standing directly behind her.
+Holding her at the waist.
+
+They are NOT looking at the camera.
+Both looking forward toward the horizon.
+
+Camera in front.
+Medium-wide framing (slightly further away).
+
+Wind blowing hair and clothes.
 
 GLOBAL RULES:
 - Only TWO people allowed
 - No third person anywhere
 - No background faces
 - No silhouettes of people
-- Eyes must be straight and natural (no cross-eye)
-- Both people must look at the camera`,
+- Eyes must be straight and natural (no cross-eye)`,
 
     ref2: `IDENTITY:
 Use two uploaded images as identity reference.
@@ -151,20 +158,29 @@ Period-appropriate styling.
 Golden hour lighting.
 
 SCENE:
-Both in water.
-Close intimate distance.
-Person A leaning down toward person B.
-Tight framing on faces.
-Dark environment.
-Wet clothing.
+Both in cold ocean water.
+Water level around shoulders.
+
+Girl slightly higher.
+Leaning toward the man.
+
+Man lower in water.
+Leaning toward her.
+
+They are looking directly at each other.
+Faces close.
+
+Camera slightly further away (not tight close-up).
+
+IMPORTANT:
+Keep dark open ocean background unchanged.
 
 GLOBAL RULES:
 - Only TWO people allowed
 - No third person anywhere
 - No background faces
 - No silhouettes of people
-- Eyes must be straight and natural (no cross-eye)
-- Both people must look at the camera`,
+- Eyes must be straight and natural (no cross-eye)`,
 
     ref3: `IDENTITY:
 Use two uploaded images as identity reference.
@@ -186,19 +202,26 @@ Period-appropriate styling.
 Golden hour lighting.
 
 SCENE:
-Faces very close, near-kiss distance.
-Intimate tension.
-Close-up framing.
-Shallow depth of field.
-Period formal wear.
+Man standing behind the girl.
+Holding her around the waist.
+
+Girl leaning back toward him.
+
+Their faces extremely close.
+Almost touching lips.
+
+They are looking at each other.
+NOT looking at the camera.
+
+Camera slightly further away.
+Upper bodies visible.
 
 GLOBAL RULES:
 - Only TWO people allowed
 - No third person anywhere
 - No background faces
 - No silhouettes of people
-- Eyes must be straight and natural (no cross-eye)
-- Both people must look at the camera`
+- Eyes must be straight and natural (no cross-eye)`
   },
 
   euphoria: {
