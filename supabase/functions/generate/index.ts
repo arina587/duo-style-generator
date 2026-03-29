@@ -39,31 +39,39 @@ Shallow depth of field.`
 const sceneDefinitions: Record<string, Record<string, string>> = {
   zootopia: {
     ref1: `SCENE:
-Symmetric selfie.
-Both faces aligned horizontally at same height.
-Faces at equal distance from camera.
-Cheeks touching in center.
-Tight close-up.
-Both looking at camera.
-Friendly smiles.`,
+Clean balanced selfie.
+Girl holds the phone with her arm extended.
+Camera is directly in front of both faces.
+Both heads aligned on the same horizontal level.
+Faces equally close to the camera.
+Cheeks touching in the center.
+Both looking straight into the lens.
+Symmetric close-up framing.
+No tilt.`,
 
     ref2: `SCENE:
-Girl pushes face into man from side.
-Faces overlap and compress.
-Strong asymmetry.
-Girl's face closer to camera.
-Heads at different depths.
-Off-center framing.
-Playful spontaneous energy.`,
+Tight asymmetric selfie.
+Girl pushes her face into the man from the side.
+Girl is closer to camera.
+Faces overlap slightly and look compressed together.
+Heads are not aligned horizontally.
+Man leans slightly away.
+Camera is very close and slightly off-center.
+Asymmetric framing.
+Strong side-pressure pose.`,
 
     ref3: `SCENE:
-Man holding girl in his arms.
-Girl positioned higher than man.
-Bodies visible, not just faces.
-Medium shot showing torsos.
-Tilted dynamic angle.
-Neon party lighting (pink, purple, blue).
-Excited laughing expressions.`
+Dynamic selfie with body interaction.
+Man is holding the girl in his arms.
+Man is also taking the selfie himself with one extended arm.
+Phone camera is the viewpoint.
+Girl is clearly lifted higher than normal standing level.
+Upper bodies and arms are visible.
+Man's holding arm is visible supporting the girl.
+Both faces visible, both looking into the camera.
+Frame is wider than ref1 and ref2.
+Slight tilted selfie angle.
+This is NOT a face-only close-up.`
   },
 
   titanic: {
