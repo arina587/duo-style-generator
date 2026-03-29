@@ -159,7 +159,7 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           <div className="matte-card rounded-2xl soft-shadow p-8">
-            <h3 className="text-xl font-light text-[#8B6B4E] mb-6 tracking-wide">Your Photo</h3>
+            <h3 className="text-xl font-light text-[#8B6B4E] mb-6 tracking-wide">GIRL photo</h3>
             <label className="block cursor-pointer">
               <input
                 type="file"
@@ -171,13 +171,13 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
                 {preview1 ? (
                   <img
                     src={preview1}
-                    alt="Preview 1"
+                    alt="GIRL photo"
                     className="w-full h-72 object-contain rounded-lg"
                   />
                 ) : (
                   <div className="flex flex-col items-center justify-center h-72 text-slate-400">
                     <UploadIcon className="w-12 h-12 mb-4 text-[#6B8FA3]/40" />
-                    <p className="text-sm font-light text-slate-500">Click to upload</p>
+                    <p className="text-sm font-light text-slate-500">Click to upload GIRL photo</p>
                     <p className="text-xs mt-2 font-light text-slate-400">PNG, JPG up to 10MB</p>
                   </div>
                 )}
@@ -186,7 +186,7 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
           </div>
 
           <div className="matte-card rounded-2xl soft-shadow p-8">
-            <h3 className="text-xl font-light text-[#8B6B4E] mb-6 tracking-wide">Second Person Photo</h3>
+            <h3 className="text-xl font-light text-[#8B6B4E] mb-6 tracking-wide">MAN photo</h3>
             <label className="block cursor-pointer">
               <input
                 type="file"
@@ -198,13 +198,13 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
                 {preview2 ? (
                   <img
                     src={preview2}
-                    alt="Preview 2"
+                    alt="MAN photo"
                     className="w-full h-72 object-contain rounded-lg"
                   />
                 ) : (
                   <div className="flex flex-col items-center justify-center h-72 text-slate-400">
                     <Image className="w-12 h-12 mb-4 text-[#6B8FA3]/40" />
-                    <p className="text-sm font-light text-slate-500">Click to upload</p>
+                    <p className="text-sm font-light text-slate-500">Click to upload MAN photo</p>
                     <p className="text-xs mt-2 font-light text-slate-400">PNG, JPG up to 10MB</p>
                   </div>
                 )}
