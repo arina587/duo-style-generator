@@ -25,14 +25,17 @@ No realistic skin texture.
 Soft clean lighting.
 
 Scene:
-Clean selfie.
-Girl holding the phone.
-Camera directly in front.
-Faces aligned at the same height.
-Both equally close to the camera.
+Natural close selfie perspective.
+Camera is the viewpoint but NOT visible in frame.
+No phone visible.
+
+Both faces aligned at the same height.
 Cheeks touching.
 Centered symmetric framing.
-Both looking straight into camera.
+Both looking directly into camera.
+
+Eyes must look natural and lively.
+No glassy or empty eyes.
 
 Background:
 Simple clean neutral background.`,
