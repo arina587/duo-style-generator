@@ -11,48 +11,59 @@ const corsHeaders = {
 const styleDefinitions: Record<string, { style: string; lighting: string; background: string }> = {
   zootopia: {
     style: `STYLE (LOCKED — ZOOTOPIA CARTOON):
-- stylized 3D animated cartoon look matching Zootopia (2016 film)
-- CLEARLY NON-PHOTOREALISTIC
-- cartoon stylization (NOT realistic humans)
-- exaggerated cartoon proportions
-- large expressive cartoon eyes with simplified iris
-- simplified facial structure with soft rounded shapes
-- smooth cartoon surfaces (NO real skin texture, NO pores)
+
+CRITICAL TRANSFORMATION RULE:
+- cartoon stylization MUST override realism from input images
+- convert real people into stylized 3D animated cartoon characters
+- CLEARLY NON-PHOTOREALISTIC output required
+- output MUST look like an animated movie frame from Zootopia (2016)
+
+CHARACTER DESIGN:
+- stylized 3D animated cartoon characters
+- exaggerated cartoon facial proportions
+- large expressive cartoon eyes with simplified iris design
+- simplified nose (button-like or reduced geometry)
+- simplified mouth and lip structure
+- soft rounded facial shapes
+- smooth cartoon surfaces (NO real skin texture, NO pores, NO skin detail)
 - slightly plastic/stylized material quality
 - cartoon character rendering (NOT PBR realism)
-- output MUST look like an animated movie frame
 
 SHADING:
-- soft cartoon shading
-- simplified lighting model
-- gentle toon-like gradients
-- slightly plastic appearance
+- soft cartoon shading with clear gradients
+- simplified lighting model (toon shader style)
+- gentle cel-shaded appearance
+- slightly glossy/plastic look
 - NO photorealistic skin rendering
 - NO detailed subsurface scattering
+- NO skin pores or texture detail
 
-RENDERING (CRITICAL):
+RENDERING (ABSOLUTE PRIORITY):
 - cartoon stylization has HIGHEST PRIORITY
 - NOT cinematic realism
 - NOT semi-realistic
 - NOT photorealistic
-- simplified cartoon materials only
+- NOT hybrid realistic-cartoon
+- pure simplified cartoon materials only
 
 LIGHTING:
 - soft, even, bright cartoon lighting
-- minimal shadows
+- minimal shadows with soft edges
 - no dramatic or cinematic lighting
 - flat, friendly illumination
+- bright animated movie look
 
 COLOR:
 - vibrant cartoon color palette
 - clean saturated colors
 - warm friendly tones
 - no photorealistic color grading
+- bright animated colors
 
-IMPORTANT:
+STRICT ENFORCEMENT:
 - style MUST remain identical across all three references
-- only the scene/pose/lighting changes between references
-- output must be clearly cartoon, not realistic`,
+- only the scene/pose changes between references
+- output must be clearly cartoon, absolutely not realistic`,
     lighting: `LIGHTING (DEFAULT):
 - soft bright cartoon lighting
 - even illumination
@@ -118,14 +129,18 @@ const sceneDefinitions: Record<string, Record<string, string>> = {
   zootopia: {
     ref1: `SCENE (REFERENCE 1 — STATIC BALANCED SELFIE):
 
+GLOBAL RULE:
+- pose must override default selfie behavior
+- this reference must produce specific physical geometry
+
 CRITICAL RULE:
 - this scene MUST produce a perfectly balanced, symmetric selfie
 - DO NOT collapse into a generic close-face shot
 - exact pose geometry is required
 
 ROLE MAPPING:
-- first image = girl
-- second image = man
+- first image = person A
+- second image = person B
 
 POSE (STRICT GEOMETRY):
 - both heads aligned horizontally at same height
@@ -171,6 +186,10 @@ CLOTHING:
 
     ref2: `SCENE (REFERENCE 2 — ASYMMETRIC COMPRESSED SELFIE):
 
+GLOBAL RULE:
+- pose must override default selfie behavior
+- this reference must produce different physical geometry from ref1
+
 CRITICAL RULE:
 - this scene MUST be physically different from ref1
 - strong asymmetry is REQUIRED
@@ -178,8 +197,8 @@ CRITICAL RULE:
 - DO NOT produce a balanced selfie
 
 ROLE MAPPING:
-- first image = girl
-- second image = man
+- first image = person A
+- second image = person B
 
 POSE (STRICT GEOMETRY):
 - girl pushes her face strongly into the man from the side
@@ -225,6 +244,10 @@ CLOTHING:
 
     ref3: `SCENE (REFERENCE 3 — DYNAMIC BODY INTERACTION):
 
+GLOBAL RULE:
+- pose must override default selfie behavior
+- this reference must produce different physical geometry from ref1 and ref2
+
 CRITICAL RULE:
 - this scene MUST show full body interaction
 - NOT a face-only selfie
@@ -233,8 +256,8 @@ CRITICAL RULE:
 - DO NOT collapse into close-face composition
 
 ROLE MAPPING:
-- first image = girl
-- second image = man
+- first image = person A
+- second image = person B
 
 POSE (STRICT GEOMETRY):
 - man holding the girl in his arms (clear physical lift)
@@ -459,46 +482,37 @@ function buildPrompt(style: string, reference: string): string {
     throw new Error(`Invalid style or reference: ${style}/${reference}`);
   }
 
-  return `Generate an image using TWO uploaded identity images and ONE style reference image.
+  return `Generate an image using TWO uploaded identity images.
 
-IDENTITY PRESERVATION (CRITICAL - HIGHEST PRIORITY):
+IDENTITY (CRITICAL - HIGHEST PRIORITY):
 
-TWO SEPARATE PEOPLE - DO NOT MERGE:
-- first uploaded image = girl (distinct individual)
-- second uploaded image = man (distinct individual)
+USE UPLOADED IMAGES AS IDENTITY REFERENCES ONLY:
+- first uploaded image = person A (distinct individual)
+- second uploaded image = person B (distinct individual)
 - these are TWO DIFFERENT PEOPLE
 - DO NOT blend, merge, or average their faces
 - DO NOT create a single person from two faces
 - each person must remain individually recognizable
 
-PRESERVE EXACT IDENTITY FOR EACH PERSON:
-- face shape and bone structure (jawline, cheekbones, forehead)
-- eye shape, size, color, and spacing
-- nose shape and size
-- lip shape and thickness
-- skin tone and texture
-- facial proportions and asymmetries
+PRESERVE IDENTITY BUT CONVERT TO CARTOON:
+- preserve face shape and bone structure (jawline, cheekbones, forehead)
+- preserve eye shape, size, color, and spacing
+- preserve nose shape and size
+- preserve lip shape and thickness
+- preserve facial proportions and asymmetries
+- preserve hair: color, texture, style, length
+- preserve facial hair: beard, mustache, stubble (exact style and coverage)
+- preserve eyebrows: shape, thickness, color
+- preserve accessories: glasses, piercings, jewelry
+- CONVERT both people into stylized cartoon characters
+- DO NOT preserve real skin texture
+- DO NOT generate photorealistic humans
 
-PRESERVE UNIQUE FEATURES:
-- hair: color, texture, style, length
-- facial hair: beard, mustache, stubble (exact style and coverage)
-- eyebrows: shape, thickness, color
-- accessories: glasses, piercings, jewelry
-- distinctive marks: scars, moles, tattoos
-- age indicators: wrinkles, skin texture
-
-DO NOT:
-- beautify or idealize faces
-- smooth skin unnaturally
-- change facial structure
-- alter eye color or shape
-- remove or modify unique features
-- blend characteristics between the two people
-
-VERIFICATION:
+STRICT RULE:
+- cartoon stylization MUST override realism from input images
 - both people must be clearly recognizable as their original selves
 - someone who knows them should identify both immediately
-- faces should look like the uploaded images, just in a new style/scene
+- faces should look like the uploaded images converted to cartoon style
 
 ${styleDef.style}
 
@@ -541,23 +555,20 @@ Deno.serve(async (req: Request) => {
 
     const person1 = formData.get("person1");
     const person2 = formData.get("person2");
-    const styleBoard = formData.get("styleBoard");
     const selectedStyle = formData.get("selectedStyle") as string;
     const selectedReference = formData.get("selectedReference") as string;
 
     console.log("Extracted values:", {
       person1: person1 ? `File (${(person1 as File).name}, ${(person1 as File).size} bytes)` : "MISSING",
       person2: person2 ? `File (${(person2 as File).name}, ${(person2 as File).size} bytes)` : "MISSING",
-      styleBoard: styleBoard ? `File (${(styleBoard as File).name}, ${(styleBoard as File).size} bytes)` : "MISSING",
       selectedStyle: selectedStyle || "MISSING",
       selectedReference: selectedReference || "MISSING"
     });
 
-    if (!person1 || !person2 || !styleBoard || !selectedStyle || !selectedReference) {
+    if (!person1 || !person2 || !selectedStyle || !selectedReference) {
       const missing = [];
       if (!person1) missing.push("person1");
       if (!person2) missing.push("person2");
-      if (!styleBoard) missing.push("styleBoard");
       if (!selectedStyle) missing.push("selectedStyle");
       if (!selectedReference) missing.push("selectedReference");
 
@@ -572,7 +583,6 @@ Deno.serve(async (req: Request) => {
           received: {
             person1: !!person1,
             person2: !!person2,
-            styleBoard: !!styleBoard,
             selectedStyle: !!selectedStyle,
             selectedReference: !!selectedReference
           }
@@ -655,7 +665,6 @@ Deno.serve(async (req: Request) => {
     console.log("Converting files to data URLs...");
     const person1DataURL = await fileToDataURL(person1 as File);
     const person2DataURL = await fileToDataURL(person2 as File);
-    const styleBoardDataURL = await fileToDataURL(styleBoard as File);
     console.log("Files converted successfully");
 
     const replicate = new Replicate({
@@ -676,16 +685,22 @@ Deno.serve(async (req: Request) => {
     console.log("- Total prompt length:", prompt.length);
     console.log("- First 300 chars:", prompt.substring(0, 300));
 
-    console.log("Running QWEN with structured prompt");
+    const payload = {
+      input: {
+        prompt: prompt,
+        image: [person1DataURL, person2DataURL]
+      }
+    };
+
+    console.log("=== FINAL PAYLOAD DEBUG ===");
+    console.log("IMAGE COUNT:", payload.input.image.length);
+    console.log("FINAL PROMPT (first 300 chars):", payload.input.prompt.substring(0, 300));
+
+    console.log("Running QWEN with structured prompt (2 identity images only)");
 
     const output = await replicate.run(
       "qwen/qwen-image-edit-plus",
-      {
-        input: {
-          prompt: prompt,
-          image: [person1DataURL, person2DataURL, styleBoardDataURL]
-        }
-      }
+      payload
     );
 
     console.log("QWEN raw output:", JSON.stringify(output, null, 2));
