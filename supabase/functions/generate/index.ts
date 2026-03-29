@@ -10,47 +10,56 @@ const corsHeaders = {
 // Category-level style definitions (STYLE ONLY)
 const styleDefinitions: Record<string, { style: string; lighting: string; background: string }> = {
   zootopia: {
-    style: `STYLE (LOCKED — ZOOTOPIA FILM):
-- 3D animated style matching the visual language of Zootopia (2016 film)
-- anthropomorphic proportions (human-like but with animal-inspired features)
-- large expressive eyes with detailed iris and natural pupil
-- soft rounded facial shapes and gentle features
-- short stylized fur with subtle texture detail
-- clean physically-based rendering (PBR) with realistic materials
-- NO generic Pixar style
-- NO cartoon or anime influence
-- NO toon outlines or cel-shading
+    style: `STYLE (LOCKED — ZOOTOPIA CARTOON):
+- stylized 3D animated cartoon look matching Zootopia (2016 film)
+- CLEARLY NON-PHOTOREALISTIC
+- cartoon stylization (NOT realistic humans)
+- exaggerated cartoon proportions
+- large expressive cartoon eyes with simplified iris
+- simplified facial structure with soft rounded shapes
+- smooth cartoon surfaces (NO real skin texture, NO pores)
+- slightly plastic/stylized material quality
+- cartoon character rendering (NOT PBR realism)
+- output MUST look like an animated movie frame
 
 SHADING:
-- soft diffuse shading with gentle gradients
-- gentle specular highlights on eyes and wet surfaces
-- no harsh contrast or dramatic shadows
-- no toon outlines or flat colors
-- realistic subsurface scattering on fur
+- soft cartoon shading
+- simplified lighting model
+- gentle toon-like gradients
+- slightly plastic appearance
+- NO photorealistic skin rendering
+- NO detailed subsurface scattering
+
+RENDERING (CRITICAL):
+- cartoon stylization has HIGHEST PRIORITY
+- NOT cinematic realism
+- NOT semi-realistic
+- NOT photorealistic
+- simplified cartoon materials only
 
 LIGHTING:
-- soft global illumination
-- balanced exposure across the scene
-- cinematic but clean lighting setup
-- natural light falloff
+- soft, even, bright cartoon lighting
+- minimal shadows
+- no dramatic or cinematic lighting
+- flat, friendly illumination
 
 COLOR:
-- vibrant but controlled color palette
-- natural color transitions
-- no oversaturation or neon colors (except ref3)
+- vibrant cartoon color palette
+- clean saturated colors
 - warm friendly tones
+- no photorealistic color grading
 
 IMPORTANT:
 - style MUST remain identical across all three references
 - only the scene/pose/lighting changes between references
-- DO NOT switch to generic Pixar, cartoon, or anime style`,
+- output must be clearly cartoon, not realistic`,
     lighting: `LIGHTING (DEFAULT):
-- soft even lighting
-- gentle ambient occlusion
+- soft bright cartoon lighting
+- even illumination
 - minimal shadows
-- warm neutral color temperature`,
+- friendly warm tone`,
     background: `BACKGROUND (DEFAULT):
-- clean minimal environment
+- simple cartoon environment
 - soft neutral backdrop
 - no distracting elements`
   },
@@ -107,140 +116,165 @@ IMPORTANT:
 // Reference-level scene definitions (POSE/COMPOSITION/CAMERA ONLY)
 const sceneDefinitions: Record<string, Record<string, string>> = {
   zootopia: {
-    ref1: `SCENE (REFERENCE 1 — PERFECT SELFIE):
+    ref1: `SCENE (REFERENCE 1 — STATIC BALANCED SELFIE):
+
+CRITICAL RULE:
+- this scene MUST produce a perfectly balanced, symmetric selfie
+- DO NOT collapse into a generic close-face shot
+- exact pose geometry is required
 
 ROLE MAPPING:
 - first image = girl
 - second image = man
 
-CAMERA (CRITICAL):
-- girl holding camera with extended arm
-- camera is the viewpoint (true selfie perspective)
-- slight wide-angle lens distortion
-- arm partially visible in frame or implied
+POSE (STRICT GEOMETRY):
+- both heads aligned horizontally at same height
+- faces at equal distance from camera
+- cheeks touching symmetrically in center
+- NO head tilt on either person
+- both faces perfectly centered together
+- heads form a stable horizontal line
+- NO asymmetry
 
-POSE:
-- faces very close together
-- cheek-to-cheek contact
-- heads gently touching
-- both leaning slightly toward camera
-- relaxed, natural body language
+CAMERA:
+- girl holding camera with extended arm
+- camera is the viewpoint (selfie perspective)
+- slight wide-angle lens effect
+- centered framing
 
 COMPOSITION:
-- tight close-up framing
-- faces dominate the frame
+- tight close-up on faces
+- symmetric framing (left-right balance)
 - both faces equally prominent
-- minimal negative space
-- upper shoulders visible
+- stable, balanced geometry
+- upper shoulders barely visible
 
 EMOTION:
 - calm, friendly expressions
 - gentle natural smiles
-- both looking directly into camera
+- both looking directly at camera
 - warm, approachable mood
 
 LIGHTING:
-- soft, even lighting on both faces
-- no strong shadows
+- soft, even cartoon lighting on both faces
+- no shadows
 - balanced exposure
-- gentle highlights on eyes
 
 BACKGROUND:
-- minimal, clean, neutral environment
-- no distractions
-- soft focus
+- minimal clean neutral environment
+- soft neutral colors
 
 CLOTHING:
 - casual modern clothing
-- girl: light fitted top, minimalistic style
-- man: casual t-shirt or hoodie, neutral colors`,
+- girl: light fitted top
+- man: casual t-shirt or hoodie`,
 
-    ref2: `SCENE (REFERENCE 2 — AWKWARD SELFIE):
+    ref2: `SCENE (REFERENCE 2 — ASYMMETRIC COMPRESSED SELFIE):
+
+CRITICAL RULE:
+- this scene MUST be physically different from ref1
+- strong asymmetry is REQUIRED
+- faces must overlap/compress
+- DO NOT produce a balanced selfie
 
 ROLE MAPPING:
 - first image = girl
 - second image = man
 
-CAMERA (CRITICAL):
-- camera extremely close to faces
-- very tight framing (spontaneous selfie feel)
-- noticeable wide-angle distortion
-- slight asymmetry
+POSE (STRICT GEOMETRY):
+- girl pushes her face strongly into the man from the side
+- heads NOT aligned horizontally
+- one face partially overlaps the other
+- faces visibly compressed together
+- man slightly leaning away from pressure
+- strong LEFT-RIGHT asymmetry
+- girl's face closer to camera
+- heads at different depths
 
-POSE:
-- girl pressing her face against the man
-- faces slightly compressed from proximity
-- intimate, playful physical contact
-- heads tilted toward each other
+CAMERA:
+- camera extremely close to faces
+- very tight framing
+- noticeable wide-angle distortion
+- off-center composition
 
 COMPOSITION:
-- very tight crop on faces
-- asymmetrical framing
-- faces fill most of frame
-- unusual angle for spontaneity
+- asymmetrical framing (NOT centered)
+- faces compressed and overlapping
+- unusual spontaneous angle
+- girl dominates frame slightly
 
 EMOTION:
-- girl: smiling, energetic, playful
+- girl: smiling, energetic, playful, pushing in
 - man: reacting, slightly uncomfortable or surprised
 - contrasting expressions
-- spontaneous, unposed moment
+- spontaneous, unposed interaction
 
 LIGHTING:
-- soft but less uniform than ref1
-- natural indoor lighting
-- gentle shadows adding depth
+- soft cartoon lighting
+- gentle shadows from compression
+- slightly uneven
 
 BACKGROUND:
-- neutral, soft focus
-- minimal visibility due to tight framing
+- neutral, minimal visibility
+- very soft focus
 
 CLOTHING:
 - casual modern clothing
 - girl: soft pastel sweater or fitted top
 - man: casual hoodie or t-shirt`,
 
-    ref3: `SCENE (REFERENCE 3 — PARTY SELFIE):
+    ref3: `SCENE (REFERENCE 3 — DYNAMIC BODY INTERACTION):
+
+CRITICAL RULE:
+- this scene MUST show full body interaction
+- NOT a face-only selfie
+- man physically lifting girl is REQUIRED
+- vertical separation between heads is REQUIRED
+- DO NOT collapse into close-face composition
 
 ROLE MAPPING:
 - first image = girl
 - second image = man
 
-CAMERA (CRITICAL):
-- man holding the girl with one arm
-- holding phone camera with other hand
-- camera slightly above subjects and angled down
-- dynamic tilted angle
-- phone partially visible in frame edge
-
-POSE:
-- man lifting girl slightly off ground with one arm
+POSE (STRICT GEOMETRY):
+- man holding the girl in his arms (clear physical lift)
+- girl positioned HIGHER than man (vertical offset)
+- girl's head above man's head
+- bodies clearly visible (NOT just faces)
+- man's arms visible around girl
 - girl leaning toward man
-- upper bodies and faces clearly visible
-- close intimate contact
-- dynamic, energetic pose
+- close intimate contact but FULL BODIES visible
+- dynamic energetic interaction
+
+CAMERA:
+- man holding phone camera with one hand
+- camera slightly above and angled down
+- dynamic tilted angle (NOT level)
+- phone partially visible in frame
 
 COMPOSITION:
-- medium shot showing upper bodies
+- MEDIUM SHOT showing upper bodies and torsos
+- NOT a tight face crop
 - dynamic tilted angle for energy
-- both faces prominently visible
-- shows physical interaction and lift
+- both faces visible but bodies dominate
+- vertical composition showing lift
 
 EMOTION:
-- joyful, dynamic, playful
+- joyful, dynamic, playful energy
 - excited, laughing expressions
 - both looking at camera
-- party atmosphere energy
+- party/celebration atmosphere
 
 LIGHTING (SPECIAL):
 - strong neon/colored lighting (pink, purple, blue)
 - colored highlights on faces and hair
-- dramatic but vibrant lighting
+- vibrant cartoon lighting
 - high energy feel
 
 BACKGROUND:
 - blurred crowd in background
 - party/club atmosphere
-- bokeh lights
+- bokeh lights from background
 - vibrant colored environment
 
 CLOTHING:
