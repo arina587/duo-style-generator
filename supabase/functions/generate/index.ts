@@ -7,6 +7,411 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
+// Category-level style definitions (STYLE ONLY)
+const styleDefinitions: Record<string, { style: string; lighting: string; background: string }> = {
+  zootopia: {
+    style: `STYLE (ZOOTOPIA):
+- Disney Zootopia-style 3D animated adaptation
+- anthropomorphic but grounded anatomy
+- stylized features with natural proportions
+- slightly enlarged expressive eyes (naturally aligned, no distortion)
+- realistic fur-like shading adapted from human skin tones
+- cinematic Disney lighting quality (not generic 3D render)
+- soft textures with depth
+- warm, vibrant color palette`,
+    lighting: `LIGHTING:
+- bright, soft ambient light
+- gentle shadows for depth
+- warm color temperature
+- even illumination on faces`,
+    background: `BACKGROUND:
+- clean, simple environment
+- soft neutral tones
+- minimal distractions
+- Disney-quality rendering`
+  },
+
+  titanic: {
+    style: `STYLE (TITANIC - 1990s FILM):
+- cinematic 1996 film aesthetic
+- shot on 35mm film stock
+- soft film grain texture
+- analog color grading (Kodak tone curves)
+- slight lens softness (not digital sharp)
+- natural skin texture with pores visible
+- realistic fabric and material rendering
+- period-appropriate styling`,
+    lighting: `LIGHTING:
+- natural light sources only
+- golden hour warm tones OR cool blue ocean light
+- strong directional light with soft shadows
+- atmospheric depth and haze
+- rim lighting for separation`,
+    background: `BACKGROUND:
+- realistic ship deck or ocean environment
+- atmospheric perspective
+- period-accurate details
+- cinematic depth of field`
+  },
+
+  euphoria: {
+    style: `STYLE (EUPHORIA - TV DRAMA):
+- ultra-realistic modern cinematography
+- high-end TV drama quality
+- natural skin texture with visible pores and imperfections
+- NO plastic or glossy skin
+- NO artificial smoothing or beautification
+- realistic fabric textures and materials
+- shallow depth of field for cinematic look
+- subtle film grain for organic feel`,
+    lighting: `LIGHTING:
+- moody, atmospheric lighting
+- warm pink/purple/amber color palette
+- soft shadows with depth
+- practical light sources (lamps, windows, neon)
+- high contrast but not harsh
+- cinematic color grading`,
+    background: `BACKGROUND:
+- realistic modern environments
+- use spatial structure from reference image
+- atmospheric depth
+- remove ALL background people
+- clean, focused composition`
+  }
+};
+
+// Reference-level scene definitions (POSE/COMPOSITION/CAMERA ONLY)
+const sceneDefinitions: Record<string, Record<string, string>> = {
+  zootopia: {
+    ref1: `SCENE (REFERENCE 1):
+
+POSE:
+- cheek-to-cheek intimate contact
+- heads touching and tilted together
+- both leaning forward toward camera
+- relaxed, natural body language
+
+CAMERA:
+- BOTH people holding the camera together
+- camera physically in their hands (visible or implied)
+- selfie POV from their hand position
+- slight wide-angle lens distortion
+- tight framing (heads and upper shoulders)
+
+COMPOSITION:
+- centered dual portrait
+- both faces equally prominent
+- tight crop with minimal negative space
+
+EMOTION:
+- playful, joyful, energetic
+- natural smiling expressions
+- eyes looking directly at camera with warmth
+
+CLOTHING:
+- casual modern clothing
+- person A: light fitted top, soft minimalistic style
+- person B: casual t-shirt or hoodie, neutral colors`,
+
+    ref2: `SCENE (REFERENCE 2):
+
+POSE:
+- person A hugging person B from the side
+- person B slightly leaning toward person A
+- heads angled inward toward each other
+- intimate, affectionate body language
+
+CAMERA:
+- ONLY person A holds the camera
+- camera clearly in person A's hand
+- selfie angle from person A's extended arm
+- perspective matches arm position
+
+COMPOSITION:
+- selfie framing showing upper torso
+- both faces visible and clear
+- slightly asymmetric (favor camera holder's side)
+
+EMOTION:
+- warm, affectionate, calm happiness
+- gentle smiling expressions
+- eyes looking at camera with love
+
+CLOTHING:
+- person A: soft pastel sweater or fitted top
+- person B: casual jacket or hoodie over t-shirt`,
+
+    ref3: `SCENE (REFERENCE 3):
+
+POSE:
+- person B holding person A in arms (lifted)
+- person A slightly elevated off ground
+- bodies close together, intimate contact
+- faces near each other, joyful interaction
+
+CAMERA:
+- person B holding the camera
+- camera in person B's hand while lifting person A
+- dynamic selfie POV from person B's arm
+- slight tilt for energy
+
+COMPOSITION:
+- dynamic angled framing
+- both faces prominently visible
+- shows lift action and interaction
+
+EMOTION:
+- joyful, dynamic, playful
+- excited, laughing expressions
+- eyes on camera with pure happiness
+
+CLOTHING:
+- person A: light casual outfit, fitted top + light pants
+- person B: casual streetwear, t-shirt + jacket`
+  },
+
+  titanic: {
+    ref1: `SCENE (REFERENCE 1 - ICONIC BOW POSE):
+
+POSE:
+- person A in front with arms fully extended horizontally
+- person B directly behind person A
+- person B's hands on person A's waist
+- bodies aligned, close contact
+- both facing forward
+
+CAMERA:
+- side angle (NOT frontal)
+- camera positioned to side of subjects
+- captures profile and three-quarter view
+- cinematic wide framing showing full pose
+
+COMPOSITION:
+- horizontal emphasis (extended arms)
+- ship bow edge visible in frame
+- ocean and horizon in background
+- dramatic perspective
+
+EMOTION:
+- freedom, exhilaration, romance
+- person A: arms spread wide, joyful
+- person B: protective, close embrace
+
+CLOTHING:
+- period-appropriate 1912 style
+- person A: long flowing dress or period coat
+- person B: suit jacket or vest`,
+
+    ref2: `SCENE (REFERENCE 2 - WATER SCENE):
+
+POSE:
+- both people in water
+- person A slightly higher, leaning down
+- person A leaning toward person B
+- person A holding person B's arm or shoulder
+- close intimate distance
+
+CAMERA:
+- close-up shot
+- slightly unstable handheld feeling
+- tight framing on faces and upper bodies
+
+COMPOSITION:
+- vertical emphasis
+- water surface visible
+- dark surrounding environment
+- intimate, tense framing
+
+EMOTION:
+- sadness, tension, intimacy, desperation
+- intense emotional connection
+- vulnerable expressions
+
+CLOTHING:
+- wet, soaked clothing
+- period-appropriate but distressed
+- visible water on skin and fabric`,
+
+    ref3: `SCENE (REFERENCE 3 - INTIMATE MOMENT):
+
+POSE:
+- bodies very close together
+- faces at near-kiss distance
+- one hand on waist or face
+- intimate, romantic tension
+- eyes locked on each other OR one looking at camera
+
+CAMERA:
+- close-up cinematic framing
+- shallow depth of field
+- tight crop on faces and upper bodies
+
+COMPOSITION:
+- intimate dual portrait
+- soft focus background
+- faces fill most of frame
+
+EMOTION:
+- intense romantic tension
+- desire, connection, intimacy
+- soft, vulnerable expressions
+
+CLOTHING:
+- period-appropriate formal wear
+- person A: elegant dress or period attire
+- person B: suit or formal jacket`
+  },
+
+  euphoria: {
+    ref1: `SCENE (REFERENCE 1):
+
+POSE:
+- copy pose EXACTLY from the uploaded style reference image
+- match body positions precisely
+- match physical interaction and gestures
+- match relative distance between subjects
+- match head angles and orientation
+
+CAMERA:
+- match camera angle from reference image exactly
+- match framing (close/medium/wide)
+- match perspective and lens choice
+
+COMPOSITION:
+- replicate composition from reference
+- match subject placement in frame
+- match negative space distribution
+
+EMOTION:
+- match emotional tone from reference
+- natural, authentic expressions
+- eyes and gaze matching reference direction`,
+
+    ref2: `SCENE (REFERENCE 2):
+
+POSE:
+- copy pose EXACTLY from the uploaded style reference image
+- match body positions precisely
+- match physical interaction and gestures
+- match relative distance between subjects
+- match head angles and orientation
+
+CAMERA:
+- match camera angle from reference image exactly
+- match framing (close/medium/wide)
+- match perspective and lens choice
+
+COMPOSITION:
+- replicate composition from reference
+- match subject placement in frame
+- match negative space distribution
+
+EMOTION:
+- match emotional tone from reference
+- natural, authentic expressions
+- eyes and gaze matching reference direction`,
+
+    ref3: `SCENE (REFERENCE 3):
+
+POSE:
+- copy pose EXACTLY from the uploaded style reference image
+- match body positions precisely
+- match physical interaction and gestures
+- match relative distance between subjects
+- match head angles and orientation
+
+CAMERA:
+- match camera angle from reference image exactly
+- match framing (close/medium/wide)
+- match perspective and lens choice
+
+COMPOSITION:
+- replicate composition from reference
+- match subject placement in frame
+- match negative space distribution
+
+EMOTION:
+- match emotional tone from reference
+- natural, authentic expressions
+- eyes and gaze matching reference direction`
+  }
+};
+
+// Prompt builder function
+function buildPrompt(style: string, reference: string): string {
+  const styleDef = styleDefinitions[style];
+  const sceneDef = sceneDefinitions[style]?.[reference];
+
+  if (!styleDef || !sceneDef) {
+    throw new Error(`Invalid style or reference: ${style}/${reference}`);
+  }
+
+  return `Generate an image using TWO uploaded identity images and ONE style reference image.
+
+IDENTITY PRESERVATION (CRITICAL - HIGHEST PRIORITY):
+
+TWO SEPARATE PEOPLE - DO NOT MERGE:
+- first uploaded image = person A (distinct individual)
+- second uploaded image = person B (distinct individual)
+- these are TWO DIFFERENT PEOPLE
+- DO NOT blend, merge, or average their faces
+- DO NOT create a single person from two faces
+- each person must remain individually recognizable
+
+PRESERVE EXACT IDENTITY FOR EACH PERSON:
+- face shape and bone structure (jawline, cheekbones, forehead)
+- eye shape, size, color, and spacing
+- nose shape and size
+- lip shape and thickness
+- skin tone and texture
+- facial proportions and asymmetries
+
+PRESERVE UNIQUE FEATURES:
+- hair: color, texture, style, length
+- facial hair: beard, mustache, stubble (exact style and coverage)
+- eyebrows: shape, thickness, color
+- accessories: glasses, piercings, jewelry
+- distinctive marks: scars, moles, tattoos
+- age indicators: wrinkles, skin texture
+
+DO NOT:
+- beautify or idealize faces
+- smooth skin unnaturally
+- change facial structure
+- alter eye color or shape
+- remove or modify unique features
+- blend characteristics between the two people
+
+VERIFICATION:
+- both people must be clearly recognizable as their original selves
+- someone who knows them should identify both immediately
+- faces should look like the uploaded images, just in a new style/scene
+
+${styleDef.style}
+
+${styleDef.lighting}
+
+${styleDef.background}
+
+${sceneDef}
+
+STRICT RULES:
+- exactly TWO people in the entire image
+- both faces clearly visible and distinct
+- NO third person, background people, silhouettes, or distant figures
+- NO animals or creatures
+- NO face merging or identity blending
+
+QUALITY:
+- 4K resolution
+- sharp focus on faces
+- professional composition
+- no text, logos, or watermarks
+
+NEGATIVE PROMPT:
+extra people, third person, fourth person, background people, crowd, distant figures, silhouettes, face merge, blended faces, averaged faces, merged identity, animals, creatures, distorted faces, bad anatomy, plastic skin, over-smoothing, incorrect pose, misaligned eyes, floating objects, text, watermark`;
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, {
@@ -33,14 +438,6 @@ Deno.serve(async (req: Request) => {
       styleBoard: styleBoard ? `File (${(styleBoard as File).name}, ${(styleBoard as File).size} bytes)` : "MISSING",
       selectedStyle: selectedStyle || "MISSING",
       selectedReference: selectedReference || "MISSING"
-    });
-
-    console.log("Validation check:", {
-      person1Present: !!person1,
-      person2Present: !!person2,
-      styleBoardPresent: !!styleBoard,
-      selectedStylePresent: !!selectedStyle,
-      selectedReferencePresent: !!selectedReference
     });
 
     if (!person1 || !person2 || !styleBoard || !selectedStyle || !selectedReference) {
@@ -153,452 +550,20 @@ Deno.serve(async (req: Request) => {
       useFileOutput: false,
     });
 
-    console.log("=== PROMPT MAP GENERATION ===");
+    console.log("=== PROMPT GENERATION ===");
     console.log("STYLE:", selectedStyle);
     console.log("REFERENCE:", selectedReference);
 
-    // Define all prompts in a strict map structure
-    const promptMap: Record<string, Record<string, string>> = {
-      zootopia: {
-        ref1: `Create a Disney Zootopia-style 3D animated image using two uploaded people.
-
-IDENTITY (STRICT):
-- preserve exact facial structure
-- preserve beard, piercings, unique features
-- preserve face proportions
-- DO NOT beautify
-- DO NOT change identity
-
-EYES (CRITICAL):
-- both characters must look directly into the camera
-- eyes must be perfectly aligned
-- no cross-eye, no lazy eye, no asymmetry
-
-STYLE (ZOOTOPIA SPECIFIC):
-- anthropomorphic Zootopia-style adaptation
-- stylized but grounded anatomy
-- slightly enlarged eyes but natural alignment
-- realistic fur-like shading but adapted from human skin
-- cinematic Disney lighting (not generic 3D)
-
-EMOTION:
-- playful, happy, energetic
-- natural smiling expressions
-
-CAMERA (VERY IMPORTANT):
-- BOTH characters holding the camera together
-- camera is physically in their hands
-- shot MUST feel taken from their hands (selfie POV)
-
-POSE:
-- cheek-to-cheek contact
-- heads touching
-- both leaning toward camera
-
-CLOTHING:
-- casual modern clothing
-- girl: light fitted top, soft fabric, minimalistic style
-- guy: casual t-shirt or hoodie, neutral colors
-
-COMPOSITION:
-- tight selfie framing
-- slight wide-angle distortion
-
-BACKGROUND:
-- clean soft environment
-
-RULE:
-- exactly two characters
-- no floating camera
-
-NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose, misaligned eyes`,
-
-        ref2: `Create a Disney Zootopia-style 3D animated image using two uploaded people.
-
-IDENTITY:
-Preserve all unique features including beard, piercings.
-
-EYES:
-- both looking into camera
-- perfectly aligned gaze
-
-STYLE:
-- Zootopia-style characters
-- soft but realistic materials
-- expressive but not exaggerated
-
-EMOTION:
-- warm, affectionate, calm happiness
-
-CAMERA:
-- ONLY the girl holds the camera
-- camera clearly in her hand
-- perspective must match her arm position
-
-POSE:
-- girl hugging the guy from the side
-- guy slightly leaning toward her
-- heads angled inward
-
-CLOTHING:
-- girl: soft pastel sweater or fitted top
-- guy: casual jacket or hoodie layered over t-shirt
-
-COMPOSITION:
-- selfie framing
-- upper torso visible
-
-BACKGROUND:
-- soft neutral background
-
-RULE:
-- exactly two characters
-- no floating objects
-
-NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose, misaligned eyes`,
-
-        ref3: `Create a Disney Zootopia-style 3D animated image using two uploaded people.
-
-IDENTITY:
-Keep all features (beard, piercings, hair).
-
-EYES:
-- both looking at camera
-- no misalignment
-
-STYLE:
-- strong Zootopia look (anthropomorphic realism)
-- cinematic animated lighting
-
-EMOTION:
-- joyful, dynamic, playful
-
-CAMERA:
-- MAN is holding the camera
-- camera in his hand
-- clear selfie POV from his arm
-
-POSE:
-- man holding girl in arms (full lift)
-- girl slightly elevated
-- bodies close together
-- faces near each other
-
-CLOTHING:
-- girl: light casual outfit, fitted top + light pants
-- guy: casual streetwear, t-shirt + jacket
-
-COMPOSITION:
-- dynamic selfie angle
-- slight tilt
-
-BACKGROUND:
-- simple environment
-
-RULE:
-- exactly two characters
-
-NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose, misaligned eyes`
-      },
-
-      titanic: {
-        ref1: `Create a cinematic 1990s film-style image using two uploaded people.
-
-IDENTITY:
-- preserve exact real faces
-- preserve beard, piercings
-- no smoothing
-
-EYES:
-- natural gaze alignment
-- no distortion
-
-STYLE (VERY IMPORTANT):
-- shot like 1996 film on 35mm
-- soft film grain
-- warm Kodak tones
-- no digital sharpness
-- slight lens softness
-
-EMOTION:
-- freedom, exhilaration, romance
-
-CAMERA (CRITICAL):
-- side angle (NOT front)
-- camera slightly to the side of subjects
-- perspective matches Titanic reference
-
-POSE:
-- woman in front with arms fully extended
-- man directly behind
-- hands on her waist
-- bodies aligned
-
-LIGHT:
-- golden sunset
-- strong rim light
-
-BACKGROUND:
-- ship edge visible
-- ocean
-
-RULE:
-- exactly two people
-
-NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose, misaligned eyes`,
-
-        ref2: `Create a cinematic 1990s film-style image using two uploaded people.
-
-IDENTITY:
-Preserve full realism and features.
-
-EYES:
-- emotional gaze
-- no misalignment
-
-STYLE:
-- cold blue film tone
-- grain
-- analog contrast
-
-EMOTION:
-- sadness, tension, intimacy
-
-POSE:
-- both in water
-- woman slightly higher
-- leaning toward man
-- holding his arm
-
-CAMERA:
-- close shot
-- slightly unstable handheld feeling
-
-LIGHT:
-- dim blue light
-- reflections
-
-BACKGROUND:
-- dark ocean
-
-RULE:
-- exactly two people
-
-NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose, misaligned eyes`,
-
-        ref3: `Create a cinematic 1990s film-style image using two uploaded people.
-
-IDENTITY:
-Keep faces realistic and detailed.
-
-EYES:
-- focused gaze
-- aligned
-
-STYLE:
-- warm 90s film tone
-- soft bloom
-- grain
-
-EMOTION:
-- intense romantic tension
-
-POSE:
-- bodies very close
-- near kiss distance
-- hand on waist
-
-CAMERA:
-- close-up cinematic framing
-
-LIGHT:
-- warm soft light
-- shadow contrast
-
-BACKGROUND:
-- blurred ship environment
-
-RULE:
-- exactly two people
-
-NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose, misaligned eyes`
-      },
-
-      euphoria: {
-        ref1: `Generate an image from two identity references (image1 and image2) matching the pose from a third reference image.
-
-IDENTITY (STRICT — DO NOT CHANGE):
-Preserve both people exactly as in the photos:
-- face shape, proportions, asymmetry
-- eyes, nose, lips
-- natural skin texture (no smoothing, no beautification)
-- hair color and hairstyle
-
-Faces must remain fully recognizable.
-
-CHARACTER RULES (CRITICAL):
-- EXACTLY TWO PEOPLE
-- NO third person
-- NO background people
-- NO silhouettes
-- NO animals
-
-STYLE (LOCKED):
-Ultra-realistic cinematic TV drama:
-- natural skin texture with visible pores
-- NO plastic or glossy skin
-- moody lighting (warm / pink / purple tones)
-- soft shadows
-- shallow depth of field
-- subtle film grain
-
-POSE:
-- copy pose EXACTLY from reference image
-- match body positions precisely
-- match interaction and gesture
-- match distance between subjects
-- match camera angle
-
-BACKGROUND:
-- use spatial structure from reference
-- keep environment consistent
-- remove all people from background
-
-FINAL OUTPUT:
-- match scene EXACTLY
-- preserve identity and pose
-- 4K quality
-- no text, no logos, no artifacts
-
-NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
-
-        ref2: `Generate an image from two identity references (image1 and image2) matching the pose from a third reference image.
-
-IDENTITY (STRICT — DO NOT CHANGE):
-Preserve both people exactly as in the photos:
-- face shape, proportions, asymmetry
-- eyes, nose, lips
-- natural skin texture (no smoothing, no beautification)
-- hair color and hairstyle
-
-Faces must remain fully recognizable.
-
-CHARACTER RULES (CRITICAL):
-- EXACTLY TWO PEOPLE
-- NO third person
-- NO background people
-- NO silhouettes
-- NO animals
-
-STYLE (LOCKED):
-Ultra-realistic cinematic TV drama:
-- natural skin texture with visible pores
-- NO plastic or glossy skin
-- moody lighting (warm / pink / purple tones)
-- soft shadows
-- shallow depth of field
-- subtle film grain
-
-POSE:
-- copy pose EXACTLY from reference image
-- match body positions precisely
-- match interaction and gesture
-- match distance between subjects
-- match camera angle
-
-BACKGROUND:
-- use spatial structure from reference
-- keep environment consistent
-- remove all people from background
-
-FINAL OUTPUT:
-- match scene EXACTLY
-- preserve identity and pose
-- 4K quality
-- no text, no logos, no artifacts
-
-NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`,
-
-        ref3: `Generate an image from two identity references (image1 and image2) matching the pose from a third reference image.
-
-IDENTITY (STRICT — DO NOT CHANGE):
-Preserve both people exactly as in the photos:
-- face shape, proportions, asymmetry
-- eyes, nose, lips
-- natural skin texture (no smoothing, no beautification)
-- hair color and hairstyle
-
-Faces must remain fully recognizable.
-
-CHARACTER RULES (CRITICAL):
-- EXACTLY TWO PEOPLE
-- NO third person
-- NO background people
-- NO silhouettes
-- NO animals
-
-STYLE (LOCKED):
-Ultra-realistic cinematic TV drama:
-- natural skin texture with visible pores
-- NO plastic or glossy skin
-- moody lighting (warm / pink / purple tones)
-- soft shadows
-- shallow depth of field
-- subtle film grain
-
-POSE:
-- copy pose EXACTLY from reference image
-- match body positions precisely
-- match interaction and gesture
-- match distance between subjects
-- match camera angle
-
-BACKGROUND:
-- use spatial structure from reference
-- keep environment consistent
-- remove all people from background
-
-FINAL OUTPUT:
-- match scene EXACTLY
-- preserve identity and pose
-- 4K quality
-- no text, no logos, no artifacts
-
-NEGATIVE:
-extra people, third person, animals, crowd, background figures, distorted faces, merged faces, bad anatomy, plastic skin, over-smoothing, CGI look, incorrect pose`
-      }
-    };
-
-    // Get the EXACT prompt for this style + reference combination
-    const prompt = promptMap[selectedStyle]?.[selectedReference];
-
-    if (!prompt) {
-      console.error("No prompt found for:", { selectedStyle, selectedReference });
-      return new Response(
-        JSON.stringify({
-          error: "Invalid style/reference combination",
-          details: `No prompt defined for ${selectedStyle}/${selectedReference}`
-        }),
-        {
-          status: 400,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
-
-    console.log("PROMPT USED (first 200 chars):", prompt.substring(0, 200));
-    console.log("Running QWEN with single isolated prompt");
+    // Build the final prompt using the builder function
+    const prompt = buildPrompt(selectedStyle, selectedReference);
+
+    console.log("PROMPT STRUCTURE:");
+    console.log("- Style category:", selectedStyle);
+    console.log("- Scene reference:", selectedReference);
+    console.log("- Total prompt length:", prompt.length);
+    console.log("- First 300 chars:", prompt.substring(0, 300));
+
+    console.log("Running QWEN with structured prompt");
 
     const output = await replicate.run(
       "qwen/qwen-image-edit-plus",
