@@ -158,22 +158,27 @@ Period-appropriate styling.
 Golden hour lighting.
 
 SCENE:
-Both in cold ocean water.
-Water level around shoulders.
+Night ocean survival scene.
 
-Girl slightly higher.
-Leaning toward the man.
+Girl lying on a floating wooden plank.
+Her upper body above water.
+Body horizontal, supported by the plank.
 
-Man lower in water.
-Leaning toward her.
+Man in the water next to her.
+His body mostly submerged.
+He is holding onto the edge of the plank with both hands.
+
+His head and shoulders above water.
+He leans toward her from the water.
 
 They are looking directly at each other.
-Faces close.
+Faces close but not touching.
 
-Camera slightly further away (not tight close-up).
+Camera slightly above water level.
+Medium distance (not tight close-up).
 
-IMPORTANT:
-Keep dark open ocean background unchanged.
+Water surface clearly visible.
+Small waves around them.
 
 GLOBAL RULES:
 - Only TWO people allowed
@@ -202,19 +207,28 @@ Period-appropriate styling.
 Golden hour lighting.
 
 SCENE:
-Man standing behind the girl.
-Holding her around the waist.
+Romantic close interaction on ship deck.
 
-Girl leaning back toward him.
+Both characters standing upright.
+Bodies facing forward toward the camera direction.
 
-Their faces extremely close.
-Almost touching lips.
+They turn their heads and upper bodies toward each other.
 
-They are looking at each other.
-NOT looking at the camera.
+Man standing very close behind the girl.
+Arms wrapped around her waist.
 
-Camera slightly further away.
-Upper bodies visible.
+Girl leaning slightly back into him.
+
+Faces extremely close.
+Almost touching lips (near kiss).
+
+Camera medium shot (slightly wider than close-up).
+Upper bodies clearly visible.
+
+Background:
+Ship deck environment with visible railing.
+Warm evening sky with soft sunset tones.
+Subtle depth in background (not flat, not empty).
 
 GLOBAL RULES:
 - Only TWO people allowed
