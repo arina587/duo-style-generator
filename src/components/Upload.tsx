@@ -34,10 +34,19 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
     }
   };
 
-  const getStyleImageAsFile = async (): Promise<File> => {
-    const response = await fetch(selectedReference);
-    const blob = await response.blob();
-    return new File([blob], 'style-reference.jpg', { type: blob.type });
+  const [referenceFile, setReferenceFile] = useState<File | null>(null);
+
+  const handleReferenceSelect = async (reference: string) => {
+    onReferenceSelect(reference);
+    try {
+      const response = await fetch(reference);
+      const blob = await response.blob();
+      const file = new File([blob], 'reference.jpg', { type: blob.type });
+      setReferenceFile(file);
+    } catch (error) {
+      console.error('Failed to load reference image:', error);
+      setError('Failed to load reference image');
+    }
   };
 
   const handleGenerate = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -55,7 +64,7 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
       photo1: !!photo1,
       photo2: !!photo2,
       selectedStyle: selectedStyle,
-      selectedReference: selectedReference,
+      referenceFile: !!referenceFile,
     });
 
     if (!photo1 || !photo2) {
@@ -70,8 +79,8 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
       return;
     }
 
-    if (!selectedReference) {
-      console.error('BLOCKED: Missing selectedReference');
+    if (!referenceFile) {
+      console.error('BLOCKED: Missing reference file');
       setError('Please select a reference image before generating');
       return;
     }
@@ -79,23 +88,8 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
     setIsGenerating(true);
     setError('');
 
-    try {
-      const styleBoard = await getStyleImageAsFile();
-
-      if (!styleBoard) {
-        console.error('BLOCKED: Failed to load style board');
-        setError('Failed to load style reference. Please try again.');
-        setIsGenerating(false);
-        return;
-      }
-
-      console.log('=== PASSING TO PARENT - NO REQUEST HERE ===');
-      onGenerate(photo1, photo2, styleBoard);
-    } catch (error) {
-      console.error('Error preparing files:', error);
-      setError('Failed to prepare files. Try again.');
-      setIsGenerating(false);
-    }
+    console.log('=== PASSING TO PARENT - NO REQUEST HERE ===');
+    onGenerate(photo1, photo2, referenceFile);
   };
 
   return (
@@ -132,7 +126,7 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
                 <button
                   key={index}
                   type="button"
-                  onClick={() => onReferenceSelect(img)}
+                  onClick={() => handleReferenceSelect(img)}
                   className={`rounded-xl overflow-hidden soft-shadow aspect-[3/4] transition-all duration-300 relative ${
                     selectedReference === img
                       ? 'ring-4 ring-[#6B8FA3] scale-105'
@@ -223,7 +217,7 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
           <button
             type="button"
             onClick={handleGenerate}
-            disabled={isGenerating || !photo1 || !photo2 || !selectedReference}
+            disabled={isGenerating || !photo1 || !photo2 || !referenceFile}
             className="flex items-center gap-3 px-10 py-4 bg-[#6B8FA3] text-white rounded-full font-light tracking-wide hover:bg-[#8B6B4E] transition-all duration-500 soft-shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-[#6B8FA3]"
           >
             <span>{isGenerating ? 'Generating...' : 'Generate Fusion'}</span>

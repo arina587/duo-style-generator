@@ -21,7 +21,7 @@ function App() {
     setCurrentView('upload');
   };
 
-  const handleGenerate = async (photo1: File, photo2: File, combinedStyleBoard: File) => {
+  const handleGenerate = async (photo1: File, photo2: File, referenceFile: File) => {
     console.log('=== APP HANDLEGENERATE START ===');
 
     if (isGenerating) {
@@ -29,21 +29,16 @@ function App() {
       return;
     }
 
-    if (!photo1 || !photo2 || !combinedStyleBoard || !selectedStyle || !selectedReference) {
+    if (!photo1 || !photo2 || !referenceFile || !selectedStyle) {
       console.error('BLOCKED: Missing required fields', {
         person1: !!photo1,
         person2: !!photo2,
-        styleBoard: !!combinedStyleBoard,
+        reference: !!referenceFile,
         selectedStyle: !!selectedStyle,
-        selectedReference: !!selectedReference,
       });
       setError('Missing required data. Please try again.');
       return;
     }
-
-    // Extract reference ID from URL (ref1, ref2, or ref3)
-    const referenceMatch = selectedReference.match(/ref(\d)\.jpg$/);
-    const referenceId = referenceMatch ? `ref${referenceMatch[1]}` : 'ref1';
 
     setIsGenerating(true);
     setError('');
@@ -51,22 +46,19 @@ function App() {
 
     console.log('=== REQUEST START ===');
     console.log('selectedStyle:', selectedStyle);
-    console.log('selectedReference:', referenceId);
 
     try {
       const formData = new FormData();
       formData.append('person1', photo1);
       formData.append('person2', photo2);
-      formData.append('styleBoard', combinedStyleBoard);
+      formData.append('reference', referenceFile);
       formData.append('selectedStyle', selectedStyle);
-      formData.append('selectedReference', referenceId);
 
       console.log('FormData built with:', {
         person1: photo1.name,
         person2: photo2.name,
-        styleBoard: combinedStyleBoard.name,
+        reference: referenceFile.name,
         selectedStyle: selectedStyle,
-        selectedReference: referenceId,
       });
 
       const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
