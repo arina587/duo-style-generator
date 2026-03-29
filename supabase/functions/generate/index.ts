@@ -127,6 +127,17 @@ Deno.serve(async (req: Request) => {
       return `data:${file.type};base64,${base64}`;
     };
 
+    const blobToDataURL = async (blob: Blob): Promise<string> => {
+      const arrayBuffer = await blob.arrayBuffer();
+      const bytes = new Uint8Array(arrayBuffer);
+      let binary = '';
+      for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      const base64 = btoa(binary);
+      return `data:${blob.type};base64,${base64}`;
+    };
+
     console.log("Converting files to data URLs...");
     const person1DataURL = await fileToDataURL(person1 as File);
     const person2DataURL = await fileToDataURL(person2 as File);
@@ -144,22 +155,23 @@ Deno.serve(async (req: Request) => {
     console.log("referenceMap[selectedStyle][selectedReference]:", referenceMap[selectedStyle][selectedReference]);
 
     const referenceImagePath = referenceMap[selectedStyle][selectedReference];
-    const referenceImageUrl = `https://yourdomain.com${referenceImagePath}`;
 
-    console.log("\nREFERENCE IMAGE URL:");
-    console.log(referenceImageUrl);
+    console.log("\nLoading reference image from:", referenceImagePath);
+    const referenceResponse = await fetch(referenceImagePath);
+    const referenceBlob = await referenceResponse.blob();
+    const referenceImageDataURL = await blobToDataURL(referenceBlob);
 
     console.log("\n=== VALIDATION ===");
     console.log("Is referenceMap defined?", referenceMap ? "YES" : "NO");
     console.log("Is referenceMap[selectedStyle] defined?", referenceMap[selectedStyle] ? "YES" : "NO");
     console.log("Is referenceMap[selectedStyle][selectedReference] defined?", referenceMap[selectedStyle][selectedReference] ? "YES" : "NO");
-    console.log("Is input_image a valid URL string?", (typeof referenceImageUrl === 'string' && referenceImageUrl.startsWith('http')) ? "YES" : "NO");
+    console.log("Is input_image a valid data URL?", (typeof referenceImageDataURL === 'string' && referenceImageDataURL.startsWith('data:image/')) ? "YES" : "NO");
 
     console.log("\n=== STEP 1: Replace first person ===");
     const step1Payload = {
       input: {
         prompt: prompt1,
-        input_image: referenceImageUrl,
+        input_image: referenceImageDataURL,
         aspect_ratio: "match_input_image",
         prompt_upsampling: false,
         output_format: "png",
@@ -169,7 +181,7 @@ Deno.serve(async (req: Request) => {
 
     console.log("\n=== REPLICATE INPUT (STEP 1) ===");
     console.log("prompt:", step1Payload.input.prompt);
-    console.log("input_image:", step1Payload.input.input_image);
+    console.log("input_image type:", referenceImageDataURL.substring(0, 50));
 
     const step1Output = await replicate.run(
       "black-forest-labs/flux-kontext-pro",
