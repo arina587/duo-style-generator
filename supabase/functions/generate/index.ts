@@ -10,114 +10,86 @@ const corsHeaders = {
 // Complete prompt map: one full prompt per reference
 const promptMap: Record<string, Record<string, string>> = {
   zootopia: {
-    ref1: `IDENTITY:
-Use two uploaded images as identity reference.
-These are TWO DIFFERENT PEOPLE.
-Preserve recognizable facial features: face shape, eyes, nose, lips, hair, accessories.
-Do NOT merge faces. Do NOT create a third face.
+    ref1: `Create a stylized 3D cartoon image of two people based on uploaded photos.
 
-CRITICAL RULE:
-Exactly TWO people in the image.
-No background people.
-No extra characters.
+Keep both people recognizable.
+Do not merge faces.
+Exactly two people only. No other people.
 
-STYLE (LOCKED):
-Zootopia-style 3D cartoon.
+Style:
+Zootopia-style 3D animated cartoon.
 Non-photorealistic.
 Large expressive eyes.
 Smooth simplified faces.
-No skin texture.
-Soft clean cartoon lighting.
-Style must stay identical for all references.
+No realistic skin texture.
+Soft clean lighting.
 
-SCENE:
-Clean symmetric selfie.
-Girl holds phone.
-Both faces centered.
-Same distance to camera.
+Scene:
+Clean selfie.
+Girl holding the phone.
+Camera directly in front.
+Faces aligned at the same height.
+Both equally close to the camera.
 Cheeks touching.
-Minimal clean background.
+Centered symmetric framing.
+Both looking straight into camera.
 
-GLOBAL RULES:
-- Only TWO people allowed
-- No third person anywhere
-- No background faces
-- No silhouettes of people
-- Eyes must be straight and natural (no cross-eye)
-- Both people must look at the camera`,
+Background:
+Simple clean neutral background.`,
 
-    ref2: `IDENTITY:
-Use two uploaded images as identity reference.
-These are TWO DIFFERENT PEOPLE.
-Preserve recognizable facial features: face shape, eyes, nose, lips, hair, accessories.
-Do NOT merge faces. Do NOT create a third face.
+    ref2: `Create a stylized 3D cartoon image of two people based on uploaded photos.
 
-CRITICAL RULE:
-Exactly TWO people in the image.
-No background people.
-No extra characters.
+Keep both people recognizable.
+Do not merge faces.
+Exactly two people only. No other people.
 
-STYLE (LOCKED):
-Zootopia-style 3D cartoon.
+Style:
+Zootopia-style 3D animated cartoon.
 Non-photorealistic.
 Large expressive eyes.
 Smooth simplified faces.
-No skin texture.
-Soft clean cartoon lighting.
-Style must stay identical for all references.
+No realistic skin texture.
+Soft clean lighting.
 
-SCENE:
-Close asymmetric selfie.
-Girl pushes into man from side.
-Faces overlap.
-One face closer to camera.
+Scene:
+Close selfie with asymmetry.
+Girl pushes her face into the man from the side.
+Girl closer to camera.
+Faces slightly overlapping.
+Heads not aligned.
+Man leaning slightly away.
 Off-center framing.
-Soft blurred background.
+Camera very close.
 
-GLOBAL RULES:
-- Only TWO people allowed
-- No third person anywhere
-- No background faces
-- No silhouettes of people
-- Eyes must be straight and natural (no cross-eye)
-- Both people must look at the camera`,
+Background:
+Soft blurred neutral background.`,
 
-    ref3: `IDENTITY:
-Use two uploaded images as identity reference.
-These are TWO DIFFERENT PEOPLE.
-Preserve recognizable facial features: face shape, eyes, nose, lips, hair, accessories.
-Do NOT merge faces. Do NOT create a third face.
+    ref3: `Create a stylized 3D cartoon image of two people based on uploaded photos.
 
-CRITICAL RULE:
-Exactly TWO people in the image.
-No background people.
-No extra characters.
+Keep both people recognizable.
+Do not merge faces.
+Exactly two people only. No other people.
 
-STYLE (LOCKED):
-Zootopia-style 3D cartoon.
+Style:
+Zootopia-style 3D animated cartoon.
 Non-photorealistic.
 Large expressive eyes.
 Smooth simplified faces.
-No skin texture.
-Soft clean cartoon lighting.
-Style must stay identical for all references.
+No realistic skin texture.
+Soft clean lighting.
 
-SCENE:
+Scene:
 Dynamic selfie.
-Man holding girl in arms.
-Man taking selfie with extended arm.
-Upper bodies visible.
-Girl higher than man.
-Slight camera tilt.
-Simple blurred party background with colored lights.
+Man holding the girl in his arms.
+Man taking the selfie with one extended arm.
+Girl lifted higher than man.
+Upper bodies and arms clearly visible.
+Not a close-up.
+Camera slightly tilted.
+Wider framing.
 
-GLOBAL RULES:
-- Only TWO people allowed
-- No third person anywhere
-- No background faces
-- No silhouettes of people
-- Eyes must be straight and natural (no cross-eye)
-- Both people must look at the camera`
+Background:
+Simple soft party lighting (pink, purple, blue), blurred.`
   },
 
   titanic: {
