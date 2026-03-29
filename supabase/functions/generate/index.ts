@@ -40,38 +40,51 @@ const sceneDefinitions: Record<string, Record<string, string>> = {
   zootopia: {
     ref1: `SCENE:
 Clean balanced selfie.
-Girl holds the phone with her arm extended.
-Camera is directly in front of both faces.
-Both heads aligned on the same horizontal level.
-Faces equally close to the camera.
-Cheeks touching in the center.
-Both looking straight into the lens.
+Girl holds the phone with extended arm.
+Camera directly in front.
+Heads aligned on same horizontal line.
+Faces equally close to camera.
+Cheeks touching in center.
+Both looking straight into lens (eyes aligned correctly).
 Symmetric close-up framing.
-No tilt.`,
+No tilt.
+
+BACKGROUND:
+Simple clean bright background.
+Soft neutral color.
+No objects, no people.`,
 
     ref2: `SCENE:
 Tight asymmetric selfie.
-Girl pushes her face into the man from the side.
-Girl is closer to camera.
-Faces overlap slightly and look compressed together.
-Heads are not aligned horizontally.
-Man leans slightly away.
-Camera is very close and slightly off-center.
+Girl pushes into man from the side.
+Girl closer to camera.
+Faces slightly overlapping and compressed.
+Heads not aligned.
+Man slightly leaning away.
+Camera very close and off-center.
 Asymmetric framing.
-Strong side-pressure pose.`,
+Eyes must look at camera correctly (no distortion).
+
+BACKGROUND:
+Soft blurred neutral background.
+No crowd, no objects.`,
 
     ref3: `SCENE:
 Dynamic selfie with body interaction.
-Man is holding the girl in his arms.
-Man is also taking the selfie himself with one extended arm.
-Phone camera is the viewpoint.
-Girl is clearly lifted higher than normal standing level.
-Upper bodies and arms are visible.
-Man's holding arm is visible supporting the girl.
-Both faces visible, both looking into the camera.
-Frame is wider than ref1 and ref2.
-Slight tilted selfie angle.
-This is NOT a face-only close-up.`
+Man holding girl in arms.
+Man taking selfie with extended arm.
+Camera is viewpoint.
+Girl lifted higher.
+Upper bodies and arms clearly visible.
+Both looking into camera (correct eye direction).
+Wider frame than ref1/ref2.
+Slight tilt.
+Not a face-only shot.
+
+BACKGROUND:
+Simple party-style background.
+Soft colored lights (pink, purple, blue).
+Blurred environment, no distinct people.`
   },
 
   titanic: {
@@ -128,12 +141,26 @@ function buildPrompt(style: string, reference: string): string {
 
   return `IDENTITY:
 Use two uploaded images as identity reference.
-Keep both people recognizable.
-Do not merge faces.
+Keep both people clearly recognizable.
+Preserve key facial features:
+- face shape
+- eyes (correct alignment, no cross-eye)
+- nose
+- lips
+- hair and hairstyle
+- beard / glasses / accessories if present
+Do NOT merge faces.
+Do NOT change facial proportions.
+Convert to cartoon style while keeping identity.
 
 ${styleDef}
 
 ${sceneDef}
+
+GLOBAL RULE:
+Eyes must be natural and correctly aligned.
+No cross-eye or distortion.
+Identity must remain recognizable.
 
 Two people only.
 No background people.
