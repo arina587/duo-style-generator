@@ -10,25 +10,49 @@ const corsHeaders = {
 // Category-level style definitions (STYLE ONLY)
 const styleDefinitions: Record<string, { style: string; lighting: string; background: string }> = {
   zootopia: {
-    style: `STYLE (ZOOTOPIA):
-- Disney Zootopia-style 3D animated adaptation
-- anthropomorphic but grounded anatomy
-- stylized features with natural proportions
-- slightly enlarged expressive eyes (naturally aligned, no distortion)
-- realistic fur-like shading adapted from human skin tones
-- cinematic Disney lighting quality (not generic 3D render)
-- soft textures with depth
-- warm, vibrant color palette`,
-    lighting: `LIGHTING:
-- bright, soft ambient light
-- gentle shadows for depth
-- warm color temperature
-- even illumination on faces`,
-    background: `BACKGROUND:
-- clean, simple environment
-- soft neutral tones
-- minimal distractions
-- Disney-quality rendering`
+    style: `STYLE (LOCKED — ZOOTOPIA FILM):
+- 3D animated style matching the visual language of Zootopia (2016 film)
+- anthropomorphic proportions (human-like but with animal-inspired features)
+- large expressive eyes with detailed iris and natural pupil
+- soft rounded facial shapes and gentle features
+- short stylized fur with subtle texture detail
+- clean physically-based rendering (PBR) with realistic materials
+- NO generic Pixar style
+- NO cartoon or anime influence
+- NO toon outlines or cel-shading
+
+SHADING:
+- soft diffuse shading with gentle gradients
+- gentle specular highlights on eyes and wet surfaces
+- no harsh contrast or dramatic shadows
+- no toon outlines or flat colors
+- realistic subsurface scattering on fur
+
+LIGHTING:
+- soft global illumination
+- balanced exposure across the scene
+- cinematic but clean lighting setup
+- natural light falloff
+
+COLOR:
+- vibrant but controlled color palette
+- natural color transitions
+- no oversaturation or neon colors (except ref3)
+- warm friendly tones
+
+IMPORTANT:
+- style MUST remain identical across all three references
+- only the scene/pose/lighting changes between references
+- DO NOT switch to generic Pixar, cartoon, or anime style`,
+    lighting: `LIGHTING (DEFAULT):
+- soft even lighting
+- gentle ambient occlusion
+- minimal shadows
+- warm neutral color temperature`,
+    background: `BACKGROUND (DEFAULT):
+- clean minimal environment
+- soft neutral backdrop
+- no distracting elements`
   },
 
   titanic: {
@@ -83,91 +107,146 @@ const styleDefinitions: Record<string, { style: string; lighting: string; backgr
 // Reference-level scene definitions (POSE/COMPOSITION/CAMERA ONLY)
 const sceneDefinitions: Record<string, Record<string, string>> = {
   zootopia: {
-    ref1: `SCENE (REFERENCE 1):
+    ref1: `SCENE (REFERENCE 1 — PERFECT SELFIE):
+
+ROLE MAPPING:
+- first image = girl
+- second image = man
+
+CAMERA (CRITICAL):
+- girl holding camera with extended arm
+- camera is the viewpoint (true selfie perspective)
+- slight wide-angle lens distortion
+- arm partially visible in frame or implied
 
 POSE:
-- cheek-to-cheek intimate contact
-- heads touching and tilted together
-- both leaning forward toward camera
+- faces very close together
+- cheek-to-cheek contact
+- heads gently touching
+- both leaning slightly toward camera
 - relaxed, natural body language
 
-CAMERA:
-- BOTH people holding the camera together
-- camera physically in their hands (visible or implied)
-- selfie POV from their hand position
-- slight wide-angle lens distortion
-- tight framing (heads and upper shoulders)
-
 COMPOSITION:
-- centered dual portrait
+- tight close-up framing
+- faces dominate the frame
 - both faces equally prominent
-- tight crop with minimal negative space
+- minimal negative space
+- upper shoulders visible
 
 EMOTION:
-- playful, joyful, energetic
-- natural smiling expressions
-- eyes looking directly at camera with warmth
+- calm, friendly expressions
+- gentle natural smiles
+- both looking directly into camera
+- warm, approachable mood
+
+LIGHTING:
+- soft, even lighting on both faces
+- no strong shadows
+- balanced exposure
+- gentle highlights on eyes
+
+BACKGROUND:
+- minimal, clean, neutral environment
+- no distractions
+- soft focus
 
 CLOTHING:
 - casual modern clothing
-- person A: light fitted top, soft minimalistic style
-- person B: casual t-shirt or hoodie, neutral colors`,
+- girl: light fitted top, minimalistic style
+- man: casual t-shirt or hoodie, neutral colors`,
 
-    ref2: `SCENE (REFERENCE 2):
+    ref2: `SCENE (REFERENCE 2 — AWKWARD SELFIE):
+
+ROLE MAPPING:
+- first image = girl
+- second image = man
+
+CAMERA (CRITICAL):
+- camera extremely close to faces
+- very tight framing (spontaneous selfie feel)
+- noticeable wide-angle distortion
+- slight asymmetry
 
 POSE:
-- person A hugging person B from the side
-- person B slightly leaning toward person A
-- heads angled inward toward each other
-- intimate, affectionate body language
-
-CAMERA:
-- ONLY person A holds the camera
-- camera clearly in person A's hand
-- selfie angle from person A's extended arm
-- perspective matches arm position
+- girl pressing her face against the man
+- faces slightly compressed from proximity
+- intimate, playful physical contact
+- heads tilted toward each other
 
 COMPOSITION:
-- selfie framing showing upper torso
-- both faces visible and clear
-- slightly asymmetric (favor camera holder's side)
+- very tight crop on faces
+- asymmetrical framing
+- faces fill most of frame
+- unusual angle for spontaneity
 
 EMOTION:
-- warm, affectionate, calm happiness
-- gentle smiling expressions
-- eyes looking at camera with love
+- girl: smiling, energetic, playful
+- man: reacting, slightly uncomfortable or surprised
+- contrasting expressions
+- spontaneous, unposed moment
+
+LIGHTING:
+- soft but less uniform than ref1
+- natural indoor lighting
+- gentle shadows adding depth
+
+BACKGROUND:
+- neutral, soft focus
+- minimal visibility due to tight framing
 
 CLOTHING:
-- person A: soft pastel sweater or fitted top
-- person B: casual jacket or hoodie over t-shirt`,
+- casual modern clothing
+- girl: soft pastel sweater or fitted top
+- man: casual hoodie or t-shirt`,
 
-    ref3: `SCENE (REFERENCE 3):
+    ref3: `SCENE (REFERENCE 3 — PARTY SELFIE):
+
+ROLE MAPPING:
+- first image = girl
+- second image = man
+
+CAMERA (CRITICAL):
+- man holding the girl with one arm
+- holding phone camera with other hand
+- camera slightly above subjects and angled down
+- dynamic tilted angle
+- phone partially visible in frame edge
 
 POSE:
-- person B holding person A in arms (lifted)
-- person A slightly elevated off ground
-- bodies close together, intimate contact
-- faces near each other, joyful interaction
-
-CAMERA:
-- person B holding the camera
-- camera in person B's hand while lifting person A
-- dynamic selfie POV from person B's arm
-- slight tilt for energy
+- man lifting girl slightly off ground with one arm
+- girl leaning toward man
+- upper bodies and faces clearly visible
+- close intimate contact
+- dynamic, energetic pose
 
 COMPOSITION:
-- dynamic angled framing
+- medium shot showing upper bodies
+- dynamic tilted angle for energy
 - both faces prominently visible
-- shows lift action and interaction
+- shows physical interaction and lift
 
 EMOTION:
 - joyful, dynamic, playful
 - excited, laughing expressions
-- eyes on camera with pure happiness
+- both looking at camera
+- party atmosphere energy
+
+LIGHTING (SPECIAL):
+- strong neon/colored lighting (pink, purple, blue)
+- colored highlights on faces and hair
+- dramatic but vibrant lighting
+- high energy feel
+
+BACKGROUND:
+- blurred crowd in background
+- party/club atmosphere
+- bokeh lights
+- vibrant colored environment
 
 CLOTHING:
-- person A: light casual outfit, fitted top + light pants
-- person B: casual streetwear, t-shirt + jacket`
+- casual party attire
+- girl: light casual outfit, fitted top + light pants
+- man: casual streetwear, t-shirt + jacket`
   },
 
   titanic: {
@@ -351,8 +430,8 @@ function buildPrompt(style: string, reference: string): string {
 IDENTITY PRESERVATION (CRITICAL - HIGHEST PRIORITY):
 
 TWO SEPARATE PEOPLE - DO NOT MERGE:
-- first uploaded image = person A (distinct individual)
-- second uploaded image = person B (distinct individual)
+- first uploaded image = girl (distinct individual)
+- second uploaded image = man (distinct individual)
 - these are TWO DIFFERENT PEOPLE
 - DO NOT blend, merge, or average their faces
 - DO NOT create a single person from two faces
