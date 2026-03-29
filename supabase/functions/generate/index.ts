@@ -160,25 +160,29 @@ Golden hour lighting.
 SCENE:
 Night ocean survival scene.
 
-Girl lying on a floating wooden plank.
-Her upper body above water.
-Body horizontal, supported by the plank.
+Girl lying on her stomach on a floating wooden plank.
+Her body stretched along the plank.
+Chest and arms resting on the plank.
+Lower body partially in the water.
 
-Man in the water next to her.
+Man in the water next to the plank.
 His body mostly submerged.
-He is holding onto the edge of the plank with both hands.
 
-His head and shoulders above water.
-He leans toward her from the water.
+He is NOT climbing onto the plank.
+He is only holding onto the edge with one arm.
 
-They are looking directly at each other.
-Faces close but not touching.
+His upper body slightly leaning against the plank.
+Head and shoulders above water.
+
+He looks up toward the girl.
+The girl looks down toward him.
+
+Faces close but clearly separated.
 
 Camera slightly above water level.
-Medium distance (not tight close-up).
+Medium distance (not close-up).
 
-Water surface clearly visible.
-Small waves around them.
+Water surface clearly visible with small waves.
 
 GLOBAL RULES:
 - Only TWO people allowed
@@ -207,28 +211,30 @@ Period-appropriate styling.
 Golden hour lighting.
 
 SCENE:
-Romantic close interaction on ship deck.
+Romantic moment at the edge of the ship.
 
-Both characters standing upright.
-Bodies facing forward toward the camera direction.
+Both characters standing upright at the railing.
+Their bodies facing forward (frontally aligned).
 
-They turn their heads and upper bodies toward each other.
+They do NOT turn their bodies toward each other.
 
-Man standing very close behind the girl.
+Only their heads are turned toward each other.
+
+Man standing directly behind the girl.
 Arms wrapped around her waist.
 
 Girl leaning slightly back into him.
 
-Faces extremely close.
+Their faces extremely close.
 Almost touching lips (near kiss).
 
-Camera medium shot (slightly wider than close-up).
+Camera medium shot.
 Upper bodies clearly visible.
 
 Background:
-Ship deck environment with visible railing.
-Warm evening sky with soft sunset tones.
-Subtle depth in background (not flat, not empty).
+Ship railing clearly visible.
+Open ocean behind them.
+Warm sunset sky.
 
 GLOBAL RULES:
 - Only TWO people allowed
