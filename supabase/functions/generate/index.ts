@@ -137,16 +137,25 @@ Deno.serve(async (req: Request) => {
       useFileOutput: false,
     });
 
+    console.log("=== RUNTIME LOGS ===");
+    console.log("selectedStyle:", selectedStyle);
+    console.log("selectedReference:", selectedReference);
+    console.log("referenceMap[selectedStyle]:", referenceMap[selectedStyle]);
+    console.log("referenceMap[selectedStyle][selectedReference]:", referenceMap[selectedStyle][selectedReference]);
+
     const referenceImagePath = referenceMap[selectedStyle][selectedReference];
     const referenceImageUrl = `https://yourdomain.com${referenceImagePath}`;
 
-    console.log("=== EDIT PIPELINE ===");
-    console.log("MODEL: black-forest-labs/flux-kontext-pro");
-    console.log("REFERENCE IMAGE:", referenceImageUrl);
-    console.log("NO IMAGE ARRAY USED");
-    console.log("TWO SEQUENTIAL CALLS");
+    console.log("\nREFERENCE IMAGE URL:");
+    console.log(referenceImageUrl);
 
-    console.log("=== STEP 1: Replace first person ===");
+    console.log("\n=== VALIDATION ===");
+    console.log("Is referenceMap defined?", referenceMap ? "YES" : "NO");
+    console.log("Is referenceMap[selectedStyle] defined?", referenceMap[selectedStyle] ? "YES" : "NO");
+    console.log("Is referenceMap[selectedStyle][selectedReference] defined?", referenceMap[selectedStyle][selectedReference] ? "YES" : "NO");
+    console.log("Is input_image a valid URL string?", (typeof referenceImageUrl === 'string' && referenceImageUrl.startsWith('http')) ? "YES" : "NO");
+
+    console.log("\n=== STEP 1: Replace first person ===");
     const step1Payload = {
       input: {
         prompt: prompt1,
@@ -158,14 +167,19 @@ Deno.serve(async (req: Request) => {
       }
     };
 
-    console.log("Step 1 payload:", JSON.stringify(step1Payload, null, 2));
+    console.log("\n=== REPLICATE INPUT (STEP 1) ===");
+    console.log("prompt:", step1Payload.input.prompt);
+    console.log("input_image:", step1Payload.input.input_image);
 
     const step1Output = await replicate.run(
       "black-forest-labs/flux-kontext-pro",
       step1Payload
     );
 
-    console.log("Step 1 raw output:", JSON.stringify(step1Output, null, 2));
+    console.log("\n=== REPLICATE RAW OUTPUT (STEP 1) ===");
+    console.log("RAW OUTPUT:");
+    console.log(JSON.stringify(step1Output, null, 2));
+    console.log("Did replicate.run return a value?", step1Output ? "YES" : "NO");
 
     let step1ImageUrl: string | null = null;
     let step1Item = Array.isArray(step1Output) ? step1Output[0] : step1Output;
@@ -188,7 +202,7 @@ Deno.serve(async (req: Request) => {
 
     console.log("Step 1 result:", step1ImageUrl);
 
-    console.log("=== STEP 2: Replace second person ===");
+    console.log("\n=== STEP 2: Replace second person ===");
     const step2Payload = {
       input: {
         prompt: prompt2,
@@ -200,14 +214,19 @@ Deno.serve(async (req: Request) => {
       }
     };
 
-    console.log("Step 2 payload:", JSON.stringify(step2Payload, null, 2));
+    console.log("\n=== REPLICATE INPUT (STEP 2) ===");
+    console.log("prompt:", step2Payload.input.prompt);
+    console.log("input_image:", step2Payload.input.input_image);
 
     const step2Output = await replicate.run(
       "black-forest-labs/flux-kontext-pro",
       step2Payload
     );
 
-    console.log("Step 2 raw output:", JSON.stringify(step2Output, null, 2));
+    console.log("\n=== REPLICATE RAW OUTPUT (STEP 2) ===");
+    console.log("RAW OUTPUT:");
+    console.log(JSON.stringify(step2Output, null, 2));
+    console.log("Did replicate.run return a value?", step2Output ? "YES" : "NO");
 
     let finalImageUrl: string | null = null;
     let step2Item = Array.isArray(step2Output) ? step2Output[0] : step2Output;
@@ -244,7 +263,8 @@ Deno.serve(async (req: Request) => {
     );
 
   } catch (error) {
-    console.error("Generation error:", error);
+    console.error("=== FULL ERROR ===");
+    console.error("FULL ERROR:", error);
 
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
 
