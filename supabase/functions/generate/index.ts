@@ -9,14 +9,16 @@ const corsHeaders = {
 
 // Category-level style definitions (STYLE ONLY)
 const styleDefinitions: Record<string, string> = {
-  zootopia: `STYLE:
-Zootopia-style 3D animated cartoon.
+  zootopia: `STYLE (LOCKED):
+Zootopia-style 3D cartoon.
 Non-photorealistic.
 Large expressive eyes.
-Smooth cartoon faces.
-Soft cartoon shading.
-No real skin texture.
-Bright vibrant colors.`,
+Smooth simplified faces.
+No skin texture.
+Soft clean cartoon lighting.
+
+IMPORTANT:
+Style must stay identical for all references.`,
 
   titanic: `STYLE:
 1996 cinematic film aesthetic.
@@ -39,52 +41,29 @@ Shallow depth of field.`
 const sceneDefinitions: Record<string, Record<string, string>> = {
   zootopia: {
     ref1: `SCENE:
-Clean balanced selfie.
-Girl holds the phone with extended arm.
-Camera directly in front.
-Heads aligned on same horizontal line.
-Faces equally close to camera.
-Cheeks touching in center.
-Both looking straight into lens (eyes aligned correctly).
-Symmetric close-up framing.
-No tilt.
-
-BACKGROUND:
-Simple clean bright background.
-Soft neutral color.
-No objects, no people.`,
+Clean symmetric selfie.
+Girl holds phone.
+Both faces centered.
+Same distance to camera.
+Cheeks touching.
+Minimal clean background.`,
 
     ref2: `SCENE:
-Tight asymmetric selfie.
-Girl pushes into man from the side.
-Girl closer to camera.
-Faces slightly overlapping and compressed.
-Heads not aligned.
-Man slightly leaning away.
-Camera very close and off-center.
-Asymmetric framing.
-Eyes must look at camera correctly (no distortion).
-
-BACKGROUND:
-Soft blurred neutral background.
-No crowd, no objects.`,
+Close asymmetric selfie.
+Girl pushes into man from side.
+Faces overlap.
+One face closer to camera.
+Off-center framing.
+Soft blurred background.`,
 
     ref3: `SCENE:
-Dynamic selfie with body interaction.
+Dynamic selfie.
 Man holding girl in arms.
 Man taking selfie with extended arm.
-Camera is viewpoint.
-Girl lifted higher.
-Upper bodies and arms clearly visible.
-Both looking into camera (correct eye direction).
-Wider frame than ref1/ref2.
-Slight tilt.
-Not a face-only shot.
-
-BACKGROUND:
-Simple party-style background.
-Soft colored lights (pink, purple, blue).
-Blurred environment, no distinct people.`
+Upper bodies visible.
+Girl higher than man.
+Slight camera tilt.
+Simple blurred party background with colored lights.`
   },
 
   titanic: {
@@ -141,30 +120,28 @@ function buildPrompt(style: string, reference: string): string {
 
   return `IDENTITY:
 Use two uploaded images as identity reference.
-Keep both people clearly recognizable.
-Preserve key facial features:
-- face shape
-- eyes (correct alignment, no cross-eye)
-- nose
-- lips
-- hair and hairstyle
-- beard / glasses / accessories if present
+These are TWO DIFFERENT PEOPLE.
+Preserve recognizable facial features:
+face shape, eyes, nose, lips, hair, accessories.
 Do NOT merge faces.
-Do NOT change facial proportions.
-Convert to cartoon style while keeping identity.
+Do NOT create a third face.
+
+CRITICAL RULE:
+Exactly TWO people in the image.
+No background people.
+No extra characters.
 
 ${styleDef}
 
 ${sceneDef}
 
-GLOBAL RULE:
-Eyes must be natural and correctly aligned.
-No cross-eye or distortion.
-Identity must remain recognizable.
-
-Two people only.
-No background people.
-4K resolution.`;
+GLOBAL RULES:
+- Only TWO people allowed
+- No third person anywhere
+- No background faces
+- No silhouettes of people
+- Eyes must be straight and natural (no cross-eye)
+- Both people must look at the camera`;
 }
 
 Deno.serve(async (req: Request) => {
