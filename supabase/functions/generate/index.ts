@@ -1,10 +1,22 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import Replicate from "npm:replicate@0.34.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
+
+async function fileToBase64(file: File): Promise<string> {
+  const buffer = await file.arrayBuffer();
+  const uint8Array = new Uint8Array(buffer);
+  let binary = '';
+  for (let i = 0; i < uint8Array.length; i++) {
+    binary += String.fromCharCode(uint8Array[i]);
+  }
+  const base64 = btoa(binary);
+  return `data:${file.type};base64,${base64}`;
+}
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
@@ -17,19 +29,15 @@ Deno.serve(async (req: Request) => {
   try {
     const formData = await req.formData();
 
-    console.log("=== BACKEND RECEIVING REQUEST ===");
-    console.log("FormData keys:", Array.from(formData.keys()));
+    const person1 = formData.get("person1") as File;
+    const person2 = formData.get("person2") as File;
+    const reference = formData.get("reference") as File;
 
-    const person1 = formData.get("person1");
-    const person2 = formData.get("person2");
-    const reference = formData.get("reference");
-    const selectedStyle = formData.get("selectedStyle") as string;
-
-    if (!person1 || !person2 || !reference || !selectedStyle) {
+    if (!person1 || !person2 || !reference) {
       return new Response(
         JSON.stringify({
           success: false,
-          error: "Missing required fields"
+          error: "Missing images"
         }),
         {
           status: 400,
@@ -41,25 +49,12 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    if (!["zootopia", "euphoria", "titanic"].includes(selectedStyle)) {
-      return new Response(
-        JSON.stringify({ error: "Invalid style" }),
-        {
-          status: 400,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
+    const replicateToken = Deno.env.get("REPLICATE_API_TOKEN");
 
-    const openaiToken = Deno.env.get("OPENAI_API_KEY");
-
-    if (!openaiToken) {
+    if (!replicateToken) {
       return new Response(
         JSON.stringify({
-          error: "OpenAI API token not configured"
+          error: "Replicate API token not configured"
         }),
         {
           status: 500,
@@ -71,64 +66,53 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    console.log("Building OpenAI request...");
-
-    const form = new FormData();
-
-    form.append("model", "gpt-image-1");
-
-    form.append("prompt", `Use the reference image as the base composition.
-
-Insert both provided people into the scene.
-
-Keep both faces as close as possible to the original photos.
-Do not merge faces.
-Ensure there are exactly two people.
-
-Preserve pose, framing, camera angle, and background.
-
-Keep facial identity very close.
-Do not change facial structure.
-Avoid stylization of faces.`);
-
-    form.append("image[]", reference);
-    form.append("image[]", person1);
-    form.append("image[]", person2);
-
-    console.log("Calling OpenAI Images API...");
-
-    const response = await fetch("https://api.openai.com/v1/images/edits", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${openaiToken}`
-      },
-      body: form
+    const replicate = new Replicate({
+      auth: replicateToken
     });
 
-    console.log("OpenAI response status:", response.status);
+    const referenceBase64 = await fileToBase64(reference);
+    const person1Base64 = await fileToBase64(person1);
+    const person2Base64 = await fileToBase64(person2);
 
-    const data = await response.json();
+    const input = {
+      prompt: `Use the reference image as the base composition.
 
-    if (!response.ok) {
-      console.error("OpenAI error:", data);
-      throw new Error(data.error?.message || "OpenAI API error");
-    }
+Insert TWO people into the scene:
+- Person A = first uploaded image
+- Person B = second uploaded image
 
-    console.log("OpenAI response data:", JSON.stringify(data, null, 2));
+STRICT RULES:
+- Do NOT merge faces
+- Keep identities 100% separate
+- Preserve facial structure and likeness
+- No stylization of faces
+- Keep natural skin texture
 
-    if (!data.data || !data.data[0] || !data.data[0].b64_json) {
-      throw new Error("Invalid response from OpenAI");
-    }
+Match:
+- pose
+- lighting
+- perspective
+- camera angle
 
-    const imageBase64 = data.data[0].b64_json;
-    const imageUrl = `data:image/png;base64,${imageBase64}`;
+Final image must contain exactly TWO people.`,
+      image: referenceBase64,
+      face_image_1: person1Base64,
+      face_image_2: person2Base64,
+      guidance_scale: 5,
+      num_inference_steps: 30
+    };
 
-    console.log("Image generated successfully");
+    const output = await replicate.run(
+      "usamaehsan/instant-id-x-juggernaut",
+      { input }
+    );
+
+    const imageUrl = Array.isArray(output) ? output[0] : output;
 
     return new Response(
       JSON.stringify({
         success: true,
-        imageUrl: imageUrl
+        imageUrl
       }),
       {
         headers: {
@@ -139,15 +123,12 @@ Avoid stylization of faces.`);
     );
 
   } catch (error) {
-    console.error("=== FULL ERROR ===");
-    console.error("FULL ERROR:", error);
-
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
 
     return new Response(
       JSON.stringify({
-        error: "Image generation failed",
-        details: errorMessage
+        success: false,
+        error: errorMessage
       }),
       {
         status: 500,
