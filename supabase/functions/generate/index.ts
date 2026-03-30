@@ -29,11 +29,11 @@ Deno.serve(async (req: Request) => {
   try {
     const formData = await req.formData();
 
+    const reference = formData.get("reference") as File;
     const person1 = formData.get("person1") as File;
     const person2 = formData.get("person2") as File;
-    const reference = formData.get("reference") as File;
 
-    if (!person1 || !person2 || !reference) {
+    if (!reference || !person1 || !person2) {
       return new Response(
         JSON.stringify({
           success: false,
@@ -75,35 +75,35 @@ Deno.serve(async (req: Request) => {
     const person2Base64 = await fileToBase64(person2);
 
     const input = {
-      prompt: `Use the reference image as the base composition.
+      prompt: `Replace the people in the reference image with the two provided persons.
 
-Insert TWO people into the scene:
-- Person A = first uploaded image
-- Person B = second uploaded image
+Person A = first uploaded image
+Person B = second uploaded image
 
 STRICT RULES:
 - Do NOT merge faces
-- Keep identities 100% separate
+- Keep identities strictly separate
 - Preserve facial structure and likeness
-- No stylization of faces
+- Do not stylize faces
 - Keep natural skin texture
 
-Match:
+Match exactly:
 - pose
-- lighting
-- perspective
+- framing
 - camera angle
+- lighting
+- background
 
-Final image must contain exactly TWO people.`,
-      image: referenceBase64,
-      face_image_1: person1Base64,
-      face_image_2: person2Base64,
-      guidance_scale: 5,
-      num_inference_steps: 30
+The final image must contain exactly TWO people.`,
+      image: [
+        referenceBase64,
+        person1Base64,
+        person2Base64
+      ]
     };
 
     const output = await replicate.run(
-      "usamaehsan/instant-id-x-juggernaut",
+      "qwen/qwen-image-edit-2511",
       { input }
     );
 
