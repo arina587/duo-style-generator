@@ -58,6 +58,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const isTitanicRef3 = selectedStyle === "titanic" && selectedReference === "ref3";
+    const isZootopia = selectedStyle === "zootopia";
 
     const DEFAULT_PROMPT = `STRICT IMAGE EDITING TASK.
 
@@ -111,7 +112,63 @@ Only update identity.
 
 The result must be natural, appropriate, and non-sensitive.`;
 
-    const prompt = isTitanicRef3 ? SAFE_TITANIC_REF3_PROMPT : DEFAULT_PROMPT;
+    const CARTOON_PROMPT = `Create a stylized animated version of the scene.
+
+The first image is the reference scene.
+The second and third images are two real people.
+
+TASK:
+
+Recreate the scene using a modern animated film style with anthropomorphic characters.
+
+IMPORTANT:
+
+* Preserve the EXACT pose, body positions, and camera angle from the reference image
+* Keep composition and framing identical
+* Maintain character placement (left/right positions)
+
+STYLE:
+
+* Stylized animated characters
+* Inspired by high-quality modern animation
+* Clean lines, soft shading, expressive features
+* Large expressive eyes, simplified facial structure
+* Cartoon proportions
+
+IDENTITY:
+
+* Adapt each real person into a stylized character
+
+* Preserve recognizable traits:
+
+  * face shape
+  * eye shape
+  * hair color
+  * general appearance
+
+* Do NOT paste real faces
+
+* Do NOT use photorealism
+
+* Fully transform into animated style
+
+CONSISTENCY:
+
+* Ensure both characters match the same animation style
+* Keep lighting and environment consistent with reference
+
+FINAL RESULT:
+
+The output should look like a high-quality animated scene,
+with the SAME pose and composition as the reference,
+but with both people transformed into stylized characters.`;
+
+    let prompt = DEFAULT_PROMPT;
+    if (isZootopia) {
+      prompt = CARTOON_PROMPT;
+    } else if (isTitanicRef3) {
+      prompt = SAFE_TITANIC_REF3_PROMPT;
+    }
 
     const form = new FormData();
 
