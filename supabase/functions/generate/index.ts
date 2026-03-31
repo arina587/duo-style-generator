@@ -1,22 +1,10 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import Replicate from "npm:replicate@0.34.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
-
-async function fileToBase64(file: File): Promise<string> {
-  const buffer = await file.arrayBuffer();
-  const uint8Array = new Uint8Array(buffer);
-  let binary = '';
-  for (let i = 0; i < uint8Array.length; i++) {
-    binary += String.fromCharCode(uint8Array[i]);
-  }
-  const base64 = btoa(binary);
-  return `data:${file.type};base64,${base64}`;
-}
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
@@ -49,12 +37,13 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const replicateToken = Deno.env.get("REPLICATE_API_TOKEN");
+    const openaiApiKey = Deno.env.get("OPENAI_API_KEY");
 
-    if (!replicateToken) {
+    if (!openaiApiKey) {
       return new Response(
         JSON.stringify({
-          error: "Replicate API token not configured"
+          success: false,
+          error: "OpenAI API key not configured"
         }),
         {
           status: 500,
@@ -66,48 +55,89 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const replicate = new Replicate({
-      auth: replicateToken
+    const form = new FormData();
+
+    form.append("model", "gpt-image-1.5");
+
+    form.append("prompt", `STRICT IMAGE EDITING TASK.
+
+The FIRST image is the reference scene.
+The SECOND image is Person A.
+The THIRD image is Person B.
+
+OBJECTIVE:
+Replace the people in the reference image with Person A and Person B.
+
+HARD CONSTRAINTS (must be strictly followed):
+- DO NOT change composition
+- DO NOT change camera angle
+- DO NOT change pose
+- DO NOT change framing
+- DO NOT change background
+- DO NOT change lighting
+- DO NOT change colors
+- DO NOT restyle the image
+- DO NOT regenerate the scene
+
+ONLY modify:
+- faces
+- identity
+
+IDENTITY RULES:
+- Person A must match the second image exactly
+- Person B must match the third image exactly
+- Keep faces максимально похожими
+- Preserve facial structure and proportions
+- Do NOT merge faces
+- Do NOT blend identities
+
+PLACEMENT RULES:
+- Person A replaces the left person in the reference
+- Person B replaces the right person in the reference
+- Keep original body positions unchanged
+- Keep original head size and orientation
+
+REALISM RULES:
+- Maintain natural skin texture
+- Match lighting to the original scene
+- Avoid artificial or stylized look
+
+FINAL RESULT:
+The output must look identical to the reference image,
+with ONLY the people replaced.`);
+
+    form.append("image[]", reference);
+    form.append("image[]", person1);
+    form.append("image[]", person2);
+
+    const response = await fetch("https://api.openai.com/v1/images/edits", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${openaiApiKey}`
+      },
+      body: form
     });
 
-    const referenceBase64 = await fileToBase64(reference);
-    const person1Base64 = await fileToBase64(person1);
-    const person2Base64 = await fileToBase64(person2);
+    const data = await response.json();
 
-    const input = {
-      prompt: `Replace the people in the reference image with the two provided persons.
+    if (!data?.data?.[0]?.b64_json) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: JSON.stringify(data)
+        }),
+        {
+          status: 500,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
 
-Person A = first uploaded image
-Person B = second uploaded image
-
-STRICT RULES:
-- Do NOT merge faces
-- Keep identities strictly separate
-- Preserve facial structure and likeness
-- Do not stylize faces
-- Keep natural skin texture
-
-Match exactly:
-- pose
-- framing
-- camera angle
-- lighting
-- background
-
-The final image must contain exactly TWO people.`,
-      image: [
-        referenceBase64,
-        person1Base64,
-        person2Base64
-      ]
-    };
-
-    const output = await replicate.run(
-      "qwen/qwen-image-edit-2511",
-      { input }
-    );
-
-    const imageUrl = Array.isArray(output) ? output[0] : output;
+    const imageBase64 = data.data[0].b64_json;
+    const imageUrl = `data:image/png;base64,${imageBase64}`;
 
     return new Response(
       JSON.stringify({
