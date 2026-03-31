@@ -23,7 +23,9 @@ Deno.serve(async (req: Request) => {
     const selectedStyle = formData.get("style") as string;
     const selectedReference = formData.get("referenceId") as string;
 
-    if (!reference || !person1 || !person2) {
+    const isZootopia = selectedStyle === "zootopia";
+
+    if (!reference || (!isZootopia && (!person1 || !person2))) {
       return new Response(
         JSON.stringify({
           success: false,
@@ -58,7 +60,6 @@ Deno.serve(async (req: Request) => {
     }
 
     const isTitanicRef3 = selectedStyle === "titanic" && selectedReference === "ref3";
-    const isZootopia = selectedStyle === "zootopia";
 
     const DEFAULT_PROMPT = `STRICT IMAGE EDITING TASK.
 
@@ -112,76 +113,56 @@ Only update identity.
 
 The result must be natural, appropriate, and non-sensitive.`;
 
-    const CARTOON_PROMPT = `FULL STYLIZED RE-RENDER TASK.
+    const CARTOON_PROMPT = `FULL STYLIZED RE-RENDER.
 
-The first image is the reference scene.
-The second and third images are two real people.
-
-OBJECTIVE:
+The image is a reference for pose and composition.
 
 Recreate the scene as a fully stylized animated illustration.
 
 CRITICAL:
 
-* DO NOT copy or paste real faces
-* DO NOT preserve photorealistic facial features
-* Completely redraw both people as stylized characters
+* DO NOT use any real faces
+* DO NOT copy facial details from real photos
+* Completely redraw all characters
 
-POSE & COMPOSITION:
+POSE:
 
-* Preserve EXACT body pose and positioning from the reference image
-* Keep camera angle, framing, and proportions identical
-* Keep left/right placement unchanged
+* Preserve EXACT body pose and positioning
+* Keep camera angle and framing identical
 
 STYLE:
 
-* Modern high-quality animated film style
-* Stylized, expressive, clean shapes
-* Soft shading, smooth gradients
-* Cartoon proportions
-* Large expressive eyes
-* Simplified facial structure
+* High-quality modern animated film style
+* Stylized characters, clean lines
+* Soft shading, expressive features
+* Large eyes, simplified facial structure
 
-CHARACTER DESIGN:
+CHARACTERS:
 
-* Convert both people into stylized human-like or slightly anthropomorphic characters
+* Create two stylized characters inspired by real people
+
+* Preserve general traits:
+
+  * hair color
+  * overall silhouette
+  * vibe
 
 * Add subtle playful character elements:
 
-  Person A (second image):
+  * headband, ears, or small accessories
+  * stylized clothing details
 
-  * Add a cute accessory (e.g. headband, small animal ears, stylized hair detail)
+IMPORTANT:
 
-  Person B (third image):
+* No photorealism
+* No face transfer
+* No realistic skin texture
 
-  * Add a subtle stylized feature (e.g. jacket detail, hairstyle exaggeration, small character trait)
+FINAL:
 
-* Keep design tasteful and non-cartoony-extreme
-
-* Avoid anything creepy or exaggerated
-
-IDENTITY:
-
-* Preserve general resemblance:
-
-  * hair color
-  * face shape (stylized)
-  * overall vibe
-
-* NOT a realistic likeness
-
-* NOT a face transfer
-
-CONSISTENCY:
-
-* Both characters must match the same animation style
-* Lighting and environment must match the reference
-
-FINAL RESULT:
-
-The output must look like a fully illustrated animated scene,
-with the SAME pose and composition,
-but with both people completely redrawn as stylized characters.`;
+The result must look like a fully animated scene,
+with identical pose and composition,
+but completely redrawn characters.`;
 
     let prompt = DEFAULT_PROMPT;
     if (isZootopia) {
@@ -196,8 +177,11 @@ but with both people completely redrawn as stylized characters.`;
     form.append("prompt", prompt);
 
     form.append("image[]", reference);
-    form.append("image[]", person1);
-    form.append("image[]", person2);
+
+    if (!isZootopia) {
+      form.append("image[]", person1);
+      form.append("image[]", person2);
+    }
 
     const response = await fetch("https://api.openai.com/v1/images/edits", {
       method: "POST",
