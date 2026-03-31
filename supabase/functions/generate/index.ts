@@ -98,32 +98,18 @@ with only the identities of the people changed.`;
 
     const SAFE_TITANIC_REF3_PROMPT = `Edit the image by replacing the people with the provided individuals.
 
-The first image is the reference scene.
-The second and third images are the new people.
+Keep the overall scene similar.
 
-OBJECTIVE:
-Replace identities while keeping the scene visually similar.
+Allow slight adjustments to ensure the image is appropriate.
 
-CONSTRAINTS:
+* Maintain background and lighting
+* Keep composition similar
+* Ensure people are not overlapping too closely
+* Keep interaction neutral
 
-* Preserve background, lighting, and camera angle
-* Maintain overall composition
+Only update identity.
 
-EDITING:
-
-* Replace identity only
-* Keep body positions similar
-* Slightly reduce physical closeness if needed
-* Avoid emphasizing physical contact
-
-SAFETY:
-
-* Keep the image appropriate and non-sensitive
-* Ensure interaction appears neutral
-
-FINAL:
-The result should look like the same scene with different people,
-while remaining natural and appropriate.`;
+The result must be natural, appropriate, and non-sensitive.`;
 
     const prompt = isTitanicRef3 ? SAFE_TITANIC_REF3_PROMPT : DEFAULT_PROMPT;
 
