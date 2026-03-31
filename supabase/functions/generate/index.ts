@@ -20,6 +20,8 @@ Deno.serve(async (req: Request) => {
     const reference = formData.get("reference") as File;
     const person1 = formData.get("person1") as File;
     const person2 = formData.get("person2") as File;
+    const selectedStyle = formData.get("style") as string;
+    const selectedReference = formData.get("referenceId") as string;
 
     if (!reference || !person1 || !person2) {
       return new Response(
@@ -55,56 +57,80 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const form = new FormData();
+    const isTitanicRef3 = selectedStyle === "titanic" && selectedReference === "ref3";
 
-    form.append("model", "gpt-image-1.5");
+    const DEFAULT_PROMPT = `STRICT IMAGE EDITING TASK.
 
-    form.append("prompt", `STRICT IMAGE EDITING TASK.
-
-The FIRST image is the reference scene.
-The SECOND image is Person A.
-The THIRD image is Person B.
+The first image is the reference scene.
+The second image is Person A.
+The third image is Person B.
 
 OBJECTIVE:
 Replace the people in the reference image with Person A and Person B.
 
-HARD CONSTRAINTS (must be strictly followed):
-- DO NOT change composition
-- DO NOT change camera angle
-- DO NOT change pose
-- DO NOT change framing
-- DO NOT change background
-- DO NOT change lighting
-- DO NOT change colors
-- DO NOT restyle the image
-- DO NOT regenerate the scene
+CONSTRAINTS:
 
-ONLY modify:
-- faces
-- identity
+* Keep the original scene unchanged
+* Preserve composition, pose, camera angle, framing, and background
+* Maintain original lighting and colors
+* Keep body positions and proportions exactly the same
 
-IDENTITY RULES:
-- Person A must match the second image exactly
-- Person B must match the third image exactly
-- Keep faces максимально похожими
-- Preserve facial structure and proportions
-- Do NOT merge faces
-- Do NOT blend identities
+EDITING RULES:
 
-PLACEMENT RULES:
-- Person A replaces the left person in the reference
-- Person B replaces the right person in the reference
-- Keep original body positions unchanged
-- Keep original head size and orientation
+* Only update facial identity
+* Do not change body posture
+* Do not move people
+* Do not resize heads
+* Do not restyle the image
+* Do not regenerate the scene
 
-REALISM RULES:
-- Maintain natural skin texture
-- Match lighting to the original scene
-- Avoid artificial or stylized look
+IDENTITY:
+
+* Person A must match the second image
+* Person B must match the third image
+* Preserve facial structure and proportions
+* Keep high facial similarity
+* Do not merge or blend faces
 
 FINAL RESULT:
-The output must look identical to the reference image,
-with ONLY the people replaced.`);
+The output should look like the same image,
+with only the identities of the people changed.`;
+
+    const SAFE_TITANIC_REF3_PROMPT = `Edit the image by replacing the people with the provided individuals.
+
+The first image is the reference scene.
+The second and third images are the new people.
+
+OBJECTIVE:
+Replace identities while keeping the scene visually similar.
+
+CONSTRAINTS:
+
+* Preserve background, lighting, and camera angle
+* Maintain overall composition
+
+EDITING:
+
+* Replace identity only
+* Keep body positions similar
+* Slightly reduce physical closeness if needed
+* Avoid emphasizing physical contact
+
+SAFETY:
+
+* Keep the image appropriate and non-sensitive
+* Ensure interaction appears neutral
+
+FINAL:
+The result should look like the same scene with different people,
+while remaining natural and appropriate.`;
+
+    const prompt = isTitanicRef3 ? SAFE_TITANIC_REF3_PROMPT : DEFAULT_PROMPT;
+
+    const form = new FormData();
+
+    form.append("model", "gpt-image-1.5");
+    form.append("prompt", prompt);
 
     form.append("image[]", reference);
     form.append("image[]", person1);
