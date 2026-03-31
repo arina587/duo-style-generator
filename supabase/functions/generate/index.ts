@@ -112,56 +112,76 @@ Only update identity.
 
 The result must be natural, appropriate, and non-sensitive.`;
 
-    const CARTOON_PROMPT = `Create a stylized animated version of the scene.
+    const CARTOON_PROMPT = `FULL STYLIZED RE-RENDER TASK.
 
 The first image is the reference scene.
 The second and third images are two real people.
 
-TASK:
+OBJECTIVE:
 
-Recreate the scene using a modern animated film style with anthropomorphic characters.
+Recreate the scene as a fully stylized animated illustration.
 
-IMPORTANT:
+CRITICAL:
 
-* Preserve the EXACT pose, body positions, and camera angle from the reference image
-* Keep composition and framing identical
-* Maintain character placement (left/right positions)
+* DO NOT copy or paste real faces
+* DO NOT preserve photorealistic facial features
+* Completely redraw both people as stylized characters
+
+POSE & COMPOSITION:
+
+* Preserve EXACT body pose and positioning from the reference image
+* Keep camera angle, framing, and proportions identical
+* Keep left/right placement unchanged
 
 STYLE:
 
-* Stylized animated characters
-* Inspired by high-quality modern animation
-* Clean lines, soft shading, expressive features
-* Large expressive eyes, simplified facial structure
+* Modern high-quality animated film style
+* Stylized, expressive, clean shapes
+* Soft shading, smooth gradients
 * Cartoon proportions
+* Large expressive eyes
+* Simplified facial structure
+
+CHARACTER DESIGN:
+
+* Convert both people into stylized human-like or slightly anthropomorphic characters
+
+* Add subtle playful character elements:
+
+  Person A (second image):
+
+  * Add a cute accessory (e.g. headband, small animal ears, stylized hair detail)
+
+  Person B (third image):
+
+  * Add a subtle stylized feature (e.g. jacket detail, hairstyle exaggeration, small character trait)
+
+* Keep design tasteful and non-cartoony-extreme
+
+* Avoid anything creepy or exaggerated
 
 IDENTITY:
 
-* Adapt each real person into a stylized character
+* Preserve general resemblance:
 
-* Preserve recognizable traits:
-
-  * face shape
-  * eye shape
   * hair color
-  * general appearance
+  * face shape (stylized)
+  * overall vibe
 
-* Do NOT paste real faces
+* NOT a realistic likeness
 
-* Do NOT use photorealism
-
-* Fully transform into animated style
+* NOT a face transfer
 
 CONSISTENCY:
 
-* Ensure both characters match the same animation style
-* Keep lighting and environment consistent with reference
+* Both characters must match the same animation style
+* Lighting and environment must match the reference
 
 FINAL RESULT:
 
-The output should look like a high-quality animated scene,
-with the SAME pose and composition as the reference,
-but with both people transformed into stylized characters.`;
+The output must look like a fully illustrated animated scene,
+with the SAME pose and composition,
+but with both people completely redrawn as stylized characters.`;
 
     let prompt = DEFAULT_PROMPT;
     if (isZootopia) {
