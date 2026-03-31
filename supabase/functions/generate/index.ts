@@ -176,11 +176,23 @@ but completely redrawn characters.`;
     form.append("model", "gpt-image-1.5");
     form.append("prompt", prompt);
 
-    form.append("image[]", reference);
-
-    if (!isZootopia) {
+    // STRICT: Add images based on style
+    if (isZootopia) {
+      // ONLY reference image for cartoon style
+      form.append("image[]", reference);
+    } else {
+      // Normal mode: reference + two person images
+      form.append("image[]", reference);
       form.append("image[]", person1);
       form.append("image[]", person2);
+    }
+
+    // Debug logging
+    console.log("Style:", selectedStyle);
+    console.log("IMAGE COUNT:", form.getAll("image[]").length);
+    console.log("FORM KEYS:");
+    for (const key of form.keys()) {
+      console.log(key);
     }
 
     const response = await fetch("https://api.openai.com/v1/images/edits", {
