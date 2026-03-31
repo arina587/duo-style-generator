@@ -121,9 +121,9 @@ Recreate the scene as a fully stylized animated illustration.
 
 CRITICAL:
 
-* DO NOT use any real faces
-* DO NOT copy facial details from real photos
 * Completely redraw all characters
+* Do NOT use real faces
+* Do NOT copy facial details from any real photo
 
 POSE:
 
@@ -133,24 +133,18 @@ POSE:
 STYLE:
 
 * High-quality modern animated film style
-* Stylized characters, clean lines
-* Soft shading, expressive features
-* Large eyes, simplified facial structure
+* Stylized characters with clean lines
+* Soft shading and smooth gradients
+* Large expressive eyes
+* Simplified facial features
 
 CHARACTERS:
 
-* Create two stylized characters inspired by real people
+* Create two stylized characters inspired by the scene
+* Give them unique, playful design elements:
 
-* Preserve general traits:
-
-  * hair color
-  * overall silhouette
-  * vibe
-
-* Add subtle playful character elements:
-
-  * headband, ears, or small accessories
-  * stylized clothing details
+  * accessories (headband, ears, stylized hair)
+  * subtle character traits
 
 IMPORTANT:
 
