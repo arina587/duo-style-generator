@@ -218,10 +218,21 @@ but completely redrawn characters.`;
     const imageBase64 = data.data[0].b64_json;
     const imageUrl = `data:image/png;base64,${imageBase64}`;
 
+    const images = form.getAll("image[]");
+
+    const debug = {
+      prompt,
+      imageCount: images.length,
+      formKeys: Array.from(form.keys()),
+      selectedStyle,
+      selectedReference
+    };
+
     return new Response(
       JSON.stringify({
         success: true,
-        imageUrl
+        imageUrl,
+        debug
       }),
       {
         headers: {
