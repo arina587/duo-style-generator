@@ -21,6 +21,17 @@ function App() {
     setCurrentView('upload');
   };
 
+  const resolveDomain = (style: string, mode?: string): string => {
+    if (style === 'zootopia') {
+      if (mode === 'animal') return 'zootopia_animal';
+      if (mode === 'cartoon_human') return 'zootopia_human';
+      return 'zootopia_human';
+    }
+    if (style === 'titanic') return 'titanic';
+    if (style === 'euphoria') return 'euphoria';
+    return 'titanic';
+  };
+
   const handleGenerate = async (photo1: File, photo2: File, referenceFile: File, mode?: string) => {
     console.log('=== APP HANDLEGENERATE START ===');
 
@@ -55,6 +66,7 @@ function App() {
       formData.append('reference', referenceFile);
       formData.append('style', selectedStyle);
       formData.append('referenceId', selectedReference);
+      formData.append('domain', resolveDomain(selectedStyle, mode));
 
       if (mode) {
         formData.append('mode', mode);
