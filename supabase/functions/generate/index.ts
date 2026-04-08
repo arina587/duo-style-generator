@@ -80,79 +80,149 @@ Deno.serve(async (req: Request) => {
 
     const isTitanicRef3 = selectedStyle === "titanic" && selectedReference === "ref3";
 
-    const MULTI_MODE_PROMPT = `STRICT MULTI-MODE IMAGE EDITING TASK.
+    const MULTI_MODE_PROMPT = `STRICT CONTROLLED IMAGE EDITING. NO CREATIVE INTERPRETATION ALLOWED.
 
-INPUT IMAGES (ORDER IS CRITICAL):
-Image[0] = REFERENCE SCENE
+INPUT IMAGES:
+Image[0] = REFERENCE SCENE (this image MUST be preserved)
 Image[1] = Person A
 Image[2] = Person B
 
 MODE: {{MODE}}
-(allowed: realistic / cartoon_human / animal)
-
-TASK:
-Recreate the reference scene while replacing the two people using the identities from Image[1] and Image[2].
-
-IDENTITY MAPPING:
-- Left character → Person A
-- Right character → Person B
+(realistic / cartoon_human / animal)
 
 --------------------------------
-IDENTITY PRESERVATION (CRITICAL):
+ABSOLUTE RULE:
+--------------------------------
+The reference image MUST remain unchanged in composition, background, clothing, and details.
+Only identity and rendering style (depending on MODE) may change.
+
+--------------------------------
+IDENTITY MAPPING (STRICT):
+--------------------------------
+- LEFT person in Image[0] → Person A (Image[1])
+- RIGHT person in Image[0] → Person B (Image[2])
+
+--------------------------------
+BACKGROUND & DETAIL PRESERVATION (HIGHEST PRIORITY):
+--------------------------------
+- DO NOT recreate or redraw the scene
+- DO NOT simplify or restyle the background
+- ALL background details must remain EXACT:
+  snow, dirt, textures, lighting, reflections, objects
+
+- Clothing MUST remain EXACTLY the same:
+  folds, fabric texture, shadows, wetness, snow, dirt
+
+- If there is snow / dirt / particles on:
+  - clothes → KEEP IT
+  - face → APPLY IT to the new face
+  - environment → KEEP EXACT
+
+--------------------------------
+FACE REPLACEMENT QUALITY:
+--------------------------------
+- Faces must NOT look pasted, smooth, or artificial
+- Preserve skin texture, imperfections, lighting noise
+- Match sharpness, grain, blur to the original image
+
+--------------------------------
+EXPRESSION LOCK (VERY STRICT):
+--------------------------------
+- Copy the EXACT facial expression from Image[0]
+- Match:
+  - mouth shape
+  - eye openness
+  - eyebrow position
+  - gaze direction
+- DO NOT use neutral faces
+- Emotion must be identical to the reference
+
+--------------------------------
+IDENTITY RULES:
 --------------------------------
 - Use ONLY faces from Image[1] and Image[2]
-- Preserve facial structure, proportions, and key features
-- Maintain recognizability
-- Do NOT generate new or random faces
-- Do NOT blend identities
+- Preserve real facial structure and recognizability
+- DO NOT invent new faces
+- DO NOT blend faces together
 
 --------------------------------
-EXPRESSION TRANSFER (VERY IMPORTANT):
---------------------------------
-- Match the facial expression from the reference scene
-- Adapt the source faces to the exact emotion (smile, gaze, tension, etc.)
-- Eyes, eyebrows, and mouth must reflect the same emotion as in Image[0]
-
---------------------------------
-SCENE INTEGRATION (CRITICAL):
---------------------------------
-- Faces must look naturally part of the scene, NOT pasted
-- Match lighting direction, shadows, and color grading
-- Apply environmental effects from Image[0] onto faces:
-  snow, dirt, water, reflections, glow, blur, grain
-- Match depth of field and focus
-
---------------------------------
-MODE BEHAVIOR:
+MODE LOGIC:
 --------------------------------
 
 IF MODE = "realistic":
-- Perform high-quality face replacement
-- Keep full photorealism
-- Do not change bodies or scene
-- Only replace identity and integrate naturally
+- Perform pure face replacement
+- NO style change
+- NO scene change
+- Result must look like original photo with different people
+
+--------------------------------
 
 IF MODE = "cartoon_human":
-- Transform all characters into stylized animated humans
-- Faces must remain recognizable but fully cartoon-stylized
-- Large expressive eyes, simplified features, smooth shading
-- No photorealism
+
+STYLE REQUIREMENT (STRICT):
+- Disney Zootopia-style 3D rendering ONLY
+- NOT anime, NOT manga, NOT 2D
+- Pixar/Disney 3D shading model
+
+STYLE CHARACTERISTICS:
+- Soft global illumination
+- Subsurface scattering in skin
+- Rounded facial geometry
+- Natural proportions (NOT exaggerated anime)
+- Physically consistent lighting and shadows
+
+RULES:
+- Characters remain HUMAN
+- Faces must be stylized but still recognizable
+- Keep same pose, composition, clothing
+
+--------------------------------
 
 IF MODE = "animal":
-- Transform each person into a stylized animal character
-- Fully non-human characters (no human skin)
-- Preserve identity through:
-  face shape, eye structure, color palette, expression
-- Translate hair into fur/ears/horns
+
+STRICT CHARACTER TYPES:
+- Person A → anthropomorphic FOX (Nick Wilde type)
+- Person B → anthropomorphic RABBIT (Judy Hopps type)
+
+ABSOLUTE:
+- DO NOT choose random animals
+- DO NOT mix human and animal
+- FULL animal transformation required
+
+STYLE REQUIREMENT:
+- EXACT Disney Zootopia 3D style:
+  - film-quality rendering
+  - soft cinematic lighting
+  - detailed fur shading
+  - realistic depth and shadows
+  - expressive but grounded anatomy
+
+IDENTITY PRESERVATION:
+- Maintain personality through:
+  - eye shape
+  - expression
+  - proportions
+  - attitude
 
 --------------------------------
-FINAL:
+STYLE RESTRICTIONS:
 --------------------------------
-The result must be a cohesive, high-quality image:
-- correct emotion
-- strong identity preservation
-- no cutout or pasted face artifacts
-- full integration into the scene`;
+- NO anime
+- NO manga
+- NO flat cartoon
+- NO low-detail style
+- ONLY cinematic Disney Zootopia-quality rendering
+
+--------------------------------
+FINAL OUTPUT REQUIREMENTS:
+--------------------------------
+- Background identical to Image[0]
+- Clothing identical with all details preserved
+- Snow / dirt / particles correctly present
+- Expression identical to reference
+- Faces fully integrated (not pasted)
+- Strong identity preservation
+- No randomness, no reinterpretation`;
 
     const SAFE_TITANIC_REF3_PROMPT = `Edit the image by replacing the people with the provided individuals.
 
