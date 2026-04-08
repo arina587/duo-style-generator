@@ -341,6 +341,33 @@ async function fileToBase64DataUrl(file: File): Promise<string> {
   return `data:${file.type};base64,${base64}`;
 }
 
+async function uploadFileToSupabaseStorage(file: File, supabaseUrl: string, supabaseKey: string): Promise<string> {
+  const filename = `replicate-input/${Date.now()}-${Math.random().toString(36).slice(2)}.${file.type.split("/")[1] || "jpg"}`;
+  const uploadUrl = `${supabaseUrl}/storage/v1/object/replicate-uploads/${filename}`;
+
+  console.log("REPLICATE_UPLOAD: uploading", file.name, "size", file.size, "type", file.type, "→", filename);
+
+  const uploadResponse = await fetch(uploadUrl, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${supabaseKey}`,
+      "Content-Type": file.type,
+      "x-upsert": "true",
+    },
+    body: await file.arrayBuffer(),
+  });
+
+  if (!uploadResponse.ok) {
+    const uploadError = await uploadResponse.text();
+    console.error("REPLICATE_UPLOAD_ERROR:", uploadResponse.status, uploadError);
+    throw new Error(`Failed to upload image to storage: ${uploadResponse.status} ${uploadError}`);
+  }
+
+  const publicUrl = `${supabaseUrl}/storage/v1/object/public/replicate-uploads/${filename}`;
+  console.log("REPLICATE_UPLOAD_OK:", publicUrl);
+  return publicUrl;
+}
+
 async function generateWithReplicate(
   model: string,
   prompt: string,
@@ -349,33 +376,80 @@ async function generateWithReplicate(
   person2: File,
   apiKey: string
 ): Promise<string> {
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error("SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not configured");
+  }
+
+  console.log("REPLICATE_IMAGES: uploading 3 files to Supabase storage for public URLs");
+
   const [refUrl, p1Url, p2Url] = await Promise.all([
-    fileToBase64DataUrl(reference),
-    fileToBase64DataUrl(person1),
-    fileToBase64DataUrl(person2),
+    uploadFileToSupabaseStorage(reference, supabaseUrl, supabaseKey),
+    uploadFileToSupabaseStorage(person1, supabaseUrl, supabaseKey),
+    uploadFileToSupabaseStorage(person2, supabaseUrl, supabaseKey),
   ]);
 
-  const predictionResponse = await fetch("https://api.replicate.com/v1/predictions", {
+  const inputPayload = {
+    prompt,
+    image: refUrl,
+    image_1: p1Url,
+    image_2: p2Url,
+  };
+
+  console.log("REPLICATE_REQUEST_PAYLOAD:", JSON.stringify({
+    model,
+    prompt_length: prompt.length,
+    prompt_preview: prompt.substring(0, 300),
+    input_fields: Object.keys(inputPayload),
+    image: refUrl,
+    image_1: p1Url,
+    image_2: p2Url,
+  }));
+
+  const predictionResponse = await fetch(`https://api.replicate.com/v1/models/${model}/predictions`, {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${apiKey}`,
       "Content-Type": "application/json",
+      "Prefer": "wait",
     },
-    body: JSON.stringify({
-      version: model,
-      input: {
-        prompt,
-        image: refUrl,
-        person_a_image: p1Url,
-        person_b_image: p2Url,
-      },
-    }),
+    body: JSON.stringify({ input: inputPayload }),
   });
 
-  const prediction = await predictionResponse.json();
+  const predictionRaw = await predictionResponse.text();
+  console.log("REPLICATE_PREDICTION_RAW_STATUS:", predictionResponse.status);
+  console.log("REPLICATE_PREDICTION_RAW_BODY:", predictionRaw.substring(0, 2000));
+
+  let prediction: Record<string, unknown>;
+  try {
+    prediction = JSON.parse(predictionRaw);
+  } catch {
+    throw new Error(`Replicate returned non-JSON response (${predictionResponse.status}): ${predictionRaw.substring(0, 500)}`);
+  }
 
   if (!prediction.id) {
-    throw new Error(`Replicate prediction failed: ${JSON.stringify(prediction)}`);
+    throw new Error(`Replicate prediction creation failed (${predictionResponse.status}): ${JSON.stringify(prediction)}`);
+  }
+
+  console.log("REPLICATE_PREDICTION_ID:", prediction.id, "status:", prediction.status);
+
+  if (prediction.status === "succeeded") {
+    const outputUrl = Array.isArray(prediction.output) ? (prediction.output as string[])[0] : prediction.output as string;
+    if (!outputUrl) throw new Error("Replicate returned succeeded but empty output");
+    console.log("REPLICATE_OUTPUT_URL:", outputUrl);
+    const imgResponse = await fetch(outputUrl);
+    const imgBuffer = await imgResponse.arrayBuffer();
+    const imgBytes = new Uint8Array(imgBuffer);
+    let binary = "";
+    for (let i = 0; i < imgBytes.byteLength; i++) binary += String.fromCharCode(imgBytes[i]);
+    return `data:image/png;base64,${btoa(binary)}`;
+  }
+
+  if (prediction.status === "failed" || prediction.status === "canceled") {
+    console.error("REPLICATE_PREDICTION_FAILED:", JSON.stringify(prediction));
+    throw new Error(`Replicate prediction ${prediction.status}: ${prediction.error || JSON.stringify(prediction.logs || "no logs")}`);
   }
 
   const pollUrl = `https://api.replicate.com/v1/predictions/${prediction.id}`;
@@ -386,35 +460,31 @@ async function generateWithReplicate(
     await new Promise((resolve) => setTimeout(resolve, pollInterval));
 
     const statusResponse = await fetch(pollUrl, {
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-      },
+      headers: { "Authorization": `Bearer ${apiKey}` },
     });
 
-    const status = await statusResponse.json();
+    const status = await statusResponse.json() as Record<string, unknown>;
+    console.log(`REPLICATE_POLL [${attempt + 1}/${maxAttempts}]:`, status.status);
 
     if (status.status === "succeeded") {
-      const outputUrl = Array.isArray(status.output) ? status.output[0] : status.output;
-      if (!outputUrl) {
-        throw new Error("Replicate returned empty output");
-      }
+      const outputUrl = Array.isArray(status.output) ? (status.output as string[])[0] : status.output as string;
+      if (!outputUrl) throw new Error("Replicate returned empty output");
+      console.log("REPLICATE_OUTPUT_URL:", outputUrl);
       const imgResponse = await fetch(outputUrl);
       const imgBuffer = await imgResponse.arrayBuffer();
       const imgBytes = new Uint8Array(imgBuffer);
       let binary = "";
-      for (let i = 0; i < imgBytes.byteLength; i++) {
-        binary += String.fromCharCode(imgBytes[i]);
-      }
-      const base64 = btoa(binary);
-      return `data:image/png;base64,${base64}`;
+      for (let i = 0; i < imgBytes.byteLength; i++) binary += String.fromCharCode(imgBytes[i]);
+      return `data:image/png;base64,${btoa(binary)}`;
     }
 
     if (status.status === "failed" || status.status === "canceled") {
-      throw new Error(`Replicate prediction ${status.status}: ${status.error || "unknown error"}`);
+      console.error("REPLICATE_POLL_FAILED:", JSON.stringify(status));
+      throw new Error(`Replicate prediction ${status.status}: ${status.error || JSON.stringify(status.logs || "no logs")}`);
     }
   }
 
-  throw new Error("Replicate prediction timed out");
+  throw new Error("Replicate prediction timed out after 3 minutes");
 }
 
 // ─────────────────────────────────────────────
