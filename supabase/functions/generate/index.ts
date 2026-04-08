@@ -152,53 +152,88 @@ QUALITY STANDARD:
 - No flat shading
 - Full depth, atmosphere, and cinematic polish`,
 
-  zootopia_animal: `TASK: FULL ANTHROPOMORPHIC ANIMAL TRANSFORMATION
+  zootopia_animal: `You are editing a fixed base image.
 
-MODE: Disney Zootopia-style animal character rendering
+IMAGE ROLES:
+Image[0] = BASE SCENE (highest priority, must be preserved)
+Image[1] = Identity reference for LEFT character
+Image[2] = Identity reference for RIGHT character
 
-CHARACTER ASSIGNMENT (NON-NEGOTIABLE):
-- Person A (LEFT in Image[0]) → anthropomorphic RED FOX
-  - Reference type: Nick Wilde from Zootopia
-  - Species characteristics: pointed ears, elongated snout, red/orange fur, bushy tail posture
-  - DO NOT render as cat, wolf, dog, or any other canid
-- Person B (RIGHT in Image[0]) → anthropomorphic RABBIT
-  - Reference type: Judy Hopps from Zootopia
-  - Species characteristics: tall upright ears, round nose, compact snout, grey fur
-  - DO NOT render as mouse, rat, or other small animal
+PRIORITY ORDER (CRITICAL):
+1. Preserve base scene (Image[0])
+2. Preserve character pose and position
+3. Apply identity from Image[1] and Image[2]
+4. Apply Zootopia animal transformation
+5. Apply cinematic style
 
-SPECIES ENFORCEMENT (ABSOLUTE):
-- FULL animal transformation required — NO human facial features remaining
-- Both characters must be unambiguously their assigned species
-- DO NOT blend human and animal features
-- DO NOT default to generic cat-like or ambiguous faces
-- Snout shape, ear shape, and fur pattern must be species-accurate
+BASE SCENE LOCK (VERY IMPORTANT):
+The image must remain the SAME SCENE as Image[0]:
+- same composition
+- same camera angle
+- same framing
+- same background
+- same environment details
+Do NOT redesign or reimagine the scene.
+Do NOT move characters.
+Do NOT change clothing.
+The result must look like the SAME photo, not a new illustration.
 
-STYLE REQUIREMENTS (STRICT):
-- EXACT Disney Zootopia 3D film style
-- Film-quality rendering with soft cinematic lighting
-- Detailed fur shading with individual strand definition
-- Realistic depth and subsurface scattering in fur
-- Expressive anatomy grounded in species physicality
-- NOT anime, NOT manga, NOT flat cartoon, NOT 2D illustration
+CHARACTER REPLACEMENT:
+Replace ONLY the two people:
+LEFT person → Person A (Image[1])
+RIGHT person → Person B (Image[2])
+Keep:
+- exact pose
+- exact body position
+- exact proportions
+- exact clothing
 
-IDENTITY PRESERVATION THROUGH SPECIES:
-- Maintain personality and emotional identity through:
-  - Eye shape and color referencing Image[1] and Image[2]
-  - Facial expression matching Image[0] expression
-  - Body proportions and posture matching Image[0] pose
-  - Attitude and character energy from the source persons
+ANIMAL TRANSFORMATION (STRICT):
+Convert characters into FULL anthropomorphic animals.
+Person A → RED FOX
+Person B → RABBIT
+MANDATORY:
+- fully animal faces
+- no human skin
+- no human nose or lips
+- no hybrid faces
 
-SCENE AND CLOTHING:
-- Background must remain fully consistent with Image[0]
-- Clothing adapted to fit anthropomorphic anatomy while preserving design, colors, and layers
-- Environmental details (snow, dirt, particles) must remain present
-- Lighting must match Image[0] direction and color temperature
+SPECIES DETAILS:
+FOX:
+- elongated muzzle
+- orange fur
+- white lower face
+- triangular ears
+RABBIT:
+- shorter muzzle
+- long vertical ears
+- soft rounded face
 
-QUALITY STANDARD:
-- Feature-film render quality (Zootopia 2016 standard)
-- No low-detail fur textures
-- No flat or unrendered surfaces
-- Full cinematic depth, lighting, and atmosphere`,
+ANTI-ERROR (CRITICAL):
+- female character must NOT become a cat
+- do NOT use feline features
+- do NOT generate random animals
+
+IDENTITY PRESERVATION:
+Keep identity through:
+- eye shape and spacing
+- expression
+- head tilt
+- emotional expression
+Characters must feel like the same people.
+
+STYLE:
+- Zootopia-style cinematic 3D rendering
+- high-end animated film quality
+- soft lighting
+- detailed fur shading
+
+FINAL RESULT:
+The final image must look like:
+- the SAME original scene
+- with the SAME composition and clothing
+- but characters are clearly a fox and a rabbit
+- identity is preserved`,
 };
 
 // ─────────────────────────────────────────────
