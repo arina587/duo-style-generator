@@ -25,11 +25,12 @@ Deno.serve(async (req: Request) => {
 
     const isZootopia = selectedStyle === "zootopia";
 
-    if (!reference || (!isZootopia && (!person1 || !person2))) {
+    // All modes now require person images for identity preservation
+    if (!reference || !person1 || !person2) {
       return new Response(
         JSON.stringify({
           success: false,
-          error: "Missing images"
+          error: "Missing images: reference, person1, and person2 are all required"
         }),
         {
           status: 400,
@@ -61,42 +62,79 @@ Deno.serve(async (req: Request) => {
 
     const isTitanicRef3 = selectedStyle === "titanic" && selectedReference === "ref3";
 
-    const DEFAULT_PROMPT = `STRICT IMAGE EDITING TASK.
+    const MULTI_MODE_PROMPT = `STRICT MULTI-MODE IMAGE EDITING TASK.
 
-The first image is the reference scene.
-The second image is Person A.
-The third image is Person B.
+INPUT IMAGES (ORDER IS CRITICAL):
+Image[0] = REFERENCE SCENE
+Image[1] = Person A
+Image[2] = Person B
 
-OBJECTIVE:
-Replace the people in the reference image with Person A and Person B.
+MODE: {{MODE}}
+(allowed: realistic / cartoon_human / animal)
 
-CONSTRAINTS:
+TASK:
+Recreate the reference scene while replacing the two people using the identities from Image[1] and Image[2].
 
-* Keep the original scene unchanged
-* Preserve composition, pose, camera angle, framing, and background
-* Maintain original lighting and colors
-* Keep body positions and proportions exactly the same
+IDENTITY MAPPING:
+- Left character → Person A
+- Right character → Person B
 
-EDITING RULES:
+--------------------------------
+IDENTITY PRESERVATION (CRITICAL):
+--------------------------------
+- Use ONLY faces from Image[1] and Image[2]
+- Preserve facial structure, proportions, and key features
+- Maintain recognizability
+- Do NOT generate new or random faces
+- Do NOT blend identities
 
-* Only update facial identity
-* Do not change body posture
-* Do not move people
-* Do not resize heads
-* Do not restyle the image
-* Do not regenerate the scene
+--------------------------------
+EXPRESSION TRANSFER (VERY IMPORTANT):
+--------------------------------
+- Match the facial expression from the reference scene
+- Adapt the source faces to the exact emotion (smile, gaze, tension, etc.)
+- Eyes, eyebrows, and mouth must reflect the same emotion as in Image[0]
 
-IDENTITY:
+--------------------------------
+SCENE INTEGRATION (CRITICAL):
+--------------------------------
+- Faces must look naturally part of the scene, NOT pasted
+- Match lighting direction, shadows, and color grading
+- Apply environmental effects from Image[0] onto faces:
+  snow, dirt, water, reflections, glow, blur, grain
+- Match depth of field and focus
 
-* Person A must match the second image
-* Person B must match the third image
-* Preserve facial structure and proportions
-* Keep high facial similarity
-* Do not merge or blend faces
+--------------------------------
+MODE BEHAVIOR:
+--------------------------------
 
-FINAL RESULT:
-The output should look like the same image,
-with only the identities of the people changed.`;
+IF MODE = "realistic":
+- Perform high-quality face replacement
+- Keep full photorealism
+- Do not change bodies or scene
+- Only replace identity and integrate naturally
+
+IF MODE = "cartoon_human":
+- Transform all characters into stylized animated humans
+- Faces must remain recognizable but fully cartoon-stylized
+- Large expressive eyes, simplified features, smooth shading
+- No photorealism
+
+IF MODE = "animal":
+- Transform each person into a stylized animal character
+- Fully non-human characters (no human skin)
+- Preserve identity through:
+  face shape, eye structure, color palette, expression
+- Translate hair into fur/ears/horns
+
+--------------------------------
+FINAL:
+--------------------------------
+The result must be a cohesive, high-quality image:
+- correct emotion
+- strong identity preservation
+- no cutout or pasted face artifacts
+- full integration into the scene`;
 
     const SAFE_TITANIC_REF3_PROMPT = `Edit the image by replacing the people with the provided individuals.
 
@@ -113,55 +151,18 @@ Only update identity.
 
 The result must be natural, appropriate, and non-sensitive.`;
 
-    const CARTOON_PROMPT = `FULL STYLIZED RE-RENDER.
-
-The image is a reference for pose and composition.
-
-Recreate the scene as a fully stylized animated illustration.
-
-CRITICAL:
-
-* Completely redraw all characters
-* Do NOT use real faces
-* Do NOT copy facial details from any real photo
-
-POSE:
-
-* Preserve EXACT body pose and positioning
-* Keep camera angle and framing identical
-
-STYLE:
-
-* High-quality modern animated film style
-* Stylized characters with clean lines
-* Soft shading and smooth gradients
-* Large expressive eyes
-* Simplified facial features
-
-CHARACTERS:
-
-* Create two stylized characters inspired by the scene
-* Give them unique, playful design elements:
-
-  * accessories (headband, ears, stylized hair)
-  * subtle character traits
-
-IMPORTANT:
-
-* No photorealism
-* No face transfer
-* No realistic skin texture
-
-FINAL:
-
-The result must look like a fully animated scene,
-with identical pose and composition,
-but completely redrawn characters.`;
-
-    let prompt = DEFAULT_PROMPT;
+    // Determine mode based on style
+    let mode = "realistic";
     if (isZootopia) {
-      prompt = CARTOON_PROMPT;
-    } else if (isTitanicRef3) {
+      mode = "animal";
+    }
+    // Future: add "cartoon_human" mode for other styles if needed
+
+    // Select prompt and replace {{MODE}} placeholder
+    let prompt = MULTI_MODE_PROMPT.replace("{{MODE}}", mode);
+
+    // Use safe prompt for titanic ref3
+    if (isTitanicRef3) {
       prompt = SAFE_TITANIC_REF3_PROMPT;
     }
 
@@ -170,13 +171,17 @@ but completely redrawn characters.`;
     form.append("model", "gpt-image-1.5");
     form.append("prompt", prompt);
 
-    // STRICT: Add images based on style
-    if (isZootopia) {
-      // ONLY reference image for cartoon style
-      form.append("image[]", reference);
+    // Add images based on mode
+    // For all modes, we send reference + person images
+    // The prompt will control how they are used
+    form.append("image[]", reference);
+
+    if (!isZootopia) {
+      // Face transfer modes: include person images
+      form.append("image[]", person1);
+      form.append("image[]", person2);
     } else {
-      // Normal mode: reference + two person images
-      form.append("image[]", reference);
+      // Animal mode: also include person images for identity preservation
       form.append("image[]", person1);
       form.append("image[]", person2);
     }
@@ -221,11 +226,12 @@ but completely redrawn characters.`;
     const images = form.getAll("image[]");
 
     const debug = {
-      prompt,
+      mode,
       imageCount: images.length,
       formKeys: Array.from(form.keys()),
       selectedStyle,
-      selectedReference
+      selectedReference,
+      promptPreview: prompt.substring(0, 200) + "..."
     };
 
     return new Response(
