@@ -22,6 +22,7 @@ Deno.serve(async (req: Request) => {
     const person2 = formData.get("person2") as File;
     const selectedStyle = formData.get("style") as string;
     const selectedReference = formData.get("referenceId") as string;
+    const requestedMode = formData.get("mode") as string;
 
     const isZootopia = selectedStyle === "zootopia";
 
@@ -31,6 +32,23 @@ Deno.serve(async (req: Request) => {
         JSON.stringify({
           success: false,
           error: "Missing images: reference, person1, and person2 are all required"
+        }),
+        {
+          status: 400,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    // Validate mode for zootopia
+    if (isZootopia && !requestedMode) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "Mode is required for zootopia style"
         }),
         {
           status: 400,
@@ -151,12 +169,11 @@ Only update identity.
 
 The result must be natural, appropriate, and non-sensitive.`;
 
-    // Determine mode based on style
+    // Determine mode based on style and user selection
     let mode = "realistic";
-    if (isZootopia) {
-      mode = "animal";
+    if (isZootopia && requestedMode) {
+      mode = requestedMode;
     }
-    // Future: add "cartoon_human" mode for other styles if needed
 
     // Select prompt and replace {{MODE}} placeholder
     let prompt = MULTI_MODE_PROMPT.replace("{{MODE}}", mode);

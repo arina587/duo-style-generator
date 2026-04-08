@@ -21,7 +21,7 @@ function App() {
     setCurrentView('upload');
   };
 
-  const handleGenerate = async (photo1: File, photo2: File, referenceFile: File) => {
+  const handleGenerate = async (photo1: File, photo2: File, referenceFile: File, mode?: string) => {
     console.log('=== APP HANDLEGENERATE START ===');
 
     if (isGenerating) {
@@ -46,19 +46,27 @@ function App() {
 
     console.log('=== REQUEST START ===');
     console.log('selectedStyle:', selectedStyle);
+    console.log('mode:', mode);
 
     try {
       const formData = new FormData();
       formData.append('person1', photo1);
       formData.append('person2', photo2);
       formData.append('reference', referenceFile);
-      formData.append('selectedStyle', selectedStyle);
+      formData.append('style', selectedStyle);
+      formData.append('referenceId', selectedReference);
+
+      if (mode) {
+        formData.append('mode', mode);
+      }
 
       console.log('FormData built with:', {
         person1: photo1.name,
         person2: photo2.name,
         reference: referenceFile.name,
-        selectedStyle: selectedStyle,
+        style: selectedStyle,
+        referenceId: selectedReference,
+        mode: mode || 'not provided',
       });
 
       const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;

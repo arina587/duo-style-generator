@@ -7,7 +7,7 @@ interface UploadProps {
   selectedReference: string;
   onReferenceSelect: (reference: string) => void;
   onBack: () => void;
-  onGenerate: (photo1: File, photo2: File, styleBoard: File) => void;
+  onGenerate: (photo1: File, photo2: File, styleBoard: File, mode?: string) => void;
 }
 
 export default function Upload({ selectedStyle, referenceImages, selectedReference, onReferenceSelect, onBack, onGenerate }: UploadProps) {
@@ -17,6 +17,7 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
   const [preview2, setPreview2] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string>('');
+  const [selectedMode, setSelectedMode] = useState<string>('');
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -85,11 +86,17 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
       return;
     }
 
+    if (selectedStyle === 'zootopia' && !selectedMode) {
+      console.error('BLOCKED: Missing mode for zootopia');
+      setError('Please select a transformation type before generating');
+      return;
+    }
+
     setIsGenerating(true);
     setError('');
 
     console.log('=== PASSING TO PARENT - NO REQUEST HERE ===');
-    onGenerate(photo1, photo2, referenceFile);
+    onGenerate(photo1, photo2, referenceFile, selectedMode);
   };
 
   return (
@@ -147,6 +154,45 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
                   )}
                 </button>
               ))}
+            </div>
+          </div>
+        )}
+
+        {selectedStyle === 'zootopia' && selectedReference && (
+          <div className="mb-16 matte-card rounded-2xl soft-shadow p-8">
+            <h3 className="text-xl font-light text-[#8B6B4E] mb-4 text-center tracking-wide">Choose Transformation Type</h3>
+            <p className="text-sm text-slate-500 text-center mb-8 font-light">Select how you want the characters to be transformed</p>
+            <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto">
+              <button
+                type="button"
+                onClick={() => setSelectedMode('cartoon_human')}
+                className={`p-8 rounded-xl soft-shadow transition-all duration-300 ${
+                  selectedMode === 'cartoon_human'
+                    ? 'ring-4 ring-[#6B8FA3] scale-105 bg-[#6B8FA3]/10'
+                    : 'hover:ring-2 hover:ring-[#6B8FA3]/50 hover:scale-102 bg-white/50'
+                }`}
+              >
+                <div className="text-center">
+                  <div className="text-4xl mb-4">👨‍🎨</div>
+                  <h4 className="text-lg font-medium text-[#8B6B4E] mb-2">Cartoon Human</h4>
+                  <p className="text-sm text-slate-600 font-light">Stylized animated human characters with recognizable features</p>
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedMode('animal')}
+                className={`p-8 rounded-xl soft-shadow transition-all duration-300 ${
+                  selectedMode === 'animal'
+                    ? 'ring-4 ring-[#6B8FA3] scale-105 bg-[#6B8FA3]/10'
+                    : 'hover:ring-2 hover:ring-[#6B8FA3]/50 hover:scale-102 bg-white/50'
+                }`}
+              >
+                <div className="text-center">
+                  <div className="text-4xl mb-4">🦊</div>
+                  <h4 className="text-lg font-medium text-[#8B6B4E] mb-2">Animal</h4>
+                  <p className="text-sm text-slate-600 font-light">Transform into stylized animal characters preserving identity</p>
+                </div>
+              </button>
             </div>
           </div>
         )}
@@ -217,7 +263,7 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
           <button
             type="button"
             onClick={handleGenerate}
-            disabled={isGenerating || !photo1 || !photo2 || !referenceFile}
+            disabled={isGenerating || !photo1 || !photo2 || !referenceFile || (selectedStyle === 'zootopia' && !selectedMode)}
             className="flex items-center gap-3 px-10 py-4 bg-[#6B8FA3] text-white rounded-full font-light tracking-wide hover:bg-[#8B6B4E] transition-all duration-500 soft-shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-[#6B8FA3]"
           >
             <span>{isGenerating ? 'Generating...' : 'Generate Fusion'}</span>
