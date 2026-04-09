@@ -36,13 +36,13 @@ function modelRouter(domain: Domain): RouteConfig {
     case "zootopia_human":
       return {
         provider: "replicate",
-        model: "google/nano-banana-2",
+        model: "google/nano-banana-pro",
         promptKey: "zootopia_human",
       };
     case "zootopia_animal":
       return {
         provider: "replicate",
-        model: "google/nano-banana-2",
+        model: "google/nano-banana-pro",
         promptKey: "zootopia_animal",
       };
   }
@@ -52,188 +52,115 @@ function modelRouter(domain: Domain): RouteConfig {
 // PROMPT TEMPLATES
 // ─────────────────────────────────────────────
 
-const sharedPrefix = `STRICT CONTROLLED IMAGE EDITING. NO CREATIVE INTERPRETATION ALLOWED.
-
-INPUT IMAGES:
-Image[0] = REFERENCE SCENE (this image MUST be preserved exactly as-is)
-Image[1] = Person A (LEFT person identity source)
-Image[2] = Person B (RIGHT person identity source)
-
-IDENTITY MAPPING (STRICT):
-- The LEFT person in Image[0] must receive the face/identity of Person A (Image[1])
-- The RIGHT person in Image[0] must receive the face/identity of Person B (Image[2])
-- DO NOT swap or mix identity assignments
-
-EXPRESSION LOCK (MANDATORY):
-- Copy the EXACT facial expression from Image[0] for each person
-- Match precisely: mouth shape, eye openness, eyebrow position, gaze direction
-- DO NOT use neutral or default expressions
-- The emotional state of both persons must be identical to Image[0]
-
-POSE AND CLOTHING PRESERVATION (NON-NEGOTIABLE):
-- Body pose must be identical to Image[0]
-- Clothing must be EXACTLY the same: folds, fabric texture, shadows, wetness, snow, dirt
-- If there is snow, dirt, or particles on clothes → KEEP THEM
-- If there is snow, dirt, or particles on the face in Image[0] → APPLY to the new face
-- DO NOT alter, simplify, or reinterpret any environmental detail
-
-`;
-
 const promptTemplates: Record<PromptKey, string> = {
-  film_face_swap: `TASK: PHOTOREALISTIC FACE REPLACEMENT
+  film_face_swap: `STRICT REALISTIC IMAGE EDITING.
 
-MODE: Realistic film-quality face swap
+INPUT:
+Image[0] = reference scene
+Image[1] = person A
+Image[2] = person B
 
-OPERATION:
-- Replace only the faces of the two persons in Image[0]
-- LEFT person face → replaced with Person A from Image[1]
-- RIGHT person face → replaced with Person B from Image[2]
+TASK:
+Replace faces only.
 
-PHOTOREALISM REQUIREMENTS (STRICT):
-- The result must look like a real photograph with different people
-- NO style change whatsoever
-- NO cartoon, illustration, or rendering artifacts
-- Faces must NOT look pasted, composited, or artificially smoothed
+RULES:
+- Keep background, lighting, camera, composition EXACT
+- Keep pose and clothing EXACT
+- Keep film grain, noise, blur, and imperfections
 
-SKIN AND TEXTURE INTEGRATION:
-- Preserve original skin texture, pores, imperfections, and lighting noise from Image[0]
-- Match the sharpness, grain, motion blur, and depth-of-field to Image[0]
-- Skin tone must adjust to match Image[0] lighting conditions exactly
-- No artificial smoothing, retouching, or beautification
+REALISM (CRITICAL):
+- Do NOT beautify faces
+- Do NOT smooth skin
+- Keep pores, asymmetry, imperfections
+- Keep natural lighting inconsistencies
+- Match original color grading exactly
 
-SCENE PRESERVATION (HIGHEST PRIORITY):
-- DO NOT recreate, redraw, or reinterpret the background
-- DO NOT simplify or stylize any part of the scene
-- ALL background details must remain pixel-accurate: textures, lighting, reflections, objects
-- Preserve film grain, color grading, and atmosphere of the original image
+HANDS & FINGERS (IMPORTANT):
+- Preserve natural hand anatomy
+- Correct finger count (5 fingers)
+- No deformed or merged fingers
+- Maintain realistic proportions and joints
 
-FACE INTEGRATION QUALITY:
-- Faces must be seamlessly integrated with correct lighting, shadow direction, and color temperature
-- Skin color must match ambient light from Image[0]
-- No visible seam or compositing edge around the face
-- Eye reflections and catch-lights must match Image[0] lighting
+FACE INTEGRATION:
+- Match shadows and light direction
+- Match skin tone to scene lighting
+- No artificial sharpness or glow
 
-FINAL RESULT:
-- Must appear as if Person A and Person B were always in this scene
-- No evidence of editing should be visible
-- Identity must be strongly preserved and recognizable`,
+RESULT:
+Must look like a real unedited film frame.`,
 
-  zootopia_human: `TASK: STYLIZED 3D ANIMATED HUMAN RENDERING
+  zootopia_human: `Replace the two people in the base image with the people from the reference images.
 
-MODE: Disney Zootopia-style cartoon human transformation
+Use the base image as the main scene. Keep background, composition, camera angle, pose, and clothing exactly the same.
 
-STYLE TARGET:
-- Disney/Pixar cinematic 3D animation style
-- Reference: Zootopia (2016) human character aesthetic
-- NOT anime, NOT manga, NOT 2D flat illustration, NOT cel-shading
+The left person should match image_1.
+The right person should match image_2.
 
-RENDERING REQUIREMENTS (STRICT):
-- Pixar/Disney 3D shading model ONLY
-- Soft global illumination with subsurface scattering in skin
-- Rounded, stylized facial geometry while maintaining recognizable identity
-- Natural human proportions — NOT exaggerated, NOT chibi, NOT anime-proportioned
-- Physically consistent shadows, highlights, and lighting direction
-- Cinematic depth-of-field matching Image[0] composition
+Keep both characters clearly recognizable.
 
-CHARACTER TRANSFORMATION:
-- Both persons remain HUMAN (no animal features)
-- Faces must be stylized but strongly recognizable as Person A and Person B
-- Preserve: face shape, eye spacing, nose structure, chin, overall facial identity
-- Stylize while retaining the personality visible in Image[0]'s expression
+Do not beautify or change identity.
 
-SCENE AND CLOTHING:
-- Background must remain consistent with Image[0] composition
-- Clothing stylized into the 3D animated style but maintaining same design, color, layers
-- All environmental elements (snow, dirt, objects) remain present, stylized consistently
+Now restyle both characters into a Disney / Zootopia-style 3D animated HUMAN version.
 
-QUALITY STANDARD:
-- Film-quality render
-- No low-detail textures
-- No flat shading
-- Full depth, atmosphere, and cinematic polish`,
+IMPORTANT:
+- Keep them human (no animal features)
 
-  zootopia_animal: `You are editing a fixed base image.
-
-IMAGE ROLES:
-Image[0] = BASE SCENE (highest priority, must be preserved)
-Image[1] = Identity reference for LEFT character
-Image[2] = Identity reference for RIGHT character
-
-PRIORITY ORDER (CRITICAL):
-1. Preserve base scene (Image[0])
-2. Preserve character pose and position
-3. Apply identity from Image[1] and Image[2]
-4. Apply Zootopia animal transformation
-5. Apply cinematic style
-
-BASE SCENE LOCK (VERY IMPORTANT):
-The image must remain the SAME SCENE as Image[0]:
-- same composition
-- same camera angle
-- same framing
-- same background
-- same environment details
-Do NOT redesign or reimagine the scene.
-Do NOT move characters.
-Do NOT change clothing.
-The result must look like the SAME photo, not a new illustration.
-
-CHARACTER REPLACEMENT:
-Replace ONLY the two people:
-LEFT person → Person A (Image[1])
-RIGHT person → Person B (Image[2])
-Keep:
-- exact pose
-- exact body position
-- exact proportions
-- exact clothing
-
-ANIMAL TRANSFORMATION (STRICT):
-Convert characters into FULL anthropomorphic animals.
-Person A → RED FOX
-Person B → RABBIT
-MANDATORY:
-- fully animal faces
-- no human skin
-- no human nose or lips
-- no hybrid faces
-
-SPECIES DETAILS:
-FOX:
-- elongated muzzle
-- orange fur
-- white lower face
-- triangular ears
-RABBIT:
-- shorter muzzle
-- long vertical ears
-- soft rounded face
-
-ANTI-ERROR (CRITICAL):
-- female character must NOT become a cat
-- do NOT use feline features
-- do NOT generate random animals
-
-IDENTITY PRESERVATION:
-Keep identity through:
-- eye shape and spacing
-- expression
-- head tilt
-- emotional expression
-Characters must feel like the same people.
-
-STYLE:
-- Zootopia-style cinematic 3D rendering
-- high-end animated film quality
+Style:
+- cinematic 3D animation
 - soft lighting
-- detailed fur shading
+- expressive eyes
+- smooth but natural skin
 
-FINAL RESULT:
-The final image must look like:
-- the SAME original scene
-- with the SAME composition and clothing
-- but characters are clearly a fox and a rabbit
-- identity is preserved`,
+Avoid:
+- anime
+- flat cartoon
+- plastic look
+
+Keep pose and interaction identical.`,
+
+  zootopia_animal: `Replace the two people in the base image with the people from the reference images.
+
+INPUT MAPPING:
+- image = base scene
+- image_1 = left person
+- image_2 = right person
+
+Keep the scene exactly the same:
+- background
+- composition
+- pose
+- clothing
+
+Keep identity recognizable.
+
+Transform characters:
+- Left → fox (NOT a cat)
+- Right → rabbit
+
+RULES:
+- full animal transformation
+- no human skin or features
+- no mixed faces
+
+FOX:
+- narrow muzzle
+- orange fur
+- upright ears
+
+RABBIT:
+- long ears
+- soft face
+- correct proportions
+
+Keep pose and interaction identical.
+
+Style:
+- Zootopia cinematic 3D
+- soft lighting
+- detailed fur
+
+RESULT:
+Same scene, but characters are fox and rabbit.`,
 };
 
 // ─────────────────────────────────────────────
@@ -241,7 +168,7 @@ The final image must look like:
 // ─────────────────────────────────────────────
 
 function promptBuilder(promptKey: PromptKey): string {
-  return sharedPrefix + promptTemplates[promptKey];
+  return promptTemplates[promptKey];
 }
 
 // ─────────────────────────────────────────────
@@ -270,25 +197,6 @@ function resolveDomain(
 
   return "titanic";
 }
-
-// ─────────────────────────────────────────────
-// SAFE FALLBACK PROMPT (titanic ref3 edge case)
-// ─────────────────────────────────────────────
-
-const SAFE_TITANIC_REF3_PROMPT = `Edit the image by replacing the people with the provided individuals.
-
-Keep the overall scene similar.
-
-Allow slight adjustments to ensure the image is appropriate.
-
-* Maintain background and lighting
-* Keep composition similar
-* Ensure people are not overlapping too closely
-* Keep interaction neutral
-
-Only update identity.
-
-The result must be natural, appropriate, and non-sensitive.`;
 
 // ─────────────────────────────────────────────
 // OPENAI GENERATOR
@@ -353,17 +261,6 @@ async function generateWithOpenAI(
 // ─────────────────────────────────────────────
 // REPLICATE GENERATOR
 // ─────────────────────────────────────────────
-
-async function fileToBase64DataUrl(file: File): Promise<string> {
-  const buffer = await file.arrayBuffer();
-  const bytes = new Uint8Array(buffer);
-  let binary = "";
-  for (let i = 0; i < bytes.byteLength; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  const base64 = btoa(binary);
-  return `data:${file.type};base64,${base64}`;
-}
 
 async function uploadFileToSupabaseStorage(file: File, supabaseUrl: string, supabaseKey: string): Promise<string> {
   const filename = `replicate-input/${Date.now()}-${Math.random().toString(36).slice(2)}.${file.type.split("/")[1] || "jpg"}`;
@@ -519,20 +416,17 @@ async function generateImage(
   domain: Domain,
   reference: File,
   person1: File,
-  person2: File,
-  style: string,
-  referenceId: string
+  person2: File
 ): Promise<{ imageUrl: string; debug: Record<string, unknown> }> {
   const route = modelRouter(domain);
-  const isTitanicRef3 = style === "titanic" && referenceId === "ref3";
-  const prompt = isTitanicRef3 ? SAFE_TITANIC_REF3_PROMPT : promptBuilder(route.promptKey);
+  const prompt = promptBuilder(route.promptKey);
 
   const debug = {
     domain,
     provider: route.provider,
     model: route.model,
     promptKey: route.promptKey,
-    isTitanicRef3,
+    promptLength: prompt.length,
     promptPreview: prompt.substring(0, 200) + "...",
   };
 
@@ -574,9 +468,9 @@ Deno.serve(async (req: Request) => {
     const person1 = formData.get("person1") as File;
     const person2 = formData.get("person2") as File;
     const selectedStyle = formData.get("style") as string;
-    const selectedReference = formData.get("referenceId") as string;
     const requestedMode = formData.get("mode") as string;
     const requestedDomain = formData.get("domain") as string;
+    const selectedReference = formData.get("referenceId") as string;
 
     if (!reference || !person1 || !person2) {
       return new Response(
@@ -597,9 +491,7 @@ Deno.serve(async (req: Request) => {
       domain,
       reference,
       person1,
-      person2,
-      selectedStyle,
-      selectedReference
+      person2
     );
 
     return new Response(
