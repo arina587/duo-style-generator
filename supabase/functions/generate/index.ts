@@ -266,6 +266,7 @@ async function uploadFileToSupabaseStorage(file: File, supabaseUrl: string, supa
   const filename = `replicate-input/${Date.now()}-${Math.random().toString(36).slice(2)}.${file.type.split("/")[1] || "jpg"}`;
   const uploadUrl = `${supabaseUrl}/storage/v1/object/replicate-uploads/${filename}`;
 
+  console.log("SUPABASE_KEY_DIAGNOSTIC: exists=", !!supabaseKey, "length=", supabaseKey?.length ?? 0, "prefix=", supabaseKey?.substring(0, 20) ?? "MISSING");
   console.log("REPLICATE_UPLOAD: uploading", file.name, "size", file.size, "type", file.type, "→", filename);
 
   const uploadResponse = await fetch(uploadUrl, {
