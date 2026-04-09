@@ -64,77 +64,105 @@ HANDS & ANATOMY:
 FINAL RESULT:
 The output must look like an authentic, unedited film frame where the original actors were replaced seamlessly. No composite look. No lighting mismatch. No texture mismatch.`;
 
-const ZOOTOPIA_PROMPT = `STRICT CONTROLLED IMAGE EDITING. NO CREATIVE INTERPRETATION.
+const ZOOTOPIA_PROMPT = `STRICT IMAGE EDITING.
 
-INPUT IMAGES:
-Image[0] = REFERENCE SCENE (must be preserved exactly)
+INPUT:
+Image[0] = reference scene (SOURCE OF TRUTH)
 Image[1] = Person A (LEFT)
 Image[2] = Person B (RIGHT)
 
-CORE RULE:
-- Use ONLY the background and environment from Image[0]
-- Do NOT use background from Image[1] or Image[2]
-- Only transfer people identity
+---
 
-IDENTITY:
-- LEFT → Person A
-- RIGHT → Person B
+BACKGROUND LOCK (CRITICAL):
 
-POSE LOCK:
-- keep exact pose, clothing, composition
-- do not change scene
+* The background MUST be EXACTLY from Image[0]
+* Do NOT recreate, redesign, or reinterpret the background
+* Do NOT use any background from Image[1] or Image[2]
+* Do NOT generate a new environment
+* Keep all objects, lighting, colors, and details exactly as in Image[0]
 
-STYLE LOCK (CRITICAL):
-- ALWAYS use Disney / Zootopia / Pixar-style 3D
-- high-end animated film quality
-- soft cinematic lighting
-- clean smooth shading
-- DO NOT change style based on reference
-- style must be consistent across generations
+---
+
+REPLACEMENT:
+
+* LEFT person → Person A
+* RIGHT person → Person B
+* Do not swap or mix identities
+
+---
+
+POSE & SCENE LOCK:
+
+* Keep exact pose and body position from Image[0]
+* Keep exact clothing, folds, and textures
+* Keep exact camera angle and framing
+* Do not move characters
+* Do not change composition
+
+---
+
+STYLE (LOCKED):
+
+* Disney / Zootopia / Pixar-style 3D
+* soft cinematic lighting
+* clean stylized rendering
+* consistent style across all generations
+* do NOT change style based on reference image
+
+---
 
 MODE:
 
-IF MODE = "zootopia_cartoon":
-- transform into stylized animated humans
-- keep human anatomy
-- smooth skin
-- expressive eyes
+IF MODE = "CARTOON":
 
-IF MODE = "zootopia_animals":
-- transform into anthropomorphic characters
-- Person A = FOX
-- Person B = RABBIT
+* transform into stylized animated humans
+* keep human anatomy
+* smooth stylized skin
+* expressive eyes
 
-ANIMAL RULES:
-- NOT realistic animals
-- NOT generic cartoon
-- MUST be Zootopia-style
-- upright humanoid body
+IF MODE = "ANIMALS":
 
-FOX:
-- orange fur
-- elongated muzzle
-- pointed ears
+* Person A = fox
+* Person B = rabbit
+* anthropomorphic characters (human posture)
+* NOT realistic animals
+* NOT generic cartoon animals
+* must look like Zootopia-style characters
+* stylized fur, not photorealistic
 
-RABBIT:
-- long ears
-- soft face
-- rounded muzzle
+---
 
 IDENTITY PRESERVATION:
-- keep eyes, expression, proportions
-- must look like same people
 
-HANDS:
-- correct anatomy
-- correct number of fingers
-- no deformations
+* preserve facial structure, eye spacing, and expression
+* characters must remain recognizable as the original people
 
-FINAL:
-- same scene as Image[0]
-- same pose and clothing
-- only characters changed
-- consistent Disney/Zootopia style`;
+---
+
+HANDS (CRITICAL):
+
+* correct number of fingers
+* natural anatomy
+* no deformations or extra fingers
+* match pose from Image[0]
+
+---
+
+INTEGRATION:
+
+* match lighting and shadows from Image[0]
+* match color grading and atmosphere
+* no cut-and-paste effect
+
+---
+
+FINAL RESULT:
+
+* SAME scene as Image[0]
+* SAME background (unchanged)
+* SAME pose and clothing
+* ONLY characters replaced and stylized
+* consistent Disney/Zootopia look`;
 
 // ─────────────────────────────────────────────
 // DOMAIN RESOLVER
