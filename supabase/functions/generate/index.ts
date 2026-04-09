@@ -1,4 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "npm:@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -262,27 +263,30 @@ async function generateWithOpenAI(
 // REPLICATE GENERATOR
 // ─────────────────────────────────────────────
 
-async function uploadFileToSupabaseStorage(file: File, supabaseUrl: string, supabaseKey: string): Promise<string> {
+async function uploadFileToSupabaseStorage(file: File, supabaseUrl: string, supabaseServiceRoleKey: string): Promise<string> {
   const filename = `replicate-input/${Date.now()}-${Math.random().toString(36).slice(2)}.${file.type.split("/")[1] || "jpg"}`;
-  const uploadUrl = `${supabaseUrl}/storage/v1/object/replicate-uploads/${filename}`;
 
-  console.log("SUPABASE_KEY_DIAGNOSTIC: exists=", !!supabaseKey, "length=", supabaseKey?.length ?? 0, "prefix=", supabaseKey?.substring(0, 20) ?? "MISSING");
+  console.log("SUPABASE_KEY_DIAGNOSTIC: exists=", !!supabaseServiceRoleKey, "length=", supabaseServiceRoleKey?.length ?? 0, "prefix=", supabaseServiceRoleKey?.substring(0, 20) ?? "MISSING");
   console.log("REPLICATE_UPLOAD: uploading", file.name, "size", file.size, "type", file.type, "→", filename);
 
-  const uploadResponse = await fetch(uploadUrl, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${supabaseKey}`,
-      "Content-Type": file.type,
-      "x-upsert": "true",
+  const supabaseAdmin = createClient(supabaseUrl, supabaseServiceRoleKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
     },
-    body: await file.arrayBuffer(),
   });
 
-  if (!uploadResponse.ok) {
-    const uploadError = await uploadResponse.text();
-    console.error("REPLICATE_UPLOAD_ERROR:", uploadResponse.status, uploadError);
-    throw new Error(`Failed to upload image to storage: ${uploadResponse.status} ${uploadError}`);
+  const arrayBuffer = await file.arrayBuffer();
+  const { error } = await supabaseAdmin.storage
+    .from("replicate-uploads")
+    .upload(filename, arrayBuffer, {
+      contentType: file.type,
+      upsert: true,
+    });
+
+  if (error) {
+    console.error("REPLICATE_UPLOAD_ERROR:", error.message);
+    throw new Error(`Failed to upload image to storage: ${error.message}`);
   }
 
   const publicUrl = `${supabaseUrl}/storage/v1/object/public/replicate-uploads/${filename}`;
