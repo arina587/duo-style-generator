@@ -67,111 +67,244 @@ The output must look like an authentic, unedited film frame where the original a
 const ZOOTOPIA_CARTOON_PROMPT = `STRICT IMAGE EDITING.
 
 INPUT:
-Image[0] = reference scene
-Image[1] = Person A (LEFT)
-Image[2] = Person B (RIGHT)
+Image[0] = reference scene (SOURCE OF TRUTH)
+Image[1] = Person A (LEFT identity)
+Image[2] = Person B (RIGHT identity)
 
-BACKGROUND:
-Use EXACT background from Image[0]. Do not change anything.
+---
 
-REPLACE:
-LEFT → Person A
-RIGHT → Person B
+IDENTITY REPLACEMENT (CRITICAL):
 
-LOCK:
-Keep exact pose, clothing, composition.
+You must TAKE the real people from Image[1] and Image[2] and INSERT them into Image[0].
+
+* Replace the LEFT person in Image[0] with Person A
+* Replace the RIGHT person in Image[0] with Person B
+
+DO NOT create new characters.
+DO NOT generate random faces.
+DO NOT mix identities.
+
+The final characters must clearly look like the people from Image[1] and Image[2].
+
+---
+
+BACKGROUND LOCK (CRITICAL):
+
+* Use ONLY the background from Image[0]
+* Keep it EXACTLY the same
+* Do NOT redesign, regenerate, or modify the environment
+* Do NOT use background from Image[1] or Image[2]
+
+---
+
+POSE & SCENE LOCK:
+
+* Keep exact pose and body position from Image[0]
+* Keep exact clothing, folds, textures
+* Keep camera angle and framing identical
+* Do NOT move characters
+* Do NOT change composition
+
+---
 
 STYLE LOCK (VERY STRICT):
 
-Render characters as polished 3D animated characters with a soft family-friendly look.
+Apply a polished 3D animated character style to the people.
 
-MANDATORY VISUAL TRAITS:
-- large, expressive, glossy eyes
-- smooth, clean, plastic-like skin
-- rounded, soft facial shapes
-- small nose, simplified facial features
-- subtle, friendly facial expression
-- slightly stylized proportions (head slightly larger than realistic)
-- clean, noise-free 3D rendering
-- soft gradient background lighting
-- soft global illumination with no harsh shadows
-- cinematic but gentle lighting
+VISUAL STYLE:
 
-MATERIALS:
-- smooth surfaces
-- no skin pores
-- no realism noise
-- slightly toy-like finish
+* smooth, clean 3D rendering
+* plastic-like skin (no pores, no noise)
+* rounded, soft facial shapes
+* slightly enlarged head proportions
+* large expressive glossy eyes
+* simplified, appealing facial features
+* soft cinematic lighting
+* clean shading, no grain
+
+IMPORTANT:
+
+* apply style ONLY to characters
+* scene and background must stay unchanged
 
 FORBIDDEN:
-- anime style
-- realistic skin
-- rough textures
-- painterly or sketch style
-- dark or gritty rendering
 
-IDENTITY:
-Keep face recognizable.
+* anime
+* manga
+* 2D illustration
+* sketch or painterly styles
+* photorealistic skin
 
-HANDS:
-Correct anatomy, no extra fingers.
+---
 
-FINAL:
-Same scene. Only characters stylized into Pixar 3D humans.`;
+MODE: CARTOON
+
+* keep human characters
+* stylize into 3D animated humans
+
+---
+
+IDENTITY PRESERVATION:
+
+Preserve:
+
+* face structure
+* eye spacing
+* expression
+* head proportions
+
+Characters must remain recognizable.
+
+---
+
+HANDS (CRITICAL):
+
+* correct number of fingers
+* natural anatomy
+* no deformations
+
+---
+
+FINAL RESULT:
+
+* SAME scene as Image[0]
+* SAME background (unchanged)
+* SAME pose and clothing
+* ONLY characters replaced with Person A and Person B
+* characters are stylized in consistent 3D animated style`;
 
 const ZOOTOPIA_ANIMALS_PROMPT = `STRICT IMAGE EDITING.
 
 INPUT:
-Image[0] = reference scene
-Image[1] = Person A (LEFT)
-Image[2] = Person B (RIGHT)
+Image[0] = reference scene (SOURCE OF TRUTH)
+Image[1] = Person A (LEFT identity)
+Image[2] = Person B (RIGHT identity)
 
-BACKGROUND:
-Use EXACT background from Image[0]. Do not change anything.
+---
 
-REPLACE:
-LEFT → Person A (FOX)
-RIGHT → Person B (RABBIT)
+IDENTITY REPLACEMENT (CRITICAL):
 
-LOCK:
-Keep exact pose, clothing, composition.
+You must TAKE the real people from Image[1] and Image[2] and INSERT them into Image[0].
 
-TRANSFORMATION (CRITICAL):
+* Replace the LEFT person in Image[0] with Person A
+* Replace the RIGHT person in Image[0] with Person B
 
-Transform BOTH characters into anthropomorphic Zootopia-style animals.
+DO NOT create new characters.
+DO NOT generate random faces.
+DO NOT mix identities.
 
-MANDATORY:
-- full animal faces (NO human faces)
-- upright humanoid bodies
-- keep clothing
+---
 
-STYLE (VERY STRICT):
+BACKGROUND LOCK (CRITICAL):
 
-High-end Pixar / Disney Zootopia-style 3D rendering ONLY.
+* Use ONLY the background from Image[0]
+* Keep it EXACTLY the same
+* Do NOT redesign, regenerate, or modify the environment
+* Do NOT use background from Image[1] or Image[2]
 
-MANDATORY:
-- stylized fur (NOT realistic)
-- smooth animated shading
-- expressive eyes
-- cinematic lighting
+---
+
+POSE & SCENE LOCK:
+
+* Keep exact pose and body position from Image[0]
+* Keep exact clothing, folds, textures
+* Keep camera angle and framing identical
+* Do NOT move characters
+* Do NOT change composition
+
+---
+
+STYLE LOCK (VERY STRICT):
+
+Apply a polished 3D animated character style to the people.
+
+VISUAL STYLE:
+
+* smooth, clean 3D rendering
+* plastic-like skin (no pores, no noise)
+* rounded, soft facial shapes
+* slightly enlarged head proportions
+* large expressive glossy eyes
+* simplified, appealing facial features
+* soft cinematic lighting
+* clean shading, no grain
+
+IMPORTANT:
+
+* apply style ONLY to characters
+* scene and background must stay unchanged
 
 FORBIDDEN:
-- realistic animals
-- real fur rendering
-- human faces
-- generic cartoon animals
-- anime style
 
-IDENTITY:
-Keep expression and proportions recognizable.
+* anime
+* manga
+* 2D illustration
+* sketch or painterly styles
+* photorealistic skin
 
-HANDS:
-Correct anatomy, no deformations.
+---
 
-FINAL:
-Same scene.
-Characters MUST be a fox and a rabbit in Zootopia style.
-NO humans allowed.`;
+MODE: ANIMALS
+
+* transform characters into anthropomorphic animals
+* Person A = FOX
+* Person B = RABBIT
+
+ANIMALS RULES (CRITICAL):
+
+* full animal faces (NO human faces)
+* no human skin
+* upright humanoid bodies
+* stylized fur (smooth, not realistic)
+
+FOX:
+
+* orange fur
+* elongated muzzle
+* pointed ears
+
+RABBIT:
+
+* long ears
+* soft rounded face
+* compact muzzle
+
+FORBIDDEN (ANIMALS):
+
+* realistic animals
+* real fur
+* hybrid human-animal faces
+
+---
+
+IDENTITY PRESERVATION:
+
+Preserve:
+
+* expression
+* head proportions
+
+Characters must remain recognizable.
+
+---
+
+HANDS (CRITICAL):
+
+* correct number of fingers
+* natural anatomy
+* no deformations
+
+---
+
+FINAL RESULT:
+
+* SAME scene as Image[0]
+* SAME background (unchanged)
+* SAME pose and clothing
+* ONLY characters replaced with Person A (FOX) and Person B (RABBIT)
+* characters are stylized in consistent 3D animated style
+* Characters MUST be a fox and a rabbit
+* NO humans allowed`;
 
 // ─────────────────────────────────────────────
 // DOMAIN RESOLVER
