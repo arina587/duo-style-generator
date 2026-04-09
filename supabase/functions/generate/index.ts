@@ -309,6 +309,18 @@ async function generateWithOpenAI(
   form.append("image[]", person1);
   form.append("image[]", person2);
 
+  console.log("=== GPT REQUEST ===");
+  console.log("model:", model);
+  console.log("endpoint: https://api.openai.com/v1/images/edits");
+  console.log("prompt length:", prompt.length);
+  console.log("prompt:\n" + prompt);
+  console.log("images:");
+  console.log("  [0] reference  — name:", reference.name, "| size:", reference.size, "bytes | type:", reference.type);
+  console.log("  [1] person1    — name:", person1.name, "| size:", person1.size, "bytes | type:", person1.type);
+  console.log("  [2] person2    — name:", person2.name, "| size:", person2.size, "bytes | type:", person2.type);
+  console.log("payload: FormData { model, prompt, image[0], image[1], image[2] }");
+  console.log("===================");
+
   const response = await fetch("https://api.openai.com/v1/images/edits", {
     method: "POST",
     headers: {
@@ -317,13 +329,25 @@ async function generateWithOpenAI(
     body: form,
   });
 
-  const data = await response.json();
+  const responseText = await response.text();
 
-  if (!data?.data?.[0]?.b64_json) {
+  console.log("=== GPT RESPONSE ===");
+  console.log("status:", response.status);
+  console.log("body:", responseText);
+  console.log("====================");
+
+  let data: Record<string, unknown>;
+  try {
+    data = JSON.parse(responseText);
+  } catch {
+    throw new Error(`OpenAI returned non-JSON response (${response.status}): ${responseText.substring(0, 500)}`);
+  }
+
+  if (!(data?.data as unknown[])?.length || !(data.data as Record<string, unknown>[])[0]?.b64_json) {
     throw new Error(`OpenAI generation failed: ${JSON.stringify(data)}`);
   }
 
-  return `data:image/png;base64,${data.data[0].b64_json}`;
+  return `data:image/png;base64,${(data.data as Record<string, unknown>[])[0].b64_json}`;
 }
 
 // ─────────────────────────────────────────────
@@ -398,15 +422,13 @@ async function generateWithReplicate(
     image_2: p2Url,
   };
 
-  console.log("REPLICATE_REQUEST_PAYLOAD:", JSON.stringify({
-    model,
-    prompt_length: prompt.length,
-    prompt_preview: prompt.substring(0, 300),
-    input_fields: Object.keys(inputPayload),
-    image: refUrl,
-    image_1: p1Url,
-    image_2: p2Url,
-  }));
+  console.log("=== REPLICATE REQUEST ===");
+  console.log("model:", model);
+  console.log("endpoint:", `https://api.replicate.com/v1/models/${model}/predictions`);
+  console.log("prompt length:", prompt.length);
+  console.log("prompt:\n" + prompt);
+  console.log("input:", JSON.stringify(inputPayload, null, 2));
+  console.log("=========================");
 
   const predictionResponse = await fetch(`https://api.replicate.com/v1/models/${model}/predictions`, {
     method: "POST",
@@ -419,8 +441,10 @@ async function generateWithReplicate(
   });
 
   const predictionRaw = await predictionResponse.text();
-  console.log("REPLICATE_PREDICTION_RAW_STATUS:", predictionResponse.status);
-  console.log("REPLICATE_PREDICTION_RAW_BODY:", predictionRaw.substring(0, 2000));
+  console.log("=== REPLICATE RESPONSE ===");
+  console.log("status:", predictionResponse.status);
+  console.log("body:", predictionRaw);
+  console.log("==========================");
 
   let prediction: Record<string, unknown>;
   try {
