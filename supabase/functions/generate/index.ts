@@ -11,14 +11,12 @@ const corsHeaders = {
 // ─────────────────────────────────────────────
 
 type Domain = "titanic" | "euphoria" | "zootopia_cartoon" | "zootopia_animals";
-type PromptKey = "film_face_swap" | "zootopia_cartoon" | "zootopia_animals";
 
 // ─────────────────────────────────────────────
 // PROMPT TEMPLATES
 // ─────────────────────────────────────────────
 
-const promptTemplates: Record<PromptKey, string> = {
-  film_face_swap: `STRICT REALISTIC IMAGE EDITING — SCENE-ACCURATE FACE SWAP.
+const FILM_FACE_SWAP_PROMPT = `STRICT REALISTIC IMAGE EDITING — SCENE-ACCURATE FACE SWAP.
 
 INPUT:
 Image[0] = reference scene (authoritative source of all environmental conditions)
@@ -64,90 +62,79 @@ HANDS & ANATOMY:
 - Maintain realistic body proportions
 
 FINAL RESULT:
-The output must look like an authentic, unedited film frame where the original actors were replaced seamlessly. No composite look. No lighting mismatch. No texture mismatch.`,
+The output must look like an authentic, unedited film frame where the original actors were replaced seamlessly. No composite look. No lighting mismatch. No texture mismatch.`;
 
-  zootopia_cartoon: `STRICT CONTROLLED IMAGE EDITING.
+const ZOOTOPIA_PROMPT = `STRICT CONTROLLED IMAGE EDITING. NO CREATIVE INTERPRETATION.
 
 INPUT IMAGES:
-Image[0] = reference scene
+Image[0] = REFERENCE SCENE (must be preserved exactly)
 Image[1] = Person A (LEFT)
 Image[2] = Person B (RIGHT)
 
-IDENTITY:
-LEFT → Person A
-RIGHT → Person B
+CORE RULE:
+- Use ONLY the background and environment from Image[0]
+- Do NOT use background from Image[1] or Image[2]
+- Only transfer people identity
 
-LOCK:
-- keep exact pose, composition, clothing, background
+IDENTITY:
+- LEFT → Person A
+- RIGHT → Person B
+
+POSE LOCK:
+- keep exact pose, clothing, composition
 - do not change scene
 
-TASK:
-Transform both people into stylized animated human characters.
-
-STYLE:
-- Disney / Zootopia-inspired 3D style
-- smooth skin, clean shading
+STYLE LOCK (CRITICAL):
+- ALWAYS use Disney / Zootopia / Pixar-style 3D
+- high-end animated film quality
 - soft cinematic lighting
-- slightly larger expressive eyes
+- clean smooth shading
+- DO NOT change style based on reference
+- style must be consistent across generations
 
-IDENTITY PRESERVATION:
-- preserve facial structure, proportions, and expression
-- characters must remain recognizable
+MODE:
 
-FINAL RESULT:
-- same scene
-- same pose
-- same clothing
-- both people are cartoon human versions of themselves`,
+IF MODE = "zootopia_cartoon":
+- transform into stylized animated humans
+- keep human anatomy
+- smooth skin
+- expressive eyes
 
-  zootopia_animals: `STRICT CONTROLLED IMAGE EDITING.
+IF MODE = "zootopia_animals":
+- transform into anthropomorphic characters
+- Person A = FOX
+- Person B = RABBIT
 
-INPUT IMAGES:
-Image[0] = reference scene
-Image[1] = Person A (LEFT)
-Image[2] = Person B (RIGHT)
+ANIMAL RULES:
+- NOT realistic animals
+- NOT generic cartoon
+- MUST be Zootopia-style
+- upright humanoid body
 
-IDENTITY:
-LEFT → Person A (FOX)
-RIGHT → Person B (RABBIT)
-
-LOCK:
-- keep exact pose, composition, clothing, background
-- do not change scene
-
-TASK:
-Transform both people into anthropomorphic animals.
-
-TRANSFORMATION RULES:
-- full animal faces (no human skin)
-- upright human bodies
-- preserve pose and clothing
-
-FOX (Person A):
+FOX:
 - orange fur
 - elongated muzzle
 - pointed ears
 
-RABBIT (Person B):
-- softer face
+RABBIT:
 - long ears
-- rounded features
-
-STYLE:
-- Disney / Zootopia-style 3D cinematic rendering
-- detailed fur shading
-- soft lighting
+- soft face
+- rounded muzzle
 
 IDENTITY PRESERVATION:
-- preserve eye spacing, expression, and head position
-- characters must feel like the same people
+- keep eyes, expression, proportions
+- must look like same people
 
-FINAL RESULT:
-- same scene
+HANDS:
+- correct anatomy
+- correct number of fingers
+- no deformations
+
+FINAL:
+- same scene as Image[0]
 - same pose and clothing
-- clearly a fox and a rabbit
-- identity still recognizable`,
-};
+- only characters changed
+- consistent Disney/Zootopia style`;
 
 // ─────────────────────────────────────────────
 // DOMAIN RESOLVER
@@ -179,15 +166,14 @@ function resolveDomain(
 // PROMPT RESOLVER
 // ─────────────────────────────────────────────
 
-function resolvePromptKey(domain: Domain): PromptKey {
+function resolvePrompt(domain: Domain): string {
   switch (domain) {
     case "titanic":
     case "euphoria":
-      return "film_face_swap";
+      return FILM_FACE_SWAP_PROMPT;
     case "zootopia_cartoon":
-      return "zootopia_cartoon";
     case "zootopia_animals":
-      return "zootopia_animals";
+      return ZOOTOPIA_PROMPT.replace("MODE", domain);
   }
 }
 
@@ -286,19 +272,17 @@ Deno.serve(async (req: Request) => {
     }
 
     const domain = resolveDomain(requestedDomain, selectedStyle, requestedMode);
-    const promptKey = resolvePromptKey(domain);
-    const prompt = promptTemplates[promptKey];
+    const prompt = resolvePrompt(domain);
 
     const debug = {
       domain,
       provider: "openai",
       model: "gpt-image-1.5",
-      promptKey,
       promptLength: prompt.length,
       promptPreview: prompt.substring(0, 200) + "...",
     };
 
-    console.log("GENERATE:", JSON.stringify({ domain, provider: "openai", model: "gpt-image-1.5", promptKey }));
+    console.log("GENERATE:", JSON.stringify({ domain, provider: "openai", model: "gpt-image-1.5" }));
 
     const apiKey = Deno.env.get("OPENAI_API_KEY");
     if (!apiKey) throw new Error("OpenAI API key not configured");
