@@ -81,24 +81,34 @@ RIGHT → Person B
 LOCK:
 Keep exact pose, clothing, composition.
 
-STYLE (VERY STRICT):
+STYLE LOCK (VERY STRICT):
 
-Render in high-end Pixar / Disney 3D animation style ONLY.
+Render characters as polished 3D animated characters with a soft family-friendly look.
 
-MANDATORY:
-- 3D animated film rendering
-- smooth plastic-like skin
-- soft global illumination
-- cinematic lighting
-- high-quality shading
-- expressive but natural eyes
+MANDATORY VISUAL TRAITS:
+- large, expressive, glossy eyes
+- smooth, clean, plastic-like skin
+- rounded, soft facial shapes
+- small nose, simplified facial features
+- subtle, friendly facial expression
+- slightly stylized proportions (head slightly larger than realistic)
+- clean, noise-free 3D rendering
+- soft gradient background lighting
+- soft global illumination with no harsh shadows
+- cinematic but gentle lighting
+
+MATERIALS:
+- smooth surfaces
+- no skin pores
+- no realism noise
+- slightly toy-like finish
 
 FORBIDDEN:
 - anime style
-- 2D illustration
-- sketch style
-- painterly style
-- realistic photo style
+- realistic skin
+- rough textures
+- painterly or sketch style
+- dark or gritty rendering
 
 IDENTITY:
 Keep face recognizable.
