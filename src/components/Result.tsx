@@ -22,9 +22,9 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <div className="flex items-center justify-between mb-10">
+        <div className="flex items-center justify-between mb-7">
           <button
             onClick={onBack}
             className="flex items-center gap-2 text-slate-500 hover:text-sky-400 transition-colors duration-200 text-sm"
@@ -38,8 +38,8 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
           </div>
         </div>
 
-        <div className="text-center mb-8">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3 tracking-tight">
+        <div className="text-center mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">
             {isGenerating ? 'Creating Your Fusion' : error ? 'Generation Failed' : 'Your Styled Fusion'}
           </h2>
           <p className="text-slate-400 font-light text-sm sm:text-base">
@@ -51,7 +51,7 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
           </p>
         </div>
 
-        <div className="glass-card rounded-2xl glow-shadow-lg overflow-hidden mb-8">
+        <div className="glass-card rounded-2xl glow-shadow-lg overflow-hidden mb-5">
           <div className="aspect-square flex items-center justify-center relative" style={{ background: 'rgba(255,255,255,0.02)' }}>
             {isGenerating ? (
               <div className="text-center p-12">

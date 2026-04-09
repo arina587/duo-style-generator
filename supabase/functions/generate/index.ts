@@ -54,41 +54,53 @@ function modelRouter(domain: Domain): RouteConfig {
 // ─────────────────────────────────────────────
 
 const promptTemplates: Record<PromptKey, string> = {
-  film_face_swap: `STRICT REALISTIC IMAGE EDITING.
+  film_face_swap: `STRICT REALISTIC IMAGE EDITING — SCENE-ACCURATE FACE SWAP.
 
 INPUT:
-Image[0] = reference scene
-Image[1] = person A
-Image[2] = person B
+Image[0] = reference scene (authoritative source of all environmental conditions)
+Image[1] = person A (face donor)
+Image[2] = person B (face donor)
 
 TASK:
-Replace faces only.
+Replace the faces in Image[0] with the faces from Image[1] and Image[2].
 
-RULES:
-- Keep background, lighting, camera, composition EXACT
-- Keep pose and clothing EXACT
-- Keep film grain, noise, blur, and imperfections
+SCENE PRESERVATION (NON-NEGOTIABLE):
+- Keep background, lighting, camera angle, and composition PIXEL-EXACT
+- Keep pose, clothing, and body positions UNCHANGED
+- Keep film grain, noise, motion blur, lens distortion, and depth-of-field UNCHANGED
+- Keep the original color grading, tones, and mood of Image[0]
 
-REALISM (CRITICAL):
-- Do NOT beautify faces
-- Do NOT smooth skin
-- Keep pores, asymmetry, imperfections
-- Keep natural lighting inconsistencies
-- Match original color grading exactly
+ENVIRONMENT MATCH — READ IMAGE[0] AND APPLY EXACTLY:
+- Analyze the VISIBLE environmental conditions in Image[0] and transfer them to the new faces
+- If Image[0] shows cold or freezing conditions (pale skin, blue-white skin tones, desaturated complexion): apply that color temperature to the new faces
+- If Image[0] shows wet skin or water droplets: apply wetness, reflections, and wet-skin texture to the new faces
+- If Image[0] shows sweat, tears, dirt, blood, bruises, or physical damage: preserve and transfer those details
+- If Image[0] has strong colored lighting (warm/cool/tinted): the new faces must inherit exactly that lighting color
+- If Image[0] shows dry, clean, normal conditions: render faces cleanly with NO added damage or effects
+- DO NOT invent or add any environmental effect that is NOT visibly present in Image[0]
 
-HANDS & FINGERS (IMPORTANT):
+SKIN INTEGRATION (CRITICAL):
+- Match lighting direction and intensity to Image[0] exactly
+- Match color temperature of skin to the scene's lighting (cold scene = cold skin, warm scene = warm skin)
+- Match skin texture to what is visible in Image[0] — wet if scene is wet, dry if scene is dry
+- DO NOT smooth, beautify, or normalize the face
+- Keep all pores, asymmetry, wrinkles, and natural imperfections of Image[1] / Image[2]
+- No artificial sharpening, glow, or skin-softening filters
+
+REALISM:
+- Do NOT add effects not present in Image[0]
+- Do NOT apply cold/blue skin tones unless clearly visible in Image[0]
+- Do NOT apply wetness unless clearly visible in Image[0]
+- The replaced faces must look like they were part of the original scene when it was filmed
+
+HANDS & ANATOMY:
 - Preserve natural hand anatomy
-- Correct finger count (5 fingers)
+- Correct finger count (5 fingers per hand)
 - No deformed or merged fingers
-- Maintain realistic proportions and joints
+- Maintain realistic body proportions
 
-FACE INTEGRATION:
-- Match shadows and light direction
-- Match skin tone to scene lighting
-- No artificial sharpness or glow
-
-RESULT:
-Must look like a real unedited film frame.`,
+FINAL RESULT:
+The output must look like an authentic, unedited film frame where the original actors were replaced seamlessly. No composite look. No lighting mismatch. No texture mismatch.`,
 
   zootopia_human: `Replace the two people in the base image with the people from the reference images.
 

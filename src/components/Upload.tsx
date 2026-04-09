@@ -101,9 +101,9 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <div className="flex items-center justify-between mb-10">
+        <div className="flex items-center justify-between mb-7">
           <button
             onClick={onBack}
             className="flex items-center gap-2 text-slate-500 hover:text-sky-400 transition-colors duration-200 text-sm"
@@ -117,12 +117,12 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
           </div>
         </div>
 
-        <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3 tracking-tight">Upload Your Photos</h2>
+        <div className="text-center mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">Upload Your Photos</h2>
           <p className="text-slate-400 font-light text-sm sm:text-base">Upload two photos to create your styled fusion</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div className="glass-card rounded-2xl p-5 glow-shadow">
             <div className="flex items-center gap-2.5 mb-4">
               <div className="w-6 h-6 rounded-full bg-sky-500/20 border border-sky-500/30 flex items-center justify-center text-xs font-bold text-sky-400 flex-shrink-0">A</div>
@@ -141,14 +141,14 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
                     <img
                       src={preview1}
                       alt="MAN photo"
-                      className="w-full h-60 object-contain rounded-lg"
+                      className="w-full h-44 object-contain rounded-lg"
                     />
                     <div className="absolute inset-0 rounded-lg bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
                       <span className="text-white text-sm font-medium">Click to replace</span>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-60 gap-3">
+                  <div className="flex flex-col items-center justify-center h-44 gap-3">
                     <div className="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center group-hover:bg-sky-500/18 transition-colors duration-200">
                       <UploadIcon className="w-5 h-5 text-sky-500/50 group-hover:text-sky-400 transition-colors duration-200" />
                     </div>
@@ -180,14 +180,14 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
                     <img
                       src={preview2}
                       alt="GIRL photo"
-                      className="w-full h-60 object-contain rounded-lg"
+                      className="w-full h-44 object-contain rounded-lg"
                     />
                     <div className="absolute inset-0 rounded-lg bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
                       <span className="text-white text-sm font-medium">Click to replace</span>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-60 gap-3">
+                  <div className="flex flex-col items-center justify-center h-44 gap-3">
                     <div className="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center group-hover:bg-rose-500/18 transition-colors duration-200">
                       <Image className="w-5 h-5 text-rose-500/50 group-hover:text-rose-400 transition-colors duration-200" />
                     </div>
@@ -203,7 +203,7 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
         </div>
 
         {referenceImages.length > 0 && (
-          <div className="glass-card rounded-2xl p-5 glow-shadow mb-5">
+          <div className="glass-card rounded-2xl p-5 glow-shadow mb-4">
             <div className="mb-4">
               <h3 className="text-sm font-semibold text-white mb-0.5">Select Reference Image</h3>
               <p className="text-xs text-slate-500">Choose one reference for your style composition</p>
@@ -239,7 +239,7 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
         )}
 
         {selectedStyle === 'zootopia' && selectedReference && (
-          <div className="glass-card rounded-2xl p-5 glow-shadow mb-5">
+          <div className="glass-card rounded-2xl p-5 glow-shadow mb-4">
             <div className="mb-4">
               <h3 className="text-sm font-semibold text-white mb-0.5">Transformation Type</h3>
               <p className="text-xs text-slate-500">Select how you want the characters to be transformed</p>

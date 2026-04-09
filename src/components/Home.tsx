@@ -58,14 +58,14 @@ export default function Home({ onStyleSelect }: HomeProps) {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
 
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card mb-8 text-xs tracking-widest uppercase text-sky-400 font-medium border border-sky-500/20">
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card mb-5 text-xs tracking-widest uppercase text-sky-400 font-medium border border-sky-500/20">
             <Sparkles className="w-3.5 h-3.5" />
             AI Style Transfer
           </div>
-          <h1 className="text-5xl sm:text-6xl font-bold tracking-tight text-white mb-5 leading-tight">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white mb-4 leading-tight">
             Duo<span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500">Style</span>
           </h1>
           <p className="text-base sm:text-lg text-slate-400 max-w-md mx-auto leading-relaxed font-light">
@@ -73,7 +73,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {styles.map((style) => (
             <button
               key={style.id}
