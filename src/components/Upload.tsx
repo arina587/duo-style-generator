@@ -100,44 +100,124 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F1ED]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 text-[#6B8FA3] hover:text-[#8B6B4E] mb-12 transition-colors duration-300"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span className="font-light">Back to styles</span>
-        </button>
+    <div className="min-h-screen">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-3 mb-6">
-            <Sparkles className="w-7 h-7 text-[#6B8FA3]" />
-            <h1 className="text-5xl font-light tracking-wide text-[#8B6B4E]">DuoStyle</h1>
+        <div className="flex items-center justify-between mb-10">
+          <button
+            onClick={onBack}
+            className="flex items-center gap-2 text-slate-500 hover:text-sky-400 transition-colors duration-200 text-sm"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to styles
+          </button>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full glass-card text-xs text-sky-400 font-medium tracking-wide capitalize border border-sky-500/20">
+            <Sparkles className="w-3 h-3" />
+            {selectedStyle}
           </div>
-          <h2 className="text-3xl font-light text-slate-700 mb-4">Upload Your Photos</h2>
-          <p className="text-lg text-slate-600 font-light leading-relaxed">
-            Upload two photos to create your styled fusion
-          </p>
-          <div className="inline-block mt-6 px-6 py-3 matte-card rounded-full text-sm font-light text-[#6B8FA3] soft-shadow">
-            Selected Style: <span className="font-medium">{selectedStyle}</span>
+        </div>
+
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3 tracking-tight">Upload Your Photos</h2>
+          <p className="text-slate-400 font-light text-sm sm:text-base">Upload two photos to create your styled fusion</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+          <div className="glass-card rounded-2xl p-5 glow-shadow">
+            <div className="flex items-center gap-2.5 mb-4">
+              <div className="w-6 h-6 rounded-full bg-sky-500/20 border border-sky-500/30 flex items-center justify-center text-xs font-bold text-sky-400 flex-shrink-0">A</div>
+              <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-widest">MAN photo</h3>
+            </div>
+            <label className="block cursor-pointer">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e, setPhoto1, setPreview1)}
+                className="hidden"
+              />
+              <div className="upload-zone rounded-xl p-5 group">
+                {preview1 ? (
+                  <div className="relative">
+                    <img
+                      src={preview1}
+                      alt="MAN photo"
+                      className="w-full h-60 object-contain rounded-lg"
+                    />
+                    <div className="absolute inset-0 rounded-lg bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                      <span className="text-white text-sm font-medium">Click to replace</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-60 gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center group-hover:bg-sky-500/18 transition-colors duration-200">
+                      <UploadIcon className="w-5 h-5 text-sky-500/50 group-hover:text-sky-400 transition-colors duration-200" />
+                    </div>
+                    <div className="text-center">
+                      <p className="text-sm text-slate-300 font-medium">Click to upload</p>
+                      <p className="text-xs text-slate-600 mt-1">PNG, JPG up to 10MB</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </label>
+          </div>
+
+          <div className="glass-card rounded-2xl p-5 glow-shadow">
+            <div className="flex items-center gap-2.5 mb-4">
+              <div className="w-6 h-6 rounded-full bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-xs font-bold text-rose-400 flex-shrink-0">B</div>
+              <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-widest">GIRL photo</h3>
+            </div>
+            <label className="block cursor-pointer">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e, setPhoto2, setPreview2)}
+                className="hidden"
+              />
+              <div className="upload-zone rounded-xl p-5 group">
+                {preview2 ? (
+                  <div className="relative">
+                    <img
+                      src={preview2}
+                      alt="GIRL photo"
+                      className="w-full h-60 object-contain rounded-lg"
+                    />
+                    <div className="absolute inset-0 rounded-lg bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                      <span className="text-white text-sm font-medium">Click to replace</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-60 gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center group-hover:bg-rose-500/18 transition-colors duration-200">
+                      <Image className="w-5 h-5 text-rose-500/50 group-hover:text-rose-400 transition-colors duration-200" />
+                    </div>
+                    <div className="text-center">
+                      <p className="text-sm text-slate-300 font-medium">Click to upload</p>
+                      <p className="text-xs text-slate-600 mt-1">PNG, JPG up to 10MB</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </label>
           </div>
         </div>
 
         {referenceImages.length > 0 && (
-          <div className="mb-16 matte-card rounded-2xl soft-shadow p-8">
-            <h3 className="text-xl font-light text-[#8B6B4E] mb-4 text-center tracking-wide">Select Reference Image</h3>
-            <p className="text-sm text-slate-500 text-center mb-8 font-light">Choose one reference image for your style</p>
-            <div className="grid grid-cols-3 gap-6">
+          <div className="glass-card rounded-2xl p-5 glow-shadow mb-5">
+            <div className="mb-4">
+              <h3 className="text-sm font-semibold text-white mb-0.5">Select Reference Image</h3>
+              <p className="text-xs text-slate-500">Choose one reference for your style composition</p>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
               {referenceImages.map((img, index) => (
                 <button
                   key={index}
                   type="button"
                   onClick={() => handleReferenceSelect(img)}
-                  className={`rounded-xl overflow-hidden soft-shadow aspect-[3/4] transition-all duration-300 relative ${
+                  className={`rounded-xl overflow-hidden aspect-[3/4] transition-all duration-200 relative ${
                     selectedReference === img
-                      ? 'ring-4 ring-[#6B8FA3] scale-105'
-                      : 'hover:ring-2 hover:ring-[#6B8FA3]/50 hover:scale-102'
+                      ? 'selected-ring scale-[1.02]'
+                      : 'opacity-55 hover:opacity-85 hover:scale-[1.01]'
                   }`}
                 >
                   <img
@@ -146,9 +226,9 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
                     className="w-full h-full object-contain bg-slate-50"
                   />
                   {selectedReference === img && (
-                    <div className="absolute inset-0 bg-[#6B8FA3]/20 flex items-center justify-center">
-                      <div className="bg-white rounded-full p-3 soft-shadow">
-                        <Sparkles className="w-6 h-6 text-[#6B8FA3]" />
+                    <div className="absolute inset-0 bg-sky-500/15 flex items-end justify-center pb-2.5">
+                      <div className="px-3 py-1 rounded-full bg-sky-500 text-white text-xs font-semibold">
+                        Selected
                       </div>
                     </div>
                   )}
@@ -159,115 +239,70 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
         )}
 
         {selectedStyle === 'zootopia' && selectedReference && (
-          <div className="mb-16 matte-card rounded-2xl soft-shadow p-8">
-            <h3 className="text-xl font-light text-[#8B6B4E] mb-4 text-center tracking-wide">Choose Transformation Type</h3>
-            <p className="text-sm text-slate-500 text-center mb-8 font-light">Select how you want the characters to be transformed</p>
-            <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto">
+          <div className="glass-card rounded-2xl p-5 glow-shadow mb-5">
+            <div className="mb-4">
+              <h3 className="text-sm font-semibold text-white mb-0.5">Transformation Type</h3>
+              <p className="text-xs text-slate-500">Select how you want the characters to be transformed</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setSelectedMode('cartoon_human')}
-                className={`p-8 rounded-xl soft-shadow transition-all duration-300 ${
+                className={`p-5 rounded-xl border transition-all duration-200 text-left ${
                   selectedMode === 'cartoon_human'
-                    ? 'ring-4 ring-[#6B8FA3] scale-105 bg-[#6B8FA3]/10'
-                    : 'hover:ring-2 hover:ring-[#6B8FA3]/50 hover:scale-102 bg-white/50'
+                    ? 'mode-selected scale-[1.02]'
+                    : 'border-white/8 bg-white/3 hover:border-sky-500/25 hover:bg-sky-500/4'
                 }`}
               >
-                <div className="text-center">
-                  <div className="text-4xl mb-4">👨‍🎨</div>
-                  <h4 className="text-lg font-medium text-[#8B6B4E] mb-2">Cartoon Human</h4>
-                  <p className="text-sm text-slate-600 font-light">Stylized animated human characters with recognizable features</p>
-                </div>
+                <div className="text-2xl mb-2.5">👨‍🎨</div>
+                <h4 className="text-sm font-semibold text-white mb-1">Cartoon Human</h4>
+                <p className="text-xs text-slate-500 leading-relaxed">Stylized animated human characters with recognizable features</p>
               </button>
               <button
                 type="button"
                 onClick={() => setSelectedMode('animal')}
-                className={`p-8 rounded-xl soft-shadow transition-all duration-300 ${
+                className={`p-5 rounded-xl border transition-all duration-200 text-left ${
                   selectedMode === 'animal'
-                    ? 'ring-4 ring-[#6B8FA3] scale-105 bg-[#6B8FA3]/10'
-                    : 'hover:ring-2 hover:ring-[#6B8FA3]/50 hover:scale-102 bg-white/50'
+                    ? 'mode-selected scale-[1.02]'
+                    : 'border-white/8 bg-white/3 hover:border-sky-500/25 hover:bg-sky-500/4'
                 }`}
               >
-                <div className="text-center">
-                  <div className="text-4xl mb-4">🦊</div>
-                  <h4 className="text-lg font-medium text-[#8B6B4E] mb-2">Animal</h4>
-                  <p className="text-sm text-slate-600 font-light">Transform into stylized animal characters preserving identity</p>
-                </div>
+                <div className="text-2xl mb-2.5">🦊</div>
+                <h4 className="text-sm font-semibold text-white mb-1">Animal</h4>
+                <p className="text-xs text-slate-500 leading-relaxed">Transform into stylized animal characters preserving identity</p>
               </button>
             </div>
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          <div className="matte-card rounded-2xl soft-shadow p-8">
-            <h3 className="text-xl font-light text-[#8B6B4E] mb-6 tracking-wide">MAN photo</h3>
-            <label className="block cursor-pointer">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleFileChange(e, setPhoto1, setPreview1)}
-                className="hidden"
-              />
-              <div className="border-2 border-dashed border-[#6B8FA3]/20 rounded-xl p-8 hover:border-[#6B8FA3]/40 transition-all duration-500 bg-white/50">
-                {preview1 ? (
-                  <img
-                    src={preview1}
-                    alt="MAN photo"
-                    className="w-full h-72 object-contain rounded-lg"
-                  />
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-72 text-slate-400">
-                    <UploadIcon className="w-12 h-12 mb-4 text-[#6B8FA3]/40" />
-                    <p className="text-sm font-light text-slate-500">Click to upload MAN photo</p>
-                    <p className="text-xs mt-2 font-light text-slate-400">PNG, JPG up to 10MB</p>
-                  </div>
-                )}
-              </div>
-            </label>
-          </div>
-
-          <div className="matte-card rounded-2xl soft-shadow p-8">
-            <h3 className="text-xl font-light text-[#8B6B4E] mb-6 tracking-wide">GIRL photo</h3>
-            <label className="block cursor-pointer">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleFileChange(e, setPhoto2, setPreview2)}
-                className="hidden"
-              />
-              <div className="border-2 border-dashed border-[#6B8FA3]/20 rounded-xl p-8 hover:border-[#6B8FA3]/40 transition-all duration-500 bg-white/50">
-                {preview2 ? (
-                  <img
-                    src={preview2}
-                    alt="GIRL photo"
-                    className="w-full h-72 object-contain rounded-lg"
-                  />
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-72 text-slate-400">
-                    <Image className="w-12 h-12 mb-4 text-[#6B8FA3]/40" />
-                    <p className="text-sm font-light text-slate-500">Click to upload GIRL photo</p>
-                    <p className="text-xs mt-2 font-light text-slate-400">PNG, JPG up to 10MB</p>
-                  </div>
-                )}
-              </div>
-            </label>
-          </div>
-        </div>
-
         {error && (
-          <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-xl">
-            <p className="text-red-700 text-center font-light">{error}</p>
+          <div className="mb-5 p-4 rounded-xl border border-red-500/25 bg-red-500/8">
+            <p className="text-red-400 text-sm text-center">{error}</p>
           </div>
         )}
 
-        <div className="flex justify-center">
+        <div className="flex justify-center pt-2">
           <button
             type="button"
             onClick={handleGenerate}
             disabled={isGenerating || !photo1 || !photo2 || !referenceFile || (selectedStyle === 'zootopia' && !selectedMode)}
-            className="flex items-center gap-3 px-10 py-4 bg-[#6B8FA3] text-white rounded-full font-light tracking-wide hover:bg-[#8B6B4E] transition-all duration-500 soft-shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-[#6B8FA3]"
+            className="btn-generate flex items-center gap-3 px-10 py-4 rounded-2xl text-white font-semibold text-base tracking-wide"
           >
-            <span>{isGenerating ? 'Generating...' : 'Generate Fusion'}</span>
-            <ArrowRight className="w-5 h-5" />
+            {isGenerating ? (
+              <>
+                <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                Generating...
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-5 h-5" />
+                Generate Fusion
+                <ArrowRight className="w-5 h-5" />
+              </>
+            )}
           </button>
         </div>
       </div>

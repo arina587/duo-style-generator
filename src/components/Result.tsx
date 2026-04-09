@@ -21,54 +21,66 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F1ED]">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 text-[#6B8FA3] hover:text-[#8B6B4E] mb-12 transition-colors duration-300"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span className="font-light">Back to upload</span>
-        </button>
+    <div className="min-h-screen">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-3 mb-6">
-            <Sparkles className="w-7 h-7 text-[#6B8FA3]" />
-            <h1 className="text-5xl font-light tracking-wide text-[#8B6B4E]">DuoStyle</h1>
+        <div className="flex items-center justify-between mb-10">
+          <button
+            onClick={onBack}
+            className="flex items-center gap-2 text-slate-500 hover:text-sky-400 transition-colors duration-200 text-sm"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to upload
+          </button>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full glass-card text-xs text-sky-400 font-medium border border-sky-500/20">
+            <Sparkles className="w-3 h-3" />
+            DuoStyle
           </div>
-          <h2 className="text-3xl font-light text-slate-700 mb-4">
+        </div>
+
+        <div className="text-center mb-8">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3 tracking-tight">
             {isGenerating ? 'Creating Your Fusion' : error ? 'Generation Failed' : 'Your Styled Fusion'}
           </h2>
-          <p className="text-lg text-slate-600 font-light leading-relaxed">
-            {isGenerating ? 'AI is generating your styled photo...' : error ? 'Something went wrong' : 'Your AI-generated fusion is ready!'}
+          <p className="text-slate-400 font-light text-sm sm:text-base">
+            {isGenerating
+              ? 'AI is crafting your styled photo — this may take a minute'
+              : error
+              ? 'Something went wrong during generation'
+              : 'Your AI-generated fusion is ready to download'}
           </p>
         </div>
 
-        <div className="matte-card rounded-2xl soft-shadow-lg overflow-hidden mb-12">
-          <div className="aspect-square bg-slate-100/50 flex items-center justify-center relative">
+        <div className="glass-card rounded-2xl glow-shadow-lg overflow-hidden mb-8">
+          <div className="aspect-square flex items-center justify-center relative" style={{ background: 'rgba(255,255,255,0.02)' }}>
             {isGenerating ? (
-              <div className="relative text-center p-8">
-                <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-white/60 backdrop-blur-sm flex items-center justify-center soft-shadow">
-                  <Loader2 className="w-16 h-16 text-[#6B8FA3] animate-spin" />
+              <div className="text-center p-12">
+                <div className="relative w-24 h-24 mx-auto mb-6">
+                  <div className="absolute inset-0 rounded-full border-2 border-sky-500/15" />
+                  <div className="absolute inset-0 rounded-full border-t-2 border-sky-400 animate-spin" />
+                  <div className="absolute inset-3 rounded-full bg-sky-500/10 flex items-center justify-center">
+                    <Loader2 className="w-8 h-8 text-sky-400 animate-spin" />
+                  </div>
                 </div>
-                <p className="text-[#8B6B4E] font-light text-xl tracking-wide">
-                  Generating your fusion...
-                </p>
-                <p className="text-sm text-slate-500 mt-3 font-light">
-                  This may take a few moments
-                </p>
+                <p className="text-white font-medium text-lg mb-2">Generating your fusion...</p>
+                <p className="text-slate-500 text-sm">This may take a few moments</p>
+                <div className="mt-6 flex justify-center gap-1.5">
+                  {[0, 1, 2].map((i) => (
+                    <div
+                      key={i}
+                      className="w-1.5 h-1.5 rounded-full bg-sky-500/60 animate-pulse"
+                      style={{ animationDelay: `${i * 0.2}s` }}
+                    />
+                  ))}
+                </div>
               </div>
             ) : error ? (
-              <div className="relative text-center p-8">
-                <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-red-50 flex items-center justify-center soft-shadow">
-                  <AlertCircle className="w-16 h-16 text-red-400" />
+              <div className="text-center p-12">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+                  <AlertCircle className="w-10 h-10 text-red-400" />
                 </div>
-                <p className="text-red-600 font-light text-xl tracking-wide mb-2">
-                  Generation Error
-                </p>
-                <p className="text-sm text-slate-600 mt-3 font-light max-w-md mx-auto">
-                  {error}
-                </p>
+                <p className="text-white font-semibold text-lg mb-2">Generation Error</p>
+                <p className="text-slate-500 text-sm max-w-sm mx-auto leading-relaxed">{error}</p>
               </div>
             ) : generatedImageUrl ? (
               <img
@@ -77,31 +89,29 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
                 className="w-full h-full object-contain"
               />
             ) : (
-              <div className="relative text-center p-8">
-                <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-white/60 backdrop-blur-sm flex items-center justify-center soft-shadow">
-                  <Sparkles className="w-16 h-16 text-[#6B8FA3]" />
+              <div className="text-center p-12">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
+                  <Sparkles className="w-10 h-10 text-sky-400/60" />
                 </div>
-                <p className="text-[#8B6B4E] font-light text-xl tracking-wide">
-                  Generated result will appear here
-                </p>
+                <p className="text-slate-400 text-base">Generated result will appear here</p>
               </div>
             )}
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-6 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={handleDownload}
             disabled={isGenerating || !generatedImageUrl || !!error}
-            className="flex items-center justify-center gap-3 px-10 py-4 bg-[#6B8FA3] text-white rounded-full font-light tracking-wide hover:bg-[#8B6B4E] transition-all duration-500 soft-shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            className="btn-generate flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl text-white font-semibold text-sm"
           >
-            <Download className="w-5 h-5" />
-            <span>Download Image</span>
+            <Download className="w-4 h-4" />
+            Download Image
           </button>
           <button
             onClick={onStartOver}
             disabled={isGenerating}
-            className="px-10 py-4 matte-card text-[#8B6B4E] rounded-full font-light tracking-wide hover:bg-white transition-all duration-500 soft-shadow hover:soft-shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl glass-card-hover text-slate-300 hover:text-white font-semibold text-sm border border-white/8 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Create Another
           </button>
