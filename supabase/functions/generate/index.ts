@@ -64,105 +64,104 @@ HANDS & ANATOMY:
 FINAL RESULT:
 The output must look like an authentic, unedited film frame where the original actors were replaced seamlessly. No composite look. No lighting mismatch. No texture mismatch.`;
 
-const ZOOTOPIA_PROMPT = `STRICT IMAGE EDITING.
+const ZOOTOPIA_CARTOON_PROMPT = `STRICT IMAGE EDITING.
 
 INPUT:
-Image[0] = reference scene (SOURCE OF TRUTH)
+Image[0] = reference scene
 Image[1] = Person A (LEFT)
 Image[2] = Person B (RIGHT)
 
----
+BACKGROUND:
+Use EXACT background from Image[0]. Do not change anything.
 
-BACKGROUND LOCK (CRITICAL):
+REPLACE:
+LEFT → Person A
+RIGHT → Person B
 
-* The background MUST be EXACTLY from Image[0]
-* Do NOT recreate, redesign, or reinterpret the background
-* Do NOT use any background from Image[1] or Image[2]
-* Do NOT generate a new environment
-* Keep all objects, lighting, colors, and details exactly as in Image[0]
+LOCK:
+Keep exact pose, clothing, composition.
 
----
+STYLE (VERY STRICT):
 
-REPLACEMENT:
+Render in high-end Pixar / Disney 3D animation style ONLY.
 
-* LEFT person → Person A
-* RIGHT person → Person B
-* Do not swap or mix identities
+MANDATORY:
+- 3D animated film rendering
+- smooth plastic-like skin
+- soft global illumination
+- cinematic lighting
+- high-quality shading
+- expressive but natural eyes
 
----
+FORBIDDEN:
+- anime style
+- 2D illustration
+- sketch style
+- painterly style
+- realistic photo style
 
-POSE & SCENE LOCK:
+IDENTITY:
+Keep face recognizable.
 
-* Keep exact pose and body position from Image[0]
-* Keep exact clothing, folds, and textures
-* Keep exact camera angle and framing
-* Do not move characters
-* Do not change composition
+HANDS:
+Correct anatomy, no extra fingers.
 
----
+FINAL:
+Same scene. Only characters stylized into Pixar 3D humans.`;
 
-STYLE (LOCKED):
+const ZOOTOPIA_ANIMALS_PROMPT = `STRICT IMAGE EDITING.
 
-* Disney / Zootopia / Pixar-style 3D
-* soft cinematic lighting
-* clean stylized rendering
-* consistent style across all generations
-* do NOT change style based on reference image
+INPUT:
+Image[0] = reference scene
+Image[1] = Person A (LEFT)
+Image[2] = Person B (RIGHT)
 
----
+BACKGROUND:
+Use EXACT background from Image[0]. Do not change anything.
 
-MODE:
+REPLACE:
+LEFT → Person A (FOX)
+RIGHT → Person B (RABBIT)
 
-IF MODE = "CARTOON":
+LOCK:
+Keep exact pose, clothing, composition.
 
-* transform into stylized animated humans
-* keep human anatomy
-* smooth stylized skin
-* expressive eyes
+TRANSFORMATION (CRITICAL):
 
-IF MODE = "ANIMALS":
+Transform BOTH characters into anthropomorphic Zootopia-style animals.
 
-* Person A = fox
-* Person B = rabbit
-* anthropomorphic characters (human posture)
-* NOT realistic animals
-* NOT generic cartoon animals
-* must look like Zootopia-style characters
-* stylized fur, not photorealistic
+MANDATORY:
+- full animal faces (NO human faces)
+- upright humanoid bodies
+- keep clothing
 
----
+STYLE (VERY STRICT):
 
-IDENTITY PRESERVATION:
+High-end Pixar / Disney Zootopia-style 3D rendering ONLY.
 
-* preserve facial structure, eye spacing, and expression
-* characters must remain recognizable as the original people
+MANDATORY:
+- stylized fur (NOT realistic)
+- smooth animated shading
+- expressive eyes
+- cinematic lighting
 
----
+FORBIDDEN:
+- realistic animals
+- real fur rendering
+- human faces
+- generic cartoon animals
+- anime style
 
-HANDS (CRITICAL):
+IDENTITY:
+Keep expression and proportions recognizable.
 
-* correct number of fingers
-* natural anatomy
-* no deformations or extra fingers
-* match pose from Image[0]
+HANDS:
+Correct anatomy, no deformations.
 
----
-
-INTEGRATION:
-
-* match lighting and shadows from Image[0]
-* match color grading and atmosphere
-* no cut-and-paste effect
-
----
-
-FINAL RESULT:
-
-* SAME scene as Image[0]
-* SAME background (unchanged)
-* SAME pose and clothing
-* ONLY characters replaced and stylized
-* consistent Disney/Zootopia look`;
+FINAL:
+Same scene.
+Characters MUST be a fox and a rabbit in Zootopia style.
+NO humans allowed.`;
 
 // ─────────────────────────────────────────────
 // DOMAIN RESOLVER
@@ -200,8 +199,9 @@ function resolvePrompt(domain: Domain): string {
     case "euphoria":
       return FILM_FACE_SWAP_PROMPT;
     case "zootopia_cartoon":
+      return ZOOTOPIA_CARTOON_PROMPT;
     case "zootopia_animals":
-      return ZOOTOPIA_PROMPT.replace("MODE", domain);
+      return ZOOTOPIA_ANIMALS_PROMPT;
   }
 }
 
