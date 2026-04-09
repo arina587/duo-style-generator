@@ -1,5 +1,4 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "npm:@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -11,43 +10,8 @@ const corsHeaders = {
 // TYPES
 // ─────────────────────────────────────────────
 
-type Domain = "titanic" | "euphoria" | "zootopia_human" | "zootopia_animal";
-type Provider = "openai" | "replicate";
-type PromptKey = "film_face_swap" | "zootopia_human" | "zootopia_animal";
-
-interface RouteConfig {
-  provider: Provider;
-  model: string;
-  promptKey: PromptKey;
-}
-
-// ─────────────────────────────────────────────
-// MODEL ROUTER
-// ─────────────────────────────────────────────
-
-function modelRouter(domain: Domain): RouteConfig {
-  switch (domain) {
-    case "titanic":
-    case "euphoria":
-      return {
-        provider: "openai",
-        model: "gpt-image-1.5",
-        promptKey: "film_face_swap",
-      };
-    case "zootopia_human":
-      return {
-        provider: "replicate",
-        model: "google/nano-banana-pro",
-        promptKey: "zootopia_human",
-      };
-    case "zootopia_animal":
-      return {
-        provider: "replicate",
-        model: "google/nano-banana-pro",
-        promptKey: "zootopia_animal",
-      };
-  }
-}
+type Domain = "titanic" | "euphoria" | "zootopia_cartoon" | "zootopia_animals";
+type PromptKey = "film_face_swap" | "zootopia_cartoon" | "zootopia_animals";
 
 // ─────────────────────────────────────────────
 // PROMPT TEMPLATES
@@ -102,107 +66,107 @@ HANDS & ANATOMY:
 FINAL RESULT:
 The output must look like an authentic, unedited film frame where the original actors were replaced seamlessly. No composite look. No lighting mismatch. No texture mismatch.`,
 
-  zootopia_human: `Replace the two people in the base image with the people from the reference images.
+  zootopia_cartoon: `STRICT CONTROLLED IMAGE EDITING.
 
-Use the base image as the main scene. Keep background, composition, camera angle, pose, and clothing exactly the same.
+INPUT IMAGES:
+Image[0] = reference scene
+Image[1] = Person A (LEFT)
+Image[2] = Person B (RIGHT)
 
-The left person should match image_1.
-The right person should match image_2.
+IDENTITY:
+LEFT → Person A
+RIGHT → Person B
 
-Keep both characters clearly recognizable.
+LOCK:
+- keep exact pose, composition, clothing, background
+- do not change scene
 
-Do not beautify or change identity.
+TASK:
+Transform both people into stylized animated human characters.
 
-Now restyle both characters into a Disney / Zootopia-style 3D animated HUMAN version.
+STYLE:
+- Disney / Zootopia-inspired 3D style
+- smooth skin, clean shading
+- soft cinematic lighting
+- slightly larger expressive eyes
 
-IMPORTANT:
-- Keep them human (no animal features)
+IDENTITY PRESERVATION:
+- preserve facial structure, proportions, and expression
+- characters must remain recognizable
 
-Style:
-- cinematic 3D animation
-- soft lighting
-- expressive eyes
-- smooth but natural skin
+FINAL RESULT:
+- same scene
+- same pose
+- same clothing
+- both people are cartoon human versions of themselves`,
 
-Avoid:
-- anime
-- flat cartoon
-- plastic look
+  zootopia_animals: `STRICT CONTROLLED IMAGE EDITING.
 
-Keep pose and interaction identical.`,
+INPUT IMAGES:
+Image[0] = reference scene
+Image[1] = Person A (LEFT)
+Image[2] = Person B (RIGHT)
 
-  zootopia_animal: `Replace the two people in the base image with the people from the reference images.
+IDENTITY:
+LEFT → Person A (FOX)
+RIGHT → Person B (RABBIT)
 
-INPUT MAPPING:
-- image = base scene
-- image_1 = left person
-- image_2 = right person
+LOCK:
+- keep exact pose, composition, clothing, background
+- do not change scene
 
-Keep the scene exactly the same:
-- background
-- composition
-- pose
-- clothing
+TASK:
+Transform both people into anthropomorphic animals.
 
-Keep identity recognizable.
+TRANSFORMATION RULES:
+- full animal faces (no human skin)
+- upright human bodies
+- preserve pose and clothing
 
-Transform characters:
-- Left → fox (NOT a cat)
-- Right → rabbit
-
-RULES:
-- full animal transformation
-- no human skin or features
-- no mixed faces
-
-FOX:
-- narrow muzzle
+FOX (Person A):
 - orange fur
-- upright ears
+- elongated muzzle
+- pointed ears
 
-RABBIT:
+RABBIT (Person B):
+- softer face
 - long ears
-- soft face
-- correct proportions
+- rounded features
 
-Keep pose and interaction identical.
-
-Style:
-- Zootopia cinematic 3D
+STYLE:
+- Disney / Zootopia-style 3D cinematic rendering
+- detailed fur shading
 - soft lighting
-- detailed fur
 
-RESULT:
-Same scene, but characters are fox and rabbit.`,
+IDENTITY PRESERVATION:
+- preserve eye spacing, expression, and head position
+- characters must feel like the same people
+
+FINAL RESULT:
+- same scene
+- same pose and clothing
+- clearly a fox and a rabbit
+- identity still recognizable`,
 };
 
 // ─────────────────────────────────────────────
-// PROMPT BUILDER
-// ─────────────────────────────────────────────
-
-function promptBuilder(promptKey: PromptKey): string {
-  return promptTemplates[promptKey];
-}
-
-// ─────────────────────────────────────────────
-// DOMAIN RESOLVER (backward compatibility)
-// Maps legacy style+mode fields to domain
+// DOMAIN RESOLVER
+// Maps incoming style + mode fields to domain
 // ─────────────────────────────────────────────
 
 function resolveDomain(
   domain: string | null,
   style: string | null,
-  mode: string | null,
-  referenceId: string | null
+  mode: string | null
 ): Domain {
-  if (domain && ["titanic", "euphoria", "zootopia_human", "zootopia_animal"].includes(domain)) {
+  if (domain && ["titanic", "euphoria", "zootopia_cartoon", "zootopia_animals"].includes(domain)) {
     return domain as Domain;
   }
 
   if (style === "zootopia") {
-    if (mode === "animal") return "zootopia_animal";
-    if (mode === "cartoon_human") return "zootopia_human";
-    return "zootopia_human";
+    if (mode === "zootopia_animals") return "zootopia_animals";
+    if (mode === "zootopia_cartoon") return "zootopia_cartoon";
+    return "zootopia_cartoon";
   }
 
   if (style === "titanic") return "titanic";
@@ -212,11 +176,26 @@ function resolveDomain(
 }
 
 // ─────────────────────────────────────────────
+// PROMPT RESOLVER
+// ─────────────────────────────────────────────
+
+function resolvePromptKey(domain: Domain): PromptKey {
+  switch (domain) {
+    case "titanic":
+    case "euphoria":
+      return "film_face_swap";
+    case "zootopia_cartoon":
+      return "zootopia_cartoon";
+    case "zootopia_animals":
+      return "zootopia_animals";
+  }
+}
+
+// ─────────────────────────────────────────────
 // OPENAI GENERATOR
 // ─────────────────────────────────────────────
 
 async function generateWithOpenAI(
-  model: string,
   prompt: string,
   reference: File,
   person1: File,
@@ -224,14 +203,14 @@ async function generateWithOpenAI(
   apiKey: string
 ): Promise<string> {
   const form = new FormData();
-  form.append("model", model);
+  form.append("model", "gpt-image-1.5");
   form.append("prompt", prompt);
   form.append("image[]", reference);
   form.append("image[]", person1);
   form.append("image[]", person2);
 
   console.log("=== GPT REQUEST ===");
-  console.log("model:", model);
+  console.log("model: gpt-image-1.5");
   console.log("endpoint: https://api.openai.com/v1/images/edits");
   console.log("prompt length:", prompt.length);
   console.log("prompt:\n" + prompt);
@@ -272,201 +251,6 @@ async function generateWithOpenAI(
 }
 
 // ─────────────────────────────────────────────
-// REPLICATE GENERATOR
-// ─────────────────────────────────────────────
-
-async function uploadFileToSupabaseStorage(file: File, supabaseUrl: string, supabaseServiceRoleKey: string): Promise<string> {
-  const filename = `replicate-input/${Date.now()}-${Math.random().toString(36).slice(2)}.${file.type.split("/")[1] || "jpg"}`;
-
-  console.log("SUPABASE_KEY_DIAGNOSTIC: exists=", !!supabaseServiceRoleKey, "length=", supabaseServiceRoleKey?.length ?? 0, "prefix=", supabaseServiceRoleKey?.substring(0, 20) ?? "MISSING");
-  console.log("REPLICATE_UPLOAD: uploading", file.name, "size", file.size, "type", file.type, "→", filename);
-
-  const supabaseAdmin = createClient(supabaseUrl, supabaseServiceRoleKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  });
-
-  const arrayBuffer = await file.arrayBuffer();
-  const { error } = await supabaseAdmin.storage
-    .from("replicate-uploads")
-    .upload(filename, arrayBuffer, {
-      contentType: file.type,
-      upsert: true,
-    });
-
-  if (error) {
-    console.error("REPLICATE_UPLOAD_ERROR:", error.message);
-    throw new Error(`Failed to upload image to storage: ${error.message}`);
-  }
-
-  const publicUrl = `${supabaseUrl}/storage/v1/object/public/replicate-uploads/${filename}`;
-  console.log("REPLICATE_UPLOAD_OK:", publicUrl);
-  return publicUrl;
-}
-
-async function generateWithReplicate(
-  model: string,
-  prompt: string,
-  reference: File,
-  person1: File,
-  person2: File,
-  apiKey: string
-): Promise<string> {
-  const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-
-  if (!supabaseUrl || !supabaseKey) {
-    throw new Error("SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not configured");
-  }
-
-  console.log("REPLICATE_IMAGES: uploading 3 files to Supabase storage for public URLs");
-
-  const [refUrl, p1Url, p2Url] = await Promise.all([
-    uploadFileToSupabaseStorage(reference, supabaseUrl, supabaseKey),
-    uploadFileToSupabaseStorage(person1, supabaseUrl, supabaseKey),
-    uploadFileToSupabaseStorage(person2, supabaseUrl, supabaseKey),
-  ]);
-
-  const inputPayload = {
-    prompt,
-    image: refUrl,
-    image_1: p1Url,
-    image_2: p2Url,
-  };
-
-  console.log("=== REPLICATE REQUEST ===");
-  console.log("model:", model);
-  console.log("endpoint:", `https://api.replicate.com/v1/models/${model}/predictions`);
-  console.log("prompt length:", prompt.length);
-  console.log("prompt:\n" + prompt);
-  console.log("input:", JSON.stringify(inputPayload, null, 2));
-  console.log("=========================");
-
-  const predictionResponse = await fetch(`https://api.replicate.com/v1/models/${model}/predictions`, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-      "Prefer": "wait",
-    },
-    body: JSON.stringify({ input: inputPayload }),
-  });
-
-  const predictionRaw = await predictionResponse.text();
-  console.log("=== REPLICATE RESPONSE ===");
-  console.log("status:", predictionResponse.status);
-  console.log("body:", predictionRaw);
-  console.log("==========================");
-
-  let prediction: Record<string, unknown>;
-  try {
-    prediction = JSON.parse(predictionRaw);
-  } catch {
-    throw new Error(`Replicate returned non-JSON response (${predictionResponse.status}): ${predictionRaw.substring(0, 500)}`);
-  }
-
-  if (!prediction.id) {
-    throw new Error(`Replicate prediction creation failed (${predictionResponse.status}): ${JSON.stringify(prediction)}`);
-  }
-
-  console.log("REPLICATE_PREDICTION_ID:", prediction.id, "status:", prediction.status);
-
-  if (prediction.status === "succeeded") {
-    const outputUrl = Array.isArray(prediction.output) ? (prediction.output as string[])[0] : prediction.output as string;
-    if (!outputUrl) throw new Error("Replicate returned succeeded but empty output");
-    console.log("REPLICATE_OUTPUT_URL:", outputUrl);
-    const imgResponse = await fetch(outputUrl);
-    const imgBuffer = await imgResponse.arrayBuffer();
-    const imgBytes = new Uint8Array(imgBuffer);
-    let binary = "";
-    for (let i = 0; i < imgBytes.byteLength; i++) binary += String.fromCharCode(imgBytes[i]);
-    return `data:image/png;base64,${btoa(binary)}`;
-  }
-
-  if (prediction.status === "failed" || prediction.status === "canceled") {
-    console.error("REPLICATE_PREDICTION_FAILED:", JSON.stringify(prediction));
-    throw new Error(`Replicate prediction ${prediction.status}: ${prediction.error || JSON.stringify(prediction.logs || "no logs")}`);
-  }
-
-  const pollUrl = `https://api.replicate.com/v1/predictions/${prediction.id}`;
-  const maxAttempts = 60;
-  const pollInterval = 3000;
-
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    await new Promise((resolve) => setTimeout(resolve, pollInterval));
-
-    const statusResponse = await fetch(pollUrl, {
-      headers: { "Authorization": `Bearer ${apiKey}` },
-    });
-
-    const status = await statusResponse.json() as Record<string, unknown>;
-    console.log(`REPLICATE_POLL [${attempt + 1}/${maxAttempts}]:`, status.status);
-
-    if (status.status === "succeeded") {
-      const outputUrl = Array.isArray(status.output) ? (status.output as string[])[0] : status.output as string;
-      if (!outputUrl) throw new Error("Replicate returned empty output");
-      console.log("REPLICATE_OUTPUT_URL:", outputUrl);
-      const imgResponse = await fetch(outputUrl);
-      const imgBuffer = await imgResponse.arrayBuffer();
-      const imgBytes = new Uint8Array(imgBuffer);
-      let binary = "";
-      for (let i = 0; i < imgBytes.byteLength; i++) binary += String.fromCharCode(imgBytes[i]);
-      return `data:image/png;base64,${btoa(binary)}`;
-    }
-
-    if (status.status === "failed" || status.status === "canceled") {
-      console.error("REPLICATE_POLL_FAILED:", JSON.stringify(status));
-      throw new Error(`Replicate prediction ${status.status}: ${status.error || JSON.stringify(status.logs || "no logs")}`);
-    }
-  }
-
-  throw new Error("Replicate prediction timed out after 3 minutes");
-}
-
-// ─────────────────────────────────────────────
-// MAIN GENERATE FUNCTION
-// ─────────────────────────────────────────────
-
-async function generateImage(
-  domain: Domain,
-  reference: File,
-  person1: File,
-  person2: File
-): Promise<{ imageUrl: string; debug: Record<string, unknown> }> {
-  const route = modelRouter(domain);
-  const prompt = promptBuilder(route.promptKey);
-
-  const debug = {
-    domain,
-    provider: route.provider,
-    model: route.model,
-    promptKey: route.promptKey,
-    promptLength: prompt.length,
-    promptPreview: prompt.substring(0, 200) + "...",
-  };
-
-  console.log("GENERATE:", JSON.stringify({ domain, provider: route.provider, model: route.model, promptKey: route.promptKey }));
-
-  if (route.provider === "openai") {
-    const apiKey = Deno.env.get("OPENAI_API_KEY");
-    if (!apiKey) throw new Error("OpenAI API key not configured");
-    const imageUrl = await generateWithOpenAI(route.model, prompt, reference, person1, person2, apiKey);
-    return { imageUrl, debug };
-  }
-
-  if (route.provider === "replicate") {
-    const apiKey = Deno.env.get("REPLICATE_API_KEY");
-    if (!apiKey) throw new Error("Replicate API key not configured");
-    const imageUrl = await generateWithReplicate(route.model, prompt, reference, person1, person2, apiKey);
-    return { imageUrl, debug };
-  }
-
-  throw new Error(`Unknown provider: ${route.provider}`);
-}
-
-// ─────────────────────────────────────────────
 // EDGE FUNCTION ENTRY POINT
 // ─────────────────────────────────────────────
 
@@ -487,7 +271,6 @@ Deno.serve(async (req: Request) => {
     const selectedStyle = formData.get("style") as string;
     const requestedMode = formData.get("mode") as string;
     const requestedDomain = formData.get("domain") as string;
-    const selectedReference = formData.get("referenceId") as string;
 
     if (!reference || !person1 || !person2) {
       return new Response(
@@ -502,14 +285,25 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const domain = resolveDomain(requestedDomain, selectedStyle, requestedMode, selectedReference);
+    const domain = resolveDomain(requestedDomain, selectedStyle, requestedMode);
+    const promptKey = resolvePromptKey(domain);
+    const prompt = promptTemplates[promptKey];
 
-    const { imageUrl, debug } = await generateImage(
+    const debug = {
       domain,
-      reference,
-      person1,
-      person2
-    );
+      provider: "openai",
+      model: "gpt-image-1.5",
+      promptKey,
+      promptLength: prompt.length,
+      promptPreview: prompt.substring(0, 200) + "...",
+    };
+
+    console.log("GENERATE:", JSON.stringify({ domain, provider: "openai", model: "gpt-image-1.5", promptKey }));
+
+    const apiKey = Deno.env.get("OPENAI_API_KEY");
+    if (!apiKey) throw new Error("OpenAI API key not configured");
+
+    const imageUrl = await generateWithOpenAI(prompt, reference, person1, person2, apiKey);
 
     return new Response(
       JSON.stringify({ success: true, imageUrl, debug }),

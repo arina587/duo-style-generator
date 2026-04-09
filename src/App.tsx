@@ -23,9 +23,9 @@ function App() {
 
   const resolveDomain = (style: string, mode?: string): string => {
     if (style === 'zootopia') {
-      if (mode === 'animal') return 'zootopia_animal';
-      if (mode === 'cartoon_human') return 'zootopia_human';
-      return 'zootopia_human';
+      if (mode === 'zootopia_animals') return 'zootopia_animals';
+      if (mode === 'zootopia_cartoon') return 'zootopia_cartoon';
+      return 'zootopia_cartoon';
     }
     if (style === 'titanic') return 'titanic';
     if (style === 'euphoria') return 'euphoria';

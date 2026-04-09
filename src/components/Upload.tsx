@@ -86,7 +86,7 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
       return;
     }
 
-    if (selectedStyle === 'zootopia' && !selectedMode) {
+    if (selectedStyle === 'zootopia' && !['zootopia_cartoon', 'zootopia_animals'].includes(selectedMode)) {
       console.error('BLOCKED: Missing mode for zootopia');
       setError('Please select a transformation type before generating');
       return;
@@ -247,9 +247,9 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
             <div className="grid grid-cols-2 gap-4">
               <button
                 type="button"
-                onClick={() => setSelectedMode('cartoon_human')}
+                onClick={() => setSelectedMode('zootopia_cartoon')}
                 className={`p-6 rounded-xl border transition-all duration-200 text-left ${
-                  selectedMode === 'cartoon_human'
+                  selectedMode === 'zootopia_cartoon'
                     ? 'mode-selected scale-[1.02]'
                     : 'border-white/8 bg-white/3 hover:border-sky-500/25 hover:bg-sky-500/4'
                 }`}
@@ -260,9 +260,9 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
               </button>
               <button
                 type="button"
-                onClick={() => setSelectedMode('animal')}
+                onClick={() => setSelectedMode('zootopia_animals')}
                 className={`p-6 rounded-xl border transition-all duration-200 text-left ${
-                  selectedMode === 'animal'
+                  selectedMode === 'zootopia_animals'
                     ? 'mode-selected scale-[1.02]'
                     : 'border-white/8 bg-white/3 hover:border-sky-500/25 hover:bg-sky-500/4'
                 }`}
@@ -285,7 +285,7 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
           <button
             type="button"
             onClick={handleGenerate}
-            disabled={isGenerating || !photo1 || !photo2 || !referenceFile || (selectedStyle === 'zootopia' && !selectedMode)}
+            disabled={isGenerating || !photo1 || !photo2 || !referenceFile || (selectedStyle === 'zootopia' && !['zootopia_cartoon', 'zootopia_animals'].includes(selectedMode))}
             className="btn-generate flex items-center gap-3 px-12 py-5 rounded-2xl text-white font-semibold text-lg tracking-wide"
           >
             {isGenerating ? (
