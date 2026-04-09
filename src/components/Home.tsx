@@ -58,22 +58,22 @@ export default function Home({ onStyleSelect }: HomeProps) {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-14 sm:py-20">
 
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card mb-5 text-xs tracking-widest uppercase text-sky-400 font-medium border border-sky-500/20">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card mb-6 text-xs tracking-widest uppercase text-sky-400 font-medium border border-sky-500/20">
             <Sparkles className="w-3.5 h-3.5" />
             AI Style Transfer
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white mb-4 leading-tight">
+          <h1 className="text-5xl sm:text-6xl font-bold tracking-tight text-white mb-5 leading-tight">
             Duo<span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500">Style</span>
           </h1>
-          <p className="text-base sm:text-lg text-slate-400 max-w-md mx-auto leading-relaxed font-light">
+          <p className="text-base sm:text-lg text-slate-300 max-w-lg mx-auto leading-relaxed font-light">
             Merge two faces into iconic cinematic scenes using AI. Pick a style to begin.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {styles.map((style) => (
             <button
               key={style.id}
@@ -109,9 +109,9 @@ export default function Home({ onStyleSelect }: HomeProps) {
                 </div>
               </div>
 
-              <div className="p-5">
-                <div className="flex items-center justify-between mb-1">
-                  <h3 className="font-semibold text-white text-lg">{style.name}</h3>
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-1.5">
+                  <h3 className="font-semibold text-white text-xl">{style.name}</h3>
                   {selectedStyle === style.id && (
                     <div className="w-5 h-5 rounded-full bg-sky-500 flex items-center justify-center flex-shrink-0">
                       <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -120,13 +120,13 @@ export default function Home({ onStyleSelect }: HomeProps) {
                     </div>
                   )}
                 </div>
-                <p className="text-sm text-slate-500 leading-relaxed">{style.description}</p>
+                <p className="text-sm text-slate-400 leading-relaxed">{style.description}</p>
               </div>
             </button>
           ))}
         </div>
 
-        <p className="text-center text-slate-700 text-sm mt-10">Select a style above to continue</p>
+        <p className="text-center text-slate-600 text-sm mt-10">Select a style above to continue</p>
       </div>
     </div>
   );

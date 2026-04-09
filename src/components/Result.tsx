@@ -22,9 +22,9 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
 
-        <div className="flex items-center justify-between mb-7">
+        <div className="flex items-center justify-between mb-10">
           <button
             onClick={onBack}
             className="flex items-center gap-2 text-slate-500 hover:text-sky-400 transition-colors duration-200 text-sm"
@@ -38,11 +38,11 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
           </div>
         </div>
 
-        <div className="text-center mb-6">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3 tracking-tight">
             {isGenerating ? 'Creating Your Fusion' : error ? 'Generation Failed' : 'Your Styled Fusion'}
           </h2>
-          <p className="text-slate-400 font-light text-sm sm:text-base">
+          <p className="text-slate-300 font-light text-sm sm:text-base">
             {isGenerating
               ? 'AI is crafting your styled photo — this may take a minute'
               : error
@@ -51,7 +51,7 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
           </p>
         </div>
 
-        <div className="glass-card rounded-2xl glow-shadow-lg overflow-hidden mb-5">
+        <div className="glass-card rounded-2xl glow-shadow-lg overflow-hidden mb-8">
           <div className="aspect-square flex items-center justify-center relative" style={{ background: 'rgba(255,255,255,0.02)' }}>
             {isGenerating ? (
               <div className="text-center p-12">
@@ -63,7 +63,7 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
                   </div>
                 </div>
                 <p className="text-white font-medium text-lg mb-2">Generating your fusion...</p>
-                <p className="text-slate-500 text-sm">This may take a few moments</p>
+                <p className="text-slate-400 text-sm">This may take a few moments</p>
                 <div className="mt-6 flex justify-center gap-1.5">
                   {[0, 1, 2].map((i) => (
                     <div
@@ -80,7 +80,7 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
                   <AlertCircle className="w-10 h-10 text-red-400" />
                 </div>
                 <p className="text-white font-semibold text-lg mb-2">Generation Error</p>
-                <p className="text-slate-500 text-sm max-w-sm mx-auto leading-relaxed">{error}</p>
+                <p className="text-slate-400 text-sm max-w-sm mx-auto leading-relaxed">{error}</p>
               </div>
             ) : generatedImageUrl ? (
               <img
@@ -103,15 +103,15 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
           <button
             onClick={handleDownload}
             disabled={isGenerating || !generatedImageUrl || !!error}
-            className="btn-generate flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl text-white font-semibold text-sm"
+            className="btn-generate flex items-center justify-center gap-2.5 px-10 py-4 rounded-xl text-white font-semibold text-base"
           >
-            <Download className="w-4 h-4" />
+            <Download className="w-5 h-5" />
             Download Image
           </button>
           <button
             onClick={onStartOver}
             disabled={isGenerating}
-            className="flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl glass-card-hover text-slate-300 hover:text-white font-semibold text-sm border border-white/8 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center justify-center gap-2.5 px-10 py-4 rounded-xl glass-card-hover text-slate-300 hover:text-white font-semibold text-base border border-white/8 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Create Another
           </button>
