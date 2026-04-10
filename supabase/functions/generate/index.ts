@@ -36,122 +36,174 @@ async function fileToDataUrl(file: File): Promise<string> {
 // ─────────────────────────────────────────────
 
 function buildPrompt(style: string | null, mode: string | null): string {
-  let styleBlock: string;
+  const resolvedMode = mode ?? style ?? "realism";
 
-  if (style === "zootopia" && mode === "animals") {
-    styleBlock = `STYLE: zootopia — animals mode
-
-Transform characters into anthropomorphic animals:
-- LEFT subject → fox: orange fur, elongated muzzle, pointed ears
-- RIGHT subject → rabbit: long ears, soft rounded face, compact muzzle
-
-Use stylized 3D animation rendering (not realistic fur, not photorealistic).
-Do NOT use human skin on transformed characters.`;
-  } else if (style === "zootopia") {
-    styleBlock = `STYLE: zootopia — cartoon mode
-
-Convert characters to stylized 3D animated humans.
-Use Pixar-like proportions: smooth shading, slightly exaggerated features, large expressive eyes.
-Do NOT use anime, manga, 2D illustration, or photorealistic skin.`;
-  } else {
-    styleBlock = `STYLE: ${style ?? "realistic"} — cinematic mode
-
-Keep realistic human appearance.
-Preserve cinematic lighting and color tone from reference.
-No stylization. No beautification. No smoothing.`;
-  }
-
-  return `STRICT IDENTITY TRANSFER. DO NOT REGENERATE THE SCENE.
+  return `STRICT IDENTITY TRANSFER. NO FULL REGENERATION.
 
 Reference image = base scene
 Image 1 = Person A
 Image 2 = Person B
 
+Mode = ${resolvedMode}
+(MODE: realism | zootopia_human | zootopia_animals)
+
 Replace LEFT subject with Person A.
 Replace RIGHT subject with Person B.
-
 Do not swap positions.
 
 ---
 
-SCENE:
+SCENE (LOCK):
 
 Preserve EXACTLY:
 - composition
-- camera
-- lighting
-- pose
-- background
+- camera angle & perspective
+- lighting & color grading
+- depth of field
+- body pose & posture
 - clothing
-- hands (do not modify)
+- background
+- framing
+- hands and fingers (do not modify)
+
+Do NOT move or redesign anything.
 
 ---
 
 EXPRESSION:
 
-Preserve expression from reference:
-- eyes
-- eyebrows
-- mouth
+Use ONLY expression from reference:
+- eye direction
+- eyebrow tension
+- mouth shape
 - micro-expressions
 
-Ignore identity expressions.
+Ignore expressions from identity images.
 
 ---
 
-ORIENTATION:
+HEAD ORIENTATION:
 
-Keep exact head orientation.
+Keep exact head angle from reference.
+Do NOT rotate faces.
 
 Rules:
-- front → face + hair
-- profile → keep profile (no rotation), face + hair
-- back → do NOT generate face
+- front → transfer face + hair
+- 3/4 → keep angle, transfer face + hair
+- profile → keep profile (no frontalization), transfer face + hair
+- back / no visible face → do NOT generate a face
 
 ---
 
-HAIR:
+HAIR (CRITICAL):
 
-Hair must ALWAYS come from identity images.
-
+Hair MUST come from identity images.
 - never use reference hair
-- back view → hair only
+- adapt to angle (profile/back must match direction)
 
 ---
 
-DETAILS:
+LIGHTING INTEGRATION (CRITICAL):
 
-Preserve:
-- dirt
-- sweat
-- blood
-- water
-- skin texture
+Faces must be fully integrated into scene lighting:
+- match light direction
+- match shadows
+- match highlights
+- match color temperature
+
+Faces must look captured in the same shot, NOT pasted.
+
+Apply scene lighting to the face.
 
 ---
 
-${styleBlock}
+IDENTITY STRICTNESS:
+
+Preserve exact identity:
+- face shape
+- eye spacing
+- nose structure
+- jawline
+- proportions
+
+No approximation.
+No generic faces.
+No identity blending.
+
+---
+
+SURFACE DETAILS:
+
+Preserve all:
+- dirt, sweat, blood, water, snow
+- skin texture and imperfections
+
+---
+
+STYLE:
+
+If MODE = realism:
+- keep photorealistic human result
+- cinematic consistency (film grain, shadows, highlights)
+
+If MODE = zootopia_human:
+- convert characters to stylized 3D animated humans (Pixar-like)
+- smooth shading, simplified features
+- keep exact pose and scene
+
+If MODE = zootopia_animals:
+
+Transform into anthropomorphic animals:
+
+LEFT → fox
+RIGHT → rabbit
+
+CRITICAL:
+- keep exact pose and scene
+- use stylized 3D animation (Pixar/Zootopia look)
+- NO realistic fur
+
+FACE RULE (IMPORTANT):
+- do NOT keep human faces
+- faces must be fully animal-based
+
+Identity must be expressed through:
+- expression
+- proportions
+- personality
+
+NOT through human facial structure
+
+---
+
+SAFETY (IMPORTANT):
+
+Use stylized transformation when needed.
+Avoid photorealistic identity reproduction in animal mode.
 
 ---
 
 FORBIDDEN:
 
-- full scene redraw
+- full image redraw
 - pose change
 - camera change
+- rotating faces
+- generating face when not visible
 - identity blending
-- smoothing or beautification
-- hand modification
+- smoothing / beautifying (realism mode)
+- modifying hands
 
 ---
 
 RESULT:
 
-Return one image that matches the original scene,
-with correct identity transfer,
-correct pose,
-correct orientation,
-and correct style based on input parameters.`;
+Return the same scene with:
+- correct identity transfer
+- correct pose
+- correct orientation
+- correct lighting integration
+- correct style based on MODE`;
 }
 
 // ─────────────────────────────────────────────
