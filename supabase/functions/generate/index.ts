@@ -10,181 +10,140 @@ const corsHeaders = {
 // PROMPTS
 // ─────────────────────────────────────────────
 
-const FILM_REALISM_PROMPT = `STRICT CINEMATIC IDENTITY TRANSFER. NO FULL SCENE REGENERATION.
+const FILM_REALISM_PROMPT = `STRICT CINEMATIC CHARACTER RECASTING. DO NOT REGENERATE THE SCENE.
 
-Reference image = base scene
+Reference image = base shot
 Image 1 = Person A
 Image 2 = Person B
 
-Replace the LEFT subject with Person A.
-Replace the RIGHT subject with Person B.
-Do not swap positions.
+Recast LEFT character as Person A.
+Recast RIGHT character as Person B.
 
-Preserve exactly:
-- scene composition
-- camera angle and perspective
-- lighting and color grading
-- depth of field
-- body pose and posture
-- clothing
-- background
-- framing
-- hands and fingers (do not modify)
+Preserve EXACTLY:
+- camera, composition, perspective
+- pose, body position, clothing
+- background, framing
+- hands (do not modify)
 
-Use ONLY the facial expression from the reference scene:
-- eye direction
-- eyebrow tension
-- mouth shape
-- micro-expressions
+EXPRESSION:
+Use expression ONLY from reference:
+- eyes, eyebrows, mouth, micro-expressions
 
-Ignore expressions from identity images.
+HEAD:
+Keep exact orientation (no rotation).
 
-Keep exact head orientation from the reference:
-- front → transfer face + hair
-- three-quarter → keep angle, transfer face + hair
-- profile → keep exact profile, do not rotate to front, transfer face + hair
-- back / hidden face → do not generate a face
+HAIR:
+Use identity hair, adapted to angle.
 
-Hair must come from the identity images, not from the reference.
-
-LIGHTING INTEGRATION IS CRITICAL:
-The transferred faces must match the exact scene lighting:
+LIGHTING (CRITICAL):
+Face must obey scene lighting exactly:
 - same light direction
 - same shadows
 - same highlights
 - same color temperature
-- same contrast response
+- same contrast
 
-Faces must look naturally captured in the same shot, not cut out or pasted.
+Face must look naturally captured in the same shot, NOT pasted.
 
-Preserve all original facial surface details from the reference:
-- dirt
-- sweat
-- blood
-- water
-- snow
-- skin texture
-- imperfections
+DETAILS:
+Preserve dirt, sweat, blood, water, skin texture.
 
-Preserve identity strongly:
-- face shape
-- eye spacing
-- nose structure
-- jawline
-- proportions
+IDENTITY:
+Preserve real facial structure and proportions.
+No beautifying, no smoothing, no blending.
 
-Do not beautify.
-Do not smooth skin.
-Do not blur details.
-Do not blend identities.
-Do not modify hands.
-Do not redraw the full image.
+FORBIDDEN:
+- full redraw
+- pose/camera change
+- pasted look
+- modifying hands
 
-Result:
-The final frame must look like the original scene with only the LEFT and RIGHT identities replaced naturally and realistically.`;
+RESULT:
+Same scene, same shot, identities naturally integrated.`;
 
-const ZOOTOPIA_HUMAN_PROMPT = `STRICT STYLIZED CHARACTER TRANSFER. KEEP THE ORIGINAL SCENE.
+const ZOOTOPIA_HUMAN_PROMPT = `STRICT DISNEY/PIXAR STYLE CHARACTER RECASTING.
 
 Reference image = base scene
 Image 1 = Person A
 Image 2 = Person B
 
-Replace the LEFT subject with Person A.
-Replace the RIGHT subject with Person B.
-Do not swap positions.
+Recast LEFT character as animated human Person A.
+Recast RIGHT character as animated human Person B.
 
-Transform the characters into stylized 3D animated humans in a Disney/Pixar-like cinematic cartoon style.
-
-Important style target:
-- polished 3D animated feature film look
-- soft but structured facial forms
-- expressive eyes
+STYLE:
+- strong Disney/Pixar 3D animated look
+- stylized faces, expressive eyes
 - clean cinematic shading
-- stylized proportions
-- appealing animated design
-- clearly cartoon, not realistic
+- clearly non-realistic
 
-Keep exactly:
-- original scene composition
-- original camera and framing
-- original background
-- original body pose
-- original character position
-- original head orientation
+Preserve:
+- pose, composition, camera
+- background and framing
+- head orientation
 
-Identity must stay recognizable, but adapted to animated human design.
+EXPRESSION:
+Keep expression from reference.
 
-Use the expression from the reference scene.
-Keep exact gaze direction.
-Keep exact head angle.
+IDENTITY:
+Keep recognizable features adapted into animated style.
 
-Hair must come from the identity images, adapted into the animated style.
+HAIR:
+Use identity hair adapted to cartoon style.
 
-Do not make them photorealistic humans.
-Do not make them generic cartoon dolls.
-Do not change the scene.
-Do not regenerate the whole frame.
+FORBIDDEN:
+- realistic faces
+- weak cartoon style
+- scene changes
 
-Result:
-The output must look like the original Zootopia-style scene, but with the LEFT and RIGHT characters replaced by clearly recognizable animated human versions of Person A and Person B in a strong Disney/Pixar-like 3D style.`;
+RESULT:
+Zootopia-style scene with strong Pixar-like animated humans.`;
 
-const ZOOTOPIA_ANIMALS_PROMPT = `STRICT ANTHROPOMORPHIC ANIMAL TRANSFORMATION. KEEP THE ORIGINAL SCENE.
+const ZOOTOPIA_ANIMALS_PROMPT = `STRICT ANTHROPOMORPHIC CHARACTER RECASTING.
 
 Reference image = base scene
 Image 1 = Person A
 Image 2 = Person B
 
-Replace the LEFT subject with Person A as an anthropomorphic fox.
-Replace the RIGHT subject with Person B as an anthropomorphic rabbit.
-Do not swap positions.
+Recast LEFT character as fox inspired by Person A.
+Recast RIGHT character as rabbit inspired by Person B.
 
-Keep exactly:
-- original background
-- original composition
-- original framing
-- original body pose
-- original character position
-- original head orientation
+IMPORTANT:
+Do NOT transfer human faces.
+Do NOT create hybrid faces.
 
-Transform the characters fully into stylized 3D animated animals.
-This must be clearly a Disney/Pixar/Zootopia-like cartoon world.
+This is character reinterpretation, not face swap.
 
-CRITICAL:
-- do not keep human faces
-- do not keep human skin
-- do not create half-human half-animal faces
-- faces must be fully animal-based
+STYLE:
+- Disney/Pixar Zootopia-style 3D
+- stylized fur
+- clean animated rendering
 
-Identity should be preserved through:
+Preserve:
+- pose
+- scene
+- camera
+- composition
+- head orientation
+
+EXPRESSION:
+Keep expression and emotion from reference.
+
+IDENTITY:
+Preserve personality and recognizability via:
 - expression
-- attitude
-- facial proportions adapted into animal design
-- recognizable personality cues
+- proportions
+- character feel
 
-NOT through literal human facial structure.
+NOT via human facial structure.
 
-Fox design:
-- orange fur
-- elongated muzzle
-- pointed ears
-- stylized 3D cartoon fur
+FORBIDDEN:
+- human faces
+- realistic animals
+- hybrids
+- scene changes
 
-Rabbit design:
-- long ears
-- soft rounded muzzle
-- stylized 3D cartoon fur
-
-Keep exact expression from the reference.
-Keep exact gaze direction.
-Keep exact pose.
-
-Do not generate realistic animals.
-Do not use photorealistic fur.
-Do not create a horror hybrid.
-Do not make realistic human likeness in animal mode.
-
-Result:
-The output must look like the original Zootopia-style scene, with the LEFT and RIGHT characters transformed into fully stylized anthropomorphic fox and rabbit characters that preserve pose, expression, scene, and recognizable identity feeling.`;
+RESULT:
+Zootopia-style scene with fox and rabbit characters inspired by Person A and Person B.`;
 
 // ─────────────────────────────────────────────
 // PROMPT ROUTING
