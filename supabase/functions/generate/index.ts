@@ -7,7 +7,201 @@ const corsHeaders = {
 };
 
 // ─────────────────────────────────────────────
-// IMAGE CONVERSION — File → base64 data URL
+// PROMPTS
+// ─────────────────────────────────────────────
+
+const FILM_REALISM_PROMPT = `STRICT CINEMATIC IDENTITY TRANSFER. NO FULL SCENE REGENERATION.
+
+Reference image = base scene
+Image 1 = Person A
+Image 2 = Person B
+
+Replace the LEFT subject with Person A.
+Replace the RIGHT subject with Person B.
+Do not swap positions.
+
+Preserve exactly:
+- scene composition
+- camera angle and perspective
+- lighting and color grading
+- depth of field
+- body pose and posture
+- clothing
+- background
+- framing
+- hands and fingers (do not modify)
+
+Use ONLY the facial expression from the reference scene:
+- eye direction
+- eyebrow tension
+- mouth shape
+- micro-expressions
+
+Ignore expressions from identity images.
+
+Keep exact head orientation from the reference:
+- front → transfer face + hair
+- three-quarter → keep angle, transfer face + hair
+- profile → keep exact profile, do not rotate to front, transfer face + hair
+- back / hidden face → do not generate a face
+
+Hair must come from the identity images, not from the reference.
+
+LIGHTING INTEGRATION IS CRITICAL:
+The transferred faces must match the exact scene lighting:
+- same light direction
+- same shadows
+- same highlights
+- same color temperature
+- same contrast response
+
+Faces must look naturally captured in the same shot, not cut out or pasted.
+
+Preserve all original facial surface details from the reference:
+- dirt
+- sweat
+- blood
+- water
+- snow
+- skin texture
+- imperfections
+
+Preserve identity strongly:
+- face shape
+- eye spacing
+- nose structure
+- jawline
+- proportions
+
+Do not beautify.
+Do not smooth skin.
+Do not blur details.
+Do not blend identities.
+Do not modify hands.
+Do not redraw the full image.
+
+Result:
+The final frame must look like the original scene with only the LEFT and RIGHT identities replaced naturally and realistically.`;
+
+const ZOOTOPIA_HUMAN_PROMPT = `STRICT STYLIZED CHARACTER TRANSFER. KEEP THE ORIGINAL SCENE.
+
+Reference image = base scene
+Image 1 = Person A
+Image 2 = Person B
+
+Replace the LEFT subject with Person A.
+Replace the RIGHT subject with Person B.
+Do not swap positions.
+
+Transform the characters into stylized 3D animated humans in a Disney/Pixar-like cinematic cartoon style.
+
+Important style target:
+- polished 3D animated feature film look
+- soft but structured facial forms
+- expressive eyes
+- clean cinematic shading
+- stylized proportions
+- appealing animated design
+- clearly cartoon, not realistic
+
+Keep exactly:
+- original scene composition
+- original camera and framing
+- original background
+- original body pose
+- original character position
+- original head orientation
+
+Identity must stay recognizable, but adapted to animated human design.
+
+Use the expression from the reference scene.
+Keep exact gaze direction.
+Keep exact head angle.
+
+Hair must come from the identity images, adapted into the animated style.
+
+Do not make them photorealistic humans.
+Do not make them generic cartoon dolls.
+Do not change the scene.
+Do not regenerate the whole frame.
+
+Result:
+The output must look like the original Zootopia-style scene, but with the LEFT and RIGHT characters replaced by clearly recognizable animated human versions of Person A and Person B in a strong Disney/Pixar-like 3D style.`;
+
+const ZOOTOPIA_ANIMALS_PROMPT = `STRICT ANTHROPOMORPHIC ANIMAL TRANSFORMATION. KEEP THE ORIGINAL SCENE.
+
+Reference image = base scene
+Image 1 = Person A
+Image 2 = Person B
+
+Replace the LEFT subject with Person A as an anthropomorphic fox.
+Replace the RIGHT subject with Person B as an anthropomorphic rabbit.
+Do not swap positions.
+
+Keep exactly:
+- original background
+- original composition
+- original framing
+- original body pose
+- original character position
+- original head orientation
+
+Transform the characters fully into stylized 3D animated animals.
+This must be clearly a Disney/Pixar/Zootopia-like cartoon world.
+
+CRITICAL:
+- do not keep human faces
+- do not keep human skin
+- do not create half-human half-animal faces
+- faces must be fully animal-based
+
+Identity should be preserved through:
+- expression
+- attitude
+- facial proportions adapted into animal design
+- recognizable personality cues
+
+NOT through literal human facial structure.
+
+Fox design:
+- orange fur
+- elongated muzzle
+- pointed ears
+- stylized 3D cartoon fur
+
+Rabbit design:
+- long ears
+- soft rounded muzzle
+- stylized 3D cartoon fur
+
+Keep exact expression from the reference.
+Keep exact gaze direction.
+Keep exact pose.
+
+Do not generate realistic animals.
+Do not use photorealistic fur.
+Do not create a horror hybrid.
+Do not make realistic human likeness in animal mode.
+
+Result:
+The output must look like the original Zootopia-style scene, with the LEFT and RIGHT characters transformed into fully stylized anthropomorphic fox and rabbit characters that preserve pose, expression, scene, and recognizable identity feeling.`;
+
+// ─────────────────────────────────────────────
+// PROMPT ROUTING
+// ─────────────────────────────────────────────
+
+function resolvePrompt(style: string | null, mode: string | null): string {
+  if (style === "zootopia" && mode === "zootopia_animals") {
+    return ZOOTOPIA_ANIMALS_PROMPT;
+  }
+  if (style === "zootopia") {
+    return ZOOTOPIA_HUMAN_PROMPT;
+  }
+  return FILM_REALISM_PROMPT;
+}
+
+// ─────────────────────────────────────────────
+// IMAGE CONVERSION
 // ─────────────────────────────────────────────
 
 async function fileToDataUrl(file: File): Promise<string> {
@@ -27,187 +221,11 @@ async function fileToDataUrl(file: File): Promise<string> {
 
   const b64 = btoa(binary);
   const mime = file.type && file.type.startsWith("image/") ? file.type : "image/jpeg";
-
   return `data:${mime};base64,${b64}`;
 }
 
 // ─────────────────────────────────────────────
-// PROMPT BUILDER
-// ─────────────────────────────────────────────
-
-function buildPrompt(style: string | null, mode: string | null): string {
-  const resolvedMode = mode ?? style ?? "realism";
-
-  return `STRICT IDENTITY TRANSFER. NO FULL REGENERATION.
-
-Reference image = base scene
-Image 1 = Person A
-Image 2 = Person B
-
-Mode = ${resolvedMode}
-(MODE: realism | zootopia_human | zootopia_animals)
-
-Replace LEFT subject with Person A.
-Replace RIGHT subject with Person B.
-Do not swap positions.
-
----
-
-SCENE (LOCK):
-
-Preserve EXACTLY:
-- composition
-- camera angle & perspective
-- lighting & color grading
-- depth of field
-- body pose & posture
-- clothing
-- background
-- framing
-- hands and fingers (do not modify)
-
-Do NOT move or redesign anything.
-
----
-
-EXPRESSION:
-
-Use ONLY expression from reference:
-- eye direction
-- eyebrow tension
-- mouth shape
-- micro-expressions
-
-Ignore expressions from identity images.
-
----
-
-HEAD ORIENTATION:
-
-Keep exact head angle from reference.
-Do NOT rotate faces.
-
-Rules:
-- front → transfer face + hair
-- 3/4 → keep angle, transfer face + hair
-- profile → keep profile (no frontalization), transfer face + hair
-- back / no visible face → do NOT generate a face
-
----
-
-HAIR (CRITICAL):
-
-Hair MUST come from identity images.
-- never use reference hair
-- adapt to angle (profile/back must match direction)
-
----
-
-LIGHTING INTEGRATION (CRITICAL):
-
-Faces must be fully integrated into scene lighting:
-- match light direction
-- match shadows
-- match highlights
-- match color temperature
-
-Faces must look captured in the same shot, NOT pasted.
-
-Apply scene lighting to the face.
-
----
-
-IDENTITY STRICTNESS:
-
-Preserve exact identity:
-- face shape
-- eye spacing
-- nose structure
-- jawline
-- proportions
-
-No approximation.
-No generic faces.
-No identity blending.
-
----
-
-SURFACE DETAILS:
-
-Preserve all:
-- dirt, sweat, blood, water, snow
-- skin texture and imperfections
-
----
-
-STYLE:
-
-If MODE = realism:
-- keep photorealistic human result
-- cinematic consistency (film grain, shadows, highlights)
-
-If MODE = zootopia_human:
-- convert characters to stylized 3D animated humans (Pixar-like)
-- smooth shading, simplified features
-- keep exact pose and scene
-
-If MODE = zootopia_animals:
-
-Transform into anthropomorphic animals:
-
-LEFT → fox
-RIGHT → rabbit
-
-CRITICAL:
-- keep exact pose and scene
-- use stylized 3D animation (Pixar/Zootopia look)
-- NO realistic fur
-
-FACE RULE (IMPORTANT):
-- do NOT keep human faces
-- faces must be fully animal-based
-
-Identity must be expressed through:
-- expression
-- proportions
-- personality
-
-NOT through human facial structure
-
----
-
-SAFETY (IMPORTANT):
-
-Use stylized transformation when needed.
-Avoid photorealistic identity reproduction in animal mode.
-
----
-
-FORBIDDEN:
-
-- full image redraw
-- pose change
-- camera change
-- rotating faces
-- generating face when not visible
-- identity blending
-- smoothing / beautifying (realism mode)
-- modifying hands
-
----
-
-RESULT:
-
-Return the same scene with:
-- correct identity transfer
-- correct pose
-- correct orientation
-- correct lighting integration
-- correct style based on MODE`;
-}
-
-// ─────────────────────────────────────────────
-// REPLICATE — google/nano-banana
+// REPLICATE — google/nano-banana-pro
 // ─────────────────────────────────────────────
 
 async function runReplicate(
@@ -218,11 +236,6 @@ async function runReplicate(
   apiKey: string
 ): Promise<string> {
   console.log("[REPLICATE] creating prediction | model: google/nano-banana-pro");
-  console.log("[REPLICATE] prompt length:", prompt.length);
-
-  if (!referenceDataUrl || !person1DataUrl || !person2DataUrl) {
-    throw new Error("One or more image data URLs are empty or undefined");
-  }
 
   const predictionBody = {
     version: "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca",
@@ -265,12 +278,11 @@ async function runReplicate(
   const immediateStatus = prediction?.status as string | undefined;
 
   if (immediateStatus === "succeeded") {
-    return extractReplicateOutput(prediction);
+    return extractOutput(prediction);
   }
 
   if (immediateStatus === "failed" || immediateStatus === "canceled") {
-    const errDetail = prediction?.error ?? prediction?.logs ?? immediateStatus;
-    throw new Error(`Replicate prediction ${immediateStatus}: ${JSON.stringify(errDetail)}`);
+    throw new Error(`Replicate prediction ${immediateStatus}: ${JSON.stringify(prediction?.error ?? prediction?.logs ?? immediateStatus)}`);
   }
 
   console.log("[REPLICATE] polling prediction:", predictionId);
@@ -297,19 +309,18 @@ async function runReplicate(
     console.log(`[REPLICATE] poll attempt ${attempt + 1}: status = ${status}`);
 
     if (status === "succeeded") {
-      return extractReplicateOutput(pollData);
+      return extractOutput(pollData);
     }
 
     if (status === "failed" || status === "canceled") {
-      const errDetail = pollData?.error ?? pollData?.logs ?? status;
-      throw new Error(`Replicate prediction ${status}: ${JSON.stringify(errDetail)}`);
+      throw new Error(`Replicate prediction ${status}: ${JSON.stringify(pollData?.error ?? pollData?.logs ?? status)}`);
     }
   }
 
   throw new Error("Replicate prediction timed out");
 }
 
-function extractReplicateOutput(prediction: Record<string, unknown>): string {
+function extractOutput(prediction: Record<string, unknown>): string {
   const output = prediction?.output;
 
   let outputUrl: string | undefined;
@@ -400,23 +411,14 @@ Deno.serve(async (req: Request) => {
       fileToDataUrl(person2),
     ]);
 
-    const prompt = buildPrompt(style, mode);
-    console.log("[GENERATE] prompt length:", prompt.length);
+    const prompt = resolvePrompt(style, mode);
+    console.log("[GENERATE] prompt variant:", style === "zootopia" && mode === "zootopia_animals" ? "ZOOTOPIA_ANIMALS" : style === "zootopia" ? "ZOOTOPIA_HUMAN" : "FILM_REALISM");
 
     const outputUrl = await runReplicate(prompt, referenceDataUrl, person1DataUrl, person2DataUrl, replicateApiKey);
     const imageUrl = await fetchOutputAsDataUrl(outputUrl);
 
     return new Response(
-      JSON.stringify({
-        success: true,
-        imageUrl,
-        debug: {
-          pipeline: "replicate/google/nano-banana",
-          style,
-          mode,
-          promptLength: prompt.length,
-        },
-      }),
+      JSON.stringify({ success: true, imageUrl }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
