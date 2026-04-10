@@ -13,6 +13,10 @@ function App() {
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [photo1, setPhoto1] = useState<File | null>(null);
+  const [photo2, setPhoto2] = useState<File | null>(null);
+  const [preview1, setPreview1] = useState<string>('');
+  const [preview2, setPreview2] = useState<string>('');
 
   const handleStyleSelect = (style: string, refImages: string[]) => {
     setSelectedStyle(style);
@@ -126,6 +130,10 @@ function App() {
     setSelectedReference('');
     setGeneratedImageUrl('');
     setError('');
+    setPhoto1(null);
+    setPhoto2(null);
+    setPreview1('');
+    setPreview2('');
   };
 
   const handleBackToUpload = () => {
@@ -147,6 +155,14 @@ function App() {
           onReferenceSelect={setSelectedReference}
           onBack={handleBackToHome}
           onGenerate={handleGenerate}
+          photo1={photo1}
+          setPhoto1={setPhoto1}
+          photo2={photo2}
+          setPhoto2={setPhoto2}
+          preview1={preview1}
+          setPreview1={setPreview1}
+          preview2={preview2}
+          setPreview2={setPreview2}
         />
       )}
       {currentView === 'result' && (

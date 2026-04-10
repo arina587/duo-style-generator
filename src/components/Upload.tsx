@@ -8,13 +8,17 @@ interface UploadProps {
   onReferenceSelect: (reference: string) => void;
   onBack: () => void;
   onGenerate: (photo1: File, photo2: File, styleBoard: File, mode?: string) => void;
+  photo1: File | null;
+  setPhoto1: (file: File | null) => void;
+  photo2: File | null;
+  setPhoto2: (file: File | null) => void;
+  preview1: string;
+  setPreview1: (url: string) => void;
+  preview2: string;
+  setPreview2: (url: string) => void;
 }
 
-export default function Upload({ selectedStyle, referenceImages, selectedReference, onReferenceSelect, onBack, onGenerate }: UploadProps) {
-  const [photo1, setPhoto1] = useState<File | null>(null);
-  const [photo2, setPhoto2] = useState<File | null>(null);
-  const [preview1, setPreview1] = useState<string>('');
-  const [preview2, setPreview2] = useState<string>('');
+export default function Upload({ selectedStyle, referenceImages, selectedReference, onReferenceSelect, onBack, onGenerate, photo1, setPhoto1, photo2, setPhoto2, preview1, setPreview1, preview2, setPreview2 }: UploadProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string>('');
   const [selectedMode, setSelectedMode] = useState<string>('');
