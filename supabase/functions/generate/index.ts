@@ -20,20 +20,53 @@ Recast LEFT character as Person A.
 Recast RIGHT character as Person B.
 
 Preserve EXACTLY:
-- camera, composition, perspective
-- pose, body position, clothing
-- background, framing
+- camera
+- composition
+- perspective
+- pose
+- body position
+- clothing
+- background
+- framing
 - hands (do not modify)
+
+PRIORITY ORDER:
+1. expression from reference
+2. lighting and scene effects from reference
+3. identity structure from person images
+
+Do NOT average or blend identity with expression.
 
 EXPRESSION:
 Use expression ONLY from reference:
-- eyes, eyebrows, mouth, micro-expressions
+- eyes
+- eyebrows
+- mouth
+- micro-expressions
+
+If conflict occurs, preserve reference expression over identity accuracy.
 
 HEAD:
-Keep exact orientation (no rotation).
+Keep exact orientation from reference.
+Keep exact gaze direction from reference.
+No rotation correction.
+
+IDENTITY:
+Transfer only facial identity structure from person images:
+- bone structure
+- jawline
+- cheekbones
+- nose shape
+- natural lip shape
+- natural eye shape without changing reference expression
+
+Do NOT transfer:
+- source expression
+- source lighting
+- source skin rendering
 
 HAIR:
-Use identity hair, adapted to angle.
+Use identity hair, adapted to reference angle, lighting, and scene continuity.
 
 LIGHTING (CRITICAL):
 Face must obey scene lighting exactly:
@@ -42,24 +75,39 @@ Face must obey scene lighting exactly:
 - same highlights
 - same color temperature
 - same contrast
+- same exposure behavior
 
 Face must look naturally captured in the same shot, NOT pasted.
 
 DETAILS:
-Preserve dirt, sweat, blood, water, skin texture.
+Preserve and apply scene surface effects from reference:
+- dirt
+- sweat
+- blood
+- water
+- snow
+- skin texture
+- texture imperfections
+
+These details must follow the reference scene, even if source images are clean.
 
 IDENTITY:
 Preserve real facial structure and proportions.
-No beautifying, no smoothing, no blending.
+No beautifying.
+No smoothing.
+No glamour retouching.
 
 FORBIDDEN:
 - full redraw
-- pose/camera change
+- pose change
+- camera change
+- face blending
 - pasted look
+- beauty retouching
 - modifying hands
 
 RESULT:
-Same scene, same shot, identities naturally integrated.`;
+Same scene, same shot, same cinematic frame, with both identities naturally integrated as if they were physically present on set.`;
 
 const ZOOTOPIA_HUMAN_PROMPT = `STRICT DISNEY/PIXAR STYLE CHARACTER RECASTING.
 
@@ -70,80 +118,132 @@ Image 2 = Person B
 Recast LEFT character as animated human Person A.
 Recast RIGHT character as animated human Person B.
 
-STYLE:
-- strong Disney/Pixar 3D animated look
-- stylized faces, expressive eyes
-- clean cinematic shading
-- clearly non-realistic
-
-Preserve:
-- pose, composition, camera
-- background and framing
+Preserve EXACTLY:
+- pose
+- composition
+- camera
+- background
+- framing
 - head orientation
+- gaze direction
+- scene emotion
 
 EXPRESSION:
-Keep expression from reference.
+Use expression ONLY from reference:
+- eyes
+- eyebrows
+- mouth
+- emotional intensity
+
+STYLE:
+- strong Disney/Pixar 3D animated look
+- stylized human faces
+- expressive eyes
+- clean cinematic shading
+- clearly non-realistic
+- polished feature animation aesthetic
 
 IDENTITY:
-Keep recognizable features adapted into animated style.
+Keep recognizable facial identity adapted into animated human form:
+- face proportions
+- hairstyle
+- visual character feel
+
+Do NOT make them realistic.
+Do NOT make them semi-real.
+Do NOT drift into live-action.
 
 HAIR:
-Use identity hair adapted to cartoon style.
+Use identity hair adapted to cartoon styling and reference angle.
 
 FORBIDDEN:
 - realistic faces
 - weak cartoon style
 - scene changes
+- animal features
+- hybrid human-animal look
 
 RESULT:
-Zootopia-style scene with strong Pixar-like animated humans.`;
+A Zootopia-style scene with strong Pixar-like animated human characters, preserving the original scene while transforming both people into stylized 3D cartoon humans.`;
 
-const ZOOTOPIA_ANIMALS_PROMPT = `STRICT ANTHROPOMORPHIC CHARACTER RECASTING.
+const ZOOTOPIA_ANIMALS_PROMPT = `STRICT ANTHROPOMORPHIC CHARACTER REINTERPRETATION.
 
 Reference image = base scene
 Image 1 = Person A
 Image 2 = Person B
 
-Recast LEFT character as fox inspired by Person A.
-Recast RIGHT character as rabbit inspired by Person B.
+Recast LEFT character as an anthropomorphic animal character inspired by Person A.
+Recast RIGHT character as an anthropomorphic animal character inspired by Person B.
 
 IMPORTANT:
 Do NOT transfer human faces.
-Do NOT create hybrid faces.
+Do NOT perform face swap.
+Do NOT create human-animal hybrid faces.
 
-This is character reinterpretation, not face swap.
+This is character reinterpretation, not face replacement.
 
-STYLE:
-- Disney/Pixar Zootopia-style 3D
-- stylized fur
-- clean animated rendering
-
-Preserve:
+PRESERVE EXACTLY:
 - pose
 - scene
 - camera
 - composition
+- background
+- framing
 - head orientation
+- gaze direction
+- emotional situation
 
 EXPRESSION:
-Keep expression and emotion from reference.
+Keep expression and emotion from reference,
+but expressed through stylized animal anatomy.
 
 IDENTITY:
-Preserve personality and recognizability via:
-- expression
-- proportions
-- character feel
+Preserve recognizability indirectly through non-literal traits only:
+- personality feel
+- visual attitude
+- soft vs sharp facial impression
+- wide vs narrow character proportions
+- hairstyle silhouette reinterpreted as fur shape, fur styling, or head silhouette
+- subtle color inspiration reinterpreted into fur palette or design accents
 
-NOT via human facial structure.
+Do NOT copy directly:
+- human facial structure
+- human skin
+- human lips
+- human nose
+- human eyes
+- exact human face layout
+
+STYLE:
+- Disney/Pixar Zootopia-style 3D
+- stylized fur
+- expressive anthropomorphic animal faces
+- clean animated rendering
+- fully non-human character design
+
+CHARACTER RULE:
+Characters must remain believable Zootopia-style animals.
+They must look like original animated animal characters inspired by the persons,
+not transformed humans.
+
+SAFETY RULE:
+If resemblance becomes too literal, reduce human similarity and increase stylization.
+
+Priority:
+1. believable animal character
+2. strong Zootopia style
+3. subtle inspiration from Person A / Person B
 
 FORBIDDEN:
-- human faces
-- realistic animals
-- hybrids
+- human faces on animals
+- realistic humans
+- hybrid faces
+- direct face transfer
+- uncanny humanized animal skin
 - scene changes
 
 RESULT:
-Zootopia-style scene with fox and rabbit characters inspired by Person A and Person B.`;
+A Zootopia-style scene with fully anthropomorphic animal characters inspired by Person A and Person B, while preserving the original animated scene, pose, and emotion.`;
 
 // ─────────────────────────────────────────────
 // PROMPT ROUTING
