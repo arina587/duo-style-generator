@@ -165,11 +165,15 @@ async function runReplicate(
   person2DataUrl: string,
   apiKey: string
 ): Promise<string> {
-  console.log("[REPLICATE] creating prediction | model: google/nano-banana");
+  console.log("[REPLICATE] creating prediction | model: google/nano-banana-pro");
   console.log("[REPLICATE] prompt length:", prompt.length);
 
+  if (!referenceDataUrl || !person1DataUrl || !person2DataUrl) {
+    throw new Error("One or more image data URLs are empty or undefined");
+  }
+
   const predictionBody = {
-    model: "google/nano-banana",
+    version: "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca",
     input: {
       prompt,
       image_input: [referenceDataUrl, person1DataUrl, person2DataUrl],
