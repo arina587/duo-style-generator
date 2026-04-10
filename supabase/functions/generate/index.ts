@@ -19,17 +19,16 @@ type Domain = "titanic" | "euphoria" | "zootopia_cartoon" | "zootopia_animals";
 const FILM_FACE_SWAP_PROMPT = `STRICT LOCAL FACE IDENTITY MAPPING.
 
 THIS IS NOT IMAGE GENERATION.
-THIS IS A PRECISE LOCAL EDIT OF AN EXISTING IMAGE.
+THIS IS A PRECISE LOCAL EDIT.
 
 ---
 
 PRIORITY ORDER (HIGHEST → LOWEST):
 
-1. facial expressions from Image[0]
-2. face position and geometry from Image[0]
+1. facial expression from Image[0]
+2. face geometry and position from Image[0]
 3. identity from Image[1] and Image[2]
-4. background preservation
-5. minimal stylization
+4. preservation of all non-face regions
 
 ---
 
@@ -44,85 +43,87 @@ Image[2] = Person B (identity source)
 GLOBAL CONSTRAINT:
 
 Do NOT recreate or reinterpret the image.
-Do NOT re-render the full scene.
+Do NOT regenerate the full scene.
 
-Only perform minimal local face edits.
-
----
-
-IDENTITY MAPPING (NOT REPLACEMENT):
-
-Map the facial identity from Image[1] onto the existing face of the LEFT subject in Image[0].
-
-Map the facial identity from Image[2] onto the existing face of the RIGHT subject in Image[0].
-
-Do NOT generate new faces.
-Do NOT blend identities.
+Only perform minimal local edits on faces.
 
 ---
 
-EXPRESSION DOMINANCE (ABSOLUTE):
+IDENTITY STRICTNESS (CRITICAL):
 
-Preserve the EXACT facial expressions from Image[0].
+Map the facial identity from Image[1] onto the LEFT face in Image[0].
 
-This includes:
+Map the facial identity from Image[2] onto the RIGHT face in Image[0].
+
+Facial identity must match EXACTLY.
+
+Do NOT:
+- approximate identity
+- blend identities
+- adapt identity to the scene
+
+---
+
+EMOTION LOCK (ABSOLUTE):
+
+Use ONLY the facial expression from Image[0].
+
+Preserve EXACT:
 - eye openness and direction
-- eyebrow position and tension
+- eyebrow tension and position
 - mouth shape
-- all micro-expressions
+- facial muscle tension
 
-Ignore expressions from Image[1] and Image[2].
+Ignore all expressions from Image[1] and Image[2].
 
 ---
 
 FACE ANCHORING:
 
-Keep exact face position, scale, rotation, and alignment.
+Keep exact face position, rotation, scale, and alignment.
 
-Do NOT move, resize, or recompose faces.
+Do NOT move or resize faces.
 
 ---
 
 EDIT BOUNDARY (CRITICAL):
 
-Modify ONLY the facial regions.
+Modify ONLY facial regions.
 
-Do NOT change:
-- hair
-- body
-- clothing
-- background
-- lighting of the scene
+Everything else must remain EXACTLY unchanged.
+
+---
+
+HAND PRESERVATION (CRITICAL):
+
+Hands and fingers must remain EXACTLY as in Image[0].
+
+Do NOT modify or regenerate hands.
 
 ---
 
 SURFACE DETAIL PRESERVATION:
 
-Keep all environmental and surface details from Image[0]:
+Keep all details from Image[0]:
 
 - dirt
 - sweat
-- water
-- snow
-- skin imperfections
-
-They must remain consistent after identity mapping.
+- skin texture
+- imperfections
 
 ---
 
-LIGHTING CONSISTENCY:
+LIGHTING:
 
-Match lighting, shadows, highlights, and color grading exactly from Image[0].
-
-Do NOT introduce new lighting.
+Match lighting, shadows, and color grading EXACTLY.
 
 ---
 
-SKIN & DETAIL:
+SKIN RULE:
 
 Preserve natural skin texture and facial muscle definition.
 
-Do NOT smooth, beautify, or stylize skin.
+Do NOT smooth or beautify.
 
 ---
 
@@ -133,16 +134,16 @@ FORBIDDEN:
 - changing pose
 - changing emotion
 - identity blending
-- artificial smoothing
-- stylizing the entire scene
+- modifying hands
+- stylizing the whole image
 
 ---
 
 FINAL RESULT:
 
-The output must be identical to Image[0] in every aspect,
-with ONLY the facial identities replaced by Person A and Person B,
-while fully preserving expressions, pose, lighting, and environment.`;
+The output must be identical to Image[0],
+with ONLY the faces changed to Person A and Person B,
+while preserving identity, expression, and all non-face details perfectly.`;
 
 const ZOOTOPIA_CARTOON_PROMPT = `STRICT IMAGE EDITING.
 
