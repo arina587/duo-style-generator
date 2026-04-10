@@ -16,53 +16,133 @@ type Domain = "titanic" | "euphoria" | "zootopia_cartoon" | "zootopia_animals";
 // PROMPT TEMPLATES
 // ─────────────────────────────────────────────
 
-const FILM_FACE_SWAP_PROMPT = `STRICT REALISTIC IMAGE EDITING — SCENE-ACCURATE FACE SWAP.
+const FILM_FACE_SWAP_PROMPT = `STRICT LOCAL FACE IDENTITY MAPPING.
+
+THIS IS NOT IMAGE GENERATION.
+THIS IS A PRECISE LOCAL EDIT OF AN EXISTING IMAGE.
+
+---
+
+PRIORITY ORDER (HIGHEST → LOWEST):
+
+1. facial expressions from Image[0]
+2. face position and geometry from Image[0]
+3. identity from Image[1] and Image[2]
+4. background preservation
+5. minimal stylization
+
+---
 
 INPUT:
-Image[0] = reference scene (authoritative source of all environmental conditions)
-Image[1] = person A (face donor)
-Image[2] = person B (face donor)
 
-TASK:
-Replace the faces in Image[0] with the faces from Image[1] and Image[2].
+Image[0] = base scene (source of truth)
+Image[1] = Person A (identity source)
+Image[2] = Person B (identity source)
 
-SCENE PRESERVATION (NON-NEGOTIABLE):
-- Keep background, lighting, camera angle, and composition PIXEL-EXACT
-- Keep pose, clothing, and body positions UNCHANGED
-- Keep film grain, noise, motion blur, lens distortion, and depth-of-field UNCHANGED
-- Keep the original color grading, tones, and mood of Image[0]
+---
 
-ENVIRONMENT MATCH — READ IMAGE[0] AND APPLY EXACTLY:
-- Analyze the VISIBLE environmental conditions in Image[0] and transfer them to the new faces
-- If Image[0] shows cold or freezing conditions (pale skin, blue-white skin tones, desaturated complexion): apply that color temperature to the new faces
-- If Image[0] shows wet skin or water droplets: apply wetness, reflections, and wet-skin texture to the new faces
-- If Image[0] shows sweat, tears, dirt, blood, bruises, or physical damage: preserve and transfer those details
-- If Image[0] has strong colored lighting (warm/cool/tinted): the new faces must inherit exactly that lighting color
-- If Image[0] shows dry, clean, normal conditions: render faces cleanly with NO added damage or effects
-- DO NOT invent or add any environmental effect that is NOT visibly present in Image[0]
+GLOBAL CONSTRAINT:
 
-SKIN INTEGRATION (CRITICAL):
-- Match lighting direction and intensity to Image[0] exactly
-- Match color temperature of skin to the scene's lighting (cold scene = cold skin, warm scene = warm skin)
-- Match skin texture to what is visible in Image[0] — wet if scene is wet, dry if scene is dry
-- DO NOT smooth, beautify, or normalize the face
-- Keep all pores, asymmetry, wrinkles, and natural imperfections of Image[1] / Image[2]
-- No artificial sharpening, glow, or skin-softening filters
+Do NOT recreate or reinterpret the image.
+Do NOT re-render the full scene.
 
-REALISM:
-- Do NOT add effects not present in Image[0]
-- Do NOT apply cold/blue skin tones unless clearly visible in Image[0]
-- Do NOT apply wetness unless clearly visible in Image[0]
-- The replaced faces must look like they were part of the original scene when it was filmed
+Only perform minimal local face edits.
 
-HANDS & ANATOMY:
-- Preserve natural hand anatomy
-- Correct finger count (5 fingers per hand)
-- No deformed or merged fingers
-- Maintain realistic body proportions
+---
+
+IDENTITY MAPPING (NOT REPLACEMENT):
+
+Map the facial identity from Image[1] onto the existing face of the LEFT subject in Image[0].
+
+Map the facial identity from Image[2] onto the existing face of the RIGHT subject in Image[0].
+
+Do NOT generate new faces.
+Do NOT blend identities.
+
+---
+
+EXPRESSION DOMINANCE (ABSOLUTE):
+
+Preserve the EXACT facial expressions from Image[0].
+
+This includes:
+- eye openness and direction
+- eyebrow position and tension
+- mouth shape
+- all micro-expressions
+
+Ignore expressions from Image[1] and Image[2].
+
+---
+
+FACE ANCHORING:
+
+Keep exact face position, scale, rotation, and alignment.
+
+Do NOT move, resize, or recompose faces.
+
+---
+
+EDIT BOUNDARY (CRITICAL):
+
+Modify ONLY the facial regions.
+
+Do NOT change:
+- hair
+- body
+- clothing
+- background
+- lighting of the scene
+
+---
+
+SURFACE DETAIL PRESERVATION:
+
+Keep all environmental and surface details from Image[0]:
+
+- dirt
+- sweat
+- water
+- snow
+- skin imperfections
+
+They must remain consistent after identity mapping.
+
+---
+
+LIGHTING CONSISTENCY:
+
+Match lighting, shadows, highlights, and color grading exactly from Image[0].
+
+Do NOT introduce new lighting.
+
+---
+
+SKIN & DETAIL:
+
+Preserve natural skin texture and facial muscle definition.
+
+Do NOT smooth, beautify, or stylize skin.
+
+---
+
+FORBIDDEN:
+
+- full image regeneration
+- changing composition
+- changing pose
+- changing emotion
+- identity blending
+- artificial smoothing
+- stylizing the entire scene
+
+---
 
 FINAL RESULT:
-The output must look like an authentic, unedited film frame where the original actors were replaced seamlessly. No composite look. No lighting mismatch. No texture mismatch.`;
+
+The output must be identical to Image[0] in every aspect,
+with ONLY the facial identities replaced by Person A and Person B,
+while fully preserving expressions, pose, lighting, and environment.`;
 
 const ZOOTOPIA_CARTOON_PROMPT = `STRICT IMAGE EDITING.
 
