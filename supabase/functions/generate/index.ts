@@ -6,64 +6,70 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
-const FILM_REALISM_PROMPT = `Use image 1 as the fixed base frame.
+const FILM_REALISM_PROMPT = `Use image 1 as the original fixed movie frame.
 
-Replace the LEFT character with the person from image 2 and replace the RIGHT character with the person from image 3.
+Replace the LEFT character with the person from image 2 and the RIGHT character with the person from image 3.
 
-Keep both people exactly recognizable — same facial features, proportions, skin texture, and natural look. No beauty filters, no smoothing, no plastic skin, no blur, no glamour retouching.
+Keep both people exactly recognizable — same facial features, proportions, skin texture, and natural look. No beauty filters, no smoothing, no plastic skin, no retouching.
 
-Keep the exact facial expression from image 1. Keep the exact head angle, head tilt, eye direction, gaze direction, and mouth position from image 1. Do not change where the characters are looking.
+Keep the exact expression from image 1. Keep the exact head angle, head tilt, eye direction, gaze, and mouth position. Do not change where the characters are looking.
 
-Match the lighting, shadows, contrast, color temperature, and cinematic tone of image 1 exactly. Preserve all details such as darkness, cold or warm tones, grain, dirt, sweat, water, blood, and natural shadowing. The faces must look like they belong to the original shot, not pasted.
+Match the lighting from image 1 exactly — same shadows, same highlights, same color temperature, same contrast. Keep all cinematic details like darkness, cold or warm tones, grain, dirt, sweat, water, and realistic shadows.
 
-Keep hair consistent with the people from image 2 and image 3, but naturally adapted to the angle and lighting of image 1.
+Keep the hair from image 2 and image 3, but naturally adapted to the angle and lighting of image 1.
 
-Keep the background, camera, framing, composition, body pose, clothing, hands, and environment exactly unchanged. Do not change the scene. Do not redesign the shot. Do not generate a new image.
+Keep the background, camera, framing, composition, body pose, clothing, and hands exactly unchanged.
 
-If a character is in side profile, keep the exact profile and adapt only what is visible.
-If a character is facing away, do not generate a new visible face — keep the back view.
+Do NOT change the scene. Do NOT redesign the shot. Do NOT generate a new image.
 
-Only perform a realistic minimal edit. The result must look like the original movie frame with only the identities changed.`;
+If the face is in profile — keep the exact profile.
+If the character is turned away — do not generate a new face.
 
-const ZOOTOPIA_HUMAN_PROMPT = `Use image 1 as the fixed base scene.
+Only perform a minimal, realistic face replacement.
 
-Replace the LEFT character with a stylized animated human version of the person from image 2 and replace the RIGHT character with a stylized animated human version of the person from image 3.
+The result must look like the same original movie frame, as if it was filmed with these people.`;
 
-Keep both people clearly recognizable in stylized form — same key facial features and hairstyle, adapted into a strong Disney Pixar 3D style.
+const ZOOTOPIA_HUMAN_PROMPT = `Use image 1 as the original fixed animated frame.
 
-Keep the exact pose, head angle, eye direction, gaze, expression, body position, composition, framing, and background from image 1.
+Replace the LEFT character with a 3D Pixar-style human version of the person from image 2 and the RIGHT character with a 3D Pixar-style human version of the person from image 3.
 
-Do not change the scene. Do not redesign the composition. Do not move the camera.
+Keep both people recognizable, but adapted into Pixar style — same key facial features and hairstyle, translated into stylized 3D animation.
 
-Keep lighting and colors consistent with image 1, but rendered in clean Pixar-style shading.
+Style must be clearly Disney Pixar 3D:
+- smooth stylized skin
+- large expressive eyes
+- clean shapes
+- soft cinematic shading
 
-Do not use realism. Do not create semi-realistic faces. Keep the style clearly animated.
+Keep the exact pose, head angle, gaze, expression, composition, background, and camera from image 1.
 
-The result must look like the same original Zootopia-style frame, with only the characters changed into stylized human versions.`;
+Do NOT change the scene. Do NOT redesign anything.
 
-const ZOOTOPIA_ANIMALS_PROMPT = `Use image 1 as the fixed base scene.
+Do NOT use realism. Do NOT mix realistic and cartoon styles.
 
-Reimagine the LEFT character as an original Zootopia-style animal inspired by the person from image 2, and the RIGHT character as an original Zootopia-style animal inspired by the person from image 3.
+The result must look like the same Zootopia frame, but with Pixar-style human characters.`;
 
-Keep the exact pose, head angle, eye direction, gaze, expression, body position, composition, framing, background, and camera from image 1.
+const ZOOTOPIA_ANIMALS_PROMPT = `Use image 1 as the original fixed animated frame.
 
-Do not change the scene. Do not redesign anything.
+Keep the same characters, but redesign them slightly so they feel inspired by the people from image 2 and image 3.
 
-The characters must remain fully animated animals in Disney Pixar Zootopia style.
+Do NOT replace faces.
+Do NOT copy human facial features.
+Do NOT turn humans into animals directly.
 
-Use only soft inspiration from the people:
+Only add very subtle inspiration:
 - hairstyle hints
 - personality
 - expression energy
-- silhouette feeling
+- small design details
 
-Do NOT copy human faces.
-Do NOT transfer facial structure.
-Do NOT create human-animal hybrids.
+Keep characters fully as animals in Zootopia Pixar style.
 
-Keep everything clean, stylized, and natural for animation.
+Keep the exact pose, head angle, gaze, expression, composition, background, and camera from image 1.
 
-The result must look like the same original Zootopia frame, with characters reimagined as new animals inspired by the people.`;
+Do NOT change the scene. Do NOT redesign composition.
+
+The result must look like the same original Zootopia frame, just slightly restyled characters inspired by the people.`;
 
 function resolvePrompt(style: string | null, mode: string | null): string {
   if (style === "zootopia" && mode === "zootopia_animals") {
