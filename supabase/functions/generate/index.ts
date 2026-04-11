@@ -6,288 +6,64 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
-// ─────────────────────────────────────────────
-// PROMPTS
-// ─────────────────────────────────────────────
+const FILM_REALISM_PROMPT = `Use image 1 as the fixed base frame.
 
-const FILM_REALISM_PROMPT = `STRICT CINEMATIC IDENTITY INTEGRATION INTO AN EXISTING FILM FRAME.
+Replace the LEFT character with the person from image 2 and replace the RIGHT character with the person from image 3.
 
-INPUT:
-- Reference image = original movie frame and absolute source of truth
-- Image 1 = Person A
-- Image 2 = Person B
+Keep both people exactly recognizable — same facial features, proportions, skin texture, and natural look. No beauty filters, no smoothing, no plastic skin, no blur, no glamour retouching.
 
-TASK:
-Integrate the identity of Person A into the LEFT character and the identity of Person B into the RIGHT character while preserving the original film frame exactly.
+Keep the exact facial expression from image 1. Keep the exact head angle, head tilt, eye direction, gaze direction, and mouth position from image 1. Do not change where the characters are looking.
 
-This is NOT a pasted face overlay.
-This is NOT a clean portrait insertion.
-This is identity integration inside the existing shot.
+Match the lighting, shadows, contrast, color temperature, and cinematic tone of image 1 exactly. Preserve all details such as darkness, cold or warm tones, grain, dirt, sweat, water, blood, and natural shadowing. The faces must look like they belong to the original shot, not pasted.
 
-SCENE LOCK (ABSOLUTE):
-Do not alter:
-- camera
-- lens perspective
-- framing
-- composition
-- body pose
-- body position
-- clothing
-- background
-- environment
-- hands
+Keep hair consistent with the people from image 2 and image 3, but naturally adapted to the angle and lighting of image 1.
 
-The output must remain the same shot.
+Keep the background, camera, framing, composition, body pose, clothing, hands, and environment exactly unchanged. Do not change the scene. Do not redesign the shot. Do not generate a new image.
 
-IDENTITY RULE:
-Preserve recognizable real identity through:
-- facial structure
-- proportions
-- key identity features
+If a character is in side profile, keep the exact profile and adapt only what is visible.
+If a character is facing away, do not generate a new visible face — keep the back view.
 
-Do NOT beautify.
-Do NOT smooth skin.
-Do NOT make faces cleaner than the original frame.
-Do NOT generate glamour portraits.
+Only perform a realistic minimal edit. The result must look like the original movie frame with only the identities changed.`;
 
-EXPRESSION RULE:
-Expression must come only from the reference frame:
-- eyes
-- eyebrows
-- mouth
-- facial tension
-- emotional intensity
-- micro-expression
+const ZOOTOPIA_HUMAN_PROMPT = `Use image 1 as the fixed base scene.
 
-Identity must conform to the existing expression in the shot.
+Replace the LEFT character with a stylized animated human version of the person from image 2 and replace the RIGHT character with a stylized animated human version of the person from image 3.
 
-HEAD AND GAZE LOCK (CRITICAL):
-Preserve exactly:
-- head angle
-- head tilt
-- neck direction
-- gaze direction
-- eye line
-- perspective
+Keep both people clearly recognizable in stylized form — same key facial features and hairstyle, adapted into a strong Disney Pixar 3D style.
 
-Do NOT rotate the head.
-Do NOT redirect the eyes.
-Do NOT make the subject look into camera unless the reference already does.
+Keep the exact pose, head angle, eye direction, gaze, expression, body position, composition, framing, and background from image 1.
 
-POSE-AWARE HANDLING:
-- front-facing → integrate identity fully while preserving exact expression and angle
-- side profile → preserve exact profile; adapt identity only within the visible angle
-- back-facing / heavily occluded → do not invent a visible face; preserve the original back view and only adapt hair or silhouette subtly if appropriate
+Do not change the scene. Do not redesign the composition. Do not move the camera.
 
-LIGHTING AND SHADOW INTEGRATION (HARD REQUIREMENT):
-The face must inherit the exact cinematic lighting of the reference frame:
-- same light direction
-- same shadow placement
-- same highlight placement
-- same exposure
-- same color temperature
-- same contrast
-- same depth and falloff
+Keep lighting and colors consistent with image 1, but rendered in clean Pixar-style shading.
 
-Do not brighten the face separately.
-Do not flatten shadows.
-Do not neutralize film lighting.
-Do not produce a pasted or composited look.
+Do not use realism. Do not create semi-realistic faces. Keep the style clearly animated.
 
-TEXTURE AND ENVIRONMENTAL TRANSFER:
-Preserve and carry over all contextual surface qualities from the original frame:
-- film grain
-- skin texture
-- sweat
-- dirt
-- blood
-- water
-- cold tone
-- warm cast
-- haze
-- environmental tint
-- scene imperfections
+The result must look like the same original Zootopia-style frame, with only the characters changed into stylized human versions.`;
 
-Hair must follow identity, but remain consistent with:
-- original angle
-- original silhouette
-- original motion
-- original scene lighting
+const ZOOTOPIA_ANIMALS_PROMPT = `Use image 1 as the fixed base scene.
 
-FORBIDDEN:
-- full redraw
-- scene reinterpretation
-- camera changes
-- pose changes
-- head rotation
-- gaze changes
-- softened beauty face
-- studio-lit skin
-- pasted face artifacts
-- altered hands
-- altered clothing
-- altered background
+Reimagine the LEFT character as an original Zootopia-style animal inspired by the person from image 2, and the RIGHT character as an original Zootopia-style animal inspired by the person from image 3.
 
-RESULT:
-The same movie shot, with the same emotional performance, same head direction, same gaze, same lighting, same shadow logic, and the identities naturally integrated as if captured in-camera.`;
+Keep the exact pose, head angle, eye direction, gaze, expression, body position, composition, framing, background, and camera from image 1.
 
-const ZOOTOPIA_HUMAN_PROMPT = `STRICT PIXAR-STYLE HUMAN CHARACTER RECASTING.
+Do not change the scene. Do not redesign anything.
 
-INPUT:
-- Reference image = Zootopia-style scene and source of truth
-- Image 1 = Person A
-- Image 2 = Person B
+The characters must remain fully animated animals in Disney Pixar Zootopia style.
 
-TASK:
-Transform the LEFT and RIGHT characters into stylized animated humans inspired by Person A and Person B while preserving the original scene.
-
-CHARACTER MAPPING:
-- LEFT → Person A
-- RIGHT → Person B
-
-SCENE LOCK:
-Preserve exactly:
-- pose
-- body position
-- composition
-- camera angle
-- framing
-- background
-- environment
-- head orientation
-- gaze direction
-
-STYLE LOCK (CRITICAL):
-Must be:
-- strong Disney / Pixar 3D animated style
-- clearly stylized
-- clearly non-realistic
-- expressive
-- polished
-- cleanly shaded
-
-Do NOT become realistic.
-Do NOT become semi-realistic.
-Do NOT weaken the cartoon style.
-
-IDENTITY RULE:
-Adapt recognizable identity into animated human design through:
-- recognizable facial structure
-- recognizable features
-- stylized proportions
-- hairstyle cues
-
-Do NOT paste realistic faces into the cartoon.
-Do NOT create uncanny half-real human faces.
-
-EXPRESSION RULE:
-Keep the exact expression and emotional tone from the reference scene.
-
-HEAD AND GAZE LOCK:
-Preserve:
-- head direction
-- head tilt
-- eye direction
-- pose logic
-
-Do NOT rotate heads.
-Do NOT change where the characters are looking.
-
-LIGHTING:
-Preserve the original scene lighting and color palette in animated form.
-
-FORBIDDEN:
-- photorealistic skin
-- realism
-- anime style
-- weak cartoonization
-- uncanny faces
-- scene changes
-- camera changes
-- pose changes
-- gaze changes
-
-RESULT:
-A strong Zootopia / Pixar-like frame with animated human characters inspired by Person A and Person B, while preserving the original composition, pose, emotion, head direction, and gaze.`;
-
-const ZOOTOPIA_ANIMALS_PROMPT = `STRICT ZOOTOPIA-STYLE CHARACTER REINTERPRETATION.
-
-INPUT:
-- Reference image = Zootopia-style scene and source of truth
-- Image 1 = Person A
-- Image 2 = Person B
-
-TASK:
-Reimagine the LEFT and RIGHT characters as original stylized Zootopia-style animal characters inspired by Person A and Person B.
-
-CHARACTER MAPPING:
-- LEFT → animal character inspired by Person A
-- RIGHT → animal character inspired by Person B
-
-IMPORTANT:
-This mode is NOT face replacement.
-This mode is NOT human face transfer.
-This mode is NOT identity face mapping.
-This mode is original stylized character reinterpretation inspired by the people.
-
-The result must preserve recognizability through creative character design cues, not through transplanted human faces.
-
-STYLE LOCK:
-Must remain:
-- Disney / Pixar Zootopia-style 3D
-- stylized
-- expressive
-- clean
-- cinematic
-- animation-consistent
-
-IDENTITY INSPIRATION RULE:
-Use only soft inspiration from the provided people:
-- hairstyle influence
-- color accents
+Use only soft inspiration from the people:
+- hairstyle hints
 - personality
-- attitude
 - expression energy
-- vibe
-- silhouette suggestions
+- silhouette feeling
 
-Do NOT reproduce the real human face.
-Do NOT map human facial structure onto the animal.
-Do NOT create hybrid human-animal faces.
-Do NOT generate deepfake-like animal versions of real people.
+Do NOT copy human faces.
+Do NOT transfer facial structure.
+Do NOT create human-animal hybrids.
 
-SCENE LOCK:
-Preserve exactly:
-- pose
-- composition
-- camera
-- framing
-- background
-- environment
-- head orientation
-- gaze direction
-- emotional tone
+Keep everything clean, stylized, and natural for animation.
 
-EXPRESSION RULE:
-Keep the same emotional performance from the reference image.
-
-FORBIDDEN:
-- human faces
-- realistic people turned into animals via face transfer
-- hybrid human-animal facial anatomy
-- creepy results
-- photorealism
-- scene changes
-- camera changes
-- pose changes
-- gaze changes
-
-RESULT:
-An authentic Zootopia-style scene with original stylized animal characters inspired by Person A and Person B through design language, personality, and visual cues only, while preserving the original pose, background, composition, head direction, and emotional tone.`;
-
-// ─────────────────────────────────────────────
-// PROMPT ROUTING
-// ─────────────────────────────────────────────
+The result must look like the same original Zootopia frame, with characters reimagined as new animals inspired by the people.`;
 
 function resolvePrompt(style: string | null, mode: string | null): string {
   if (style === "zootopia" && mode === "zootopia_animals") {
@@ -299,15 +75,7 @@ function resolvePrompt(style: string | null, mode: string | null): string {
   return FILM_REALISM_PROMPT;
 }
 
-// ─────────────────────────────────────────────
-// IMAGE CONVERSION
-// ─────────────────────────────────────────────
-
 async function fileToDataUrl(file: File): Promise<string> {
-  if (!file || file.size === 0) {
-    throw new Error(`Image file is empty or missing: ${file?.name ?? "unknown"}`);
-  }
-
   const arrayBuffer = await file.arrayBuffer();
   const bytes = new Uint8Array(arrayBuffer);
 
@@ -323,10 +91,6 @@ async function fileToDataUrl(file: File): Promise<string> {
   return `data:${mime};base64,${b64}`;
 }
 
-// ─────────────────────────────────────────────
-// REPLICATE — google/nano-banana-pro
-// ─────────────────────────────────────────────
-
 async function runReplicate(
   prompt: string,
   referenceDataUrl: string,
@@ -336,14 +100,6 @@ async function runReplicate(
 ): Promise<string> {
   console.log("[REPLICATE] creating prediction | model: google/nano-banana-pro");
 
-  const predictionBody = {
-    version: "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca",
-    input: {
-      prompt,
-      image_input: [referenceDataUrl, person1DataUrl, person2DataUrl],
-    },
-  };
-
   const createResponse = await fetch("https://api.replicate.com/v1/predictions", {
     method: "POST",
     headers: {
@@ -351,7 +107,13 @@ async function runReplicate(
       "Content-Type": "application/json",
       "Prefer": "wait",
     },
-    body: JSON.stringify(predictionBody),
+    body: JSON.stringify({
+      version: "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca",
+      input: {
+        prompt,
+        image_input: [referenceDataUrl, person1DataUrl, person2DataUrl],
+      },
+    }),
   });
 
   const createText = await createResponse.text();
@@ -438,7 +200,6 @@ function extractOutput(prediction: Record<string, unknown>): string {
 }
 
 async function fetchOutputAsDataUrl(url: string): Promise<string> {
-  console.log("[REPLICATE] fetching output image from:", url);
   const imgResponse = await fetch(url);
   if (!imgResponse.ok) {
     throw new Error(`Failed to fetch Replicate output image (${imgResponse.status})`);
@@ -457,10 +218,6 @@ async function fetchOutputAsDataUrl(url: string): Promise<string> {
   const contentType = imgResponse.headers.get("content-type") ?? "image/jpeg";
   return `data:${contentType};base64,${b64}`;
 }
-
-// ─────────────────────────────────────────────
-// EDGE FUNCTION ENTRY POINT
-// ─────────────────────────────────────────────
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
@@ -483,17 +240,10 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const supportedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"];
     for (const [label, file] of [["reference", reference], ["person1", person1], ["person2", person2]] as [string, File][]) {
       if (file.size === 0) {
         return new Response(
           JSON.stringify({ success: false, error: `${label} file is empty` }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-      if (file.type && !supportedTypes.includes(file.type)) {
-        return new Response(
-          JSON.stringify({ success: false, error: `${label} has unsupported format: ${file.type}. Use JPEG, PNG, or WebP.` }),
           { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
@@ -502,22 +252,14 @@ Deno.serve(async (req: Request) => {
     const replicateApiKey = Deno.env.get("REPLICATE_API_KEY");
     if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
 
-    console.log("[GENERATE] style:", style, "| mode:", mode);
+    const prompt = resolvePrompt(style, mode);
+    console.log("[GENERATE] style:", style, "| mode:", mode, "| prompt length:", prompt.length);
 
     const [referenceDataUrl, person1DataUrl, person2DataUrl] = await Promise.all([
       fileToDataUrl(reference),
       fileToDataUrl(person1),
       fileToDataUrl(person2),
     ]);
-
-    const prompt = resolvePrompt(style, mode);
-    const promptVariant =
-      style === "zootopia" && mode === "zootopia_animals"
-        ? "ZOOTOPIA_ANIMALS"
-        : style === "zootopia"
-        ? "ZOOTOPIA_HUMAN"
-        : "FILM_REALISM";
-    console.log("[GENERATE] prompt variant:", promptVariant);
 
     const outputUrl = await runReplicate(prompt, referenceDataUrl, person1DataUrl, person2DataUrl, replicateApiKey);
     const imageUrl = await fetchOutputAsDataUrl(outputUrl);
