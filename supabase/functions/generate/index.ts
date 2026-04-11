@@ -10,117 +10,136 @@ const corsHeaders = {
 // PROMPTS
 // ─────────────────────────────────────────────
 
-const FILM_REALISM_PROMPT = `STRICT CINEMATIC IDENTITY REPLACEMENT.
+const FILM_REALISM_PROMPT = `STRICT CINEMATIC IDENTITY INTEGRATION INTO AN EXISTING FILM FRAME.
 
 INPUT:
-- Reference image = original movie frame (source of truth)
+- Reference image = original movie frame and absolute source of truth
 - Image 1 = Person A
 - Image 2 = Person B
 
 TASK:
-Replace identities of characters WITHOUT altering the original frame.
+Integrate the identity of Person A into the LEFT character and the identity of Person B into the RIGHT character while preserving the original film frame exactly.
 
-CHARACTER MAPPING:
-- LEFT character → Person A
-- RIGHT character → Person B
+This is NOT a pasted face overlay.
+This is NOT a clean portrait insertion.
+This is identity integration inside the existing shot.
 
 SCENE LOCK (ABSOLUTE):
-The reference frame must remain unchanged:
+Do not alter:
 - camera
 - lens perspective
-- composition
 - framing
+- composition
 - body pose
+- body position
 - clothing
 - background
+- environment
 - hands
 
-NO regeneration.
-NO reinterpretation.
-NO scene redraw.
+The output must remain the same shot.
 
-IDENTITY REPLACEMENT:
-Transfer ONLY identity:
+IDENTITY RULE:
+Preserve recognizable real identity through:
 - facial structure
-- facial proportions
-- identity-specific features
+- proportions
+- key identity features
 
-Do NOT:
-- beautify
-- average the face
-- smooth skin
-- stylize identity
+Do NOT beautify.
+Do NOT smooth skin.
+Do NOT make faces cleaner than the original frame.
+Do NOT generate glamour portraits.
 
-EXPRESSION LOCK:
-Expression comes ONLY from the reference frame:
+EXPRESSION RULE:
+Expression must come only from the reference frame:
 - eyes
 - eyebrows
 - mouth
 - facial tension
-- micro-expressions
+- emotional intensity
+- micro-expression
 
-Identity must adapt to the reference expression, never replace it.
+Identity must conform to the existing expression in the shot.
 
-POSE-AWARE RULES:
-- Front-facing subject → full identity replacement
-- Side profile → partial identity adaptation respecting perspective
-- Back-facing or occluded → do NOT replace face, only adapt hair / silhouette
+HEAD AND GAZE LOCK (CRITICAL):
+Preserve exactly:
+- head angle
+- head tilt
+- neck direction
+- gaze direction
+- eye line
+- perspective
 
-HEAD:
-Keep exact orientation. No rotation.
+Do NOT rotate the head.
+Do NOT redirect the eyes.
+Do NOT make the subject look into camera unless the reference already does.
 
-HAIR:
-Use identity hair adapted to:
-- angle
-- motion
-- silhouette
-- lighting
+POSE-AWARE HANDLING:
+- front-facing → integrate identity fully while preserving exact expression and angle
+- side profile → preserve exact profile; adapt identity only within the visible angle
+- back-facing / heavily occluded → do not invent a visible face; preserve the original back view and only adapt hair or silhouette subtly if appropriate
 
-LIGHTING (CRITICAL):
-Face must obey scene lighting exactly:
-- same direction
-- same shadows
-- same highlights
+LIGHTING AND SHADOW INTEGRATION (HARD REQUIREMENT):
+The face must inherit the exact cinematic lighting of the reference frame:
+- same light direction
+- same shadow placement
+- same highlight placement
 - same exposure
 - same color temperature
 - same contrast
+- same depth and falloff
 
-Face must look naturally captured in the same shot, never pasted.
+Do not brighten the face separately.
+Do not flatten shadows.
+Do not neutralize film lighting.
+Do not produce a pasted or composited look.
 
-TEXTURE TRANSFER:
-Preserve:
+TEXTURE AND ENVIRONMENTAL TRANSFER:
+Preserve and carry over all contextual surface qualities from the original frame:
 - film grain
 - skin texture
-- dirt
 - sweat
+- dirt
 - blood
 - water
+- cold tone
+- warm cast
+- haze
 - environmental tint
+- scene imperfections
+
+Hair must follow identity, but remain consistent with:
+- original angle
+- original silhouette
+- original motion
+- original scene lighting
 
 FORBIDDEN:
 - full redraw
-- pose change
-- camera change
-- composition change
-- clean studio face
-- smoothing
-- pasted look
-- altering hands
-- altering clothing
-- altering background
+- scene reinterpretation
+- camera changes
+- pose changes
+- head rotation
+- gaze changes
+- softened beauty face
+- studio-lit skin
+- pasted face artifacts
+- altered hands
+- altered clothing
+- altered background
 
 RESULT:
-Original scene preserved, identities seamlessly integrated as if filmed on set.`;
+The same movie shot, with the same emotional performance, same head direction, same gaze, same lighting, same shadow logic, and the identities naturally integrated as if captured in-camera.`;
 
-const ZOOTOPIA_HUMAN_PROMPT = `STRICT PIXAR-STYLE HUMAN TRANSFORMATION.
+const ZOOTOPIA_HUMAN_PROMPT = `STRICT PIXAR-STYLE HUMAN CHARACTER RECASTING.
 
 INPUT:
-- Reference image = Zootopia scene
+- Reference image = Zootopia-style scene and source of truth
 - Image 1 = Person A
 - Image 2 = Person B
 
 TASK:
-Convert characters into stylized animated humans while preserving the original scene.
+Transform the LEFT and RIGHT characters into stylized animated humans inspired by Person A and Person B while preserving the original scene.
 
 CHARACTER MAPPING:
 - LEFT → Person A
@@ -129,101 +148,142 @@ CHARACTER MAPPING:
 SCENE LOCK:
 Preserve exactly:
 - pose
+- body position
 - composition
-- camera
+- camera angle
 - framing
 - background
+- environment
+- head orientation
+- gaze direction
 
 STYLE LOCK (CRITICAL):
 Must be:
-- Disney / Pixar 3D style
+- strong Disney / Pixar 3D animated style
 - clearly stylized
-- non-realistic
+- clearly non-realistic
 - expressive
-- clean shading
+- polished
+- cleanly shaded
 
-IDENTITY:
-Translate identity into stylized form:
+Do NOT become realistic.
+Do NOT become semi-realistic.
+Do NOT weaken the cartoon style.
+
+IDENTITY RULE:
+Adapt recognizable identity into animated human design through:
+- recognizable facial structure
 - recognizable features
-- adapted to Pixar proportions
+- stylized proportions
+- hairstyle cues
 
-Do NOT paste real faces.
-Do NOT break stylization.
+Do NOT paste realistic faces into the cartoon.
+Do NOT create uncanny half-real human faces.
 
-EXPRESSION:
-Keep from reference.
+EXPRESSION RULE:
+Keep the exact expression and emotional tone from the reference scene.
 
-HEAD:
-No rotation. Preserve orientation.
+HEAD AND GAZE LOCK:
+Preserve:
+- head direction
+- head tilt
+- eye direction
+- pose logic
 
-HAIR:
-Convert to stylized 3D animated hair.
+Do NOT rotate heads.
+Do NOT change where the characters are looking.
 
 LIGHTING:
-Preserve original scene lighting and color palette.
+Preserve the original scene lighting and color palette in animated form.
 
 FORBIDDEN:
+- photorealistic skin
 - realism
-- weak cartoon style
-- anime
+- anime style
+- weak cartoonization
 - uncanny faces
 - scene changes
+- camera changes
+- pose changes
+- gaze changes
 
 RESULT:
-Pixar-style human characters in original Zootopia scene.`;
+A strong Zootopia / Pixar-like frame with animated human characters inspired by Person A and Person B, while preserving the original composition, pose, emotion, head direction, and gaze.`;
 
-const ZOOTOPIA_ANIMALS_PROMPT = `STRICT ZOOTOPIA CHARACTER REINTERPRETATION.
+const ZOOTOPIA_ANIMALS_PROMPT = `STRICT ZOOTOPIA-STYLE CHARACTER REINTERPRETATION.
 
 INPUT:
-- Reference image = Zootopia scene
+- Reference image = Zootopia-style scene and source of truth
 - Image 1 = Person A
 - Image 2 = Person B
 
 TASK:
-Reinterpret characters as animals inspired by people, NOT face swap.
+Reimagine the LEFT and RIGHT characters as original stylized Zootopia-style animal characters inspired by Person A and Person B.
 
 CHARACTER MAPPING:
-- LEFT → fox inspired by Person A
-- RIGHT → rabbit inspired by Person B
+- LEFT → animal character inspired by Person A
+- RIGHT → animal character inspired by Person B
 
-CORE RULE:
-NO human face transfer.
-NO hybrid faces.
+IMPORTANT:
+This mode is NOT face replacement.
+This mode is NOT human face transfer.
+This mode is NOT identity face mapping.
+This mode is original stylized character reinterpretation inspired by the people.
 
-STYLE:
-- Disney Pixar Zootopia 3D
+The result must preserve recognizability through creative character design cues, not through transplanted human faces.
+
+STYLE LOCK:
+Must remain:
+- Disney / Pixar Zootopia-style 3D
 - stylized
-- clean
 - expressive
+- clean
+- cinematic
+- animation-consistent
 
-IDENTITY:
-Represent via:
-- expression
+IDENTITY INSPIRATION RULE:
+Use only soft inspiration from the provided people:
+- hairstyle influence
+- color accents
 - personality
 - attitude
-- subtle design cues
+- expression energy
+- vibe
+- silhouette suggestions
 
-NOT via human facial structure.
+Do NOT reproduce the real human face.
+Do NOT map human facial structure onto the animal.
+Do NOT create hybrid human-animal faces.
+Do NOT generate deepfake-like animal versions of real people.
 
 SCENE LOCK:
-Preserve:
+Preserve exactly:
 - pose
 - composition
 - camera
+- framing
 - background
-- lighting
+- environment
+- head orientation
+- gaze direction
+- emotional tone
 
-EXPRESSION:
-Keep original emotion.
+EXPRESSION RULE:
+Keep the same emotional performance from the reference image.
 
 FORBIDDEN:
 - human faces
-- realistic animals
-- creepy hybrids
+- realistic people turned into animals via face transfer
+- hybrid human-animal facial anatomy
+- creepy results
+- photorealism
 - scene changes
+- camera changes
+- pose changes
+- gaze changes
 
 RESULT:
-Authentic Zootopia-style animals inspired by the people.`;
+An authentic Zootopia-style scene with original stylized animal characters inspired by Person A and Person B through design language, personality, and visual cues only, while preserving the original pose, background, composition, head direction, and emotional tone.`;
 
 // ─────────────────────────────────────────────
 // PROMPT ROUTING
