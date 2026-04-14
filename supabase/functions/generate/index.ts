@@ -6,81 +6,6 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
-const FILM_REALISM_PROMPT = `Use image 1 as the original fixed movie frame.
-
-Replace the LEFT character with the person from image 2 and the RIGHT character with the person from image 3.
-
-Keep both people exactly recognizable — same facial features, proportions, skin texture, and natural look. No beauty filters, no smoothing, no plastic skin, no retouching.
-
-Keep the exact expression from image 1. Keep the exact head angle, head tilt, eye direction, gaze, and mouth position. Do not change where the characters are looking.
-
-Match the lighting from image 1 exactly — same shadows, same highlights, same color temperature, same contrast. Keep all cinematic details like darkness, cold or warm tones, grain, dirt, sweat, water, and realistic shadows.
-
-Keep the hair from image 2 and image 3, but naturally adapted to the angle and lighting of image 1.
-
-Keep the background, camera, framing, composition, body pose, clothing, and hands exactly unchanged.
-
-Do NOT change the scene. Do NOT redesign the shot. Do NOT generate a new image.
-
-If the face is in profile — keep the exact profile.
-If the character is turned away — do not generate a new face.
-
-Only perform a minimal, realistic face replacement.
-
-The result must look like the same original movie frame, as if it was filmed with these people.`;
-
-const ZOOTOPIA_HUMAN_PROMPT = `Use image 1 as the original fixed animated frame.
-
-Replace the LEFT character with a 3D Pixar-style human version of the person from image 2 and the RIGHT character with a 3D Pixar-style human version of the person from image 3.
-
-Keep both people recognizable, but adapted into Pixar style — same key facial features and hairstyle, translated into stylized 3D animation.
-
-Style must be clearly Disney Pixar 3D:
-- smooth stylized skin
-- large expressive eyes
-- clean shapes
-- soft cinematic shading
-
-Keep the exact pose, head angle, gaze, expression, composition, background, and camera from image 1.
-
-Do NOT change the scene. Do NOT redesign anything.
-
-Do NOT use realism. Do NOT mix realistic and cartoon styles.
-
-The result must look like the same Zootopia frame, but with Pixar-style human characters.`;
-
-const ZOOTOPIA_ANIMALS_PROMPT = `Use image 1 as the original fixed animated frame.
-
-Keep the same characters, but redesign them slightly so they feel inspired by the people from image 2 and image 3.
-
-Do NOT replace faces.
-Do NOT copy human facial features.
-Do NOT turn humans into animals directly.
-
-Only add very subtle inspiration:
-- hairstyle hints
-- personality
-- expression energy
-- small design details
-
-Keep characters fully as animals in Zootopia Pixar style.
-
-Keep the exact pose, head angle, gaze, expression, composition, background, and camera from image 1.
-
-Do NOT change the scene. Do NOT redesign composition.
-
-The result must look like the same original Zootopia frame, just slightly restyled characters inspired by the people.`;
-
-function resolvePrompt(style: string | null, mode: string | null): string {
-  if (style === "zootopia" && mode === "zootopia_animals") {
-    return ZOOTOPIA_ANIMALS_PROMPT;
-  }
-  if (style === "zootopia") {
-    return ZOOTOPIA_HUMAN_PROMPT;
-  }
-  return FILM_REALISM_PROMPT;
-}
-
 async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
   const bytes = new Uint8Array(arrayBuffer);
@@ -104,7 +29,7 @@ async function runReplicate(
   person2DataUrl: string,
   apiKey: string
 ): Promise<string> {
-  console.log("[REPLICATE] creating prediction | model: google/nano-banana-pro");
+  console.log("[REPLICATE] creating prediction");
 
   const createResponse = await fetch("https://api.replicate.com/v1/predictions", {
     method: "POST",
@@ -236,12 +161,18 @@ Deno.serve(async (req: Request) => {
     const reference = formData.get("reference") as File | null;
     const person1 = formData.get("person1") as File | null;
     const person2 = formData.get("person2") as File | null;
-    const style = formData.get("style") as string | null;
-    const mode = formData.get("mode") as string | null;
+    const prompt = formData.get("prompt") as string | null;
 
     if (!reference || !person1 || !person2) {
       return new Response(
         JSON.stringify({ success: false, error: "Missing required images: reference, person1, person2" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (!prompt || prompt.trim().length === 0) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Missing required field: prompt" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -258,8 +189,7 @@ Deno.serve(async (req: Request) => {
     const replicateApiKey = Deno.env.get("REPLICATE_API_KEY");
     if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
 
-    const prompt = resolvePrompt(style, mode);
-    console.log("[GENERATE] style:", style, "| mode:", mode, "| prompt length:", prompt.length);
+    console.log("[GENERATE] prompt length:", prompt.length);
 
     const [referenceDataUrl, person1DataUrl, person2DataUrl] = await Promise.all([
       fileToDataUrl(reference),

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Home from './components/Home';
+import type { ReferenceJob } from './components/Home';
 import Upload from './components/Upload';
 import Result from './components/Result';
 
@@ -8,7 +9,7 @@ type View = 'home' | 'upload' | 'result';
 function App() {
   const [currentView, setCurrentView] = useState<View>('home');
   const [selectedStyle, setSelectedStyle] = useState<string>('');
-  const [referenceImages, setReferenceImages] = useState<string[]>([]);
+  const [referenceJobs, setReferenceJobs] = useState<ReferenceJob[]>([]);
   const [selectedReference, setSelectedReference] = useState<string>('');
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
@@ -18,9 +19,9 @@ function App() {
   const [preview1, setPreview1] = useState<string>('');
   const [preview2, setPreview2] = useState<string>('');
 
-  const handleStyleSelect = (style: string, refImages: string[]) => {
+  const handleStyleSelect = (style: string, jobs: ReferenceJob[]) => {
     setSelectedStyle(style);
-    setReferenceImages(refImages);
+    setReferenceJobs(jobs);
     setSelectedReference('');
     setCurrentView('upload');
   };
@@ -36,7 +37,7 @@ function App() {
     return 'titanic';
   };
 
-  const handleGenerate = async (photo1: File, photo2: File, referenceFile: File, mode?: string) => {
+  const handleGenerate = async (photo1: File, photo2: File, referenceFile: File, prompt: string, mode?: string) => {
     console.log('=== APP HANDLEGENERATE START ===');
 
     if (isGenerating) {
@@ -59,6 +60,16 @@ function App() {
     setError('');
     setCurrentView('result');
 
+    console.log("PROMPT BEFORE SEND:", prompt);
+    console.log("REFERENCE:", referenceFile);
+
+    if (!prompt || prompt.trim() === "") {
+      setIsGenerating(false);
+      setError("No prompt selected. Please select a reference image before generating.");
+      setCurrentView('upload');
+      throw new Error("No prompt selected. Please select a reference image before generating.");
+    }
+
     console.log('=== REQUEST START ===');
     console.log('selectedStyle:', selectedStyle);
     console.log('mode:', mode);
@@ -71,6 +82,7 @@ function App() {
       formData.append('style', selectedStyle);
       formData.append('referenceId', selectedReference);
       formData.append('domain', resolveDomain(selectedStyle, mode));
+      formData.append('prompt', prompt);
 
       if (mode) {
         formData.append('mode', mode);
@@ -83,6 +95,7 @@ function App() {
         style: selectedStyle,
         referenceId: selectedReference,
         mode: mode || 'not provided',
+        prompt,
       });
 
       const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
@@ -126,7 +139,7 @@ function App() {
   const handleBackToHome = () => {
     setCurrentView('home');
     setSelectedStyle('');
-    setReferenceImages([]);
+    setReferenceJobs([]);
     setSelectedReference('');
     setGeneratedImageUrl('');
     setError('');
@@ -150,7 +163,7 @@ function App() {
       {currentView === 'upload' && (
         <Upload
           selectedStyle={selectedStyle}
-          referenceImages={referenceImages}
+          referenceJobs={referenceJobs}
           selectedReference={selectedReference}
           onReferenceSelect={setSelectedReference}
           onBack={handleBackToHome}

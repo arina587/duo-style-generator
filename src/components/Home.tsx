@@ -1,8 +1,10 @@
 import { Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
+export type ReferenceJob = { image: string; prompt: string };
+
 interface HomeProps {
-  onStyleSelect: (style: string, referenceImages: string[]) => void;
+  onStyleSelect: (style: string, referenceJobs: ReferenceJob[]) => void;
 }
 
 const styles = [
@@ -10,10 +12,19 @@ const styles = [
     id: 'zootopia',
     name: 'Zootopia',
     description: 'Animated animal character style',
-    referenceImages: [
-      '/styles/zootopia/ref1.jpg',
-      '/styles/zootopia/ref2.jpg',
-      '/styles/zootopia/ref3.jpg'
+    referenceJobs: [
+      {
+        image: '/styles/zootopia/ref1.jpg',
+        prompt: 'use image 1 as exact reference, keep composition, pose, camera, gaze and expression unchanged.\nUse uploaded male and female faces as exact identity references, preserve 100% likeness.\nClean stylized Pixar/Disney 3D close-up selfie, faces very close, looking into camera, soft playful expressions, smooth shading, no realism.',
+      },
+      {
+        image: '/styles/zootopia/ref2.jpg',
+        prompt: 'use image 1 as exact reference, keep composition, pose, camera, gaze and expression unchanged.\nUse uploaded faces as exact identity references, preserve 100% likeness.\nPixar-style close shot, female pressed cheek-to-cheek with male, tight framing, slight distortion, expressive eyes, clean soft lighting.',
+      },
+      {
+        image: '/styles/zootopia/ref3.jpg',
+        prompt: 'use image 1 as exact reference, keep composition, pose, camera, gaze and expression unchanged.\nKeep characters as animals, no human features.\nZootopia nightclub selfie, neon lighting, lively mood, fox holding phone, rabbit leaning in, original animated style.',
+      },
     ],
     tag: 'Animated',
     accentFrom: 'rgba(16,185,129,0.18)',
@@ -23,10 +34,19 @@ const styles = [
     id: 'euphoria',
     name: 'Euphoria',
     description: 'Vibrant dramatic aesthetic',
-    referenceImages: [
-      '/styles/euphoria/ref1.jpg',
-      '/styles/euphoria/ref2.jpg',
-      '/styles/euphoria/ref3.jpg'
+    referenceJobs: [
+      {
+        image: '/styles/euphoria/ref1.jpg',
+        prompt: 'use image 1 as exact reference, keep composition, pose, camera, gaze and expression unchanged.\nUse uploaded faces as exact identity references, preserve 100% likeness.\nUltra realistic bedroom scene, two girls lying on a messy bed, warm dim light, cinematic grain, soft shadows.',
+      },
+      {
+        image: '/styles/euphoria/ref2.jpg',
+        prompt: 'use image 1 as exact reference, keep composition, pose, camera, gaze and expression unchanged.\nUse uploaded faces as exact identity references, preserve 100% likeness.\nStrict side profile shot, male in foreground, do not rotate face, female blurred background, warm cinematic lighting.',
+      },
+      {
+        image: '/styles/euphoria/ref3.jpg',
+        prompt: 'use image 1 as exact reference, keep composition, pose, camera, gaze and expression unchanged.\nUse uploaded faces as exact identity references, preserve full likeness.\nIntimate bedroom scene, two girls close together, soft expressions, warm cozy lighting, cinematic realism.',
+      },
     ],
     tag: 'Cinematic',
     accentFrom: 'rgba(244,63,94,0.18)',
@@ -36,24 +56,33 @@ const styles = [
     id: 'titanic',
     name: 'Titanic',
     description: 'Classic cinematic romance',
-    referenceImages: [
-      '/styles/titanic/ref1.jpg',
-      '/styles/titanic/ref2.jpg',
-      '/styles/titanic/ref3.jpg'
+    referenceJobs: [
+      {
+        image: '/styles/titanic/ref1.jpg',
+        prompt: 'use image 1 as exact reference, keep composition, pose, camera, gaze and expression unchanged.\nUse uploaded faces as exact identity references, preserve 100% likeness.\nTitanic bow scene, woman arms open, man behind, sunset lighting, cinematic atmosphere.',
+      },
+      {
+        image: '/styles/titanic/ref2.jpg',
+        prompt: 'use image 1 as exact reference, keep composition, pose, camera, gaze and expression unchanged.\nUse uploaded faces as exact identity references, preserve visible identity only.\nDark freezing water scene, cold blue tones, low light, wet reflections, emotional close distance.',
+      },
+      {
+        image: '/styles/titanic/ref3.jpg',
+        prompt: 'use image 1 as exact reference, keep composition, pose, camera, gaze and expression unchanged.\nUse uploaded faces as exact identity references, preserve full likeness.\nExtreme close-up, couple about to kiss, warm sunset glow, shallow depth, cinematic grain.',
+      },
     ],
     tag: 'Romance',
     accentFrom: 'rgba(14,165,233,0.18)',
     accentTo: 'rgba(59,130,246,0.08)',
-  }
+  },
 ];
 
 export default function Home({ onStyleSelect }: HomeProps) {
   const [hoveredStyle, setHoveredStyle] = useState<string | null>(null);
   const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
 
-  const handleStyleClick = (styleId: string, referenceImages: string[]) => {
+  const handleStyleClick = (styleId: string, referenceJobs: ReferenceJob[]) => {
     setSelectedStyle(styleId);
-    onStyleSelect(styleId, referenceImages);
+    onStyleSelect(styleId, referenceJobs);
   };
 
   return (
@@ -77,7 +106,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
           {styles.map((style) => (
             <button
               key={style.id}
-              onClick={() => handleStyleClick(style.id, style.referenceImages)}
+              onClick={() => handleStyleClick(style.id, style.referenceJobs)}
               onMouseEnter={() => setHoveredStyle(style.id)}
               onMouseLeave={() => setHoveredStyle(null)}
               className={`group relative flex flex-col rounded-2xl overflow-hidden glow-shadow transition-all duration-200 text-left ${
@@ -88,7 +117,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden">
                 <img
-                  src={style.referenceImages[0]}
+                  src={style.referenceJobs[0].image}
                   alt={style.name}
                   className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                 />

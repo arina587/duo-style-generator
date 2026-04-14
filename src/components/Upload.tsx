@@ -1,13 +1,14 @@
 import { Upload as UploadIcon, ArrowLeft, ArrowRight, Image, Sparkles } from 'lucide-react';
 import { useState } from 'react';
+import type { ReferenceJob } from './Home';
 
 interface UploadProps {
   selectedStyle: string;
-  referenceImages: string[];
+  referenceJobs: ReferenceJob[];
   selectedReference: string;
   onReferenceSelect: (reference: string) => void;
   onBack: () => void;
-  onGenerate: (photo1: File, photo2: File, styleBoard: File, mode?: string) => void;
+  onGenerate: (photo1: File, photo2: File, styleBoard: File, prompt: string, mode?: string) => void;
   photo1: File | null;
   setPhoto1: (file: File | null) => void;
   photo2: File | null;
@@ -18,10 +19,11 @@ interface UploadProps {
   setPreview2: (url: string) => void;
 }
 
-export default function Upload({ selectedStyle, referenceImages, selectedReference, onReferenceSelect, onBack, onGenerate, photo1, setPhoto1, photo2, setPhoto2, preview1, setPreview1, preview2, setPreview2 }: UploadProps) {
+export default function Upload({ selectedStyle, referenceJobs, selectedReference, onReferenceSelect, onBack, onGenerate, photo1, setPhoto1, photo2, setPhoto2, preview1, setPreview1, preview2, setPreview2 }: UploadProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string>('');
   const [selectedMode, setSelectedMode] = useState<string>('');
+  const [selectedPrompt, setSelectedPrompt] = useState<string>('');
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -41,10 +43,11 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
 
   const [referenceFile, setReferenceFile] = useState<File | null>(null);
 
-  const handleReferenceSelect = async (reference: string) => {
-    onReferenceSelect(reference);
+  const handleReferenceSelect = async (job: ReferenceJob) => {
+    onReferenceSelect(job.image);
+    setSelectedPrompt(job.prompt);
     try {
-      const response = await fetch(reference);
+      const response = await fetch(job.image);
       const blob = await response.blob();
       const file = new File([blob], 'reference.jpg', { type: blob.type });
       setReferenceFile(file);
@@ -90,6 +93,12 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
       return;
     }
 
+    if (!selectedPrompt || selectedPrompt.trim() === '') {
+      console.error('BLOCKED: Missing prompt');
+      setError('No prompt selected. Please select a reference image before generating.');
+      return;
+    }
+
     if (selectedStyle === 'zootopia' && !['zootopia_cartoon', 'zootopia_animals'].includes(selectedMode)) {
       console.error('BLOCKED: Missing mode for zootopia');
       setError('Please select a transformation type before generating');
@@ -100,7 +109,7 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
     setError('');
 
     console.log('=== PASSING TO PARENT - NO REQUEST HERE ===');
-    onGenerate(photo1, photo2, referenceFile, selectedMode);
+    onGenerate(photo1, photo2, referenceFile, selectedPrompt, selectedMode);
   };
 
   return (
@@ -206,30 +215,30 @@ export default function Upload({ selectedStyle, referenceImages, selectedReferen
           </div>
         </div>
 
-        {referenceImages.length > 0 && (
+        {referenceJobs.length > 0 && (
           <div className="glass-card rounded-2xl p-6 glow-shadow mb-6">
             <div className="mb-5">
               <h3 className="text-base font-semibold text-white mb-1">Select Reference Image</h3>
               <p className="text-sm text-slate-400">Choose one reference for your style composition</p>
             </div>
             <div className="grid grid-cols-3 gap-4">
-              {referenceImages.map((img, index) => (
+              {referenceJobs.map((job, index) => (
                 <button
                   key={index}
                   type="button"
-                  onClick={() => handleReferenceSelect(img)}
+                  onClick={() => handleReferenceSelect(job)}
                   className={`rounded-xl overflow-hidden aspect-[3/4] transition-all duration-200 relative ${
-                    selectedReference === img
+                    selectedReference === job.image
                       ? 'selected-ring scale-[1.02]'
                       : 'opacity-55 hover:opacity-85 hover:scale-[1.01]'
                   }`}
                 >
                   <img
-                    src={img}
+                    src={job.image}
                     alt={`Reference ${index + 1}`}
                     className="w-full h-full object-contain bg-slate-50"
                   />
-                  {selectedReference === img && (
+                  {selectedReference === job.image && (
                     <div className="absolute inset-0 bg-sky-500/15 flex items-end justify-center pb-2.5">
                       <div className="px-3 py-1 rounded-full bg-sky-500 text-white text-xs font-semibold">
                         Selected
