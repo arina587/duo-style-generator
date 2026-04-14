@@ -14,6 +14,7 @@ function App() {
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [debugInfo, setDebugInfo] = useState<Record<string, unknown> | null>(null);
   const [photo1, setPhoto1] = useState<File | null>(null);
   const [photo2, setPhoto2] = useState<File | null>(null);
   const [preview1, setPreview1] = useState<string>('');
@@ -58,6 +59,7 @@ function App() {
 
     setIsGenerating(true);
     setError('');
+    setDebugInfo(null);
     setCurrentView('result');
 
     console.log("PROMPT BEFORE SEND:", prompt);
@@ -114,6 +116,11 @@ function App() {
       const data = await response.json();
       console.log('Response data:', data);
 
+      if (data.debug) {
+        setDebugInfo(data.debug);
+        console.log('DEBUG INFO:', JSON.stringify(data.debug, null, 2));
+      }
+
       if (!response.ok) {
         throw new Error(data.error || 'Failed to generate image');
       }
@@ -143,6 +150,7 @@ function App() {
     setSelectedReference('');
     setGeneratedImageUrl('');
     setError('');
+    setDebugInfo(null);
     setPhoto1(null);
     setPhoto2(null);
     setPreview1('');
@@ -185,6 +193,7 @@ function App() {
           generatedImageUrl={generatedImageUrl}
           isGenerating={isGenerating}
           error={error}
+          debugInfo={debugInfo}
         />
       )}
     </>

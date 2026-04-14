@@ -6,6 +6,9 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
+const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
+const MODEL_NAME = "zsxkib/flux-pulid";
+
 async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
   const bytes = new Uint8Array(arrayBuffer);
@@ -28,8 +31,45 @@ async function runReplicate(
   person1DataUrl: string,
   person2DataUrl: string,
   apiKey: string
-): Promise<string> {
-  console.log("[REPLICATE] creating prediction");
+): Promise<{ outputUrl: string; debugInfo: Record<string, unknown> }> {
+  const inputObject = {
+    prompt,
+    image_input: [referenceDataUrl, person1DataUrl, person2DataUrl],
+  };
+
+  const debugInfo: Record<string, unknown> = {
+    model: MODEL_NAME,
+    version: MODEL_VERSION,
+    prompt_value: prompt,
+    prompt_length: prompt.length,
+    images: {
+      reference: {
+        exists: !!referenceDataUrl,
+        is_data_url: referenceDataUrl.startsWith("data:"),
+        preview: referenceDataUrl.substring(0, 50),
+        size_chars: referenceDataUrl.length,
+      },
+      person1: {
+        exists: !!person1DataUrl,
+        is_data_url: person1DataUrl.startsWith("data:"),
+        preview: person1DataUrl.substring(0, 50),
+        size_chars: person1DataUrl.length,
+      },
+      person2: {
+        exists: !!person2DataUrl,
+        is_data_url: person2DataUrl.startsWith("data:"),
+        preview: person2DataUrl.substring(0, 50),
+        size_chars: person2DataUrl.length,
+      },
+    },
+    final_input_sent: {
+      prompt: inputObject.prompt,
+      image_input_lengths: inputObject.image_input.map((s) => s.length),
+      image_input_previews: inputObject.image_input.map((s) => s.substring(0, 50)),
+    },
+  };
+
+  console.log("[DEBUG] full debug info:", JSON.stringify(debugInfo, null, 2));
 
   const createResponse = await fetch("https://api.replicate.com/v1/predictions", {
     method: "POST",
@@ -39,42 +79,56 @@ async function runReplicate(
       "Prefer": "wait",
     },
     body: JSON.stringify({
-      version: "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca",
-      input: {
-        prompt,
-        image_input: [referenceDataUrl, person1DataUrl, person2DataUrl],
-      },
+      version: MODEL_VERSION,
+      input: inputObject,
     }),
   });
 
   const createText = await createResponse.text();
-  console.log("[REPLICATE] create status:", createResponse.status);
-  console.log("[REPLICATE] create response:", createText.substring(0, 800));
+  const replicateStatus = createResponse.status;
+
+  console.log("[REPLICATE] create status:", replicateStatus);
+  console.log("[REPLICATE] create response:", createText.substring(0, 1200));
+
+  debugInfo.replicate_response_status = replicateStatus;
+  debugInfo.replicate_raw_body = createText.substring(0, 2000);
 
   if (!createResponse.ok) {
-    throw new Error(`Replicate prediction creation failed (${createResponse.status}): ${createText.substring(0, 400)}`);
+    throw Object.assign(
+      new Error(`Replicate prediction creation failed (${replicateStatus}): ${createText.substring(0, 500)}`),
+      { debugInfo }
+    );
   }
 
   let prediction: Record<string, unknown>;
   try {
     prediction = JSON.parse(createText);
   } catch {
-    throw new Error(`Replicate create response non-JSON: ${createText.substring(0, 300)}`);
+    throw Object.assign(
+      new Error(`Replicate create response non-JSON: ${createText.substring(0, 400)}`),
+      { debugInfo }
+    );
   }
 
   const predictionId = prediction?.id as string | undefined;
   if (!predictionId) {
-    throw new Error(`Replicate prediction has no ID: ${JSON.stringify(prediction).substring(0, 300)}`);
+    throw Object.assign(
+      new Error(`Replicate prediction has no ID: ${JSON.stringify(prediction).substring(0, 300)}`),
+      { debugInfo }
+    );
   }
 
   const immediateStatus = prediction?.status as string | undefined;
 
   if (immediateStatus === "succeeded") {
-    return extractOutput(prediction);
+    return { outputUrl: extractOutput(prediction), debugInfo };
   }
 
   if (immediateStatus === "failed" || immediateStatus === "canceled") {
-    throw new Error(`Replicate prediction ${immediateStatus}: ${JSON.stringify(prediction?.error ?? prediction?.logs ?? immediateStatus)}`);
+    throw Object.assign(
+      new Error(`Replicate prediction ${immediateStatus}: ${JSON.stringify(prediction?.error ?? prediction?.logs ?? immediateStatus)}`),
+      { debugInfo }
+    );
   }
 
   console.log("[REPLICATE] polling prediction:", predictionId);
@@ -92,7 +146,10 @@ async function runReplicate(
 
     if (!pollResponse.ok) {
       const pollText = await pollResponse.text();
-      throw new Error(`Replicate poll failed (${pollResponse.status}): ${pollText.substring(0, 300)}`);
+      throw Object.assign(
+        new Error(`Replicate poll failed (${pollResponse.status}): ${pollText.substring(0, 300)}`),
+        { debugInfo }
+      );
     }
 
     const pollData = await pollResponse.json() as Record<string, unknown>;
@@ -101,15 +158,18 @@ async function runReplicate(
     console.log(`[REPLICATE] poll attempt ${attempt + 1}: status = ${status}`);
 
     if (status === "succeeded") {
-      return extractOutput(pollData);
+      return { outputUrl: extractOutput(pollData), debugInfo };
     }
 
     if (status === "failed" || status === "canceled") {
-      throw new Error(`Replicate prediction ${status}: ${JSON.stringify(pollData?.error ?? pollData?.logs ?? status)}`);
+      throw Object.assign(
+        new Error(`Replicate prediction ${status}: ${JSON.stringify(pollData?.error ?? pollData?.logs ?? status)}`),
+        { debugInfo }
+      );
     }
   }
 
-  throw new Error("Replicate prediction timed out");
+  throw Object.assign(new Error("Replicate prediction timed out"), { debugInfo });
 }
 
 function extractOutput(prediction: Record<string, unknown>): string {
@@ -189,6 +249,7 @@ Deno.serve(async (req: Request) => {
     const replicateApiKey = Deno.env.get("REPLICATE_API_KEY");
     if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
 
+    console.log("[GENERATE] prompt:", prompt);
     console.log("[GENERATE] prompt length:", prompt.length);
 
     const [referenceDataUrl, person1DataUrl, person2DataUrl] = await Promise.all([
@@ -197,18 +258,19 @@ Deno.serve(async (req: Request) => {
       fileToDataUrl(person2),
     ]);
 
-    const outputUrl = await runReplicate(prompt, referenceDataUrl, person1DataUrl, person2DataUrl, replicateApiKey);
+    const { outputUrl, debugInfo } = await runReplicate(prompt, referenceDataUrl, person1DataUrl, person2DataUrl, replicateApiKey);
     const imageUrl = await fetchOutputAsDataUrl(outputUrl);
 
     return new Response(
-      JSON.stringify({ success: true, imageUrl }),
+      JSON.stringify({ success: true, imageUrl, debug: debugInfo }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
     const msg = error instanceof Error ? error.message : "Unknown error";
+    const debugInfo = (error as { debugInfo?: Record<string, unknown> }).debugInfo ?? {};
     console.error("[GENERATE ERROR]", msg);
     return new Response(
-      JSON.stringify({ success: false, error: msg }),
+      JSON.stringify({ success: false, error: msg, debug: debugInfo }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
