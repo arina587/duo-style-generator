@@ -193,7 +193,6 @@ function App() {
           generatedImageUrl={generatedImageUrl}
           isGenerating={isGenerating}
           error={error}
-          debugInfo={debugInfo}
         />
       )}
     </>
