@@ -15,7 +15,7 @@ const styles = [
     referenceJobs: [
       {
         image: '/styles/zootopia/ref1.jpg',
-        prompt: 'use image 1 as exact reference, keep composition, pose, camera, gaze and expression unchanged.\nUse uploaded male and female faces as exact identity references, preserve 100% likeness.\nClean stylized Pixar/Disney 3D close-up selfie, faces very close, looking into camera, soft playful expressions, smooth shading, no realism.',
+        prompt: 'Use image 1 as exact reference. Do not change composition, pose, camera angle, gaze or expressions.\nKeep characters as animals. Do NOT convert to humans. Do NOT introduce human facial structure or skin.\nDo NOT perform face replacement.\nApply only very subtle identity influence from uploaded images:\n- overall mood\n- slight color tone\n- character vibe\nPreserve original character design, proportions, and expressions exactly.\nMaintain clean Pixar/Disney 3D style:\nsmooth shading, soft lighting, no realism.\nFinal result must look like the same original animated frame with minimal stylistic variation.',
       },
       {
         image: '/styles/zootopia/ref2.jpg',
@@ -37,7 +37,7 @@ const styles = [
     referenceJobs: [
       {
         image: '/styles/euphoria/ref1.jpg',
-        prompt: 'use image 1 as exact reference, keep composition, pose, camera, gaze and expression unchanged.\nUse uploaded faces as exact identity references, preserve 100% likeness.\nUltra realistic bedroom scene, two girls lying on a messy bed, warm dim light, cinematic grain, soft shadows.',
+        prompt: 'Use image 1 as exact reference. Do not change composition, pose, camera angle, gaze or facial expressions.\nReplace visible faces with uploaded human identities. Preserve 100% likeness — same facial structure, proportions, and natural skin texture. No smoothing, no beauty filters.\nKeep head position, angle and eye direction exactly as in the reference. Do not rotate or recompose faces.\nMatch lighting from the original scene: soft, even, studio-like light with no harsh shadows.\nMaintain close-up selfie framing: both subjects very close to the camera, slight wide-angle front camera perspective.\nFinal result must look like a real photo of these people in the exact same pose and framing.',
       },
       {
         image: '/styles/euphoria/ref2.jpg',
@@ -59,7 +59,7 @@ const styles = [
     referenceJobs: [
       {
         image: '/styles/titanic/ref1.jpg',
-        prompt: 'use image 1 as exact reference, keep composition, pose, camera, gaze and expression unchanged.\nUse uploaded faces as exact identity references, preserve 100% likeness.\nTitanic bow scene, woman arms open, man behind, sunset lighting, cinematic atmosphere.',
+        prompt: 'Use image 1 as exact reference. Do not change composition, pose, camera angle, gaze or facial expressions.\nReplace visible faces with uploaded human identities. Preserve 100% likeness — same facial structure, proportions, and natural skin texture. No smoothing, no beauty filters.\nKeep head position, angle and eye direction exactly as in the reference. Do not rotate or recompose faces.\nMatch lighting from the original scene: soft, even, studio-like light with no harsh shadows.\nMaintain close-up selfie framing: both subjects very close to the camera, slight wide-angle front camera perspective.\nFinal result must look like a real photo of these people in the exact same pose and framing.',
       },
       {
         image: '/styles/titanic/ref2.jpg',
