@@ -15,7 +15,7 @@ const styles = [
     referenceJobs: [
       {
         image: '/styles/zootopia/ref1.jpg',
-        prompt: 'Use image 1 as exact reference. Do not change composition, pose, camera angle, gaze or expressions.\nKeep characters as animals. Do NOT convert to humans. Do NOT introduce human facial structure or skin.\nDo NOT perform face replacement.\nApply only very subtle identity influence from uploaded images:\n- overall mood\n- slight color tone\n- character vibe\nPreserve original character design, proportions, and expressions exactly.\nMaintain clean Pixar/Disney 3D style:\nsmooth shading, soft lighting, no realism.\nFinal result must look like the same original animated frame with minimal stylistic variation.',
+        prompt: 'Use image 1 as exact reference. Do not change composition, pose, camera angle, gaze or expressions.\nKeep characters as animals. Do NOT convert them into humans. Do NOT introduce realistic human skin or facial structure.\nApply only very subtle stylistic influence inspired by the uploaded images:\n- general mood\n- slight tone variation\n- personality feel\nPreserve original character design, proportions and expressions exactly.\nMaintain clean Pixar/Disney 3D style:\nsmooth shading, soft lighting, no realism.\nFinal result must look like the same animated frame with minimal stylistic variation.',
       },
       {
         image: '/styles/zootopia/ref2.jpg',
@@ -37,7 +37,7 @@ const styles = [
     referenceJobs: [
       {
         image: '/styles/euphoria/ref1.jpg',
-        prompt: 'Use image 1 as exact reference. Do not change composition, pose, camera angle, gaze or facial expressions.\nReplace visible faces with uploaded human identities. Preserve 100% likeness — same facial structure, proportions, and natural skin texture. No smoothing, no beauty filters.\nKeep head position, angle and eye direction exactly as in the reference. Do not rotate or recompose faces.\nMatch lighting from the original scene: soft, even, studio-like light with no harsh shadows.\nMaintain close-up selfie framing: both subjects very close to the camera, slight wide-angle front camera perspective.\nFinal result must look like a real photo of these people in the exact same pose and framing.',
+        prompt: 'Use image 1 as exact reference. Do not change composition, pose, camera angle, gaze or facial expressions.\nAdapt the appearance of the characters to resemble the uploaded people while keeping natural proportions and realism.\nMaintain consistent facial structure and natural skin texture without exaggeration or distortion.\nKeep head position, angle and eye direction exactly as in the reference.\nMatch original lighting: soft, even, studio-like light with no harsh shadows.\nMaintain close-up selfie framing with slight wide-angle perspective.\nFinal result must look like a natural photo of people in the same pose and framing.',
       },
       {
         image: '/styles/euphoria/ref2.jpg',
@@ -59,7 +59,7 @@ const styles = [
     referenceJobs: [
       {
         image: '/styles/titanic/ref1.jpg',
-        prompt: 'Use image 1 as exact reference. Do not change composition, pose, camera angle, gaze or facial expressions.\nReplace visible faces with uploaded human identities. Preserve 100% likeness — same facial structure, proportions, and natural skin texture. No smoothing, no beauty filters.\nKeep head position, angle and eye direction exactly as in the reference. Do not rotate or recompose faces.\nMatch lighting from the original scene: soft, even, studio-like light with no harsh shadows.\nMaintain close-up selfie framing: both subjects very close to the camera, slight wide-angle front camera perspective.\nFinal result must look like a real photo of these people in the exact same pose and framing.',
+        prompt: 'Use image 1 as exact reference. Do not change composition, pose, camera angle, gaze or facial expressions.\nAdapt the appearance of the characters to resemble the uploaded people while keeping natural proportions and realism.\nMaintain consistent facial structure and natural skin texture without exaggeration or distortion.\nKeep head position, angle and eye direction exactly as in the reference.\nMatch original lighting: soft, even, studio-like light with no harsh shadows.\nMaintain close-up selfie framing with slight wide-angle perspective.\nFinal result must look like a natural photo of people in the same pose and framing.',
       },
       {
         image: '/styles/titanic/ref2.jpg',
