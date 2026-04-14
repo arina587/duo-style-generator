@@ -1,7 +1,7 @@
 import { Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
-export type ReferenceJob = { image: string; prompt: string };
+export type ReferenceJob = { image: string; prompt: string; humanPrompt?: string; animalPrompt?: string };
 
 interface HomeProps {
   onStyleSelect: (style: string, referenceJobs: ReferenceJob[]) => void;
@@ -16,6 +16,8 @@ const styles = [
       {
         image: '/styles/zootopia/ref1.jpg',
         prompt: 'Use image 1 as exact reference. Do not change composition, pose, camera angle, gaze or expressions.\nKeep characters as animals. Do NOT convert them into humans. Do NOT introduce realistic human skin or facial structure.\nApply only very subtle stylistic influence inspired by the uploaded images:\n- general mood\n- slight tone variation\n- personality feel\nPreserve original character design, proportions and expressions exactly.\nMaintain clean Pixar/Disney 3D style:\nsmooth shading, soft lighting, no realism.\nFinal result must look like the same animated frame with minimal stylistic variation.',
+        humanPrompt: 'Ultra-realistic close-up couple selfie based strictly on the reference image composition. Two people positioned very close to the camera, tight framing, slight front camera wide-angle distortion.\nMale subject on the left with relaxed expression and slightly narrowed eyes. Female subject on the right smiling softly with bright, open eyes. Heads are close together, shoulders touching.\nPreserve exact head position, camera angle, framing and gaze direction from the reference.\nNatural skin texture, no smoothing, no filters. Soft, even lighting with no harsh shadows.\nAuthentic iPhone-style photo, subtle grain, unedited realistic look.',
+        animalPrompt: 'High-quality Pixar/Disney-style 3D animated selfie scene based strictly on the reference composition. Two anthropomorphic animal characters positioned very close to the camera, tight framing, front camera perspective.\nLeft character with relaxed expression and slightly narrowed eyes. Right character smiling with wide, expressive eyes. Heads close together, friendly pose.\nPreserve exact pose, framing, gaze direction and camera angle from the reference.\nClean stylized rendering, smooth shading, soft lighting, no realism, no human features.\nFinal result must look like a cinematic animated still frame.',
       },
       {
         image: '/styles/zootopia/ref2.jpg',

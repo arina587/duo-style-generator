@@ -42,10 +42,18 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
   };
 
   const [referenceFile, setReferenceFile] = useState<File | null>(null);
+  const [selectedJob, setSelectedJob] = useState<ReferenceJob | null>(null);
+
+  const resolvePrompt = (job: ReferenceJob, mode: string): string => {
+    if (mode === 'zootopia_cartoon' && job.humanPrompt) return job.humanPrompt;
+    if (mode === 'zootopia_animals' && job.animalPrompt) return job.animalPrompt;
+    return job.prompt;
+  };
 
   const handleReferenceSelect = async (job: ReferenceJob) => {
     onReferenceSelect(job.image);
-    setSelectedPrompt(job.prompt);
+    setSelectedJob(job);
+    setSelectedPrompt(resolvePrompt(job, selectedMode));
     try {
       const response = await fetch(job.image);
       const blob = await response.blob();
@@ -260,7 +268,7 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
             <div className="grid grid-cols-2 gap-4">
               <button
                 type="button"
-                onClick={() => setSelectedMode('zootopia_cartoon')}
+                onClick={() => { setSelectedMode('zootopia_cartoon'); if (selectedJob) setSelectedPrompt(resolvePrompt(selectedJob, 'zootopia_cartoon')); }}
                 className={`p-6 rounded-xl border transition-all duration-200 text-left ${
                   selectedMode === 'zootopia_cartoon'
                     ? 'mode-selected scale-[1.02]'
@@ -273,7 +281,7 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
               </button>
               <button
                 type="button"
-                onClick={() => setSelectedMode('zootopia_animals')}
+                onClick={() => { setSelectedMode('zootopia_animals'); if (selectedJob) setSelectedPrompt(resolvePrompt(selectedJob, 'zootopia_animals')); }}
                 className={`p-6 rounded-xl border transition-all duration-200 text-left ${
                   selectedMode === 'zootopia_animals'
                     ? 'mode-selected scale-[1.02]'
