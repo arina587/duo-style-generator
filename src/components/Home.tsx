@@ -92,15 +92,15 @@ const styles = [
     description: 'Magical fairy-tale adventure with warm lantern-lit warmth',
     referenceJobs: [
       {
-        image: '/images/tangled1.jpg',
+        image: '/styles/tangled/tangled1.jpg',
         prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
       },
       {
-        image: '/images/tangled2.jpg',
+        image: '/styles/tangled/tangled2.jpg',
         prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
       },
       {
-        image: '/images/tangled3.jpg',
+        image: '/styles/tangled/tangled3.jpg',
         prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
       },
     ],
@@ -116,15 +116,15 @@ const styles = [
     description: 'Iconic superhero story full of action and heart',
     referenceJobs: [
       {
-        image: '/images/spiderman1.jpg',
+        image: '/styles/spiderman/spiderman1.jpg',
         prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
       },
       {
-        image: '/images/spiderman2.jpg',
+        image: '/styles/spiderman/spiderman2.jpg',
         prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
       },
       {
-        image: '/images/spiderman3.jpg',
+        image: '/styles/spiderman/spiderman3.jpg',
         prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
       },
     ],
@@ -140,15 +140,15 @@ const styles = [
     description: 'Tender coming-of-age tale set in an enchanted forest world',
     referenceJobs: [
       {
-        image: '/images/terabithia1.jpg',
+        image: '/styles/terabithia/terabithia1.JPG',
         prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
       },
       {
-        image: '/images/terabithia2.jpg',
+        image: '/styles/terabithia/terabithia2.JPG',
         prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
       },
       {
-        image: '/images/terabithia3.jpg',
+        image: '/styles/terabithia/terabithia3.JPG',
         prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
       },
     ],
@@ -193,12 +193,12 @@ const allCarouselImages = [
   { src: '/styles/titanic/ref1.jpg', alt: 'Titanic scene 1', offsetY: 0 },
   { src: '/styles/euphoria/ref1.jpg', alt: 'Euphoria scene 1', offsetY: 16 },
   { src: '/styles/zootopia/ref1.jpg', alt: 'Zootopia scene 1', offsetY: -8 },
-  { src: '/images/tangled1.jpg', alt: 'Tangled scene 1', offsetY: 12 },
+  { src: '/styles/tangled/tangled1.jpg', alt: 'Tangled scene 1', offsetY: 12 },
   { src: '/styles/titanic/ref2.jpg', alt: 'Titanic scene 2', offsetY: 0 },
   { src: '/styles/euphoria/ref2.jpg', alt: 'Euphoria scene 2', offsetY: -16 },
-  { src: '/images/spiderman1.jpg', alt: 'Spider-Man scene 1', offsetY: 8 },
+  { src: '/styles/spiderman/spiderman1.jpg', alt: 'Spider-Man scene 1', offsetY: 8 },
   { src: '/styles/zootopia/ref2.jpg', alt: 'Zootopia scene 2', offsetY: 0 },
-  { src: '/images/terabithia1.jpg', alt: 'Terabithia scene 1', offsetY: 20 },
+  { src: '/styles/terabithia/terabithia1.JPG', alt: 'Terabithia scene 1', offsetY: 20 },
   { src: '/styles/titanic/ref3.jpg', alt: 'Titanic scene 3', offsetY: -6 },
   { src: '/styles/euphoria/ref3.jpg', alt: 'Euphoria scene 3', offsetY: 10 },
   { src: '/styles/zootopia/ref3.jpg', alt: 'Zootopia scene 3', offsetY: 0 },
@@ -278,7 +278,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerScrolled ? 'bg-white/92 backdrop-blur-xl border-b border-slate-100 shadow-sm' : 'bg-transparent'} ${headerVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="max-w-6xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center shadow-md">
+            <div className="w-8 h-8 rounded-xl bg-[#a992ca] flex items-center justify-center shadow-md">
               <Wand2 className="w-4 h-4 text-white" />
             </div>
             <span className="text-lg font-bold text-slate-800 tracking-tight">DuoStyle</span>
@@ -293,13 +293,8 @@ export default function Home({ onStyleSelect }: HomeProps) {
       </header>
 
       {/* ── HERO ── */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-16" style={{ background: 'linear-gradient(160deg, #fdf2f8 0%, #ede9fe 35%, #dbeafe 65%, #ecfdf5 100%)' }}>
-        {/* Soft gradient band overlays instead of orbs */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '55%', background: 'linear-gradient(180deg, rgba(253,164,175,0.18) 0%, transparent 100%)' }} />
-          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '45%', background: 'linear-gradient(0deg, rgba(125,211,252,0.14) 0%, transparent 100%)' }} />
-          <div style={{ position: 'absolute', top: '15%', right: 0, width: '40%', height: '60%', background: 'radial-gradient(ellipse at right, rgba(192,132,252,0.16) 0%, transparent 65%)' }} />
-        </div>
+      <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-16" style={{ background: '#ede9f6' }}>
+        <div className="absolute inset-0 pointer-events-none" />
 
         {/* Illustrated sparkle decorations */}
         <DecoSparkle x="8%" y="14%" size={22} color="#a855f7" delay="0s" rotate={15} />
@@ -347,7 +342,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
       </section>
 
       {/* ── INFINITE CAROUSEL ── */}
-      <section id="carousel" className="py-12 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #fdf4ff 0%, #f0f9ff 60%, #fef9ee 100%)' }}>
+      <section id="carousel" className="py-12 relative overflow-hidden" style={{ background: '#f3f0fa' }}>
         <div className="relative z-10">
           <p className="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Sample outputs across all styles</p>
           <InfiniteCarousel images={allCarouselImages} />
@@ -356,8 +351,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
 
       {/* ── HOW IT WORKS ── */}
       <section id="how" className="py-24 bg-white relative overflow-hidden">
-        {/* Soft side gradient accent */}
-        <div className="absolute inset-y-0 right-0 w-1/3 pointer-events-none" style={{ background: 'radial-gradient(ellipse at right center, rgba(192,132,252,0.09) 0%, transparent 70%)' }} />
+        <div className="absolute inset-y-0 right-0 w-1/3 pointer-events-none" />
         <DecoSparkle x="3%" y="18%" size={18} color="#c084fc" delay="1s" rotate={20} />
         <DecoSparkle x="94%" y="72%" size={14} color="#f9a8d4" delay="1.8s" rotate={-35} />
         <DecoDot x="7%" y="55%" color="#7dd3fc" size={5} delay="0.5s" />
@@ -381,8 +375,6 @@ export default function Home({ onStyleSelect }: HomeProps) {
                 step: '01',
                 title: 'Upload Photos',
                 desc: 'Upload one photo of the man and one of the woman. Clear face shots work best.',
-                color: 'from-violet-400 to-pink-400',
-                bg: 'from-violet-50 to-pink-50',
                 delay: '0s',
               },
               {
@@ -390,8 +382,6 @@ export default function Home({ onStyleSelect }: HomeProps) {
                 step: '02',
                 title: 'Choose a Scene',
                 desc: 'Pick from Titanic, Euphoria, Zootopia, Tangled, Spider-Man, and more. Select the exact reference frame you love.',
-                color: 'from-pink-400 to-rose-400',
-                bg: 'from-pink-50 to-rose-50',
                 delay: '0.1s',
               },
               {
@@ -399,15 +389,13 @@ export default function Home({ onStyleSelect }: HomeProps) {
                 step: '03',
                 title: 'Generate & Download',
                 desc: 'AI places both faces into the scene. Download your HD fusion in under 90 seconds.',
-                color: 'from-sky-400 to-blue-400',
-                bg: 'from-sky-50 to-blue-50',
                 delay: '0.2s',
               },
-            ].map(({ icon: Icon, step, title, desc, color, bg, delay }) => (
+            ].map(({ icon: Icon, step, title, desc, delay }) => (
               <div key={step} className="step-card p-7 animate-slide-up relative" style={{ animationDelay: delay }}>
                 <div className="absolute top-5 right-5 text-4xl font-black text-slate-100 leading-none select-none">{step}</div>
-                <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${bg} border border-white flex items-center justify-center mb-5 shadow-sm`}>
-                  <div className={`w-7 h-7 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center`}>
+                <div className="w-12 h-12 rounded-2xl bg-[#ede9f6] border border-[#e4dff2] flex items-center justify-center mb-5">
+                  <div className="w-7 h-7 rounded-xl bg-[#a992ca] flex items-center justify-center">
                     <Icon className="w-3.5 h-3.5 text-white" />
                   </div>
                 </div>
@@ -420,10 +408,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
       </section>
 
       {/* ── STYLE CATEGORIES ── */}
-      <section id="styles" className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #fdf4ff 0%, #f0f9ff 50%, #fef9ee 100%)' }}>
-        {/* Gradient side accents */}
-        <div className="absolute inset-y-0 right-0 w-1/4 pointer-events-none" style={{ background: 'linear-gradient(to left, rgba(253,164,175,0.1) 0%, transparent 100%)' }} />
-        <div className="absolute inset-y-0 left-0 w-1/4 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(192,132,252,0.08) 0%, transparent 100%)' }} />
+      <section id="styles" className="py-24 relative overflow-hidden" style={{ background: '#f3f0fa' }}>
 
         <DecoSparkle x="2%" y="10%" size={20} color="#a855f7" delay="0.3s" rotate={10} />
         <DecoSparkle x="96%" y="15%" size={16} color="#ec4899" delay="1.2s" rotate={-25} />
@@ -476,7 +461,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
               { icon: Eye, title: 'No AI training', desc: 'We never use your uploaded photos to train or fine-tune any AI model.' },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="trust-card p-6 flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-100 to-pink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-10 h-10 rounded-xl bg-[#ede9f6] flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Icon className="w-5 h-5 text-violet-500" />
                 </div>
                 <div>
@@ -490,8 +475,8 @@ export default function Home({ onStyleSelect }: HomeProps) {
       </section>
 
       {/* ── PRICING ── */}
-      <section id="pricing" className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #fdf4ff 0%, #f0f9ff 50%, #fef9ee 100%)' }}>
-        <div className="absolute inset-x-0 top-0 h-32 pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(192,132,252,0.08) 0%, transparent 100%)' }} />
+      <section id="pricing" className="py-24 relative overflow-hidden" style={{ background: '#f3f0fa' }}>
+        <div className="absolute inset-x-0 top-0 h-32 pointer-events-none" />
         <DecoSparkle x="5%" y="10%" size={18} color="#c084fc" delay="0.6s" rotate={12} />
         <DecoSparkle x="92%" y="85%" size={14} color="#f9a8d4" delay="1.4s" rotate={-22} />
         <DecoDot x="50%" y="6%" color="#a855f7" size={5} delay="0.9s" />
@@ -513,7 +498,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
             {pricingPlans.map((plan) => (
               <div key={plan.name} className={`${plan.featured ? 'pricing-card-featured' : 'pricing-card'} p-8`} style={{ marginTop: plan.featured ? -12 : 0 }}>
                 {plan.featured && (
-                  <div className="badge-pill inline-flex items-center gap-1.5 mb-5 bg-gradient-to-r from-violet-100 to-pink-100 border-violet-200/70 text-violet-700">
+                  <div className="badge-pill inline-flex items-center gap-1.5 mb-5 bg-[#ede9f6] border-[#c9bcec] text-[#7b5ea7]">
                     <Star className="w-2.5 h-2.5" />
                     Most Popular
                   </div>
@@ -527,7 +512,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
                 <ul className="space-y-3 mb-7">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-center gap-2.5 text-sm text-slate-600">
-                      <div className="w-4 h-4 rounded-full bg-gradient-to-br from-violet-400 to-pink-400 flex items-center justify-center flex-shrink-0">
+                      <div className="w-4 h-4 rounded-full bg-[#a992ca] flex items-center justify-center flex-shrink-0">
                         <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
                       </div>
                       {f}
@@ -545,7 +530,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
 
       {/* ── FAQ ── */}
       <section id="faq" className="py-24 bg-white relative overflow-hidden">
-        <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none" style={{ background: 'linear-gradient(0deg, rgba(253,164,175,0.07) 0%, transparent 100%)' }} />
+        <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none" />
         <DecoSparkle x="4%" y="12%" size={16} color="#a855f7" delay="0.7s" rotate={18} />
         <DecoSparkle x="93%" y="80%" size={14} color="#34d399" delay="1.5s" rotate={-28} />
 
@@ -569,7 +554,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                 >
                   <span className="font-semibold text-slate-800 text-sm">{item.q}</span>
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-violet-100 to-pink-100 flex items-center justify-center flex-shrink-0 ml-4">
+                  <div className="w-6 h-6 rounded-full bg-[#ede9f6] flex items-center justify-center flex-shrink-0 ml-4">
                     {openFaq === i
                       ? <Minus className="w-3 h-3 text-violet-500" />
                       : <Plus className="w-3 h-3 text-violet-500" />
@@ -589,7 +574,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
       <footer className="bg-white border-t border-slate-100 py-10">
         <div className="max-w-6xl mx-auto px-6 lg:px-10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center">
+            <div className="w-7 h-7 rounded-xl bg-[#a992ca] flex items-center justify-center">
               <Wand2 className="w-3.5 h-3.5 text-white" />
             </div>
             <span className="text-sm font-bold text-slate-700">DuoStyle</span>
@@ -641,14 +626,14 @@ function StyleCard({ style, isSelected, onClick }: StyleCardProps) {
       <div className="p-5">
         <div className="flex items-center justify-between mb-1.5">
           <div className="flex items-center gap-2">
-            <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${style.gradient} flex items-center justify-center`}>
+            <div className="w-6 h-6 rounded-lg bg-[#a992ca] flex items-center justify-center">
               <Icon className="w-3 h-3 text-white" />
             </div>
             <h3 className="font-bold text-slate-900 text-lg">{style.name}</h3>
           </div>
           <div className="flex items-center gap-1.5">
             {isSelected && (
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-violet-400 to-pink-400 flex items-center justify-center">
+              <div className="w-5 h-5 rounded-full bg-[#a992ca] flex items-center justify-center">
                 <Check className="w-3 h-3 text-white" strokeWidth={3} />
               </div>
             )}
@@ -662,7 +647,7 @@ function StyleCard({ style, isSelected, onClick }: StyleCardProps) {
         {style.hasSubcategories && expanded && (
           <div className="mt-4 grid grid-cols-2 gap-3" onClick={(e) => e.stopPropagation()}>
             <button
-              className="p-3.5 rounded-xl border border-violet-100 bg-gradient-to-br from-violet-50 to-pink-50 hover:border-violet-300 hover:shadow-md hover:shadow-violet-100/50 transition-all duration-200 text-left"
+              className="p-3.5 rounded-xl border border-[#c9bcec] bg-[#f3f0fa] hover:border-[#a992ca] hover:shadow-md transition-all duration-200 text-left"
               onClick={() => onClick(style.id, style.referenceJobs)}
             >
               <div className="text-xl mb-1.5">👨‍🎨</div>
@@ -670,7 +655,7 @@ function StyleCard({ style, isSelected, onClick }: StyleCardProps) {
               <p className="text-xs text-slate-400 mt-0.5 leading-snug">Pixar-style characters</p>
             </button>
             <button
-              className="p-3.5 rounded-xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-teal-50 hover:border-emerald-300 hover:shadow-md hover:shadow-emerald-100/50 transition-all duration-200 text-left"
+              className="p-3.5 rounded-xl border border-[#c9bcec] bg-[#f3f0fa] hover:border-[#a992ca] hover:shadow-md transition-all duration-200 text-left"
               onClick={() => onClick(style.id, style.referenceJobs)}
             >
               <div className="text-xl mb-1.5">🦊</div>
