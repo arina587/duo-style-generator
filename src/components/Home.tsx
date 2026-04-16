@@ -86,6 +86,78 @@ const styles = [
     badgeBg: 'bg-sky-100 text-sky-700',
     hasSubcategories: false,
   },
+  {
+    id: 'tangled',
+    name: 'Tangled',
+    description: 'Magical fairy-tale adventure with warm lantern-lit warmth',
+    referenceJobs: [
+      {
+        image: '/images/tangled1.jpg',
+        prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
+      },
+      {
+        image: '/images/tangled2.jpg',
+        prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
+      },
+      {
+        image: '/images/tangled3.jpg',
+        prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
+      },
+    ],
+    tag: 'Fantasy',
+    icon: Sparkles,
+    gradient: 'from-amber-400 to-orange-400',
+    badgeBg: 'bg-amber-100 text-amber-700',
+    hasSubcategories: false,
+  },
+  {
+    id: 'spiderman',
+    name: 'Spider-Man',
+    description: 'Iconic superhero story full of action and heart',
+    referenceJobs: [
+      {
+        image: '/images/spiderman1.jpg',
+        prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
+      },
+      {
+        image: '/images/spiderman2.jpg',
+        prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
+      },
+      {
+        image: '/images/spiderman3.jpg',
+        prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
+      },
+    ],
+    tag: 'Action',
+    icon: Zap,
+    gradient: 'from-red-400 to-rose-500',
+    badgeBg: 'bg-red-100 text-red-700',
+    hasSubcategories: false,
+  },
+  {
+    id: 'terabithia',
+    name: 'Bridge to Terabithia',
+    description: 'Tender coming-of-age tale set in an enchanted forest world',
+    referenceJobs: [
+      {
+        image: '/images/terabithia1.jpg',
+        prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
+      },
+      {
+        image: '/images/terabithia2.jpg',
+        prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
+      },
+      {
+        image: '/images/terabithia3.jpg',
+        prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
+      },
+    ],
+    tag: 'Adventure',
+    icon: Heart,
+    gradient: 'from-green-400 to-emerald-500',
+    badgeBg: 'bg-green-100 text-green-700',
+    hasSubcategories: false,
+  },
 ];
 
 const pricingPlans = [
@@ -112,7 +184,7 @@ const pricingPlans = [
 const faqItems = [
   { q: 'How does DuoStyle work?', a: 'Upload two photos (man + woman), select a cinematic style and reference scene, then our AI places both faces into the iconic frame.' },
   { q: 'Are my photos private?', a: 'Your photos are processed securely and never used for AI training. All uploads are deleted after generation.' },
-  { q: 'What styles are available?', a: 'Currently: Titanic (romance), Euphoria (cinematic drama), and Zootopia (animated — human or animal mode).' },
+  { q: 'What styles are available?', a: 'Titanic, Euphoria, Zootopia, Tangled, Spider-Man, and Bridge to Terabithia — with more coming soon.' },
   { q: 'How long does generation take?', a: 'Most fusions complete in 30–90 seconds depending on server load.' },
   { q: 'Can I download my result?', a: 'Yes — once generated you can download the full resolution image directly.' },
 ];
@@ -121,13 +193,55 @@ const allCarouselImages = [
   { src: '/styles/titanic/ref1.jpg', alt: 'Titanic scene 1', offsetY: 0 },
   { src: '/styles/euphoria/ref1.jpg', alt: 'Euphoria scene 1', offsetY: 16 },
   { src: '/styles/zootopia/ref1.jpg', alt: 'Zootopia scene 1', offsetY: -8 },
-  { src: '/styles/titanic/ref2.jpg', alt: 'Titanic scene 2', offsetY: 12 },
-  { src: '/styles/euphoria/ref2.jpg', alt: 'Euphoria scene 2', offsetY: 0 },
-  { src: '/styles/zootopia/ref2.jpg', alt: 'Zootopia scene 2', offsetY: -16 },
-  { src: '/styles/titanic/ref3.jpg', alt: 'Titanic scene 3', offsetY: 8 },
-  { src: '/styles/euphoria/ref3.jpg', alt: 'Euphoria scene 3', offsetY: 0 },
-  { src: '/styles/zootopia/ref3.jpg', alt: 'Zootopia scene 3', offsetY: 20 },
+  { src: '/images/tangled1.jpg', alt: 'Tangled scene 1', offsetY: 12 },
+  { src: '/styles/titanic/ref2.jpg', alt: 'Titanic scene 2', offsetY: 0 },
+  { src: '/styles/euphoria/ref2.jpg', alt: 'Euphoria scene 2', offsetY: -16 },
+  { src: '/images/spiderman1.jpg', alt: 'Spider-Man scene 1', offsetY: 8 },
+  { src: '/styles/zootopia/ref2.jpg', alt: 'Zootopia scene 2', offsetY: 0 },
+  { src: '/images/terabithia1.jpg', alt: 'Terabithia scene 1', offsetY: 20 },
+  { src: '/styles/titanic/ref3.jpg', alt: 'Titanic scene 3', offsetY: -6 },
+  { src: '/styles/euphoria/ref3.jpg', alt: 'Euphoria scene 3', offsetY: 10 },
+  { src: '/styles/zootopia/ref3.jpg', alt: 'Zootopia scene 3', offsetY: 0 },
 ];
+
+function DecoSparkle({ x, y, size = 20, color = '#a855f7', delay = '0s', rotate = 0 }: { x: string; y: string; size?: number; color?: string; delay?: string; rotate?: number }) {
+  return (
+    <svg
+      className="deco-star animate-twinkle"
+      style={{ left: x, top: y, width: size, height: size, animationDelay: delay, transform: `rotate(${rotate}deg)` }}
+      viewBox="0 0 24 24"
+      fill={color}
+    >
+      <path d="M12 2 L13.5 9 L20 12 L13.5 15 L12 22 L10.5 15 L4 12 L10.5 9 Z" opacity="0.75" />
+    </svg>
+  );
+}
+
+function DecoArrow({ x, y, color = '#c084fc', size = 18, delay = '0s' }: { x: string; y: string; color?: string; size?: number; delay?: string }) {
+  return (
+    <svg
+      className="deco-star animate-twinkle"
+      style={{ left: x, top: y, width: size, height: size, animationDelay: delay }}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5 12h14M12 5l7 7-7 7" opacity="0.6" />
+    </svg>
+  );
+}
+
+function DecoDot({ x, y, color = '#f9a8d4', size = 7, delay = '0s' }: { x: string; y: string; color?: string; size?: number; delay?: string }) {
+  return (
+    <div
+      className="deco-star animate-twinkle"
+      style={{ left: x, top: y, width: size, height: size, background: color, borderRadius: '50%', animationDelay: delay }}
+    />
+  );
+}
 
 export default function Home({ onStyleSelect }: HomeProps) {
   const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
@@ -161,45 +275,46 @@ export default function Home({ onStyleSelect }: HomeProps) {
     <div className="min-h-screen bg-white overflow-x-hidden">
 
       {/* ── STICKY HEADER ── */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerScrolled ? 'bg-white/92 backdrop-blur-xl border-b border-purple-100/50 shadow-sm' : 'bg-transparent'} ${headerVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerScrolled ? 'bg-white/92 backdrop-blur-xl border-b border-slate-100 shadow-sm' : 'bg-transparent'} ${headerVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="max-w-6xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center shadow-md shadow-purple-200/60">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center shadow-md">
               <Wand2 className="w-4 h-4 text-white" />
             </div>
             <span className="text-lg font-bold text-slate-800 tracking-tight">DuoStyle</span>
           </div>
           <nav className="hidden md:flex items-center gap-7">
-            <button onClick={() => scrollToSection('how')} className="text-sm text-slate-500 hover:text-purple-600 transition-colors font-medium">How it works</button>
-            <button onClick={() => scrollToSection('styles')} className="text-sm text-slate-500 hover:text-purple-600 transition-colors font-medium">Styles</button>
-            <button onClick={() => scrollToSection('pricing')} className="text-sm text-slate-500 hover:text-purple-600 transition-colors font-medium">Pricing</button>
+            <button onClick={() => scrollToSection('how')} className="text-sm text-slate-500 hover:text-violet-600 transition-colors font-medium">How it works</button>
+            <button onClick={() => scrollToSection('styles')} className="text-sm text-slate-500 hover:text-violet-600 transition-colors font-medium">Styles</button>
+            <button onClick={() => scrollToSection('pricing')} className="text-sm text-slate-500 hover:text-violet-600 transition-colors font-medium">Pricing</button>
           </nav>
           <button onClick={() => scrollToSection('styles')} className="btn-primary px-5 py-2.5 text-sm">Get Started</button>
         </div>
       </header>
 
       {/* ── HERO ── */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-hero-gradient pt-16">
-        {/* Orb blobs */}
-        <div className="orb w-[580px] h-[580px] top-[-150px] left-[-160px]" style={{ background: 'radial-gradient(circle, rgba(253,164,175,0.42) 0%, transparent 70%)' }} />
-        <div className="orb w-[450px] h-[450px] top-[30px] right-[-120px]" style={{ background: 'radial-gradient(circle, rgba(192,132,252,0.4) 0%, transparent 70%)' }} />
-        <div className="orb w-[380px] h-[380px] bottom-[-100px] left-[30%]" style={{ background: 'radial-gradient(circle, rgba(125,211,252,0.34) 0%, transparent 70%)' }} />
-        <div className="orb w-[220px] h-[220px] bottom-[80px] right-[8%]" style={{ background: 'radial-gradient(circle, rgba(253,186,116,0.28) 0%, transparent 70%)' }} />
+      <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-16" style={{ background: 'linear-gradient(160deg, #fdf2f8 0%, #ede9fe 35%, #dbeafe 65%, #ecfdf5 100%)' }}>
+        {/* Soft gradient band overlays instead of orbs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '55%', background: 'linear-gradient(180deg, rgba(253,164,175,0.18) 0%, transparent 100%)' }} />
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '45%', background: 'linear-gradient(0deg, rgba(125,211,252,0.14) 0%, transparent 100%)' }} />
+          <div style={{ position: 'absolute', top: '15%', right: 0, width: '40%', height: '60%', background: 'radial-gradient(ellipse at right, rgba(192,132,252,0.16) 0%, transparent 65%)' }} />
+        </div>
 
-        {/* Decorative stars */}
-        <div className="deco-star animate-twinkle" style={{ top: '12%', left: '14%', width: 8, height: 8, background: '#a855f7', borderRadius: '50%', animationDelay: '0s' }} />
-        <div className="deco-star animate-twinkle" style={{ top: '18%', right: '18%', width: 6, height: 6, background: '#ec4899', borderRadius: '50%', animationDelay: '0.8s' }} />
-        <div className="deco-star animate-twinkle" style={{ top: '60%', left: '8%', width: 5, height: 5, background: '#7dd3fc', borderRadius: '50%', animationDelay: '1.5s' }} />
-        <div className="deco-star animate-twinkle" style={{ bottom: '20%', right: '12%', width: 7, height: 7, background: '#c084fc', borderRadius: '50%', animationDelay: '2.1s' }} />
-        <div className="deco-star animate-twinkle" style={{ top: '40%', right: '5%', width: 4, height: 4, background: '#f9a8d4', borderRadius: '50%', animationDelay: '0.4s' }} />
-
-        {/* Ring decoration */}
-        <div className="absolute top-[10%] right-[10%] w-32 h-32 rounded-full border border-purple-200/40 animate-spin-slow opacity-40" />
-        <div className="absolute bottom-[15%] left-[6%] w-20 h-20 rounded-full border border-pink-200/50 animate-spin-slow opacity-30" style={{ animationDirection: 'reverse' }} />
+        {/* Illustrated sparkle decorations */}
+        <DecoSparkle x="8%" y="14%" size={22} color="#a855f7" delay="0s" rotate={15} />
+        <DecoSparkle x="88%" y="18%" size={16} color="#ec4899" delay="0.8s" rotate={-20} />
+        <DecoSparkle x="5%" y="62%" size={14} color="#7dd3fc" delay="1.5s" rotate={30} />
+        <DecoSparkle x="92%" y="70%" size={18} color="#c084fc" delay="2.1s" rotate={-10} />
+        <DecoSparkle x="78%" y="45%" size={12} color="#f9a8d4" delay="0.4s" rotate={45} />
+        <DecoDot x="18%" y="30%" color="#fbbf24" size={6} delay="1.2s" />
+        <DecoDot x="72%" y="25%" color="#34d399" size={5} delay="0.6s" />
+        <DecoDot x="14%" y="80%" color="#a78bfa" size={7} delay="1.9s" />
+        <DecoArrow x="82%" y="38%" color="#c084fc" size={20} delay="1s" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <div className="inline-flex items-center gap-2 badge-pill mb-8 animate-fade-in">
-            <Sparkles className="w-3 h-3 text-purple-500" />
+            <Sparkles className="w-3 h-3 text-violet-500" />
             AI-Powered Face Transfer
           </div>
 
@@ -225,15 +340,14 @@ export default function Home({ onStyleSelect }: HomeProps) {
             </button>
           </div>
 
-          <button onClick={() => scrollToSection('carousel')} className="mt-12 flex items-center gap-1 text-slate-400 hover:text-purple-500 transition-colors mx-auto text-sm animate-float">
+          <button onClick={() => scrollToSection('carousel')} className="mt-12 flex items-center gap-1 text-slate-400 hover:text-violet-500 transition-colors mx-auto text-sm animate-float">
             <ChevronDown className="w-5 h-5" />
           </button>
         </div>
       </section>
 
       {/* ── INFINITE CAROUSEL ── */}
-      <section id="carousel" className="py-12 bg-section-soft relative overflow-hidden">
-        <div className="orb w-[300px] h-[300px] top-[-40px] left-[20%] opacity-30" style={{ background: 'radial-gradient(circle, rgba(192,132,252,0.25) 0%, transparent 70%)' }} />
+      <section id="carousel" className="py-12 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #fdf4ff 0%, #f0f9ff 60%, #fef9ee 100%)' }}>
         <div className="relative z-10">
           <p className="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Sample outputs across all styles</p>
           <InfiniteCarousel images={allCarouselImages} />
@@ -242,9 +356,11 @@ export default function Home({ onStyleSelect }: HomeProps) {
 
       {/* ── HOW IT WORKS ── */}
       <section id="how" className="py-24 bg-white relative overflow-hidden">
-        <div className="orb w-[350px] h-[350px] top-0 right-[-60px] opacity-20" style={{ background: 'radial-gradient(circle, rgba(192,132,252,0.3) 0%, transparent 70%)' }} />
-        <div className="deco-star animate-twinkle" style={{ top: '15%', left: '5%', width: 6, height: 6, background: '#c084fc', borderRadius: '50%', animationDelay: '1s' }} />
-        <div className="deco-star animate-twinkle" style={{ bottom: '15%', right: '8%', width: 5, height: 5, background: '#f9a8d4', borderRadius: '50%', animationDelay: '1.8s' }} />
+        {/* Soft side gradient accent */}
+        <div className="absolute inset-y-0 right-0 w-1/3 pointer-events-none" style={{ background: 'radial-gradient(ellipse at right center, rgba(192,132,252,0.09) 0%, transparent 70%)' }} />
+        <DecoSparkle x="3%" y="18%" size={18} color="#c084fc" delay="1s" rotate={20} />
+        <DecoSparkle x="94%" y="72%" size={14} color="#f9a8d4" delay="1.8s" rotate={-35} />
+        <DecoDot x="7%" y="55%" color="#7dd3fc" size={5} delay="0.5s" />
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-14">
@@ -265,15 +381,15 @@ export default function Home({ onStyleSelect }: HomeProps) {
                 step: '01',
                 title: 'Upload Photos',
                 desc: 'Upload one photo of the man and one of the woman. Clear face shots work best.',
-                color: 'from-purple-400 to-pink-400',
-                bg: 'from-purple-50 to-pink-50',
+                color: 'from-violet-400 to-pink-400',
+                bg: 'from-violet-50 to-pink-50',
                 delay: '0s',
               },
               {
                 icon: Film,
                 step: '02',
                 title: 'Choose a Scene',
-                desc: 'Pick from Titanic, Euphoria, or Zootopia. Select the exact reference frame you love.',
+                desc: 'Pick from Titanic, Euphoria, Zootopia, Tangled, Spider-Man, and more. Select the exact reference frame you love.',
                 color: 'from-pink-400 to-rose-400',
                 bg: 'from-pink-50 to-rose-50',
                 delay: '0.1s',
@@ -289,7 +405,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
               },
             ].map(({ icon: Icon, step, title, desc, color, bg, delay }) => (
               <div key={step} className="step-card p-7 animate-slide-up relative" style={{ animationDelay: delay }}>
-                <div className="absolute top-5 right-5 text-xs font-black text-slate-200 text-4xl leading-none">{step}</div>
+                <div className="absolute top-5 right-5 text-4xl font-black text-slate-100 leading-none select-none">{step}</div>
                 <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${bg} border border-white flex items-center justify-center mb-5 shadow-sm`}>
                   <div className={`w-7 h-7 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center`}>
                     <Icon className="w-3.5 h-3.5 text-white" />
@@ -304,13 +420,17 @@ export default function Home({ onStyleSelect }: HomeProps) {
       </section>
 
       {/* ── STYLE CATEGORIES ── */}
-      <section id="styles" className="py-24 bg-section-soft relative overflow-hidden">
-        <div className="orb w-[380px] h-[380px] top-[-70px] right-[-70px] opacity-45" style={{ background: 'radial-gradient(circle, rgba(192,132,252,0.22) 0%, transparent 70%)' }} />
-        <div className="orb w-[300px] h-[300px] bottom-[-50px] left-[-50px] opacity-35" style={{ background: 'radial-gradient(circle, rgba(253,164,175,0.26) 0%, transparent 70%)' }} />
-        <div className="absolute top-[8%] right-[15%] w-40 h-40 rounded-full border border-purple-100/50 animate-spin-slow opacity-30" />
+      <section id="styles" className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #fdf4ff 0%, #f0f9ff 50%, #fef9ee 100%)' }}>
+        {/* Gradient side accents */}
+        <div className="absolute inset-y-0 right-0 w-1/4 pointer-events-none" style={{ background: 'linear-gradient(to left, rgba(253,164,175,0.1) 0%, transparent 100%)' }} />
+        <div className="absolute inset-y-0 left-0 w-1/4 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(192,132,252,0.08) 0%, transparent 100%)' }} />
 
-        <div className="deco-star animate-twinkle" style={{ top: '10%', left: '3%', width: 7, height: 7, background: '#a855f7', borderRadius: '50%', animationDelay: '0.3s' }} />
-        <div className="deco-star animate-twinkle" style={{ bottom: '12%', right: '4%', width: 5, height: 5, background: '#ec4899', borderRadius: '50%', animationDelay: '1.2s' }} />
+        <DecoSparkle x="2%" y="10%" size={20} color="#a855f7" delay="0.3s" rotate={10} />
+        <DecoSparkle x="96%" y="15%" size={16} color="#ec4899" delay="1.2s" rotate={-25} />
+        <DecoSparkle x="1%" y="88%" size={14} color="#fbbf24" delay="0.9s" rotate={40} />
+        <DecoSparkle x="95%" y="80%" size={18} color="#7dd3fc" delay="1.6s" rotate={-15} />
+        <DecoDot x="50%" y="4%" color="#c084fc" size={6} delay="0.7s" />
+        <DecoArrow x="4%" y="50%" color="#f9a8d4" size={16} delay="1.4s" />
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-14">
@@ -321,12 +441,12 @@ export default function Home({ onStyleSelect }: HomeProps) {
             <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-4">
               Choose Your <span className="text-gradient-primary">Scene</span>
             </h2>
-            <p className="text-slate-500 text-lg max-w-lg mx-auto font-light">Three iconic cinematic universes. Pick one and step inside.</p>
+            <p className="text-slate-500 text-lg max-w-lg mx-auto font-light">Six iconic cinematic universes. Pick one and step inside.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
             {styles.map((style, i) => (
-              <div key={style.id} style={{ marginTop: i === 1 ? -16 : 0 }}>
+              <div key={style.id} style={{ marginTop: i === 1 ? -16 : i === 4 ? -12 : 0 }}>
                 <StyleCard
                   style={style}
                   isSelected={selectedStyle === style.id}
@@ -340,7 +460,10 @@ export default function Home({ onStyleSelect }: HomeProps) {
 
       {/* ── TRUST ── */}
       <section className="py-16 bg-white relative overflow-hidden">
-        <div className="orb w-[260px] h-[260px] top-0 left-1/2 -translate-x-1/2 opacity-20" style={{ background: 'radial-gradient(circle, rgba(192,132,252,0.3) 0%, transparent 70%)' }} />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-100 to-transparent" />
+        <DecoSparkle x="6%" y="20%" size={14} color="#c084fc" delay="0.5s" rotate={25} />
+        <DecoSparkle x="92%" y="65%" size={12} color="#f9a8d4" delay="1.3s" rotate={-30} />
+
         <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Your privacy is protected</h2>
@@ -353,8 +476,8 @@ export default function Home({ onStyleSelect }: HomeProps) {
               { icon: Eye, title: 'No AI training', desc: 'We never use your uploaded photos to train or fine-tune any AI model.' },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="trust-card p-6 flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Icon className="w-5 h-5 text-purple-500" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-100 to-pink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Icon className="w-5 h-5 text-violet-500" />
                 </div>
                 <div>
                   <p className="font-bold text-slate-800 text-sm mb-1">{title}</p>
@@ -367,10 +490,12 @@ export default function Home({ onStyleSelect }: HomeProps) {
       </section>
 
       {/* ── PRICING ── */}
-      <section id="pricing" className="py-24 bg-section-soft relative overflow-hidden">
-        <div className="orb w-[420px] h-[420px] top-[-30px] left-1/2 -translate-x-1/2 opacity-22" style={{ background: 'radial-gradient(circle, rgba(192,132,252,0.28) 0%, transparent 70%)' }} />
-        <div className="deco-star animate-twinkle" style={{ top: '8%', left: '8%', width: 6, height: 6, background: '#c084fc', borderRadius: '50%', animationDelay: '0.6s' }} />
-        <div className="deco-star animate-twinkle" style={{ bottom: '10%', right: '10%', width: 5, height: 5, background: '#f9a8d4', borderRadius: '50%', animationDelay: '1.4s' }} />
+      <section id="pricing" className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #fdf4ff 0%, #f0f9ff 50%, #fef9ee 100%)' }}>
+        <div className="absolute inset-x-0 top-0 h-32 pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(192,132,252,0.08) 0%, transparent 100%)' }} />
+        <DecoSparkle x="5%" y="10%" size={18} color="#c084fc" delay="0.6s" rotate={12} />
+        <DecoSparkle x="92%" y="85%" size={14} color="#f9a8d4" delay="1.4s" rotate={-22} />
+        <DecoDot x="50%" y="6%" color="#a855f7" size={5} delay="0.9s" />
+        <DecoArrow x="88%" y="35%" color="#fbbf24" size={16} delay="0.3s" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-14">
@@ -385,10 +510,10 @@ export default function Home({ onStyleSelect }: HomeProps) {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto items-start">
-            {pricingPlans.map((plan, i) => (
+            {pricingPlans.map((plan) => (
               <div key={plan.name} className={`${plan.featured ? 'pricing-card-featured' : 'pricing-card'} p-8`} style={{ marginTop: plan.featured ? -12 : 0 }}>
                 {plan.featured && (
-                  <div className="badge-pill inline-flex items-center gap-1.5 mb-5 bg-gradient-to-r from-purple-100 to-pink-100 border-purple-200/70 text-purple-700">
+                  <div className="badge-pill inline-flex items-center gap-1.5 mb-5 bg-gradient-to-r from-violet-100 to-pink-100 border-violet-200/70 text-violet-700">
                     <Star className="w-2.5 h-2.5" />
                     Most Popular
                   </div>
@@ -402,7 +527,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
                 <ul className="space-y-3 mb-7">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-center gap-2.5 text-sm text-slate-600">
-                      <div className="w-4 h-4 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center flex-shrink-0">
+                      <div className="w-4 h-4 rounded-full bg-gradient-to-br from-violet-400 to-pink-400 flex items-center justify-center flex-shrink-0">
                         <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
                       </div>
                       {f}
@@ -420,7 +545,9 @@ export default function Home({ onStyleSelect }: HomeProps) {
 
       {/* ── FAQ ── */}
       <section id="faq" className="py-24 bg-white relative overflow-hidden">
-        <div className="orb w-[280px] h-[280px] bottom-0 left-[-40px] opacity-18" style={{ background: 'radial-gradient(circle, rgba(253,164,175,0.25) 0%, transparent 70%)' }} />
+        <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none" style={{ background: 'linear-gradient(0deg, rgba(253,164,175,0.07) 0%, transparent 100%)' }} />
+        <DecoSparkle x="4%" y="12%" size={16} color="#a855f7" delay="0.7s" rotate={18} />
+        <DecoSparkle x="93%" y="80%" size={14} color="#34d399" delay="1.5s" rotate={-28} />
 
         <div className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-12">
@@ -442,10 +569,10 @@ export default function Home({ onStyleSelect }: HomeProps) {
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                 >
                   <span className="font-semibold text-slate-800 text-sm">{item.q}</span>
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center flex-shrink-0 ml-4">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-violet-100 to-pink-100 flex items-center justify-center flex-shrink-0 ml-4">
                     {openFaq === i
-                      ? <Minus className="w-3 h-3 text-purple-500" />
-                      : <Plus className="w-3 h-3 text-purple-500" />
+                      ? <Minus className="w-3 h-3 text-violet-500" />
+                      : <Plus className="w-3 h-3 text-violet-500" />
                     }
                   </div>
                 </button>
@@ -459,18 +586,18 @@ export default function Home({ onStyleSelect }: HomeProps) {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="bg-white border-t border-purple-100/50 py-10">
+      <footer className="bg-white border-t border-slate-100 py-10">
         <div className="max-w-6xl mx-auto px-6 lg:px-10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+            <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center">
               <Wand2 className="w-3.5 h-3.5 text-white" />
             </div>
             <span className="text-sm font-bold text-slate-700">DuoStyle</span>
           </div>
           <p className="text-xs text-slate-400">© 2025 DuoStyle. AI-powered cinematic fusions.</p>
           <div className="flex gap-5">
-            <a href="#" className="text-xs text-slate-400 hover:text-purple-500 transition-colors">Privacy</a>
-            <a href="#" className="text-xs text-slate-400 hover:text-purple-500 transition-colors">Terms</a>
+            <a href="#" className="text-xs text-slate-400 hover:text-violet-500 transition-colors">Privacy</a>
+            <a href="#" className="text-xs text-slate-400 hover:text-violet-500 transition-colors">Terms</a>
           </div>
         </div>
       </footer>
@@ -507,7 +634,7 @@ function StyleCard({ style, isSelected, onClick }: StyleCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
         <span className={`absolute top-3 right-3 text-xs font-semibold px-2.5 py-1 rounded-full ${style.badgeBg}`}>{style.tag}</span>
         {style.hasSubcategories && (
-          <span className="absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full bg-white/90 text-purple-700 border border-purple-200/50">2 modes</span>
+          <span className="absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full bg-white/90 text-violet-700 border border-violet-200/50">2 modes</span>
         )}
       </div>
 
@@ -521,7 +648,7 @@ function StyleCard({ style, isSelected, onClick }: StyleCardProps) {
           </div>
           <div className="flex items-center gap-1.5">
             {isSelected && (
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-violet-400 to-pink-400 flex items-center justify-center">
                 <Check className="w-3 h-3 text-white" strokeWidth={3} />
               </div>
             )}
@@ -535,7 +662,7 @@ function StyleCard({ style, isSelected, onClick }: StyleCardProps) {
         {style.hasSubcategories && expanded && (
           <div className="mt-4 grid grid-cols-2 gap-3" onClick={(e) => e.stopPropagation()}>
             <button
-              className="p-3.5 rounded-xl border border-purple-100 bg-gradient-to-br from-purple-50 to-pink-50 hover:border-purple-300 hover:shadow-md hover:shadow-purple-100/50 transition-all duration-200 text-left"
+              className="p-3.5 rounded-xl border border-violet-100 bg-gradient-to-br from-violet-50 to-pink-50 hover:border-violet-300 hover:shadow-md hover:shadow-violet-100/50 transition-all duration-200 text-left"
               onClick={() => onClick(style.id, style.referenceJobs)}
             >
               <div className="text-xl mb-1.5">👨‍🎨</div>
