@@ -91,26 +91,26 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
   ];
 
   return (
-    <div className="min-h-screen" style={{ background: '#faf8f5' }}>
+    <div className="min-h-screen" style={{ background: '#f5f0ff' }}>
 
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-[#ede8e0]">
-        <div className="max-w-5xl mx-auto px-6 lg:px-10 h-15 flex items-center justify-between" style={{ height: 60 }}>
+      <div className="sticky top-0 z-40 border-b" style={{ background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(20px)', borderColor: '#e0d4f7' }}>
+        <div className="max-w-5xl mx-auto px-6 lg:px-10 flex items-center justify-between" style={{ height: 60 }}>
           <button
             onClick={onBack}
-            className="flex items-center gap-2 text-[#8a7f74] hover:text-[#1a1a2e] transition-colors duration-200 text-sm font-medium font-body"
+            className="flex items-center gap-2 text-sm font-semibold font-body transition-colors duration-200 text-[#7c6da0] hover:text-[#8b5cf6]"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
           </button>
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-xl bg-[#1a1a2e] flex items-center justify-center">
-              <Wand2 className="w-3.5 h-3.5 text-[#faf8f5]" />
+            <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-[#8b5cf6] to-[#a78bfa] flex items-center justify-center" style={{ boxShadow: '0 4px 12px rgba(139,92,246,0.3)' }}>
+              <Wand2 className="w-3.5 h-3.5 text-white" />
             </div>
-            <span className="text-sm font-bold text-[#1a1a2e] font-body">DuoStyle</span>
+            <span className="text-sm font-bold text-[#2d1f5e] font-body">DuoStyle</span>
           </div>
           <div className="badge-pill flex items-center gap-1.5">
-            <Sparkles className="w-3 h-3 text-[#c47c5a]" />
+            <Sparkles className="w-3 h-3 text-[#8b5cf6]" />
             {styleLabel}
           </div>
         </div>
@@ -120,26 +120,29 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
 
         {/* Page title */}
         <div className="text-center mb-10">
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#1a1a2e] mb-2">Upload Your Photos</h2>
-          <p className="text-[#8a7f74] font-light text-sm sm:text-base font-body">Upload two photos, pick a reference scene, then generate your fusion.</p>
+          <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#2d1f5e] mb-2">Upload Your Photos</h2>
+          <p className="text-[#7c6da0] font-light text-sm sm:text-base font-body">Upload two photos, pick a reference scene, then generate your fusion.</p>
         </div>
 
         {/* Progress steps */}
         <div className="flex items-center justify-center gap-3 mb-10">
           {steps.map((step, i) => (
             <div key={step.n} className="flex items-center gap-3">
-              <div className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold font-body transition-all duration-300 ${
-                step.done
-                  ? 'bg-[#1a1a2e] text-[#faf8f5]'
-                  : 'bg-white border border-[#ede8e0] text-[#8a7f74]'
-              }`}>
+              <div
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold font-body transition-all duration-300"
+                style={{
+                  background: step.done ? '#2d1f5e' : '#ffffff',
+                  color: step.done ? '#f5f0ff' : '#7c6da0',
+                  border: step.done ? 'none' : '1px solid #e0d4f7',
+                }}
+              >
                 {step.done
                   ? <Check className="w-3 h-3" strokeWidth={3} />
                   : <span className="font-bold">{step.n}</span>
                 }
                 {step.label}
               </div>
-              {i < 2 && <div className="w-8 h-px bg-[#ede8e0]" />}
+              {i < 2 && <div className="w-8 h-px" style={{ background: '#e0d4f7' }} />}
             </div>
           ))}
         </div>
@@ -152,10 +155,10 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
           ].map(({ letter, label, preview, setPhoto, setPreview, alt }) => (
             <div key={letter} className="card-premium p-5">
               <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-7 h-7 rounded-full bg-[#1a1a2e] flex items-center justify-center text-xs font-bold text-[#faf8f5] flex-shrink-0 font-body">
+                <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 font-body" style={{ background: '#2d1f5e', color: '#f5f0ff' }}>
                   {letter}
                 </div>
-                <h3 className="text-xs font-bold text-[#8a7f74] uppercase tracking-widest font-body">{label}</h3>
+                <h3 className="text-xs font-bold uppercase tracking-widest font-body text-[#a89ec0]">{label}</h3>
               </div>
               <label className="block cursor-pointer">
                 <input
@@ -176,15 +179,15 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
                     </div>
                   ) : (
                     <div className="flex flex-col items-center justify-center h-52 gap-3">
-                      <div className="w-14 h-14 rounded-2xl bg-[#f2ede6] border border-[#ede8e0] flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                      <div className="w-14 h-14 rounded-2xl border flex items-center justify-center group-hover:scale-105 transition-transform duration-200" style={{ background: '#ede6ff', borderColor: '#e0d4f7' }}>
                         {letter === 'A'
-                          ? <UploadIcon className="w-6 h-6 text-[#c47c5a]" />
-                          : <Image className="w-6 h-6 text-[#c47c5a]" />
+                          ? <UploadIcon className="w-6 h-6 text-[#8b5cf6]" />
+                          : <Image className="w-6 h-6 text-[#8b5cf6]" />
                         }
                       </div>
                       <div className="text-center">
-                        <p className="text-sm text-[#1a1a2e] font-semibold font-body">Click to upload</p>
-                        <p className="text-xs text-[#8a7f74] mt-0.5 font-body">PNG, JPG up to 10MB</p>
+                        <p className="text-sm font-semibold font-body text-[#2d1f5e]">Click to upload</p>
+                        <p className="text-xs mt-0.5 font-body text-[#a89ec0]">PNG, JPG up to 10MB</p>
                       </div>
                     </div>
                   )}
@@ -198,8 +201,8 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
         {referenceJobs.length > 0 && (
           <div className="card-premium p-6 mb-5">
             <div className="mb-5">
-              <h3 className="font-display font-bold text-[#1a1a2e] text-base mb-1">Choose Reference Scene</h3>
-              <p className="text-sm text-[#8a7f74] font-body">Select the composition you want to recreate</p>
+              <h3 className="font-display font-bold text-[#2d1f5e] text-base mb-1">Choose Reference Scene</h3>
+              <p className="text-sm font-body text-[#7c6da0]">Select the composition you want to recreate</p>
             </div>
             <div className="grid grid-cols-3 gap-4">
               {referenceJobs.map((job, index) => (
@@ -213,10 +216,10 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
                       : 'opacity-60 hover:opacity-95 hover:scale-[1.01]'
                   }`}
                 >
-                  <img src={job.image} alt={`Reference ${index + 1}`} className="w-full h-full object-contain bg-[#f2ede6]" />
+                  <img src={job.image} alt={`Reference ${index + 1}`} className="w-full h-full object-contain" style={{ background: '#ede6ff' }} />
                   {selectedReference === job.image && (
-                    <div className="absolute inset-0 bg-[#c47c5a]/20 flex items-end justify-center pb-3">
-                      <div className="px-3 py-1 rounded-full bg-[#c47c5a] text-white text-xs font-bold font-body shadow-lg">
+                    <div className="absolute inset-0 flex items-end justify-center pb-3" style={{ background: 'rgba(139,92,246,0.18)' }}>
+                      <div className="px-3 py-1 rounded-full text-white text-xs font-bold font-body shadow-lg" style={{ background: '#8b5cf6' }}>
                         Selected
                       </div>
                     </div>
@@ -231,8 +234,8 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
         {selectedStyle === 'zootopia' && selectedReference && (
           <div className="card-premium p-6 mb-5">
             <div className="mb-5">
-              <h3 className="font-display font-bold text-[#1a1a2e] text-base mb-1">Transformation Type</h3>
-              <p className="text-sm text-[#8a7f74] font-body">Select how you want the characters to be rendered</p>
+              <h3 className="font-display font-bold text-[#2d1f5e] text-base mb-1">Transformation Type</h3>
+              <p className="text-sm font-body text-[#7c6da0]">Select how you want the characters to be rendered</p>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <button
@@ -241,15 +244,12 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
                   setSelectedMode('zootopia_cartoon');
                   if (selectedJob) setSelectedPrompt(resolvePrompt(selectedJob, 'zootopia_cartoon'));
                 }}
-                className={`p-5 rounded-2xl border-2 transition-all duration-200 text-left ${
-                  selectedMode === 'zootopia_cartoon'
-                    ? 'mode-selected'
-                    : 'border-[#ede8e0] bg-white hover:border-[#ddd5c8] hover:bg-[#faf8f5]'
-                }`}
+                className={`p-5 rounded-2xl border-2 transition-all duration-200 text-left ${selectedMode === 'zootopia_cartoon' ? 'mode-selected' : ''}`}
+                style={selectedMode !== 'zootopia_cartoon' ? { borderColor: '#e0d4f7', background: '#ffffff' } : {}}
               >
                 <div className="text-3xl mb-3">👨‍🎨</div>
-                <h4 className="text-sm font-bold text-[#1a1a2e] mb-1 font-body">Cartoon Human</h4>
-                <p className="text-xs text-[#8a7f74] leading-relaxed font-body">Stylized Pixar-style animated characters with recognizable features</p>
+                <h4 className="text-sm font-bold text-[#2d1f5e] mb-1 font-body">Cartoon Human</h4>
+                <p className="text-xs leading-relaxed font-body text-[#7c6da0]">Stylized Pixar-style animated characters with recognizable features</p>
               </button>
               <button
                 type="button"
@@ -257,15 +257,12 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
                   setSelectedMode('zootopia_animals');
                   if (selectedJob) setSelectedPrompt(resolvePrompt(selectedJob, 'zootopia_animals'));
                 }}
-                className={`p-5 rounded-2xl border-2 transition-all duration-200 text-left ${
-                  selectedMode === 'zootopia_animals'
-                    ? 'mode-selected'
-                    : 'border-[#ede8e0] bg-white hover:border-[#ddd5c8] hover:bg-[#faf8f5]'
-                }`}
+                className={`p-5 rounded-2xl border-2 transition-all duration-200 text-left ${selectedMode === 'zootopia_animals' ? 'mode-selected' : ''}`}
+                style={selectedMode !== 'zootopia_animals' ? { borderColor: '#e0d4f7', background: '#ffffff' } : {}}
               >
                 <div className="text-3xl mb-3">🦊</div>
-                <h4 className="text-sm font-bold text-[#1a1a2e] mb-1 font-body">Animal Hybrid</h4>
-                <p className="text-xs text-[#8a7f74] leading-relaxed font-body">Subtle cute animal-inspired traits while preserving identity</p>
+                <h4 className="text-sm font-bold text-[#2d1f5e] mb-1 font-body">Animal Hybrid</h4>
+                <p className="text-xs leading-relaxed font-body text-[#7c6da0]">Subtle cute animal-inspired traits while preserving identity</p>
               </button>
             </div>
           </div>
