@@ -17,13 +17,13 @@ export default function InfiniteCarousel({ images }: InfiniteCarouselProps) {
         {doubled.map((img, i) => (
           <div
             key={i}
-            className="flex-shrink-0 rounded-3xl overflow-hidden"
+            className="flex-shrink-0 rounded-2xl overflow-hidden"
             style={{
-              width: 180,
-              height: 240,
+              width: 170,
+              height: 226,
               marginTop: img.offsetY ?? 0,
-              boxShadow: '0 6px 24px rgba(0,0,0,0.08)',
-              border: '2px solid #e0e6c8',
+              boxShadow: '0 4px 18px rgba(120,90,180,0.12)',
+              border: '2px solid #ddd4ee',
               transition: 'transform 0.3s ease, box-shadow 0.3s ease',
             }}
           >
