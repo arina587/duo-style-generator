@@ -1,9 +1,9 @@
 import {
-  Sparkles, Star, Wand2, ChevronDown, Check, ArrowRight,
+  Sparkles, Star, Wand2, ChevronDown, Check, ArrowRight, ArrowLeft,
   Upload, Film, Shield, Plus, Minus
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
-import { references, type ReferenceItem } from '../data/references';
+import { categories, getRefsForCategory, type ReferenceItem } from '../data/references';
 
 interface HomeProps {
   onImageSelect: (ref: ReferenceItem) => void;
@@ -42,7 +42,9 @@ export default function Home({ onImageSelect }: HomeProps) {
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
   const lastScrollY = useRef(0);
+  const categoryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,6 +61,20 @@ export default function Home({ onImageSelect }: HomeProps) {
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const handleCategoryClick = (catId: string) => {
+    if (openCategory === catId) {
+      setOpenCategory(null);
+    } else {
+      setOpenCategory(catId);
+      setTimeout(() => {
+        categoryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 50);
+    }
+  };
+
+  const activeCat = openCategory ? categories.find((c) => c.id === openCategory) : null;
+  const activeRefs = openCategory ? getRefsForCategory(openCategory) : [];
 
   return (
     <div className="min-h-screen overflow-x-hidden grid-bg">
@@ -77,10 +93,10 @@ export default function Home({ onImageSelect }: HomeProps) {
             <span className="text-base font-extrabold text-[#2d2642] tracking-tight font-display">DuoStyle</span>
           </div>
           <nav className="hidden md:flex items-center gap-7">
-            {['How it works', 'Scenes', 'Pricing'].map((label, i) => (
+            {['How it works', 'Styles', 'Pricing'].map((label, i) => (
               <button
                 key={label}
-                onClick={() => scrollToSection(['how', 'scenes', 'pricing'][i])}
+                onClick={() => scrollToSection(['how', 'styles', 'pricing'][i])}
                 className="text-sm text-[#7a6f96] hover:text-[#2d2642] transition-colors duration-200 font-bold font-body"
               >
                 {label}
@@ -88,7 +104,7 @@ export default function Home({ onImageSelect }: HomeProps) {
             ))}
           </nav>
           <button
-            onClick={() => scrollToSection('scenes')}
+            onClick={() => scrollToSection('styles')}
             className="btn-accent px-5 py-2 text-sm"
           >
             Get Started
@@ -121,13 +137,13 @@ export default function Home({ onImageSelect }: HomeProps) {
               </span>{' '}Movie Moments
             </h1>
             <p className="text-sm sm:text-base text-[#7a6f96] leading-relaxed max-w-lg mx-auto font-body">
-              Upload two photos. Choose a scene. Let AI place you both inside an iconic moment -- in under 90 seconds.
+              Upload two photos. Choose a cinematic style. Let AI place you both inside an iconic scene -- in under 90 seconds.
             </p>
           </div>
 
           <div className="flex justify-center gap-3 mb-6 animate-fade-up" style={{ animationDelay: '0.1s' }}>
             <button
-              onClick={() => scrollToSection('scenes')}
+              onClick={() => scrollToSection('styles')}
               className="btn-accent flex items-center gap-2 px-7 py-3 text-sm"
             >
               <Sparkles className="w-4 h-4" />
@@ -144,7 +160,7 @@ export default function Home({ onImageSelect }: HomeProps) {
 
           <div className="flex justify-center items-center gap-10 pt-4 border-t-2 border-dashed border-[#d8ccea]/60 animate-fade-up" style={{ animationDelay: '0.14s' }}>
             {[
-              { value: '18', label: 'Scene options' },
+              { value: '6', label: 'Cinematic styles' },
               { value: '90s', label: 'Generation time' },
               { value: 'HD', label: 'Output quality' },
             ].map(({ value, label }) => (
@@ -158,10 +174,10 @@ export default function Home({ onImageSelect }: HomeProps) {
 
         <div className="flex justify-center mt-5">
           <button
-            onClick={() => scrollToSection('scenes')}
+            onClick={() => scrollToSection('styles')}
             className="flex flex-col items-center gap-0 text-[#9a93b0] hover:text-[#2d2642] transition-colors duration-200 animate-float"
           >
-            <span className="text-[9px] font-body tracking-widest uppercase font-bold">Explore Scenes</span>
+            <span className="text-[9px] font-body tracking-widest uppercase font-bold">Explore Styles</span>
             <ChevronDown className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -185,8 +201,8 @@ export default function Home({ onImageSelect }: HomeProps) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               { icon: Upload, step: '01', title: 'Upload Photos', desc: 'Upload one photo of the man and one of the woman. Clear face shots work best.', delay: '0s', iconBg: '#9b7dd4' },
-              { icon: Film, step: '02', title: 'Choose a Scene', desc: 'Pick from 18 iconic scenes across 6 cinematic styles.', delay: '0.08s', iconBg: '#c490d1' },
-              { icon: Sparkles, step: '03', title: 'Generate & Download', desc: 'AI places both faces into the scene. Download your HD fusion in under 90 seconds.', delay: '0.16s', iconBg: '#deb8e6' },
+              { icon: Film, step: '02', title: 'Choose a Scene', desc: 'Pick from Titanic, Euphoria, Zootopia, Tangled, Spider-Man, and more.', delay: '0.08s', iconBg: '#c490d1' },
+              { icon: Sparkles, step: '03', title: 'Generate & Download', desc: 'AI places both faces into the scene. Download your HD result in under 90 seconds.', delay: '0.16s', iconBg: '#deb8e6' },
             ].map(({ icon: Icon, step, title, desc, delay, iconBg }) => (
               <div
                 key={step}
@@ -207,44 +223,111 @@ export default function Home({ onImageSelect }: HomeProps) {
         </div>
       </section>
 
-      {/* ── SCENES GRID ── */}
-      <section id="scenes" className="py-14 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #ede6f6 0%, #f0edf6 100%)' }}>
+      {/* ── STYLES / CATEGORIES ── */}
+      <section id="styles" className="py-14 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #ede6f6 0%, #f0edf6 100%)' }}>
         <div className="relative z-10 max-w-6xl mx-auto px-5 lg:px-8">
           <div className="text-center mb-8">
-            <p className="section-eyebrow mb-2">Choose a Scene</p>
+            <p className="section-eyebrow mb-2">Cinematic Universes</p>
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#2d2642] mb-2">
-              Pick Your Moment
+              Choose Your Style
             </h2>
-            <p className="text-[#7a6f96] text-sm max-w-md mx-auto font-body">
-              Each image is a unique scene with its own AI prompt. Click any to get started.
+            <p className="text-[#7a6f96] text-sm max-w-sm mx-auto font-body">
+              Six iconic worlds. Pick one, then choose a scene.
             </p>
           </div>
 
-          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
-            {references.map((ref, idx) => (
+          {/* Category grid */}
+          {!openCategory && (
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-in">
+              {categories.map((cat, idx) => (
+                <button
+                  key={cat.id}
+                  onClick={() => handleCategoryClick(cat.id)}
+                  className="category-card group text-left animate-scale-in"
+                  style={{ animationDelay: `${idx * 0.05}s` }}
+                >
+                  <div className="relative overflow-hidden aspect-[4/5] rounded-t-[20px]">
+                    <img
+                      src={cat.cover}
+                      alt={cat.name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#2d2642]/65 via-[#2d2642]/10 to-transparent" />
+                    <div className="absolute top-2.5 right-2.5">
+                      <span className="category-tag">{cat.tag}</span>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 p-3">
+                      <h3 className="font-display font-bold text-white text-lg leading-tight drop-shadow-md">{cat.name}</h3>
+                    </div>
+                  </div>
+                  <div className="p-3 bg-white rounded-b-[20px] flex items-center justify-between gap-2">
+                    <p className="text-xs text-[#7a6f96] leading-snug font-body line-clamp-2">{cat.description}</p>
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      <span className="text-[10px] font-bold text-[#9b7dd4] font-body">3 scenes</span>
+                      <ArrowRight className="w-3 h-3 text-[#d4e157] group-hover:translate-x-0.5 transition-transform duration-200" />
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Open category detail */}
+          {openCategory && activeCat && (
+            <div ref={categoryRef} className="animate-fade-up">
               <button
-                key={ref.id}
-                onClick={() => onImageSelect(ref)}
-                className="group relative rounded-2xl overflow-hidden aspect-[3/4] border-2 border-[#e2daf0] hover:border-[#b49cdb] transition-all duration-300 animate-scale-in focus:outline-none focus:ring-2 focus:ring-[#9b7dd4] focus:ring-offset-2"
-                style={{ animationDelay: `${idx * 0.03}s`, boxShadow: '0 3px 14px rgba(120,90,180,0.08)' }}
+                onClick={() => setOpenCategory(null)}
+                className="flex items-center gap-2 text-sm font-bold font-body text-[#7a6f96] hover:text-[#2d2642] transition-colors duration-200 mb-5"
               >
-                <img
-                  src={ref.image}
-                  alt={ref.label}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#2d2642]/60 via-transparent to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-2">
-                  <span className="text-white text-[10px] font-bold font-body drop-shadow-sm">{ref.label}</span>
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="bg-white/90 backdrop-blur-sm text-[#2d2642] text-[11px] font-extrabold font-body px-3 py-1.5 rounded-full shadow-lg">
-                    Select
-                  </span>
-                </div>
+                <ArrowLeft className="w-4 h-4" />
+                All styles
               </button>
-            ))}
-          </div>
+
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-2 h-8 rounded-full" style={{ background: '#d4e157' }} />
+                <div>
+                  <h3 className="font-display font-bold text-[#2d2642] text-xl">{activeCat.name}</h3>
+                  <p className="text-xs text-[#7a6f96] font-body">{activeCat.description}</p>
+                </div>
+                <span className="category-tag ml-auto">{activeCat.tag}</span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                {activeRefs.map((ref, idx) => (
+                  <button
+                    key={ref.id}
+                    onClick={() => onImageSelect(ref)}
+                    className="ref-card group text-left animate-scale-in focus:outline-none"
+                    style={{ animationDelay: `${idx * 0.06}s` }}
+                  >
+                    <div className="relative overflow-hidden aspect-[3/4] rounded-t-[18px]">
+                      <img
+                        src={ref.image}
+                        alt={`${ref.label} scene ${idx + 1}`}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#2d2642]/50 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
+                      <div className="absolute top-2 left-2">
+                        <span className="inline-flex items-center justify-center w-6 h-6 rounded-full text-[11px] font-bold text-[#2d2642]" style={{ background: '#d4e157' }}>
+                          {idx + 1}
+                        </span>
+                      </div>
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="bg-white/90 backdrop-blur-sm text-[#2d2642] text-[11px] font-extrabold font-body px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
+                          <Sparkles className="w-3 h-3 text-[#9b7dd4]" />
+                          Select Scene
+                        </span>
+                      </div>
+                    </div>
+                    <div className="p-2.5 bg-white rounded-b-[18px]">
+                      <p className="text-[11px] font-bold text-[#2d2642] font-body">Scene {idx + 1}</p>
+                      <p className="text-[10px] text-[#9a93b0] font-body mt-0.5">Click to start</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -257,7 +340,7 @@ export default function Home({ onImageSelect }: HomeProps) {
               Start for{' '}
               <span className="relative inline-block">
                 <span className="relative z-10">$6/mo</span>
-                <span className="absolute bottom-0.5 left-0 right-0 h-2.5 rounded-full -z-0" style={{ background: 'rgba(155,125,212,0.25)' }} />
+                <span className="absolute bottom-0.5 left-0 right-0 h-2.5 rounded-full -z-0" style={{ background: 'rgba(212,225,87,0.35)' }} />
               </span>
             </h2>
             <p className="text-[#7a6f96] text-base font-body">No commitments. Cancel anytime.</p>
@@ -284,8 +367,8 @@ export default function Home({ onImageSelect }: HomeProps) {
                 <ul className="space-y-2.5 mb-6">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-center gap-2 text-sm text-[#2d2642]">
-                      <div className="rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #9b7dd4, #b49cdb)', width: 18, height: 18 }}>
-                        <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+                      <div className="rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#d4e157', width: 18, height: 18 }}>
+                        <Check className="w-2.5 h-2.5 text-[#2d2642]" strokeWidth={3} />
                       </div>
                       <span className="font-body">{f}</span>
                     </li>
@@ -326,12 +409,12 @@ export default function Home({ onImageSelect }: HomeProps) {
                   <div
                     className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ml-3 transition-all duration-200"
                     style={{
-                      border: `2px solid ${openFaq === i ? '#9b7dd4' : '#d8ccea'}`,
-                      background: openFaq === i ? '#f3eefa' : '#faf8ff',
+                      border: `2px solid ${openFaq === i ? '#d4e157' : '#d8ccea'}`,
+                      background: openFaq === i ? '#fafce8' : '#faf8ff',
                     }}
                   >
                     {openFaq === i
-                      ? <Minus className="w-3 h-3 text-[#9b7dd4]" />
+                      ? <Minus className="w-3 h-3 text-[#8b8a00]" />
                       : <Plus className="w-3 h-3 text-[#9a93b0]" />
                     }
                   </div>
@@ -351,8 +434,8 @@ export default function Home({ onImageSelect }: HomeProps) {
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ background: 'rgba(180,156,219,0.2)' }}>
-                  <Wand2 className="w-3.5 h-3.5 text-[#b49cdb]" />
+                <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ background: 'rgba(212,225,87,0.2)' }}>
+                  <Wand2 className="w-3.5 h-3.5 text-[#d4e157]" />
                 </div>
                 <span className="text-sm font-bold text-white font-display">DuoStyle</span>
               </div>
@@ -362,13 +445,13 @@ export default function Home({ onImageSelect }: HomeProps) {
             </div>
             <div className="flex flex-col items-center md:items-end gap-2.5">
               <div className="flex items-center gap-1.5 text-xs font-body" style={{ color: 'rgba(255,255,255,0.48)' }}>
-                <Shield className="w-3 h-3 text-[#b49cdb]" />
+                <Shield className="w-3 h-3 text-[#d4e157]" />
                 Your privacy is protected
               </div>
               <p className="text-xs font-body" style={{ color: 'rgba(255,255,255,0.28)' }}>2025 DuoStyle. All rights reserved.</p>
               <div className="flex gap-5">
-                <a href="#" className="text-xs font-body transition-colors hover:text-[#b49cdb]" style={{ color: 'rgba(255,255,255,0.38)' }}>Privacy</a>
-                <a href="#" className="text-xs font-body transition-colors hover:text-[#b49cdb]" style={{ color: 'rgba(255,255,255,0.38)' }}>Terms</a>
+                <a href="#" className="text-xs font-body transition-colors hover:text-[#d4e157]" style={{ color: 'rgba(255,255,255,0.38)' }}>Privacy</a>
+                <a href="#" className="text-xs font-body transition-colors hover:text-[#d4e157]" style={{ color: 'rgba(255,255,255,0.38)' }}>Terms</a>
               </div>
             </div>
           </div>

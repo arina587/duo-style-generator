@@ -150,15 +150,25 @@ export const references: ReferenceItem[] = [
   },
 ];
 
-export function getStyleGroups(): { style: string; label: string; items: ReferenceItem[] }[] {
-  const map = new Map<string, { label: string; items: ReferenceItem[] }>();
-  for (const ref of references) {
-    if (!map.has(ref.style)) {
-      map.set(ref.style, { label: ref.label, items: [] });
-    }
-    map.get(ref.style)!.items.push(ref);
-  }
-  return Array.from(map, ([style, { label, items }]) => ({ style, label, items }));
+export interface Category {
+  id: string;
+  name: string;
+  tag: string;
+  description: string;
+  cover: string;
+}
+
+export const categories: Category[] = [
+  { id: 'zootopia', name: 'Zootopia', tag: 'Animated', description: 'Disney/Pixar style with playful energy', cover: '/styles/zootopia/zootopia1.jpg' },
+  { id: 'euphoria', name: 'Euphoria', tag: 'Cinematic', description: 'Bold drama with neon aesthetics', cover: '/styles/euphoria/euphoria1.jpg' },
+  { id: 'titanic', name: 'Titanic', tag: 'Romance', description: 'Timeless romance with golden hour warmth', cover: '/styles/titanic/titanic1.jpg' },
+  { id: 'tangled', name: 'Tangled', tag: 'Fantasy', description: 'Fairy-tale adventure with lantern-lit warmth', cover: '/styles/tangled/tangled1.jpg' },
+  { id: 'spiderman', name: 'Spider-Man', tag: 'Action', description: 'Superhero story full of action and heart', cover: '/styles/spiderman/spiderman1.jpg' },
+  { id: 'terabithia', name: 'Terabithia', tag: 'Adventure', description: 'Coming-of-age tale in an enchanted world', cover: '/styles/terabithia/terabithia1.jpg' },
+];
+
+export function getRefsForCategory(categoryId: string): ReferenceItem[] {
+  return references.filter((r) => r.style === categoryId);
 }
 
 export function hasZootopiaMode(ref: ReferenceItem): boolean {
