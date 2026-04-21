@@ -275,6 +275,20 @@
     font-family: 'Nunito', sans-serif;
   }
 
+  /* ─── Neon yellow accent (from reference) ─── */
+  .accent-yellow { color: #d4e157; }
+  .bg-accent-yellow { background: #d4e157; }
+  .border-accent-yellow { border-color: #d4e157; }
+
+  /* ─── Hero grid bg ─── */
+  .hero-grid-bg {
+    background-color: #ede6f6;
+    background-image:
+      linear-gradient(rgba(180,160,210,0.22) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(180,160,210,0.22) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
   /* ─── Infinite carousel ─── */
   .carousel-track { display: flex; gap: 14px; will-change: transform; }
   @keyframes carousel-scroll {

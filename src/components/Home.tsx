@@ -1,6 +1,6 @@
 import {
   Sparkles, Star, Zap, Film, Heart, Wand2, ChevronDown, Check, ArrowRight,
-  Upload, Shield, Plus, Minus, Camera
+  Upload, Shield, Plus, Minus
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import InfiniteCarousel from './InfiniteCarousel';
@@ -263,114 +263,110 @@ export default function Home({ onStyleSelect }: HomeProps) {
       </header>
 
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden pt-24 pb-10" style={{ background: 'linear-gradient(160deg, #ede6f6 0%, #e8dff4 35%, #f2e8f6 60%, #f0edf6 100%)' }}>
-        {/* Decorative elements */}
-        <div className="absolute top-20 left-[7%] animate-wiggle opacity-60">
-          <Camera className="w-6 h-6 text-[#b49cdb]" />
-        </div>
-        <div className="absolute top-28 right-[10%] animate-float" style={{ animationDelay: '0.5s' }}>
-          <div className="sticker text-xs" style={{ borderColor: '#d8ccea' }}>
-            <Sparkles className="w-3 h-3 text-[#9b7dd4]" />
-            AI Magic
-          </div>
-        </div>
-        <div className="absolute top-36 left-[38%] w-2.5 h-2.5 rounded-full bg-[#b49cdb] opacity-40 animate-pulse-soft" />
-        <div className="absolute bottom-20 right-[15%] w-3 h-3 rounded-full bg-[#deb8e6] opacity-35 animate-pulse-soft" style={{ animationDelay: '1s' }} />
+      <section className="relative overflow-hidden pt-20 pb-6 hero-grid-bg">
+        {/* Subtle decorative dots -- positioned near content, not random */}
+        <div className="absolute top-16 left-[5%] w-2 h-2 rounded-full bg-[#d4e157] opacity-50 animate-pulse-soft" />
+        <div className="absolute top-24 right-[5%] w-2.5 h-2.5 rounded-full bg-[#b49cdb] opacity-40 animate-pulse-soft" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-14 left-[12%] w-2 h-2 rounded-full bg-[#deb8e6] opacity-35 animate-pulse-soft" style={{ animationDelay: '2s' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-5 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
 
-            {/* Left: text */}
-            <div className="max-w-md animate-fade-up">
-              <div className="badge-pill inline-flex items-center gap-2 mb-5">
-                <span className="w-2 h-2 rounded-full bg-[#9b7dd4]" />
-                AI-Powered Face Transfer
+          {/* Centered badge row: icon + label grouped together */}
+          <div className="flex justify-center mb-5 animate-fade-up">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-[#d8ccea] bg-white/70 backdrop-blur-sm" style={{ boxShadow: '0 2px 12px rgba(120,90,180,0.08)' }}>
+              <div className="w-5 h-5 rounded-lg flex items-center justify-center" style={{ background: '#d4e157' }}>
+                <Sparkles className="w-3 h-3 text-[#2d2642]" />
               </div>
+              <span className="text-xs font-extrabold text-[#2d2642] font-body tracking-wide uppercase">AI-Powered Face Transfer</span>
+            </div>
+          </div>
 
-              <h1 className="font-display text-[2.8rem] sm:text-[3.4rem] leading-[1.08] font-bold text-[#2d2642] mb-4">
-                Step Inside<br />
-                <span className="relative inline-block">
-                  <span className="relative z-10">Iconic</span>
-                  <span className="absolute bottom-1 left-0 right-0 h-3 rounded-full -z-0" style={{ background: 'rgba(155,125,212,0.25)' }} />
-                </span>{' '}Movie<br />
-                Moments
-              </h1>
+          {/* Centered headline */}
+          <div className="text-center mb-5 animate-fade-up" style={{ animationDelay: '0.06s' }}>
+            <h1 className="font-display text-[2.6rem] sm:text-[3.2rem] leading-[1.08] font-bold text-[#2d2642] mb-3">
+              Step Inside{' '}
+              <span className="relative inline-block">
+                <span className="relative z-10">Iconic</span>
+                <span className="absolute bottom-0.5 left-0 right-0 h-3 rounded-full -z-0" style={{ background: '#d4e157', opacity: 0.45 }} />
+              </span>{' '}Movie Moments
+            </h1>
+            <p className="text-sm sm:text-base text-[#7a6f96] leading-relaxed max-w-md mx-auto font-body">
+              Upload two photos. Choose a cinematic style. Let AI place you both inside an iconic scene -- in under 90 seconds.
+            </p>
+          </div>
 
-              <p className="text-[15px] sm:text-base text-[#7a6f96] leading-relaxed mb-6 max-w-[380px] font-body">
-                Upload two photos. Choose a cinematic style. Let AI place you both inside an iconic scene -- in under 90 seconds.
-              </p>
+          {/* Centered buttons */}
+          <div className="flex justify-center gap-3 mb-6 animate-fade-up" style={{ animationDelay: '0.1s' }}>
+            <button
+              onClick={() => scrollToSection('styles')}
+              className="btn-accent flex items-center gap-2 px-6 py-2.5 text-sm"
+            >
+              <Sparkles className="w-4 h-4" />
+              Start Creating
+              <ArrowRight className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => scrollToSection('how')}
+              className="btn-secondary flex items-center gap-2 px-6 py-2.5 text-sm"
+            >
+              See how it works
+            </button>
+          </div>
 
-              <div className="flex flex-wrap gap-3 items-center mb-6">
-                <button
+          {/* Image grid: 2 rows x 3 cols, uniform cards */}
+          <div className="animate-fade-up" style={{ animationDelay: '0.14s' }}>
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2.5 max-w-3xl mx-auto">
+              {[
+                { src: '/styles/titanic/titanic1.jpg', label: 'Titanic' },
+                { src: '/styles/euphoria/euphoria1.jpg', label: 'Euphoria' },
+                { src: '/styles/zootopia/zootopia1.jpg', label: 'Zootopia' },
+                { src: '/styles/tangled/tangled1.jpg', label: 'Tangled' },
+                { src: '/styles/spiderman/spiderman1.jpg', label: 'Spider-Man' },
+                { src: '/styles/terabithia/terabithia1.JPG', label: 'Terabithia' },
+              ].map(({ src, label }, idx) => (
+                <div
+                  key={label}
+                  className="relative rounded-2xl overflow-hidden aspect-[4/5] animate-scale-in group cursor-pointer border-2 border-[#ddd4ee] hover:border-[#b49cdb] transition-all duration-300 hover:shadow-lg"
+                  style={{ animationDelay: `${idx * 0.05}s`, boxShadow: '0 3px 14px rgba(120,90,180,0.1)' }}
                   onClick={() => scrollToSection('styles')}
-                  className="btn-accent flex items-center gap-2 px-6 py-3 text-sm"
                 >
-                  <Sparkles className="w-4 h-4" />
-                  Start Creating
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => scrollToSection('how')}
-                  className="btn-secondary flex items-center gap-2 px-6 py-3 text-sm"
-                >
-                  See how it works
-                </button>
-              </div>
-
-              <div className="flex items-center gap-7 pt-5 border-t-2 border-dashed border-[#d8ccea]">
-                {[
-                  { value: '6', label: 'Cinematic styles' },
-                  { value: '90s', label: 'Generation time' },
-                  { value: 'HD', label: 'Output quality' },
-                ].map(({ value, label }) => (
-                  <div key={label}>
-                    <div className="text-lg font-bold text-[#2d2642] font-display">{value}</div>
-                    <div className="text-[11px] text-[#9a93b0] font-body mt-0.5">{label}</div>
+                  <img
+                    src={src}
+                    alt={label}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#2d2642]/55 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5">
+                    <span className="text-white text-[10px] font-bold font-body drop-shadow-sm">{label}</span>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
+          </div>
 
-            {/* Right: image grid -- clean 3-column, no overlapping float */}
-            <div className="animate-fade-up" style={{ animationDelay: '0.12s' }}>
-              <div className="grid grid-cols-3 gap-3">
-                {[
-                  { src: '/styles/titanic/titanic1.jpg', label: 'Titanic' },
-                  { src: '/styles/euphoria/euphoria1.jpg', label: 'Euphoria' },
-                  { src: '/styles/zootopia/zootopia1.jpg', label: 'Zootopia' },
-                  { src: '/styles/tangled/tangled1.jpg', label: 'Tangled' },
-                  { src: '/styles/spiderman/spiderman1.jpg', label: 'Spider-Man' },
-                  { src: '/styles/terabithia/terabithia1.JPG', label: 'Terabithia' },
-                ].map(({ src, label }, idx) => (
-                  <div
-                    key={label}
-                    className="relative rounded-2xl overflow-hidden aspect-[4/5] animate-scale-in group cursor-pointer border-2 border-[#ddd4ee] hover:border-[#b49cdb] transition-all duration-300"
-                    style={{ animationDelay: `${idx * 0.06}s`, boxShadow: '0 4px 18px rgba(120,90,180,0.1)' }}
-                    onClick={() => scrollToSection('styles')}
-                  >
-                    <img
-                      src={src}
-                      alt={label}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#2d2642]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="absolute bottom-0 left-0 right-0 p-2.5 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                      <span className="text-white text-[11px] font-bold font-body bg-[#2d2642]/50 backdrop-blur-sm px-2.5 py-0.5 rounded-full">{label}</span>
-                    </div>
-                  </div>
-                ))}
+          {/* Stats row */}
+          <div className="flex justify-center items-center gap-8 mt-5 pt-4 border-t-2 border-dashed border-[#d8ccea]/60 animate-fade-up" style={{ animationDelay: '0.18s' }}>
+            {[
+              { value: '6', label: 'Cinematic styles' },
+              { value: '90s', label: 'Generation time' },
+              { value: 'HD', label: 'Output quality' },
+            ].map(({ value, label }) => (
+              <div key={label} className="text-center">
+                <div className="text-lg font-bold text-[#2d2642] font-display">{value}</div>
+                <div className="text-[10px] text-[#9a93b0] font-body">{label}</div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
 
-        <div className="flex justify-center mt-6">
+        {/* Scroll indicator */}
+        <div className="flex justify-center mt-4">
           <button
             onClick={() => scrollToSection('carousel')}
-            className="flex flex-col items-center gap-0.5 text-[#9a93b0] hover:text-[#2d2642] transition-colors duration-200 animate-float"
+            className="flex flex-col items-center gap-0 text-[#9a93b0] hover:text-[#2d2642] transition-colors duration-200 animate-float"
           >
-            <span className="text-[10px] font-body tracking-widest uppercase font-bold">Explore</span>
-            <ChevronDown className="w-4 h-4" />
+            <span className="text-[9px] font-body tracking-widest uppercase font-bold">Explore</span>
+            <ChevronDown className="w-3.5 h-3.5" />
           </button>
         </div>
       </section>
