@@ -1,12 +1,9 @@
 import { Upload as UploadIcon, ArrowLeft, ArrowRight, Image, Sparkles, Wand2, Check } from 'lucide-react';
-import { useState } from 'react';
-import type { ReferenceJob } from './Home';
+import { useState, useEffect } from 'react';
+import type { ReferenceItem } from '../data/references';
 
 interface UploadProps {
-  selectedStyle: string;
-  referenceJobs: ReferenceJob[];
-  selectedReference: string;
-  onReferenceSelect: (reference: string) => void;
+  selectedRef: ReferenceItem;
   onBack: () => void;
   onGenerate: (photo1: File, photo2: File, styleBoard: File, prompt: string, mode?: string) => void;
   photo1: File | null;
@@ -19,13 +16,33 @@ interface UploadProps {
   setPreview2: (url: string) => void;
 }
 
-export default function Upload({ selectedStyle, referenceJobs, selectedReference, onReferenceSelect, onBack, onGenerate, photo1, setPhoto1, photo2, setPhoto2, preview1, setPreview1, preview2, setPreview2 }: UploadProps) {
+export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPhoto1, photo2, setPhoto2, preview1, setPreview1, preview2, setPreview2 }: UploadProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string>('');
   const [selectedMode, setSelectedMode] = useState<string>('');
-  const [selectedPrompt, setSelectedPrompt] = useState<string>('');
   const [referenceFile, setReferenceFile] = useState<File | null>(null);
-  const [selectedJob, setSelectedJob] = useState<ReferenceJob | null>(null);
+
+  const isZootopia = selectedRef.style === 'zootopia';
+  const hasZootopiaVariants = isZootopia && !!(selectedRef.humanPrompt || selectedRef.animalPrompt);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await fetch(selectedRef.image);
+        const blob = await response.blob();
+        setReferenceFile(new File([blob], 'reference.jpg', { type: blob.type }));
+      } catch (err) {
+        console.error('Failed to load reference image:', err);
+        setError('Failed to load reference image');
+      }
+    })();
+  }, [selectedRef.image]);
+
+  const resolvePrompt = (): string => {
+    if (selectedMode === 'zootopia_cartoon' && selectedRef.humanPrompt) return selectedRef.humanPrompt;
+    if (selectedMode === 'zootopia_animals' && selectedRef.animalPrompt) return selectedRef.animalPrompt;
+    return selectedRef.prompt;
+  };
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -41,53 +58,32 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
     }
   };
 
-  const resolvePrompt = (job: ReferenceJob, mode: string): string => {
-    if (mode === 'zootopia_cartoon' && job.humanPrompt) return job.humanPrompt;
-    if (mode === 'zootopia_animals' && job.animalPrompt) return job.animalPrompt;
-    return job.prompt;
-  };
-
-  const handleReferenceSelect = async (job: ReferenceJob) => {
-    onReferenceSelect(job.image);
-    setSelectedJob(job);
-    setSelectedPrompt(resolvePrompt(job, selectedMode));
-    try {
-      const response = await fetch(job.image);
-      const blob = await response.blob();
-      const file = new File([blob], 'reference.jpg', { type: blob.type });
-      setReferenceFile(file);
-    } catch (err) {
-      console.error('Failed to load reference image:', err);
-      setError('Failed to load reference image');
-    }
-  };
-
   const handleGenerate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     if (isGenerating) return;
 
     if (!photo1 || !photo2) { setError('Please upload both photos before generating'); return; }
-    if (!selectedStyle) { setError('Style selection is missing. Please go back and select a style.'); return; }
-    if (!referenceFile) { setError('Please select a reference image before generating'); return; }
-    if (!selectedPrompt || selectedPrompt.trim() === '') { setError('No prompt selected. Please select a reference image before generating.'); return; }
-    if (selectedStyle === 'zootopia' && !['zootopia_cartoon', 'zootopia_animals'].includes(selectedMode)) {
+    if (!referenceFile) { setError('Reference image still loading. Please wait.'); return; }
+    if (hasZootopiaVariants && !['zootopia_cartoon', 'zootopia_animals'].includes(selectedMode)) {
       setError('Please select a transformation type before generating');
       return;
     }
 
+    const prompt = resolvePrompt();
+    if (!prompt || prompt.trim() === '') { setError('No prompt available for this scene.'); return; }
+
     setIsGenerating(true);
     setError('');
-    onGenerate(photo1, photo2, referenceFile, selectedPrompt, selectedMode);
+    onGenerate(photo1, photo2, referenceFile, prompt, selectedMode || undefined);
   };
 
-  const styleLabel = selectedStyle.charAt(0).toUpperCase() + selectedStyle.slice(1);
-  const canGenerate = !isGenerating && !!photo1 && !!photo2 && !!referenceFile && (selectedStyle !== 'zootopia' || ['zootopia_cartoon', 'zootopia_animals'].includes(selectedMode));
+  const canGenerate = !isGenerating && !!photo1 && !!photo2 && !!referenceFile && (!hasZootopiaVariants || ['zootopia_cartoon', 'zootopia_animals'].includes(selectedMode));
 
   const steps = [
     { n: 1, label: 'Upload Photos', done: !!(photo1 && photo2) },
-    { n: 2, label: 'Pick Reference', done: !!selectedReference },
-    { n: 3, label: 'Generate', done: false },
+    ...(hasZootopiaVariants ? [{ n: 2, label: 'Pick Mode', done: !!selectedMode }] : []),
+    { n: hasZootopiaVariants ? 3 : 2, label: 'Generate', done: false },
   ];
 
   return (
@@ -111,7 +107,7 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
           </div>
           <div className="badge-pill flex items-center gap-1.5">
             <Sparkles className="w-3 h-3 text-[#9b7dd4]" />
-            {styleLabel}
+            {selectedRef.label}
           </div>
         </div>
       </div>
@@ -119,13 +115,13 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
       <div className="max-w-5xl mx-auto px-5 lg:px-8 py-8">
 
         {/* Page title */}
-        <div className="text-center mb-7">
+        <div className="text-center mb-6">
           <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#2d2642] mb-1.5">Upload Your Photos</h2>
-          <p className="text-[#7a6f96] text-sm font-body">Upload two photos, pick a reference scene, then generate your fusion.</p>
+          <p className="text-[#7a6f96] text-sm font-body">Upload two photos, then generate your fusion.</p>
         </div>
 
         {/* Progress steps */}
-        <div className="flex items-center justify-center gap-2.5 mb-8">
+        <div className="flex items-center justify-center gap-2.5 mb-7">
           {steps.map((step, i) => (
             <div key={step.n} className="flex items-center gap-2.5">
               <div
@@ -142,9 +138,36 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
                 }
                 {step.label}
               </div>
-              {i < 2 && <div className="w-6 h-0.5 rounded-full bg-[#d8ccea]" />}
+              {i < steps.length - 1 && <div className="w-6 h-0.5 rounded-full bg-[#d8ccea]" />}
             </div>
           ))}
+        </div>
+
+        {/* Reference preview */}
+        <div className="card-premium p-4 mb-4">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 text-white" style={{ background: '#d4e157' }}>
+              <Sparkles className="w-3 h-3 text-[#2d2642]" />
+            </div>
+            <h3 className="text-[11px] font-extrabold uppercase tracking-widest font-body text-[#9a93b0]">Selected Scene</h3>
+          </div>
+          <div className="flex items-center gap-4">
+            <img
+              src={selectedRef.image}
+              alt={selectedRef.label}
+              className="w-24 h-32 object-cover rounded-xl border-2 border-[#e2daf0]"
+            />
+            <div>
+              <p className="text-sm font-bold text-[#2d2642] font-body">{selectedRef.label}</p>
+              <p className="text-xs text-[#7a6f96] font-body mt-1">Scene {selectedRef.id}</p>
+              <button
+                onClick={onBack}
+                className="text-xs text-[#9b7dd4] hover:text-[#8b6cc1] font-bold font-body mt-2 transition-colors"
+              >
+                Change scene
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Photo uploads */}
@@ -197,41 +220,8 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
           ))}
         </div>
 
-        {/* Reference selection */}
-        {referenceJobs.length > 0 && (
-          <div className="card-premium p-5 mb-4">
-            <div className="mb-4">
-              <h3 className="font-display font-bold text-[#2d2642] text-sm mb-1">Choose Reference Scene</h3>
-              <p className="text-xs font-body text-[#7a6f96]">Select the composition you want to recreate</p>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
-              {referenceJobs.map((job, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => handleReferenceSelect(job)}
-                  className={`rounded-xl overflow-hidden aspect-[3/4] transition-all duration-300 relative group border-2 ${
-                    selectedReference === job.image
-                      ? 'border-[#8b6cc1] scale-[1.02] shadow-lg'
-                      : 'border-[#e2daf0] opacity-60 hover:opacity-95 hover:scale-[1.01] hover:border-[#b49cdb]'
-                  }`}
-                >
-                  <img src={job.image} alt={`Reference ${index + 1}`} className="w-full h-full object-cover" style={{ background: '#f3eefa' }} />
-                  {selectedReference === job.image && (
-                    <div className="absolute inset-0 flex items-end justify-center pb-2.5" style={{ background: 'rgba(139,108,193,0.15)' }}>
-                      <div className="px-2.5 py-0.5 rounded-full text-white text-[11px] font-bold font-body shadow-lg" style={{ background: '#8b6cc1' }}>
-                        Selected
-                      </div>
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Zootopia mode selector */}
-        {selectedStyle === 'zootopia' && selectedReference && (
+        {hasZootopiaVariants && (
           <div className="card-premium p-5 mb-4">
             <div className="mb-4">
               <h3 className="font-display font-bold text-[#2d2642] text-sm mb-1">Transformation Type</h3>
@@ -240,10 +230,7 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
-                onClick={() => {
-                  setSelectedMode('zootopia_cartoon');
-                  if (selectedJob) setSelectedPrompt(resolvePrompt(selectedJob, 'zootopia_cartoon'));
-                }}
+                onClick={() => setSelectedMode('zootopia_cartoon')}
                 className={`p-4 rounded-xl border-2 transition-all duration-200 text-left ${selectedMode === 'zootopia_cartoon' ? 'mode-selected' : ''}`}
                 style={selectedMode !== 'zootopia_cartoon' ? { borderColor: '#e2daf0', background: '#ffffff' } : {}}
               >
@@ -253,10 +240,7 @@ export default function Upload({ selectedStyle, referenceJobs, selectedReference
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setSelectedMode('zootopia_animals');
-                  if (selectedJob) setSelectedPrompt(resolvePrompt(selectedJob, 'zootopia_animals'));
-                }}
+                onClick={() => setSelectedMode('zootopia_animals')}
                 className={`p-4 rounded-xl border-2 transition-all duration-200 text-left ${selectedMode === 'zootopia_animals' ? 'mode-selected' : ''}`}
                 style={selectedMode !== 'zootopia_animals' ? { borderColor: '#e2daf0', background: '#ffffff' } : {}}
               >

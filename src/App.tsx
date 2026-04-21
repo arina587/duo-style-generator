@@ -1,29 +1,25 @@
 import { useState } from 'react';
 import Home from './components/Home';
-import type { ReferenceJob } from './components/Home';
 import Upload from './components/Upload';
 import Result from './components/Result';
+import type { ReferenceItem } from './data/references';
 
 type View = 'home' | 'upload' | 'result';
 
 function App() {
   const [currentView, setCurrentView] = useState<View>('home');
-  const [selectedStyle, setSelectedStyle] = useState<string>('');
-  const [referenceJobs, setReferenceJobs] = useState<ReferenceJob[]>([]);
-  const [selectedReference, setSelectedReference] = useState<string>('');
+  const [selectedRef, setSelectedRef] = useState<ReferenceItem | null>(null);
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const [debugInfo, setDebugInfo] = useState<Record<string, unknown> | null>(null);
+  const [, setDebugInfo] = useState<Record<string, unknown> | null>(null);
   const [photo1, setPhoto1] = useState<File | null>(null);
   const [photo2, setPhoto2] = useState<File | null>(null);
   const [preview1, setPreview1] = useState<string>('');
   const [preview2, setPreview2] = useState<string>('');
 
-  const handleStyleSelect = (style: string, jobs: ReferenceJob[]) => {
-    setSelectedStyle(style);
-    setReferenceJobs(jobs);
-    setSelectedReference('');
+  const handleImageSelect = (ref: ReferenceItem) => {
+    setSelectedRef(ref);
     setCurrentView('upload');
   };
 
@@ -46,12 +42,12 @@ function App() {
       return;
     }
 
-    if (!photo1 || !photo2 || !referenceFile || !selectedStyle) {
+    if (!photo1 || !photo2 || !referenceFile || !selectedRef) {
       console.error('BLOCKED: Missing required fields', {
         person1: !!photo1,
         person2: !!photo2,
         reference: !!referenceFile,
-        selectedStyle: !!selectedStyle,
+        selectedRef: !!selectedRef,
       });
       setError('Missing required data. Please try again.');
       return;
@@ -72,8 +68,9 @@ function App() {
       throw new Error("No prompt selected. Please select a reference image before generating.");
     }
 
+    const style = selectedRef.style;
     console.log('=== REQUEST START ===');
-    console.log('selectedStyle:', selectedStyle);
+    console.log('style:', style);
     console.log('mode:', mode);
 
     try {
@@ -81,9 +78,9 @@ function App() {
       formData.append('person1', photo1);
       formData.append('person2', photo2);
       formData.append('reference', referenceFile);
-      formData.append('style', selectedStyle);
-      formData.append('referenceId', selectedReference);
-      formData.append('domain', resolveDomain(selectedStyle, mode));
+      formData.append('style', style);
+      formData.append('referenceId', selectedRef.id);
+      formData.append('domain', resolveDomain(style, mode));
       formData.append('prompt', prompt);
 
       if (mode) {
@@ -94,8 +91,8 @@ function App() {
         person1: photo1.name,
         person2: photo2.name,
         reference: referenceFile.name,
-        style: selectedStyle,
-        referenceId: selectedReference,
+        style,
+        referenceId: selectedRef.id,
         mode: mode || 'not provided',
         prompt,
       });
@@ -145,9 +142,7 @@ function App() {
 
   const handleBackToHome = () => {
     setCurrentView('home');
-    setSelectedStyle('');
-    setReferenceJobs([]);
-    setSelectedReference('');
+    setSelectedRef(null);
     setGeneratedImageUrl('');
     setError('');
     setDebugInfo(null);
@@ -166,14 +161,11 @@ function App() {
   return (
     <>
       {currentView === 'home' && (
-        <Home onStyleSelect={handleStyleSelect} />
+        <Home onImageSelect={handleImageSelect} />
       )}
-      {currentView === 'upload' && (
+      {currentView === 'upload' && selectedRef && (
         <Upload
-          selectedStyle={selectedStyle}
-          referenceJobs={referenceJobs}
-          selectedReference={selectedReference}
-          onReferenceSelect={setSelectedReference}
+          selectedRef={selectedRef}
           onBack={handleBackToHome}
           onGenerate={handleGenerate}
           photo1={photo1}
