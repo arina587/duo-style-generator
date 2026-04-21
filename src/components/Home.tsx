@@ -3,7 +3,6 @@ import {
   Upload, Shield, Plus, Minus
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
-import InfiniteCarousel from './InfiniteCarousel';
 
 export type ReferenceJob = { image: string; prompt: string; humanPrompt?: string; animalPrompt?: string };
 
@@ -183,20 +182,6 @@ const faqItems = [
   { q: 'Can I download my result?', a: 'Yes -- once generated you can download the full resolution image directly.' },
 ];
 
-const allCarouselImages = [
-  { src: '/styles/titanic/titanic1.jpg', alt: 'Titanic 1', offsetY: 0 },
-  { src: '/styles/euphoria/euphoria1.jpg', alt: 'Euphoria 1', offsetY: 14 },
-  { src: '/styles/zootopia/zootopia1.jpg', alt: 'Zootopia 1', offsetY: -6 },
-  { src: '/styles/tangled/tangled1.jpg', alt: 'Tangled 1', offsetY: 10 },
-  { src: '/styles/titanic/titanic2.jpg', alt: 'Titanic 2', offsetY: 0 },
-  { src: '/styles/euphoria/euphoria2.jpg', alt: 'Euphoria 2', offsetY: -14 },
-  { src: '/styles/spiderman/spiderman1.jpg', alt: 'Spider-Man 1', offsetY: 6 },
-  { src: '/styles/zootopia/zootopia2.jpg', alt: 'Zootopia 2', offsetY: 0 },
-  { src: '/styles/terabithia/terabithia1.JPG', alt: 'Terabithia 1', offsetY: 16 },
-  { src: '/styles/titanic/titanic3.jpg', alt: 'Titanic 3', offsetY: -4 },
-  { src: '/styles/euphoria/euphoria3.JPG', alt: 'Euphoria 3', offsetY: 8 },
-  { src: '/styles/zootopia/zootopia3.jpg', alt: 'Zootopia 3', offsetY: 0 },
-];
 
 export default function Home({ onStyleSelect }: HomeProps) {
   const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
@@ -263,15 +248,14 @@ export default function Home({ onStyleSelect }: HomeProps) {
       </header>
 
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden pt-20 pb-6 hero-grid-bg">
-        {/* Subtle decorative dots -- positioned near content, not random */}
-        <div className="absolute top-16 left-[5%] w-2 h-2 rounded-full bg-[#d4e157] opacity-50 animate-pulse-soft" />
-        <div className="absolute top-24 right-[5%] w-2.5 h-2.5 rounded-full bg-[#b49cdb] opacity-40 animate-pulse-soft" style={{ animationDelay: '1s' }} />
-        <div className="absolute bottom-14 left-[12%] w-2 h-2 rounded-full bg-[#deb8e6] opacity-35 animate-pulse-soft" style={{ animationDelay: '2s' }} />
+      <section className="relative overflow-hidden pt-24 pb-10 hero-grid-bg">
+        <div className="absolute top-20 left-[6%] w-2 h-2 rounded-full bg-[#d4e157] opacity-50 animate-pulse-soft" />
+        <div className="absolute top-28 right-[6%] w-2.5 h-2.5 rounded-full bg-[#b49cdb] opacity-40 animate-pulse-soft" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-16 left-[14%] w-2 h-2 rounded-full bg-[#deb8e6] opacity-35 animate-pulse-soft" style={{ animationDelay: '2s' }} />
 
-        <div className="relative z-10 max-w-6xl mx-auto px-5 lg:px-8">
+        <div className="relative z-10 max-w-2xl mx-auto px-5 lg:px-8 text-center">
 
-          {/* Centered badge row: icon + label grouped together */}
+          {/* Badge */}
           <div className="flex justify-center mb-5 animate-fade-up">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-[#d8ccea] bg-white/70 backdrop-blur-sm" style={{ boxShadow: '0 2px 12px rgba(120,90,180,0.08)' }}>
               <div className="w-5 h-5 rounded-lg flex items-center justify-center" style={{ background: '#d4e157' }}>
@@ -281,25 +265,25 @@ export default function Home({ onStyleSelect }: HomeProps) {
             </div>
           </div>
 
-          {/* Centered headline */}
-          <div className="text-center mb-5 animate-fade-up" style={{ animationDelay: '0.06s' }}>
-            <h1 className="font-display text-[2.6rem] sm:text-[3.2rem] leading-[1.08] font-bold text-[#2d2642] mb-3">
+          {/* Headline */}
+          <div className="mb-5 animate-fade-up" style={{ animationDelay: '0.06s' }}>
+            <h1 className="font-display text-[2.6rem] sm:text-[3.4rem] leading-[1.08] font-bold text-[#2d2642] mb-4">
               Step Inside{' '}
               <span className="relative inline-block">
                 <span className="relative z-10">Iconic</span>
                 <span className="absolute bottom-0.5 left-0 right-0 h-3 rounded-full -z-0" style={{ background: '#d4e157', opacity: 0.45 }} />
               </span>{' '}Movie Moments
             </h1>
-            <p className="text-sm sm:text-base text-[#7a6f96] leading-relaxed max-w-md mx-auto font-body">
+            <p className="text-sm sm:text-base text-[#7a6f96] leading-relaxed max-w-lg mx-auto font-body">
               Upload two photos. Choose a cinematic style. Let AI place you both inside an iconic scene -- in under 90 seconds.
             </p>
           </div>
 
-          {/* Centered buttons */}
-          <div className="flex justify-center gap-3 mb-6 animate-fade-up" style={{ animationDelay: '0.1s' }}>
+          {/* Buttons */}
+          <div className="flex justify-center gap-3 mb-7 animate-fade-up" style={{ animationDelay: '0.1s' }}>
             <button
               onClick={() => scrollToSection('styles')}
-              className="btn-accent flex items-center gap-2 px-6 py-2.5 text-sm"
+              className="btn-accent flex items-center gap-2 px-7 py-3 text-sm"
             >
               <Sparkles className="w-4 h-4" />
               Start Creating
@@ -307,74 +291,37 @@ export default function Home({ onStyleSelect }: HomeProps) {
             </button>
             <button
               onClick={() => scrollToSection('how')}
-              className="btn-secondary flex items-center gap-2 px-6 py-2.5 text-sm"
+              className="btn-secondary flex items-center gap-2 px-7 py-3 text-sm"
             >
               See how it works
             </button>
           </div>
 
-          {/* Image grid: 2 rows x 3 cols, uniform cards */}
-          <div className="animate-fade-up" style={{ animationDelay: '0.14s' }}>
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2.5 max-w-3xl mx-auto">
-              {[
-                { src: '/styles/titanic/titanic1.jpg', label: 'Titanic' },
-                { src: '/styles/euphoria/euphoria1.jpg', label: 'Euphoria' },
-                { src: '/styles/zootopia/zootopia1.jpg', label: 'Zootopia' },
-                { src: '/styles/tangled/tangled1.jpg', label: 'Tangled' },
-                { src: '/styles/spiderman/spiderman1.jpg', label: 'Spider-Man' },
-                { src: '/styles/terabithia/terabithia1.JPG', label: 'Terabithia' },
-              ].map(({ src, label }, idx) => (
-                <div
-                  key={label}
-                  className="relative rounded-2xl overflow-hidden aspect-[4/5] animate-scale-in group cursor-pointer border-2 border-[#ddd4ee] hover:border-[#b49cdb] transition-all duration-300 hover:shadow-lg"
-                  style={{ animationDelay: `${idx * 0.05}s`, boxShadow: '0 3px 14px rgba(120,90,180,0.1)' }}
-                  onClick={() => scrollToSection('styles')}
-                >
-                  <img
-                    src={src}
-                    alt={label}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#2d2642]/55 via-transparent to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5">
-                    <span className="text-white text-[10px] font-bold font-body drop-shadow-sm">{label}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Stats row */}
-          <div className="flex justify-center items-center gap-8 mt-5 pt-4 border-t-2 border-dashed border-[#d8ccea]/60 animate-fade-up" style={{ animationDelay: '0.18s' }}>
+          {/* Stats */}
+          <div className="flex justify-center items-center gap-10 pt-5 border-t-2 border-dashed border-[#d8ccea]/60 animate-fade-up" style={{ animationDelay: '0.14s' }}>
             {[
               { value: '6', label: 'Cinematic styles' },
               { value: '90s', label: 'Generation time' },
               { value: 'HD', label: 'Output quality' },
             ].map(({ value, label }) => (
               <div key={label} className="text-center">
-                <div className="text-lg font-bold text-[#2d2642] font-display">{value}</div>
-                <div className="text-[10px] text-[#9a93b0] font-body">{label}</div>
+                <div className="text-xl font-bold text-[#2d2642] font-display">{value}</div>
+                <div className="text-[11px] text-[#9a93b0] font-body">{label}</div>
               </div>
             ))}
           </div>
         </div>
 
         {/* Scroll indicator */}
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center mt-6">
           <button
-            onClick={() => scrollToSection('carousel')}
+            onClick={() => scrollToSection('styles')}
             className="flex flex-col items-center gap-0 text-[#9a93b0] hover:text-[#2d2642] transition-colors duration-200 animate-float"
           >
-            <span className="text-[9px] font-body tracking-widest uppercase font-bold">Explore</span>
+            <span className="text-[9px] font-body tracking-widest uppercase font-bold">Explore Styles</span>
             <ChevronDown className="w-3.5 h-3.5" />
           </button>
         </div>
-      </section>
-
-      {/* ── CAROUSEL ── */}
-      <section id="carousel" className="py-8 overflow-hidden" style={{ background: 'linear-gradient(180deg, #e8e0f4 0%, #f0edf6 100%)' }}>
-        <p className="text-center section-eyebrow mb-4">Sample outputs across all styles</p>
-        <InfiniteCarousel images={allCarouselImages} />
       </section>
 
       {/* ── HOW IT WORKS ── */}
