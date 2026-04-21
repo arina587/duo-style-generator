@@ -268,11 +268,6 @@
 
   /* ─── Selection ─── */
   .selected-ring { box-shadow: 0 0 0 3px #8b6cc1; }
-  .mode-selected {
-    border-color: #8b6cc1 !important;
-    background: #faf8ff !important;
-    box-shadow: 0 0 0 3px rgba(139,108,193,0.18);
-  }
 
   /* ─── Section eyebrow ─── */
   .section-eyebrow {

@@ -171,6 +171,3 @@ export function getRefsForCategory(categoryId: string): ReferenceItem[] {
   return references.filter((r) => r.style === categoryId);
 }
 
-export function hasZootopiaMode(ref: ReferenceItem): boolean {
-  return ref.style === 'zootopia' && !!(ref.humanPrompt || ref.animalPrompt);
-}

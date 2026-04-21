@@ -19,11 +19,7 @@ interface UploadProps {
 export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPhoto1, photo2, setPhoto2, preview1, setPreview1, preview2, setPreview2 }: UploadProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string>('');
-  const [selectedMode, setSelectedMode] = useState<string>('');
   const [referenceFile, setReferenceFile] = useState<File | null>(null);
-
-  const isZootopia = selectedRef.style === 'zootopia';
-  const hasZootopiaVariants = isZootopia && !!(selectedRef.humanPrompt || selectedRef.animalPrompt);
 
   useEffect(() => {
     (async () => {
@@ -37,12 +33,6 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
       }
     })();
   }, [selectedRef.image]);
-
-  const resolvePrompt = (): string => {
-    if (selectedMode === 'zootopia_cartoon' && selectedRef.humanPrompt) return selectedRef.humanPrompt;
-    if (selectedMode === 'zootopia_animals' && selectedRef.animalPrompt) return selectedRef.animalPrompt;
-    return selectedRef.prompt;
-  };
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -65,25 +55,20 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
 
     if (!photo1 || !photo2) { setError('Please upload both photos before generating'); return; }
     if (!referenceFile) { setError('Reference image still loading. Please wait.'); return; }
-    if (hasZootopiaVariants && !['zootopia_cartoon', 'zootopia_animals'].includes(selectedMode)) {
-      setError('Please select a transformation type before generating');
-      return;
-    }
 
-    const prompt = resolvePrompt();
+    const prompt = selectedRef.prompt;
     if (!prompt || prompt.trim() === '') { setError('No prompt available for this scene.'); return; }
 
     setIsGenerating(true);
     setError('');
-    onGenerate(photo1, photo2, referenceFile, prompt, selectedMode || undefined);
+    onGenerate(photo1, photo2, referenceFile, prompt);
   };
 
-  const canGenerate = !isGenerating && !!photo1 && !!photo2 && !!referenceFile && (!hasZootopiaVariants || ['zootopia_cartoon', 'zootopia_animals'].includes(selectedMode));
+  const canGenerate = !isGenerating && !!photo1 && !!photo2 && !!referenceFile;
 
   const steps = [
     { n: 1, label: 'Upload Photos', done: !!(photo1 && photo2) },
-    ...(hasZootopiaVariants ? [{ n: 2, label: 'Pick Mode', done: !!selectedMode }] : []),
-    { n: hasZootopiaVariants ? 3 : 2, label: 'Generate', done: false },
+    { n: 2, label: 'Generate', done: false },
   ];
 
   return (
@@ -155,7 +140,7 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
             <img
               src={selectedRef.image}
               alt={selectedRef.label}
-              className="w-24 h-32 object-cover rounded-xl border-2 border-[#e2daf0]"
+              className="w-24 h-24 object-cover rounded-xl border-2 border-[#e2daf0]"
             />
             <div>
               <p className="text-sm font-bold text-[#2d2642] font-body">{selectedRef.label}</p>
@@ -219,38 +204,6 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
             </div>
           ))}
         </div>
-
-        {/* Zootopia mode selector */}
-        {hasZootopiaVariants && (
-          <div className="card-premium p-5 mb-4">
-            <div className="mb-4">
-              <h3 className="font-display font-bold text-[#2d2642] text-sm mb-1">Transformation Type</h3>
-              <p className="text-xs font-body text-[#7a6f96]">Select how you want the characters to be rendered</p>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => setSelectedMode('zootopia_cartoon')}
-                className={`p-4 rounded-xl border-2 transition-all duration-200 text-left ${selectedMode === 'zootopia_cartoon' ? 'mode-selected' : ''}`}
-                style={selectedMode !== 'zootopia_cartoon' ? { borderColor: '#e2daf0', background: '#ffffff' } : {}}
-              >
-                <div className="text-2xl mb-2">&#x1F468;&#x200D;&#x1F3A8;</div>
-                <h4 className="text-xs font-bold text-[#2d2642] mb-0.5 font-body">Cartoon Human</h4>
-                <p className="text-[11px] leading-relaxed font-body text-[#7a6f96]">Stylized Pixar-style animated characters</p>
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedMode('zootopia_animals')}
-                className={`p-4 rounded-xl border-2 transition-all duration-200 text-left ${selectedMode === 'zootopia_animals' ? 'mode-selected' : ''}`}
-                style={selectedMode !== 'zootopia_animals' ? { borderColor: '#e2daf0', background: '#ffffff' } : {}}
-              >
-                <div className="text-2xl mb-2">&#x1F98A;</div>
-                <h4 className="text-xs font-bold text-[#2d2642] mb-0.5 font-body">Animal Hybrid</h4>
-                <p className="text-[11px] leading-relaxed font-body text-[#7a6f96]">Cute animal-inspired traits</p>
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* Error */}
         {error && (

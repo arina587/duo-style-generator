@@ -246,7 +246,7 @@ export default function Home({ onImageSelect }: HomeProps) {
                   className="category-card group text-left animate-scale-in"
                   style={{ animationDelay: `${idx * 0.05}s` }}
                 >
-                  <div className="relative overflow-hidden aspect-[4/5] rounded-t-[20px]">
+                  <div className="relative overflow-hidden aspect-square rounded-t-[20px]">
                     <img
                       src={cat.cover}
                       alt={cat.name}
@@ -300,7 +300,7 @@ export default function Home({ onImageSelect }: HomeProps) {
                     className="ref-card group text-left animate-scale-in focus:outline-none"
                     style={{ animationDelay: `${idx * 0.06}s` }}
                   >
-                    <div className="relative overflow-hidden aspect-[3/4] rounded-t-[18px]">
+                    <div className="relative overflow-hidden aspect-square rounded-t-[18px]">
                       <img
                         src={ref.image}
                         alt={`${ref.label} scene ${idx + 1}`}
