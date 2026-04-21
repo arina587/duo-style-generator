@@ -1,6 +1,6 @@
 import {
   Sparkles, Star, Zap, Film, Heart, Wand2, ChevronDown, Check, ArrowRight,
-  Upload, Shield, Plus, Minus
+  Upload, Shield, Plus, Minus, Play, Camera
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import InfiniteCarousel from './InfiniteCarousel';
@@ -34,7 +34,7 @@ const styles = [
     ],
     tag: 'Animated',
     icon: Star,
-    badgeBg: 'bg-emerald-50 text-emerald-700',
+    badgeColor: 'bg-emerald-100 text-emerald-700 border-emerald-200',
     hasSubcategories: true,
   },
   {
@@ -57,7 +57,7 @@ const styles = [
     ],
     tag: 'Cinematic',
     icon: Film,
-    badgeBg: 'bg-rose-50 text-rose-700',
+    badgeColor: 'bg-rose-100 text-rose-700 border-rose-200',
     hasSubcategories: false,
   },
   {
@@ -80,7 +80,7 @@ const styles = [
     ],
     tag: 'Romance',
     icon: Heart,
-    badgeBg: 'bg-sky-50 text-sky-700',
+    badgeColor: 'bg-sky-100 text-sky-700 border-sky-200',
     hasSubcategories: false,
   },
   {
@@ -103,7 +103,7 @@ const styles = [
     ],
     tag: 'Fantasy',
     icon: Sparkles,
-    badgeBg: 'bg-amber-50 text-amber-700',
+    badgeColor: 'bg-amber-100 text-amber-700 border-amber-200',
     hasSubcategories: false,
   },
   {
@@ -126,7 +126,7 @@ const styles = [
     ],
     tag: 'Action',
     icon: Zap,
-    badgeBg: 'bg-red-50 text-red-700',
+    badgeColor: 'bg-red-100 text-red-700 border-red-200',
     hasSubcategories: false,
   },
   {
@@ -149,7 +149,7 @@ const styles = [
     ],
     tag: 'Adventure',
     icon: Heart,
-    badgeBg: 'bg-green-50 text-green-700',
+    badgeColor: 'bg-teal-100 text-teal-700 border-teal-200',
     hasSubcategories: false,
   },
 ];
@@ -179,7 +179,7 @@ const faqItems = [
   { q: 'How does DuoStyle work?', a: 'Upload two photos (man + woman), select a cinematic style and reference scene, then our AI places both faces into the iconic frame.' },
   { q: 'Are my photos private?', a: 'Your photos are processed securely and never used for AI training. All uploads are deleted after generation.' },
   { q: 'What styles are available?', a: 'Titanic, Euphoria, Zootopia, Tangled, Spider-Man, and Bridge to Terabithia — with more coming soon.' },
-  { q: 'How long does generation take?', a: 'Most fusions complete in 30–90 seconds depending on server load.' },
+  { q: 'How long does generation take?', a: 'Most fusions complete in 30-90 seconds depending on server load.' },
   { q: 'Can I download my result?', a: 'Yes — once generated you can download the full resolution image directly.' },
 ];
 
@@ -227,27 +227,27 @@ export default function Home({ onStyleSelect }: HomeProps) {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden" style={{ background: '#f5f0ff' }}>
+    <div className="min-h-screen overflow-x-hidden grid-bg">
 
       {/* ── HEADER ── */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         headerScrolled
-          ? 'bg-white/90 backdrop-blur-xl border-b border-[#e0d4f7] shadow-sm shadow-[#c4aef5]/10'
+          ? 'bg-[#f4f6e8]/92 backdrop-blur-xl border-b-2 border-[#d4de8e] shadow-sm'
           : 'bg-transparent'
       } ${headerVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="max-w-6xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#8b5cf6] to-[#a78bfa] flex items-center justify-center shadow-md shadow-[#8b5cf6]/30">
-              <Wand2 className="w-4 h-4 text-white" />
+            <div className="w-9 h-9 rounded-2xl bg-[#c0cc60] flex items-center justify-center shadow-md" style={{ boxShadow: '0 4px 12px rgba(192,204,96,0.3)' }}>
+              <Wand2 className="w-4 h-4 text-[#2a2a3d]" />
             </div>
-            <span className="text-base font-bold text-[#2d1f5e] tracking-tight font-body">DuoStyle</span>
+            <span className="text-base font-extrabold text-[#2a2a3d] tracking-tight font-display">DuoStyle</span>
           </div>
           <nav className="hidden md:flex items-center gap-8">
             {['How it works', 'Styles', 'Pricing'].map((label, i) => (
               <button
                 key={label}
                 onClick={() => scrollToSection(['how', 'styles', 'pricing'][i])}
-                className="text-sm text-[#7c6da0] hover:text-[#8b5cf6] transition-colors duration-200 font-semibold font-body tracking-wide"
+                className="text-sm text-[#6a6a7a] hover:text-[#2a2a3d] transition-colors duration-200 font-bold font-body tracking-wide"
               >
                 {label}
               </button>
@@ -255,7 +255,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
           </nav>
           <button
             onClick={() => scrollToSection('styles')}
-            className="btn-primary px-5 py-2.5 text-sm"
+            className="btn-accent px-5 py-2.5 text-sm"
           >
             Get Started
           </button>
@@ -263,36 +263,45 @@ export default function Home({ onStyleSelect }: HomeProps) {
       </header>
 
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden pt-28 pb-16" style={{
-        background: 'linear-gradient(145deg, #f5f0ff 0%, #ede6ff 30%, #fce8f0 65%, #f5f0ff 100%)'
-      }}>
-        {/* Decorative blobs */}
-        <div className="blob" style={{ width: 420, height: 320, background: '#c4aef5', top: '-60px', right: '8%', opacity: 0.18 }} />
-        <div className="blob" style={{ width: 280, height: 220, background: '#f0abcb', bottom: '5%', left: '3%', opacity: 0.14 }} />
-        {/* Small decorative stars/dots */}
-        <div className="absolute top-24 left-[12%] w-2 h-2 rounded-full bg-[#8b5cf6] opacity-30 animate-pulse-soft" />
-        <div className="absolute top-40 right-[18%] w-3 h-3 rounded-full bg-[#f0abcb] opacity-40 animate-pulse-soft" style={{ animationDelay: '1s' }} />
-        <div className="absolute bottom-20 left-[30%] w-2 h-2 rounded-full bg-[#c4aef5] opacity-35 animate-pulse-soft" style={{ animationDelay: '2s' }} />
-        {/* Decorative ring */}
-        <div className="absolute top-20 right-[6%] w-24 h-24 rounded-full border-2 border-[#c4aef5]/25 animate-spin-slow" />
-        <div className="absolute bottom-16 right-[25%] w-14 h-14 rounded-full border border-[#f0abcb]/30 animate-drift" />
+      <section className="relative overflow-hidden pt-28 pb-16">
+        {/* Decorative scattered elements */}
+        <div className="absolute top-24 left-[8%] animate-wiggle" style={{ fontSize: 28, opacity: 0.7 }}>
+          <Camera className="w-7 h-7 text-[#c0cc60]" />
+        </div>
+        <div className="absolute top-32 right-[12%] animate-bounce-soft" style={{ animationDelay: '0.5s' }}>
+          <div className="sticker text-xs">
+            <Sparkles className="w-3.5 h-3.5 text-[#c0cc60]" />
+            AI Magic
+          </div>
+        </div>
+        <div className="absolute bottom-24 left-[6%] animate-float" style={{ animationDelay: '1s' }}>
+          <div className="w-10 h-10 rounded-full bg-[#e8eef8] border-2 border-[#c8d4ec] flex items-center justify-center">
+            <Play className="w-4 h-4 text-[#7888a8] ml-0.5" />
+          </div>
+        </div>
+        <div className="absolute top-40 left-[40%] w-3 h-3 rounded-full bg-[#c0cc60] opacity-40 animate-pulse-soft" />
+        <div className="absolute bottom-32 right-[18%] w-4 h-4 rounded-full bg-[#f0c860] opacity-30 animate-pulse-soft" style={{ animationDelay: '1.5s' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
 
             <div className="max-w-lg animate-fade-up">
-              <div className="inline-flex items-center gap-2 badge-pill mb-7">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#8b5cf6]" />
+              <div className="badge-pill inline-flex items-center gap-2 mb-7">
+                <span className="w-2 h-2 rounded-full bg-[#8ba83c]" />
                 AI-Powered Face Transfer
               </div>
 
-              <h1 className="font-display text-[3.2rem] sm:text-[3.8rem] leading-[1.08] font-bold text-[#2d1f5e] mb-6">
+              <h1 className="font-display text-[3.2rem] sm:text-[3.8rem] leading-[1.08] font-bold text-[#2a2a3d] mb-6">
                 Step Inside<br />
-                <em className="italic text-[#8b5cf6]">Iconic</em> Movie<br />
+                <span className="relative inline-block">
+                  <span className="relative z-10">Iconic</span>
+                  <span className="absolute bottom-1 left-0 right-0 h-3 bg-[#c0cc60]/40 rounded-full -z-0" />
+                </span>{' '}
+                Movie<br />
                 Moments
               </h1>
 
-              <p className="text-base sm:text-lg text-[#7c6da0] leading-relaxed mb-9 font-light max-w-[400px] font-body">
+              <p className="text-base sm:text-lg text-[#6a6a7a] leading-relaxed mb-9 max-w-[400px] font-body">
                 Upload two photos. Choose a cinematic style. Let AI place you both inside an iconic scene — in under 90 seconds.
               </p>
 
@@ -313,22 +322,22 @@ export default function Home({ onStyleSelect }: HomeProps) {
                 </button>
               </div>
 
-              <div className="flex items-center gap-6 mt-9 pt-8 border-t border-[#e0d4f7]">
+              <div className="flex items-center gap-8 mt-9 pt-8 border-t-2 border-dashed border-[#d4de8e]">
                 {[
                   { value: '6', label: 'Cinematic styles' },
                   { value: '90s', label: 'Generation time' },
                   { value: 'HD', label: 'Output quality' },
                 ].map(({ value, label }) => (
                   <div key={label}>
-                    <div className="text-xl font-bold text-[#2d1f5e] font-display">{value}</div>
-                    <div className="text-xs text-[#a89ec0] font-body mt-0.5">{label}</div>
+                    <div className="text-xl font-bold text-[#2a2a3d] font-display">{value}</div>
+                    <div className="text-xs text-[#9a9aa8] font-body mt-0.5">{label}</div>
                   </div>
                 ))}
               </div>
             </div>
 
             <div className="relative animate-fade-up" style={{ animationDelay: '0.15s' }}>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 {[
                   { src: '/styles/titanic/ref1.jpg', label: 'Titanic', delay: '0s' },
                   { src: '/styles/euphoria/ref1.jpg', label: 'Euphoria', delay: '0.1s' },
@@ -337,8 +346,8 @@ export default function Home({ onStyleSelect }: HomeProps) {
                 ].map(({ src, label, delay }) => (
                   <div
                     key={label}
-                    className="relative rounded-2xl overflow-hidden aspect-[3/4] animate-scale-in group cursor-pointer"
-                    style={{ animationDelay: delay }}
+                    className="relative rounded-3xl overflow-hidden aspect-[4/5] animate-scale-in group cursor-pointer border-2 border-[#e0e6c8] hover:border-[#c0cc60] transition-all duration-300"
+                    style={{ animationDelay: delay, boxShadow: '0 8px 28px rgba(0,0,0,0.06)' }}
                     onClick={() => scrollToSection('styles')}
                   >
                     <img
@@ -346,14 +355,17 @@ export default function Home({ onStyleSelect }: HomeProps) {
                       alt={label}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#2d1f5e]/65 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                      <span className="text-white text-xs font-semibold font-body">{label}</span>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#2a2a3d]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 p-3.5 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                      <span className="text-white text-xs font-bold font-body bg-[#2a2a3d]/40 backdrop-blur-sm px-3 py-1 rounded-full">{label}</span>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="absolute -top-3 -right-3 w-20 h-20 rounded-2xl overflow-hidden shadow-xl border-2 border-white animate-float" style={{ boxShadow: '0 8px 28px rgba(139,92,246,0.2)' }}>
+              <div
+                className="absolute -top-3 -right-3 w-20 h-20 rounded-2xl overflow-hidden animate-float border-3 border-white"
+                style={{ boxShadow: '0 8px 28px rgba(0,0,0,0.1)', borderWidth: 3 }}
+              >
                 <img src="/styles/zootopia/ref1.jpg" alt="Zootopia" className="w-full h-full object-cover" />
               </div>
             </div>
@@ -363,7 +375,7 @@ export default function Home({ onStyleSelect }: HomeProps) {
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
           <button
             onClick={() => scrollToSection('carousel')}
-            className="flex flex-col items-center gap-1 text-[#7c6da0] hover:text-[#8b5cf6] transition-colors duration-200 animate-float"
+            className="flex flex-col items-center gap-1 text-[#9a9aa8] hover:text-[#2a2a3d] transition-colors duration-200 animate-float"
           >
             <span className="text-xs font-body tracking-widest uppercase font-bold">Explore</span>
             <ChevronDown className="w-4 h-4" />
@@ -372,26 +384,22 @@ export default function Home({ onStyleSelect }: HomeProps) {
       </section>
 
       {/* ── CAROUSEL ── */}
-      <section id="carousel" className="py-12 overflow-hidden" style={{ background: 'linear-gradient(180deg, #ede6ff 0%, #f5f0ff 100%)' }}>
+      <section id="carousel" className="py-12 overflow-hidden" style={{ background: '#eef0dc' }}>
         <p className="text-center section-eyebrow mb-6">Sample outputs across all styles</p>
         <InfiniteCarousel images={allCarouselImages} />
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section id="how" className="py-24 relative overflow-hidden" style={{ background: '#ffffff' }}>
-        {/* Subtle decorative shapes */}
-        <div className="blob" style={{ width: 320, height: 240, background: '#ede6ff', top: '10%', right: '-4%', opacity: 0.5 }} />
-        <div className="blob" style={{ width: 200, height: 180, background: '#fce8f0', bottom: '8%', left: '-3%', opacity: 0.4 }} />
-
+      <section id="how" className="py-24 relative overflow-hidden grid-bg-warm">
         <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-10">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
             <div>
               <p className="section-eyebrow mb-3">Process</p>
-              <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#2d1f5e] leading-tight">
+              <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#2a2a3d] leading-tight">
                 Three steps<br />to magic
               </h2>
             </div>
-            <p className="text-[#7c6da0] text-base max-w-xs leading-relaxed font-light md:text-right font-body">
+            <p className="text-[#6a6a7a] text-base max-w-xs leading-relaxed md:text-right font-body">
               No editing skills required. Just upload two photos and let our AI do the work.
             </p>
           </div>
@@ -404,7 +412,8 @@ export default function Home({ onStyleSelect }: HomeProps) {
                 title: 'Upload Photos',
                 desc: 'Upload one photo of the man and one of the woman. Clear face shots work best.',
                 delay: '0s',
-                color: '#ede6ff',
+                bg: '#eef4c8',
+                iconBg: '#c0cc60',
               },
               {
                 icon: Film,
@@ -412,7 +421,8 @@ export default function Home({ onStyleSelect }: HomeProps) {
                 title: 'Choose a Scene',
                 desc: 'Pick from Titanic, Euphoria, Zootopia, Tangled, Spider-Man, and more. Select the exact reference frame you love.',
                 delay: '0.1s',
-                color: '#fce8f0',
+                bg: '#e8eef8',
+                iconBg: '#94a8d0',
               },
               {
                 icon: Sparkles,
@@ -420,22 +430,23 @@ export default function Home({ onStyleSelect }: HomeProps) {
                 title: 'Generate & Download',
                 desc: 'AI places both faces into the scene. Download your HD fusion in under 90 seconds.',
                 delay: '0.2s',
-                color: '#ede6ff',
+                bg: '#fdf8ed',
+                iconBg: '#f0c860',
               },
-            ].map(({ icon: Icon, step, title, desc, delay, color }) => (
+            ].map(({ icon: Icon, step, title, desc, delay, iconBg }) => (
               <div
                 key={step}
                 className="step-card p-8 animate-slide-up relative group"
                 style={{ animationDelay: delay }}
               >
-                <div className="absolute top-6 right-6 font-display text-5xl font-bold leading-none select-none transition-colors duration-300" style={{ color: '#f0ebff' }}>
+                <div className="absolute top-6 right-6 font-display text-5xl font-bold leading-none select-none" style={{ color: '#e8ecd0' }}>
                   {step}
                 </div>
-                <div className="w-11 h-11 rounded-2xl flex items-center justify-center mb-6" style={{ background: color }}>
-                  <Icon style={{ width: 18, height: 18, color: '#8b5cf6' }} />
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6" style={{ background: iconBg }}>
+                  <Icon style={{ width: 20, height: 20, color: '#fff' }} />
                 </div>
-                <h3 className="font-display font-bold text-[#2d1f5e] text-lg mb-3">{title}</h3>
-                <p className="text-sm text-[#7c6da0] leading-relaxed font-body">{desc}</p>
+                <h3 className="font-display font-bold text-[#2a2a3d] text-lg mb-3">{title}</h3>
+                <p className="text-sm text-[#6a6a7a] leading-relaxed font-body">{desc}</p>
               </div>
             ))}
           </div>
@@ -443,55 +454,50 @@ export default function Home({ onStyleSelect }: HomeProps) {
       </section>
 
       {/* ── STYLES GRID ── */}
-      <section id="styles" className="py-24 relative overflow-hidden" style={{ background: '#f5f0ff' }}>
-        {/* Decorative blobs */}
-        <div className="blob" style={{ width: 360, height: 300, background: '#c4aef5', top: '5%', left: '-5%', opacity: 0.14 }} />
-        <div className="blob" style={{ width: 260, height: 200, background: '#f0abcb', bottom: '10%', right: '-3%', opacity: 0.12 }} />
-
+      <section id="styles" className="py-24 relative overflow-hidden grid-bg">
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-16">
             <p className="section-eyebrow mb-3">Cinematic Universes</p>
-            <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#2d1f5e] mb-5">
+            <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#2a2a3d] mb-5">
               Choose Your Scene
             </h2>
-            <p className="text-[#7c6da0] text-lg max-w-sm mx-auto font-light font-body">
+            <p className="text-[#6a6a7a] text-lg max-w-sm mx-auto font-body">
               Six iconic worlds. One AI. Your faces.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
-            {styles.map((style, i) => (
-              <div key={style.id} style={{ marginTop: i === 1 ? -16 : i === 4 ? -12 : 0 }}>
-                <StyleCard
-                  style={style}
-                  isSelected={selectedStyle === style.id}
-                  onClick={handleStyleClick}
-                />
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {styles.map((style) => (
+              <StyleCard
+                key={style.id}
+                style={style}
+                isSelected={selectedStyle === style.id}
+                onClick={handleStyleClick}
+              />
             ))}
           </div>
         </div>
       </section>
 
       {/* ── PRICING ── */}
-      <section id="pricing" className="py-24 relative overflow-hidden" style={{ background: '#ffffff' }}>
-        <div className="blob" style={{ width: 300, height: 220, background: '#ede6ff', top: '8%', right: '-3%', opacity: 0.45 }} />
-
+      <section id="pricing" className="py-24 relative overflow-hidden grid-bg-warm">
         <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-16">
             <p className="section-eyebrow mb-3">Pricing</p>
-            <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#2d1f5e] mb-4">
-              Start for <span style={{ color: '#8b5cf6' }}>$6/mo</span>
+            <h2 className="font-display text-4xl sm:text-5xl font-bold text-[#2a2a3d] mb-4">
+              Start for <span className="relative inline-block">
+                <span className="relative z-10">$6/mo</span>
+                <span className="absolute bottom-1 left-0 right-0 h-3 bg-[#c0cc60]/40 rounded-full -z-0" />
+              </span>
             </h2>
-            <p className="text-[#7c6da0] text-lg font-light font-body">No commitments. Cancel anytime.</p>
+            <p className="text-[#6a6a7a] text-lg font-body">No commitments. Cancel anytime.</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto items-start">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
             {pricingPlans.map((plan) => (
               <div
                 key={plan.name}
                 className={`${plan.featured ? 'pricing-card-featured' : 'pricing-card'} p-8`}
-                style={{ marginTop: plan.featured ? -12 : 0 }}
               >
                 {plan.featured && (
                   <div className="badge-accent inline-flex items-center gap-1.5 mb-5">
@@ -499,25 +505,25 @@ export default function Home({ onStyleSelect }: HomeProps) {
                     Most Popular
                   </div>
                 )}
-                <p className="text-xs font-bold text-[#a89ec0] uppercase tracking-widest mb-2 font-body">{plan.name}</p>
+                <p className="text-xs font-extrabold text-[#9a9aa8] uppercase tracking-widest mb-2 font-body">{plan.name}</p>
                 <div className="flex items-end gap-1 mb-2">
-                  <span className="font-display text-4xl font-bold text-[#2d1f5e]">{plan.price}</span>
-                  <span className="text-[#7c6da0] text-sm mb-1.5 font-body">{plan.period}</span>
+                  <span className="font-display text-4xl font-bold text-[#2a2a3d]">{plan.price}</span>
+                  <span className="text-[#6a6a7a] text-sm mb-1.5 font-body">{plan.period}</span>
                 </div>
-                <p className="text-sm text-[#7c6da0] mb-6 font-body">{plan.description}</p>
+                <p className="text-sm text-[#6a6a7a] mb-6 font-body">{plan.description}</p>
                 <ul className="space-y-3 mb-7">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2.5 text-sm text-[#4a3a7a]">
-                      <div className="w-4 h-4 rounded-full bg-gradient-to-br from-[#8b5cf6] to-[#a78bfa] flex items-center justify-center flex-shrink-0">
-                        <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+                    <li key={f} className="flex items-center gap-2.5 text-sm text-[#2a2a3d]">
+                      <div className="w-5 h-5 rounded-full bg-[#c0cc60] flex items-center justify-center flex-shrink-0">
+                        <Check className="w-3 h-3 text-white" strokeWidth={3} />
                       </div>
                       <span className="font-body">{f}</span>
                     </li>
                   ))}
                 </ul>
                 <button
-                  className={`w-full py-3 rounded-2xl text-sm font-semibold transition-all duration-200 font-body ${
-                    plan.featured ? 'btn-accent shadow-lg' : 'btn-primary'
+                  className={`w-full py-3 rounded-full text-sm font-bold transition-all duration-200 font-body ${
+                    plan.featured ? 'btn-accent' : 'btn-primary'
                   }`}
                 >
                   {plan.cta}
@@ -529,16 +535,14 @@ export default function Home({ onStyleSelect }: HomeProps) {
       </section>
 
       {/* ── FAQ ── */}
-      <section id="faq" className="py-24 relative overflow-hidden" style={{ background: '#f5f0ff' }}>
-        <div className="blob" style={{ width: 280, height: 200, background: '#fce8f0', bottom: '5%', left: '-2%', opacity: 0.35 }} />
-
+      <section id="faq" className="py-24 relative overflow-hidden grid-bg">
         <div className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-14">
             <p className="section-eyebrow mb-3">FAQ</p>
-            <h2 className="font-display text-4xl font-bold text-[#2d1f5e] mb-3">
+            <h2 className="font-display text-4xl font-bold text-[#2a2a3d] mb-3">
               Got questions?
             </h2>
-            <p className="text-[#7c6da0] text-base font-light font-body">Everything you need to know.</p>
+            <p className="text-[#6a6a7a] text-base font-body">Everything you need to know.</p>
           </div>
 
           <div className="space-y-3">
@@ -548,22 +552,22 @@ export default function Home({ onStyleSelect }: HomeProps) {
                   className="w-full flex items-center justify-between px-6 py-5 text-left"
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                 >
-                  <span className="font-semibold text-[#2d1f5e] text-sm font-body">{item.q}</span>
+                  <span className="font-bold text-[#2a2a3d] text-sm font-body">{item.q}</span>
                   <div
-                    className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ml-4 transition-all duration-200"
+                    className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ml-4 transition-all duration-200"
                     style={{
-                      border: `1px solid ${openFaq === i ? '#8b5cf6' : '#e0d4f7'}`,
-                      background: openFaq === i ? '#ede6ff' : '#f5f0ff',
+                      border: `2px solid ${openFaq === i ? '#8ba83c' : '#d4de8e'}`,
+                      background: openFaq === i ? '#eef4c8' : '#fafce8',
                     }}
                   >
                     {openFaq === i
-                      ? <Minus className="w-3 h-3 text-[#8b5cf6]" />
-                      : <Plus className="w-3 h-3 text-[#a89ec0]" />
+                      ? <Minus className="w-3 h-3 text-[#8ba83c]" />
+                      : <Plus className="w-3 h-3 text-[#9a9aa8]" />
                     }
                   </div>
                 </button>
                 <div className={`faq-answer ${openFaq === i ? 'open' : ''}`}>
-                  <p className="px-6 pb-5 text-sm text-[#7c6da0] leading-relaxed font-body">{item.a}</p>
+                  <p className="px-6 pb-5 text-sm text-[#6a6a7a] leading-relaxed font-body">{item.a}</p>
                 </div>
               </div>
             ))}
@@ -572,30 +576,30 @@ export default function Home({ onStyleSelect }: HomeProps) {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="py-14" style={{ background: 'linear-gradient(145deg, #2d1f5e 0%, #1e1440 100%)' }}>
+      <footer className="py-14" style={{ background: '#2a2a3d' }}>
         <div className="max-w-6xl mx-auto px-6 lg:px-10">
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
             <div>
               <div className="flex items-center gap-2.5 mb-3">
-                <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ background: 'rgba(196,174,245,0.15)' }}>
-                  <Wand2 className="w-3.5 h-3.5 text-[#c4aef5]" />
+                <div className="w-8 h-8 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(192,204,96,0.2)' }}>
+                  <Wand2 className="w-3.5 h-3.5 text-[#c0cc60]" />
                 </div>
-                <span className="text-sm font-bold text-white font-body">DuoStyle</span>
+                <span className="text-sm font-bold text-white font-display">DuoStyle</span>
               </div>
-              <p className="text-xs font-body max-w-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.38)' }}>
+              <p className="text-xs font-body max-w-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>
                 AI-powered cinematic face fusions. Step inside your favorite movie moments.
               </p>
             </div>
 
             <div className="flex flex-col items-center md:items-end gap-3">
-              <div className="flex items-center gap-1.5 text-xs font-body" style={{ color: 'rgba(255,255,255,0.45)' }}>
-                <Shield className="w-3 h-3 text-[#c4aef5]" />
+              <div className="flex items-center gap-1.5 text-xs font-body" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                <Shield className="w-3 h-3 text-[#c0cc60]" />
                 Your privacy is protected
               </div>
-              <p className="text-xs font-body" style={{ color: 'rgba(255,255,255,0.28)' }}>© 2025 DuoStyle. All rights reserved.</p>
+              <p className="text-xs font-body" style={{ color: 'rgba(255,255,255,0.3)' }}>2025 DuoStyle. All rights reserved.</p>
               <div className="flex gap-5">
-                <a href="#" className="text-xs font-body transition-colors hover:text-[#c4aef5]" style={{ color: 'rgba(255,255,255,0.38)' }}>Privacy</a>
-                <a href="#" className="text-xs font-body transition-colors hover:text-[#c4aef5]" style={{ color: 'rgba(255,255,255,0.38)' }}>Terms</a>
+                <a href="#" className="text-xs font-body transition-colors hover:text-[#c0cc60]" style={{ color: 'rgba(255,255,255,0.4)' }}>Privacy</a>
+                <a href="#" className="text-xs font-body transition-colors hover:text-[#c0cc60]" style={{ color: 'rgba(255,255,255,0.4)' }}>Terms</a>
               </div>
             </div>
           </div>
@@ -625,47 +629,47 @@ function StyleCard({ style, isSelected, onClick }: StyleCardProps) {
       className={`relative cursor-pointer ${isSelected ? 'scene-card-selected' : 'scene-card'}`}
       onClick={handleCardClick}
     >
-      <div className="relative overflow-hidden aspect-[4/3]">
+      <div className="relative overflow-hidden aspect-[4/5]">
         <img
           src={style.referenceJobs[0].image}
           alt={style.name}
           className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#2d1f5e]/65 via-[#2d1f5e]/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2a2a3d]/65 via-[#2a2a3d]/10 to-transparent" />
 
         <div className="absolute top-3 right-3">
-          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${style.badgeBg} font-body`}>
+          <span className={`badge-tag border ${style.badgeColor}`}>
             {style.tag}
           </span>
         </div>
 
         {style.hasSubcategories && (
-          <span className="absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full font-body" style={{ background: 'rgba(255,255,255,0.92)', color: '#7c6da0' }}>
+          <span className="absolute top-3 left-3 badge-tag bg-white/90 text-[#6a6a7a] border border-[#e0e6c8]">
             2 modes
           </span>
         )}
 
         <div className="absolute bottom-0 left-0 right-0 p-4">
-          <h3 className="font-display font-bold text-white text-xl leading-tight">{style.name}</h3>
+          <h3 className="font-display font-bold text-white text-xl leading-tight drop-shadow-md">{style.name}</h3>
         </div>
       </div>
 
-      <div className="p-4">
+      <div className="p-4 bg-white">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-[#8b5cf6] to-[#a78bfa] flex items-center justify-center">
-              <Icon className="w-2.5 h-2.5 text-white" />
+            <div className="w-6 h-6 rounded-xl bg-[#c0cc60] flex items-center justify-center">
+              <Icon className="w-3 h-3 text-white" />
             </div>
-            <p className="text-sm text-[#7c6da0] leading-snug font-body line-clamp-2 flex-1">{style.description}</p>
+            <p className="text-sm text-[#6a6a7a] leading-snug font-body line-clamp-2 flex-1">{style.description}</p>
           </div>
           <div className="flex items-center gap-1.5 ml-3 flex-shrink-0">
             {isSelected && (
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#8b5cf6] to-[#a78bfa] flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full bg-[#8ba83c] flex items-center justify-center">
                 <Check className="w-3 h-3 text-white" strokeWidth={3} />
               </div>
             )}
             {style.hasSubcategories && (
-              <ChevronDown className={`w-4 h-4 text-[#a89ec0] transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 text-[#9a9aa8] transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`} />
             )}
           </div>
         </div>
@@ -673,20 +677,20 @@ function StyleCard({ style, isSelected, onClick }: StyleCardProps) {
         {style.hasSubcategories && expanded && (
           <div className="mt-4 grid grid-cols-2 gap-2.5" onClick={(e) => e.stopPropagation()}>
             <button
-              className="p-3 rounded-xl border border-[#e0d4f7] bg-[#f5f0ff] hover:border-[#8b5cf6] hover:bg-[#ede6ff] transition-all duration-200 text-left"
+              className="p-3 rounded-xl border-2 border-[#e0e6c8] bg-[#fafce8] hover:border-[#c0cc60] hover:bg-[#eef4c8] transition-all duration-200 text-left"
               onClick={() => onClick(style.id, style.referenceJobs)}
             >
-              <div className="text-lg mb-1">👨‍🎨</div>
-              <p className="text-xs font-bold text-[#2d1f5e] font-body">Human</p>
-              <p className="text-xs text-[#7c6da0] mt-0.5 leading-snug font-body">Pixar-style characters</p>
+              <div className="text-lg mb-1">&#x1F468;&#x200D;&#x1F3A8;</div>
+              <p className="text-xs font-bold text-[#2a2a3d] font-body">Human</p>
+              <p className="text-xs text-[#6a6a7a] mt-0.5 leading-snug font-body">Pixar-style characters</p>
             </button>
             <button
-              className="p-3 rounded-xl border border-[#e0d4f7] bg-[#f5f0ff] hover:border-[#8b5cf6] hover:bg-[#ede6ff] transition-all duration-200 text-left"
+              className="p-3 rounded-xl border-2 border-[#e0e6c8] bg-[#fafce8] hover:border-[#c0cc60] hover:bg-[#eef4c8] transition-all duration-200 text-left"
               onClick={() => onClick(style.id, style.referenceJobs)}
             >
-              <div className="text-lg mb-1">🦊</div>
-              <p className="text-xs font-bold text-[#2d1f5e] font-body">Animal</p>
-              <p className="text-xs text-[#7c6da0] mt-0.5 leading-snug font-body">Hybrid animal-inspired</p>
+              <div className="text-lg mb-1">&#x1F98A;</div>
+              <p className="text-xs font-bold text-[#2a2a3d] font-body">Animal</p>
+              <p className="text-xs text-[#6a6a7a] mt-0.5 leading-snug font-body">Hybrid animal-inspired</p>
             </button>
           </div>
         )}
