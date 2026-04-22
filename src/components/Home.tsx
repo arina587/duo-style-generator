@@ -243,7 +243,7 @@ export default function Home({ onImageSelect }: HomeProps) {
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryClick(cat.id)}
-                  className="category-card group text-left animate-scale-in"
+                  className="ref-card group text-left animate-scale-in focus:outline-none"
                   style={{ animationDelay: `${idx * 0.05}s` }}
                 >
                   <div className="relative overflow-hidden aspect-square">
@@ -252,20 +252,20 @@ export default function Home({ onImageSelect }: HomeProps) {
                       alt={cat.name}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#2d2642]/65 via-[#2d2642]/10 to-transparent" />
-                    <div className="absolute top-2.5 right-2.5">
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#2d2642]/50 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
+                    <div className="absolute top-2 left-2">
                       <span className="category-tag">{cat.tag}</span>
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-3">
-                      <h3 className="font-display font-bold text-white text-lg leading-tight drop-shadow-md">{cat.name}</h3>
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span className="bg-white/90 backdrop-blur-sm text-[#2d2642] text-[11px] font-extrabold font-body px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
+                        <Sparkles className="w-3 h-3 text-[#9b7dd4]" />
+                        View Scenes
+                      </span>
                     </div>
                   </div>
-                  <div className="p-3 bg-white flex items-center justify-between gap-2">
-                    <p className="text-xs text-[#7a6f96] leading-snug font-body line-clamp-2">{cat.description}</p>
-                    <div className="flex items-center gap-1 flex-shrink-0">
-                      <span className="text-[10px] font-bold text-[#9b7dd4] font-body">3 scenes</span>
-                      <ArrowRight className="w-3 h-3 text-[#d4e157] group-hover:translate-x-0.5 transition-transform duration-200" />
-                    </div>
+                  <div className="p-2.5 bg-white">
+                    <p className="text-[11px] font-bold text-[#2d2642] font-body">{cat.name}</p>
+                    <p className="text-[10px] text-[#9a93b0] font-body mt-0.5">3 scenes · {cat.tag}</p>
                   </div>
                 </button>
               ))}

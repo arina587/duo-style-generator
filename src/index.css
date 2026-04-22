@@ -42,21 +42,6 @@
   }
 
 
-  /* ─── Category cards ─── */
-  .category-card {
-    background: #ffffff;
-    border: 2px solid #e2daf0;
-    border-radius: 22px;
-    overflow: hidden;
-    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 0 4px 20px rgba(120,90,180,0.08);
-  }
-  .category-card:hover {
-    transform: translateY(-5px) scale(1.01);
-    box-shadow: 0 14px 40px rgba(120,90,180,0.16);
-    border-color: #d4e157;
-  }
-
   .category-tag {
     display: inline-block;
     background: rgba(255,255,255,0.92);
