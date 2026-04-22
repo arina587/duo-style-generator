@@ -34,7 +34,7 @@ const faqItems = [
   { q: 'How does DuoStyle work?', a: 'Upload two photos (man + woman), select a cinematic style and reference scene, then our AI places both faces into the iconic frame.' },
   { q: 'Are my photos private?', a: 'Your photos are processed securely and never used for AI training. All uploads are deleted after generation.' },
   { q: 'What styles are available?', a: 'Titanic, Euphoria, Zootopia, Tangled, Spider-Man, and Bridge to Terabithia -- with more coming soon.' },
-  { q: 'How long does generation take?', a: 'Most fusions complete in 30-90 seconds depending on server load.' },
+  { q: 'How long does generation take?', a: 'Most fusions complete in 60–80 seconds. Usually under a minute.' },
   { q: 'Can I download my result?', a: 'Yes -- once generated you can download the full resolution image directly.' },
 ];
 
@@ -137,7 +137,7 @@ export default function Home({ onImageSelect }: HomeProps) {
               </span>{' '}Movie Moments
             </h1>
             <p className="text-sm sm:text-base text-[#7a6f96] leading-relaxed max-w-lg mx-auto font-body">
-              Upload two photos. Choose a cinematic style. Let AI place you both inside an iconic scene -- in under 90 seconds.
+              Upload two photos. Choose a cinematic style. Let AI place you both inside an iconic scene -- usually under a minute.
             </p>
           </div>
 
@@ -161,7 +161,7 @@ export default function Home({ onImageSelect }: HomeProps) {
           <div className="flex justify-center items-center gap-10 pt-4 border-t-2 border-dashed border-[#d8ccea]/60 animate-fade-up" style={{ animationDelay: '0.14s' }}>
             {[
               { value: '6', label: 'Cinematic styles' },
-              { value: '90s', label: 'Generation time' },
+              { value: '~60s', label: 'Generation time' },
               { value: 'HD', label: 'Output quality' },
             ].map(({ value, label }) => (
               <div key={label} className="text-center">
@@ -202,7 +202,7 @@ export default function Home({ onImageSelect }: HomeProps) {
             {[
               { icon: Upload, step: '01', title: 'Upload Photos', desc: 'Upload one photo of the man and one of the woman. Clear face shots work best.', delay: '0s', iconBg: '#9b7dd4' },
               { icon: Film, step: '02', title: 'Choose a Scene', desc: 'Pick from Titanic, Euphoria, Zootopia, Tangled, Spider-Man, and more.', delay: '0.08s', iconBg: '#c490d1' },
-              { icon: Sparkles, step: '03', title: 'Generate & Download', desc: 'AI places both faces into the scene. Download your HD result in under 90 seconds.', delay: '0.16s', iconBg: '#deb8e6' },
+              { icon: Sparkles, step: '03', title: 'Generate & Download', desc: 'AI places both faces into the scene. Download your HD result in 60–80 seconds.', delay: '0.16s', iconBg: '#deb8e6' },
             ].map(({ icon: Icon, step, title, desc, delay, iconBg }) => (
               <div
                 key={step}
@@ -246,7 +246,7 @@ export default function Home({ onImageSelect }: HomeProps) {
                   className="category-card group text-left animate-scale-in"
                   style={{ animationDelay: `${idx * 0.05}s` }}
                 >
-                  <div className="relative overflow-hidden aspect-square rounded-t-[20px]">
+                  <div className="relative overflow-hidden aspect-square">
                     <img
                       src={cat.cover}
                       alt={cat.name}
@@ -260,7 +260,7 @@ export default function Home({ onImageSelect }: HomeProps) {
                       <h3 className="font-display font-bold text-white text-lg leading-tight drop-shadow-md">{cat.name}</h3>
                     </div>
                   </div>
-                  <div className="p-3 bg-white rounded-b-[20px] flex items-center justify-between gap-2">
+                  <div className="p-3 bg-white flex items-center justify-between gap-2">
                     <p className="text-xs text-[#7a6f96] leading-snug font-body line-clamp-2">{cat.description}</p>
                     <div className="flex items-center gap-1 flex-shrink-0">
                       <span className="text-[10px] font-bold text-[#9b7dd4] font-body">3 scenes</span>
@@ -300,7 +300,7 @@ export default function Home({ onImageSelect }: HomeProps) {
                     className="ref-card group text-left animate-scale-in focus:outline-none"
                     style={{ animationDelay: `${idx * 0.06}s` }}
                   >
-                    <div className="relative overflow-hidden aspect-square rounded-t-[18px]">
+                    <div className="relative overflow-hidden aspect-square">
                       <img
                         src={ref.image}
                         alt={`${ref.label} scene ${idx + 1}`}
@@ -319,7 +319,7 @@ export default function Home({ onImageSelect }: HomeProps) {
                         </span>
                       </div>
                     </div>
-                    <div className="p-2.5 bg-white rounded-b-[18px]">
+                    <div className="p-2.5 bg-white">
                       <p className="text-[11px] font-bold text-[#2d2642] font-body">Scene {idx + 1}</p>
                       <p className="text-[10px] text-[#9a93b0] font-body mt-0.5">Click to start</p>
                     </div>

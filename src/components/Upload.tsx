@@ -34,18 +34,45 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
     })();
   }, [selectedRef.image]);
 
+  const resizeImage = (file: File): Promise<{ file: File; dataUrl: string }> => {
+    return new Promise((resolve) => {
+      const MAX = 1024;
+      const img = new window.Image();
+      const objectUrl = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(objectUrl);
+        const { naturalWidth: w, naturalHeight: h } = img;
+        const scale = w > h ? MAX / w : MAX / h;
+        const targetW = scale < 1 ? Math.round(w * scale) : w;
+        const targetH = scale < 1 ? Math.round(h * scale) : h;
+        const canvas = document.createElement('canvas');
+        canvas.width = targetW;
+        canvas.height = targetH;
+        const ctx = canvas.getContext('2d')!;
+        ctx.drawImage(img, 0, 0, targetW, targetH);
+        canvas.toBlob((blob) => {
+          if (!blob) { resolve({ file, dataUrl: canvas.toDataURL('image/jpeg', 0.9) }); return; }
+          const resized = new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' });
+          const reader = new FileReader();
+          reader.onloadend = () => resolve({ file: resized, dataUrl: reader.result as string });
+          reader.readAsDataURL(resized);
+        }, 'image/jpeg', 0.9);
+      };
+      img.src = objectUrl;
+    });
+  };
+
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     setPhoto: (file: File | null) => void,
     setPreview: (url: string) => void
   ) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setPhoto(file);
-      const reader = new FileReader();
-      reader.onloadend = () => setPreview(reader.result as string);
-      reader.readAsDataURL(file);
-    }
+    if (!file) return;
+    resizeImage(file).then(({ file: resized, dataUrl }) => {
+      setPhoto(resized);
+      setPreview(dataUrl);
+    });
   };
 
   const handleGenerate = async (e: React.MouseEvent<HTMLButtonElement>) => {

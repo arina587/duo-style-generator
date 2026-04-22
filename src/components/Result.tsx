@@ -75,7 +75,7 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
                   </div>
                 </div>
                 <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Generating your fusion...</p>
-                <p className="text-[#7a6f96] text-sm font-body">This may take up to 90 seconds</p>
+                <p className="text-[#7a6f96] text-sm font-body">Usually takes under a minute</p>
                 <div className="mt-4 flex justify-center gap-1.5">
                   {[0, 1, 2].map((i) => (
                     <div
