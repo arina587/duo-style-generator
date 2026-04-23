@@ -7,6 +7,7 @@ import { categories, getRefsForCategory, type ReferenceItem } from '../data/refe
 
 interface HomeProps {
   onImageSelect: (ref: ReferenceItem) => void;
+  initialCategory?: string | null;
 }
 
 const pricingPlans = [
@@ -33,16 +34,16 @@ const pricingPlans = [
 const faqItems = [
   { q: 'How does DuoStyle work?', a: 'Upload two photos (man + woman), select a cinematic style and reference scene, then our AI places both faces into the iconic frame.' },
   { q: 'Are my photos private?', a: 'Your photos are processed securely and never used for AI training. All uploads are deleted after generation.' },
-  { q: 'What styles are available?', a: 'Titanic, Euphoria, Zootopia, Tangled, Spider-Man, and Bridge to Terabithia -- with more coming soon.' },
+  { q: 'What styles are available?', a: 'Titanic, Euphoria, Zootopia, Tangled, Spider-Man, Bridge to Terabithia, Cinderella, Stranger Things, and The End of the F***ing World -- with more coming soon.' },
   { q: 'How long does generation take?', a: 'Most fusions complete in 60–80 seconds. Usually under a minute.' },
   { q: 'Can I download my result?', a: 'Yes -- once generated you can download the full resolution image directly.' },
 ];
 
-export default function Home({ onImageSelect }: HomeProps) {
+export default function Home({ onImageSelect, initialCategory }: HomeProps) {
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [openCategory, setOpenCategory] = useState<string | null>(null);
+  const [openCategory, setOpenCategory] = useState<string | null>(initialCategory ?? null);
   const lastScrollY = useRef(0);
   const categoryRef = useRef<HTMLDivElement>(null);
 
@@ -57,6 +58,14 @@ export default function Home({ onImageSelect }: HomeProps) {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (initialCategory) {
+      setTimeout(() => {
+        document.getElementById('styles')?.scrollIntoView({ behavior: 'smooth' });
+      }, 80);
+    }
+  }, [initialCategory]);
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -160,7 +169,7 @@ export default function Home({ onImageSelect }: HomeProps) {
 
           <div className="flex justify-center items-center gap-10 pt-4 border-t-2 border-dashed border-[#d8ccea]/60 animate-fade-up" style={{ animationDelay: '0.14s' }}>
             {[
-              { value: '6', label: 'Cinematic styles' },
+              { value: '9', label: 'Cinematic styles' },
               { value: '~60s', label: 'Generation time' },
               { value: 'HD', label: 'Output quality' },
             ].map(({ value, label }) => (
@@ -232,7 +241,7 @@ export default function Home({ onImageSelect }: HomeProps) {
               Choose Your Style
             </h2>
             <p className="text-[#7a6f96] text-sm max-w-sm mx-auto font-body">
-              Six iconic worlds. Pick one, then choose a scene.
+              Nine iconic worlds. Pick one, then choose a scene.
             </p>
           </div>
 

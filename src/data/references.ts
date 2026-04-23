@@ -146,6 +146,75 @@ export const references: ReferenceItem[] = [
     image: '/styles/terabithia/terabithia3.jpg',
     prompt: 'Use reference image as base. Preserve composition and mood. Apply identity from uploaded images naturally.',
   },
+
+  // ── Cinderella ──
+  {
+    id: 'cinderella-1',
+    style: 'cinderella',
+    label: 'Cinderella',
+    image: '/styles/cinderella/cinderella1.jpg',
+    prompt: '',
+  },
+  {
+    id: 'cinderella-2',
+    style: 'cinderella',
+    label: 'Cinderella',
+    image: '/styles/cinderella/cinderella2.jpg',
+    prompt: '',
+  },
+  {
+    id: 'cinderella-3',
+    style: 'cinderella',
+    label: 'Cinderella',
+    image: '/styles/cinderella/cinderella3.jpg',
+    prompt: '',
+  },
+
+  // ── Stranger Things ──
+  {
+    id: 'stranger-things-1',
+    style: 'stranger-things',
+    label: 'Stranger Things',
+    image: '/styles/stranger-things/stranger-things1.jpg',
+    prompt: '',
+  },
+  {
+    id: 'stranger-things-2',
+    style: 'stranger-things',
+    label: 'Stranger Things',
+    image: '/styles/stranger-things/stranger-things2.jpg',
+    prompt: '',
+  },
+  {
+    id: 'stranger-things-3',
+    style: 'stranger-things',
+    label: 'Stranger Things',
+    image: '/styles/stranger-things/stranger-things3.jpg',
+    prompt: '',
+  },
+
+  // ── The End of the F***ing World ──
+  {
+    id: 'end-of-the-fucking-world-1',
+    style: 'end-of-the-fucking-world',
+    label: 'The End of the F***ing World',
+    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.jpg',
+    prompt: '',
+  },
+  {
+    id: 'end-of-the-fucking-world-2',
+    style: 'end-of-the-fucking-world',
+    label: 'The End of the F***ing World',
+    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world2.jpg',
+    prompt: '',
+  },
+  {
+    id: 'end-of-the-fucking-world-3',
+    style: 'end-of-the-fucking-world',
+    label: 'The End of the F***ing World',
+    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world3.jpg',
+    prompt: '',
+  },
 ];
 
 export interface Category {
@@ -163,6 +232,9 @@ export const categories: Category[] = [
   { id: 'tangled', name: 'Tangled', tag: 'Fantasy', description: 'Fairy-tale adventure with lantern-lit warmth', cover: '/styles/tangled/tangled1.jpg' },
   { id: 'spiderman', name: 'Spider-Man', tag: 'Action', description: 'Superhero story full of action and heart', cover: '/styles/spiderman/spiderman1.jpg' },
   { id: 'terabithia', name: 'Terabithia', tag: 'Adventure', description: 'Coming-of-age tale in an enchanted world', cover: '/styles/terabithia/terabithia1.jpg' },
+  { id: 'cinderella', name: 'Cinderella', tag: 'Fantasy', description: 'A timeless fairy tale of magic and love', cover: '/styles/cinderella/cinderella1.jpg' },
+  { id: 'stranger-things', name: 'Stranger Things', tag: 'Sci-Fi', description: 'Supernatural mystery with 80s nostalgia', cover: '/styles/stranger-things/stranger-things1.jpg' },
+  { id: 'end-of-the-fucking-world', name: 'The End of the F***ing World', tag: 'Drama', description: 'Dark, quirky teen road trip with raw emotion', cover: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.jpg' },
 ];
 
 export function getRefsForCategory(categoryId: string): ReferenceItem[] {
