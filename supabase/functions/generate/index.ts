@@ -9,69 +9,42 @@ const corsHeaders = {
 const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
 const MODEL_NAME = "zsxkib/flux-pulid";
 
-const UNIVERSAL_PROMPT = `Use the provided reference image and separately uploaded photos of the man and the woman.
-The man replaces the male character, the woman replaces the female character.
+const UNIVERSAL_PROMPT = `Use the reference scene image and the separately uploaded photos of the man and the woman.
 
-STRICT IDENTITY LOCK:
-Preserve identity 1:1 from uploaded photos — exact facial structure, proportions, age, skin tone, eye shape, eyelids, eyebrows, nose, lips, jawline, hairstyle, hair color and length. Faces must remain fully recognizable.
+Replace the male character in the reference scene with the uploaded man, and replace the female character with the uploaded woman. Recast them naturally into the same scene, not as pasted faces.
 
-CRITICAL POSE & EXPRESSION LOCK:
-Match the reference EXACTLY:
-— same head angle and rotation
-— same tilt and perspective
-— same facial expression
-— if eyes are closed → keep them closed
-— if eyes look sideways → keep same gaze direction
-— if face is partially turned → keep the same angle (no frontal correction)
+Keep both people highly recognizable from their uploaded photos: facial structure, proportions, age, skin tone, eyes, eyebrows, nose, lips, jawline, hairstyle, hair color and hair length. Preserve their identity, but adapt them to the exact style of the reference scene.
 
-CRITICAL FACE GEOMETRY:
-Rebuild the face directly inside the original head position.
-Do NOT paste or overlay the face.
-Do NOT shift head position or proportions.
-Face must follow the exact skull orientation from the reference.
+Keep the original reference scene unchanged: same composition, camera angle, framing, lens perspective, pose, body position, head rotation, head tilt, gaze direction, expression, clothing, background, objects, lighting, depth of field, grain, motion blur and color grading.
 
-CRITICAL LIGHTING & COLOR MATCH:
-Fully inherit lighting from the scene:
-— same color temperature
-— same shadows and highlights
-— same contrast and exposure
-— same environment color influence (warm, cold, neon, etc.)
-Skin tones must be adapted to the scene lighting, not original photo lighting.
+Expression and pose must match the reference exactly:
+if the reference character has closed eyes, keep the new person's eyes closed;
+if the reference character looks sideways, keep the same gaze direction;
+if the head is in profile, keep the same profile angle;
+if hair covers the face, keep the same hair occlusion;
+do not turn faces toward the camera unless the reference does so.
 
-CRITICAL HAIR & OCCLUSION:
-Preserve all occlusions exactly as in the reference:
-— hair covering parts of the face must stay in place
-— do not remove or move hair
-— do not reveal hidden parts of the face
-— respect shadows, objects, hands, or motion blur covering the face
+Skin and body integration:
+the face, neck, ears, hands and any visible skin must match each other naturally.
+Use the uploaded person's natural skin tone as the identity base, but harmonize it with the reference scene lighting, shadows, color temperature and environment color cast.
+No mismatched face/neck/hands. No mask-like face. No plastic skin.
 
-CRITICAL VISIBILITY RULE:
-Only generate what is visible in the reference.
-Do NOT reconstruct hidden facial areas.
-Do NOT "complete" the face.
+Do not simply paste a face onto the original character. Rebuild the person naturally inside the existing head and body position, following the original skull angle, facial perspective and scene lighting.
 
-CRITICAL BODY & PROPORTION LOCK:
-Keep original body, pose, proportions, and anatomy from the reference.
-Only minimally adapt if needed for natural integration.
-Do not distort body shape or posture.
+Only replace visible facial regions. Do not reconstruct or infer hidden facial geometry.
+Faces must strictly follow the original head orientation, perspective, and lens distortion.
 
-CRITICAL STYLE ADAPTATION:
-Automatically match the style of the reference:
-— if realistic → photorealistic
-— if cinematic → cinematic grading
-— if stylized 3D → same stylized 3D rendering
-Faces must be converted into the same style (not pasted realism into cartoon).
+For romantic or kissing scenes:
+keep the interaction tasteful, cinematic and faithful to the reference pose. Preserve the original emotional expression and closeness without making it more explicit or more intense. Do not add nudity or sexualized details.
 
-CRITICAL BACKGROUND LOCK:
-Keep environment, clothing, objects, composition, framing and camera unchanged.
+If the reference is photorealistic, make the result photorealistic.
+If the reference is cinematic, preserve the same cinematic grading.
+If the reference is stylized 3D animation, render the man and woman in the same stylized 3D animated style.
+If the reference is a cartoon, keep the same cartoon rendering style.
 
-CRITICAL HANDS:
-All visible hands must be correct — five fingers, natural anatomy, no deformation.
+Visible hands must be anatomically correct with exactly five fingers per hand, natural joints, correct grip and no extra or missing fingers.
 
-FINAL GOAL:
-The result must look like the same original scene, with identical pose, lighting, and composition, but with these two people naturally present in place of the original characters.
-No pasted look, no plastic skin, no pose drift, no lighting mismatch.
-High detail, consistent rendering, 4K.`;
+Final result: the same original scene, same style and same pose, but the man and woman from the uploaded photos are naturally present in place of the original male and female characters. Natural, seamless, unedited-looking result.`;
 
 async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
