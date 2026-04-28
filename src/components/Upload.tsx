@@ -5,7 +5,7 @@ import type { ReferenceItem } from '../data/references';
 interface UploadProps {
   selectedRef: ReferenceItem;
   onBack: () => void;
-  onGenerate: (photo1: File, photo2: File, styleBoard: File, prompt: string, mode?: string) => void;
+  onGenerate: (photo1: File, photo2: File, styleBoard: File, mode?: string) => void;
   photo1: File | null;
   setPhoto1: (file: File | null) => void;
   photo2: File | null;
@@ -83,19 +83,9 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
     if (!photo1 || !photo2) { setError('Please upload both photos before generating'); return; }
     if (!referenceFile) { setError('Reference image still loading. Please wait.'); return; }
 
-    const prompt = selectedRef.prompt;
-    console.log('[UPLOAD] SELECTED REF ID:', selectedRef.id);
-    console.log('[UPLOAD] RESOLVED PROMPT:', prompt || '(EMPTY)');
-    if (!prompt || prompt.trim() === '') {
-      console.warn('[UPLOAD] Missing prompt for ref id:', selectedRef.id);
-      setError('No prompt available for this scene.');
-      return;
-    }
-    console.log('[UPLOAD] PROMPT SENT TO APP (length:', prompt.length, ')');
-
     setIsGenerating(true);
     setError('');
-    onGenerate(photo1, photo2, referenceFile, prompt);
+    onGenerate(photo1, photo2, referenceFile);
   };
 
   const canGenerate = !isGenerating && !!photo1 && !!photo2 && !!referenceFile;

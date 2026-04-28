@@ -20,43 +20,15 @@ function App() {
   const [preview2, setPreview2] = useState<string>('');
 
   const handleImageSelect = (ref: ReferenceItem) => {
-    console.log('[APP] SELECTED ID:', ref.id);
-    console.log('[APP] SELECTED REF:', { id: ref.id, style: ref.style, image: ref.image, hasPrompt: !!ref.prompt && ref.prompt.trim().length > 0 });
-    console.log('[APP] RESOLVED PROMPT:', ref.prompt || '(EMPTY — missing prompt)');
-    if (!ref.prompt || ref.prompt.trim() === '') {
-      console.warn('[APP] WARNING: Selected reference has no prompt. id:', ref.id);
-    }
     setSelectedCategory(ref.style);
     setSelectedRef(ref);
     setCurrentView('upload');
   };
 
-  const resolveDomain = (style: string, mode?: string): string => {
-    if (style === 'zootopia') {
-      if (mode === 'zootopia_animals') return 'zootopia_animals';
-      if (mode === 'zootopia_cartoon') return 'zootopia_cartoon';
-      return 'zootopia_cartoon';
-    }
-    if (style === 'titanic') return 'titanic';
-    if (style === 'euphoria') return 'euphoria';
-    return 'titanic';
-  };
-
-  const handleGenerate = async (photo1: File, photo2: File, referenceFile: File, prompt: string, mode?: string) => {
-    console.log('=== APP HANDLEGENERATE START ===');
-
-    if (isGenerating) {
-      console.log('BLOCKED: Already generating in App');
-      return;
-    }
+  const handleGenerate = async (photo1: File, photo2: File, referenceFile: File, mode?: string) => {
+    if (isGenerating) return;
 
     if (!photo1 || !photo2 || !referenceFile || !selectedRef) {
-      console.error('BLOCKED: Missing required fields', {
-        person1: !!photo1,
-        person2: !!photo2,
-        reference: !!referenceFile,
-        selectedRef: !!selectedRef,
-      });
       setError('Missing required data. Please try again.');
       return;
     }
@@ -66,20 +38,7 @@ function App() {
     setDebugInfo(null);
     setCurrentView('result');
 
-    console.log("PROMPT BEFORE SEND:", prompt);
-    console.log("REFERENCE:", referenceFile);
-
-    if (!prompt || prompt.trim() === "") {
-      setIsGenerating(false);
-      setError("No prompt selected. Please select a reference image before generating.");
-      setCurrentView('upload');
-      throw new Error("No prompt selected. Please select a reference image before generating.");
-    }
-
     const style = selectedRef.style;
-    console.log('=== REQUEST START ===');
-    console.log('style:', style);
-    console.log('mode:', mode);
 
     try {
       const formData = new FormData();
@@ -88,27 +47,12 @@ function App() {
       formData.append('reference', referenceFile);
       formData.append('style', style);
       formData.append('referenceId', selectedRef.id);
-      formData.append('domain', resolveDomain(style, mode));
-      formData.append('prompt', prompt);
 
       if (mode) {
         formData.append('mode', mode);
       }
 
-      console.log('FormData built with:', {
-        person1: photo1.name,
-        person2: photo2.name,
-        reference: referenceFile.name,
-        style,
-        referenceId: selectedRef.id,
-        mode: mode || 'not provided',
-        prompt,
-      });
-
       const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
-      console.log('[APP] PROMPT SENT TO API:', prompt);
-      console.log('[APP] PROMPT LENGTH:', prompt.length);
-      console.log('=== REQUEST SENT ===');
 
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -118,14 +62,10 @@ function App() {
         body: formData,
       });
 
-      console.log('=== RESPONSE RECEIVED ===', { status: response.status });
-
       const data = await response.json();
-      console.log('Response data:', data);
 
       if (data.debug) {
         setDebugInfo(data.debug);
-        console.log('DEBUG INFO:', JSON.stringify(data.debug, null, 2));
       }
 
       if (!response.ok) {
@@ -133,7 +73,6 @@ function App() {
       }
 
       if (data.success && data.imageUrl) {
-        console.log('SUCCESS: Setting imageUrl:', data.imageUrl);
         setGeneratedImageUrl(data.imageUrl);
         setError('');
       } else {
@@ -146,7 +85,6 @@ function App() {
       }
     } finally {
       setIsGenerating(false);
-      console.log('=== REQUEST COMPLETE ===');
     }
   };
 
@@ -163,7 +101,6 @@ function App() {
     setPreview2('');
   };
 
-  // Back from Upload: return to Home with the category still open, photos preserved
   const handleBackFromUpload = () => {
     setCurrentView('home');
     setGeneratedImageUrl('');
