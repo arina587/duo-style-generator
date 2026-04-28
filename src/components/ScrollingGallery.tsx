@@ -39,8 +39,9 @@ export default function ScrollingGallery({ onImageSelect }: ScrollingGalleryProp
                   src={ref.image}
                   alt={ref.label}
                   loading="lazy"
+                  onLoad={() => console.log('IMAGE PATH:', ref.image)}
                   onError={(e) => {
-                    console.error('[IMAGE FAILED]', ref.image, '| ref id:', ref.id);
+                    console.warn('IMAGE LOAD ERROR:', ref.image);
                     (e.target as HTMLImageElement).style.opacity = '0.15';
                   }}
                 />

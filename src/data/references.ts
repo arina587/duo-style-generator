@@ -51,7 +51,7 @@ export const references: ReferenceItem[] = [
     id: 'euphoria-3',
     style: 'euphoria',
     label: 'Euphoria',
-    image: '/styles/euphoria/euphoria3.png',
+    image: '/styles/euphoria/euphoria3.jpg',
     prompt: "Use the provided movie reference image and separately uploaded photos of the man and woman.\nSTRICTLY preserve identity 1:1 — all facial features must remain clearly recognizable with correct proportions, skin tone, and hairstyle.\n\nCRITICAL: integrate faces into the scene with full cinematic consistency — match neutral indoor lighting, shadows, and natural color grading. No artificial smoothing or mismatch.\n\nCRITICAL POSE LOCK:\nExact 1:1 replication —\nfull-body walking shot in a school hallway;\nman on the left, woman on the right, holding hands;\nboth walking toward the camera.\nPreserve exact posture, stride, spacing, and proportions.\n\nCRITICAL HEAD ORIENTATION:\nFaces are visible in frontal/3/4 view — replace faces accordingly, matching perspective precisely.\n\nCRITICAL HANDS:\nHands must be correct — exactly five fingers per hand, natural grip while holding hands, no deformation.\n\nCRITICAL CLOTHING & ENVIRONMENT:\nClothing must match EXACTLY — same outfits, colors, and fit.\nBackground (hallway, lockers, students) remains unchanged.\n\nCRITICAL COMPOSITION:\nDo not crop, zoom, or shift framing. Keep original camera position and lens perspective.\n\nClean cinematic realism, natural lighting, high detail, 4K.",
   },
 

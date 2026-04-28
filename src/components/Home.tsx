@@ -264,7 +264,8 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
                       src={cat.cover}
                       alt={cat.name}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      onError={(e) => console.error('[IMAGE FAILED]', cat.cover, 'category:', cat.id, e)}
+                      onLoad={() => console.log('IMAGE PATH:', cat.cover)}
+                      onError={() => console.warn('IMAGE LOAD ERROR:', cat.cover)}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#2d2642]/50 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
                     <div className="absolute top-2 left-2">
@@ -319,7 +320,8 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
                         src={ref.image}
                         alt={`${ref.label} scene ${idx + 1}`}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        onError={(e) => console.error('[IMAGE FAILED]', ref.image, 'ref id:', ref.id, e)}
+                        onLoad={() => console.log('IMAGE PATH:', ref.image)}
+                        onError={() => console.warn('IMAGE LOAD ERROR:', ref.image)}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#2d2642]/50 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
                       <div className="absolute top-2 left-2">
