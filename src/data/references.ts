@@ -19,7 +19,75 @@ export const references: ReferenceItem[] = [
 
   // ── Titanic ──
   { id: 'titanic-1', style: 'titanic', label: 'Titanic', image: '/styles/titanic/titanic1.jpg' },
-  { id: 'titanic-2', style: 'titanic', label: 'Titanic', image: '/styles/titanic/titanic2.jpg' },
+  {
+    id: 'titanic-2',
+    style: 'titanic',
+    label: 'Titanic',
+    image: '/styles/titanic/titanic2.jpg',
+    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Replace the male character on the left with the uploaded man, and the female character on the right with the uploaded woman. Recreate both people naturally inside the scene, not as pasted faces.
+
+STRICT IDENTITY PRESERVATION:
+Keep both people clearly recognizable — facial structure, proportions, skin tone, eye shape, eyebrows, nose, lips, jawline, hairstyle, hair color and length must remain true to the uploaded photos.
+
+CRITICAL POSE & CONTACT LOCK:
+Match the exact pose from the reference —
+both characters are leaning forward over a surface, very close to each other;
+their foreheads and faces are angled downward;
+the woman is kissing the man's hand;
+faces are partially hidden and compressed due to the angle and closeness.
+Preserve head tilt, angle, distance, and contact points exactly.
+Do NOT open the pose or separate faces.
+
+CRITICAL VISIBILITY & FACE ANGLE:
+Faces are NOT fully visible —
+keep partial visibility exactly as in the reference;
+do not rotate faces toward the camera;
+do not reconstruct hidden areas;
+keep natural compression of cheeks and facial perspective due to angle.
+
+CRITICAL HAIR & WET TEXTURE:
+Hair is wet and sticking to the face —
+preserve wet strands across forehead, cheeks, and temples;
+do not clean or remove wet hair;
+keep natural clumping and shine from moisture.
+
+CRITICAL LIGHTING & COLOR (VERY IMPORTANT):
+The scene has cold blue cinematic lighting with strong highlights and deep shadows.
+Faces must fully inherit this:
+— apply the same cool blue color cast
+— preserve specular highlights on wet skin
+— maintain contrast between light and shadow
+— keep reflective wet surfaces on skin and hair
+
+Skin tone must stay consistent across face, neck, and visible arms, but adapted to the cold environment lighting.
+No mismatch between face and body, no warm/neutral face against blue scene.
+
+CRITICAL SHADOW INTEGRATION:
+Respect shadow placement exactly:
+— shadows under brow, nose, lips must match
+— subtle darkness between faces must remain
+— no flattening of light, no overexposure
+
+CRITICAL SCENE LOCK:
+Keep environment, water reflections, background blur, clothing, and composition EXACTLY unchanged.
+No redesign, no cleanup of the scene.
+
+CRITICAL INTEGRATION:
+Rebuild faces within the original head geometry and perspective.
+Do NOT paste faces.
+Do NOT change skull orientation or proportions.
+
+CRITICAL HANDS:
+The hand being held and kissed must remain natural and correctly formed —
+five fingers, proper anatomy, no deformation.
+
+FINAL RESULT:
+The image must look like the same wet, cold, emotional cinematic moment, with identical lighting, mood, and composition, but with the uploaded man and woman naturally present in place of the original characters.
+No plastic look, no face cut-out, fully integrated into water, light, and shadows.
+High detail, cinematic realism, 4K.`,
+  },
   { id: 'titanic-3', style: 'titanic', label: 'Titanic', image: '/styles/titanic/titanic3.jpg' },
 
   // ── Tangled ──
