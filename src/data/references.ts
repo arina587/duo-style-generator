@@ -93,7 +93,64 @@ Final result must look like the same real-life moment, same lighting and composi
 
   // ── Stranger Things ──
   { id: 'stranger-things-1', style: 'stranger-things', label: 'Stranger Things', image: '/styles/stranger-things/stranger-things1.jpg' },
-  { id: 'stranger-things-2', style: 'stranger-things', label: 'Stranger Things', image: '/styles/stranger-things/stranger-things2.jpg' },
+  {
+    id: 'stranger-things-2',
+    style: 'stranger-things',
+    label: 'Stranger Things',
+    image: '/styles/stranger-things/stranger-things2.jpg',
+    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Replace the female character on the left with the uploaded woman, and the male character on the right with the uploaded man. Recreate both people naturally inside the scene, not as pasted faces.
+
+STRICTLY preserve identity — facial structure, proportions, age, skin tone, eyes, nose, lips, jawline, hairstyle, hair color and length must remain clearly recognizable.
+
+CRITICAL POSE & EMOTION LOCK:
+Keep the exact pose and emotional state from the reference —
+both characters are leaning forward with their foreheads touching;
+eyes are closed;
+expressions are soft, calm, intimate and emotional.
+Match head angles, distance between faces, and facial tension exactly.
+Do NOT open the eyes, do NOT change expression intensity.
+
+CRITICAL LIGHTING & SKIN INTEGRATION (VERY IMPORTANT):
+The scene has strong cold blue lighting with deep shadows.
+Faces must fully inherit this lighting:
+— apply the same blue color cast to skin
+— preserve shadow areas on cheeks, nose, eye sockets
+— maintain low-key contrast and soft falloff
+— keep natural skin texture under low light (no smoothing, no plastic effect)
+
+Skin tone must remain consistent across face, neck, and visible arms, but fully adapted to the blue environment lighting.
+No mismatch between face and body. No "cut-out" look.
+
+CRITICAL SHADOW & DEPTH MATCH:
+Faces must integrate into existing shadows exactly:
+— respect shadow direction and intensity
+— do not flatten lighting
+— keep subtle darkness between faces where they touch
+— preserve cinematic depth and softness
+
+CRITICAL OCCLUSION:
+Keep all natural occlusions —
+hair overlapping forehead and face must remain in place;
+do not remove or shift hair strands;
+do not reveal hidden parts of the face.
+
+CRITICAL SCENE LOCK:
+Keep background, color grading, clothing, and framing EXACTLY as in the reference.
+No changes to environment or composition.
+
+CRITICAL INTEGRATION:
+Rebuild faces inside the original head positions with correct perspective.
+Do NOT paste faces.
+Do NOT rotate or re-angle heads.
+
+CRITICAL HANDS:
+If visible — anatomically correct, five fingers, natural proportions.
+
+Final result must look like the same cinematic moment with identical lighting, mood, and composition, but with the uploaded man and woman naturally present.
+Cinematic realism, cold blue lighting, deep shadows, soft texture, high detail, 4K.`,
+  },
   { id: 'stranger-things-3', style: 'stranger-things', label: 'Stranger Things', image: '/styles/stranger-things/stranger-things3.jpg' },
 
   // ── The End of the F***ing World ──
