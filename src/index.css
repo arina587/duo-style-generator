@@ -345,34 +345,4 @@
     overflow: hidden;
   }
 
-  /* ─── Scrolling Gallery ─── */
-  .scroll-gallery-wrapper {
-    background: linear-gradient(180deg, #ede6f6 0%, #f0edf6 100%);
-    mask-image: linear-gradient(
-      90deg,
-      transparent 0%,
-      black 5%,
-      black 95%,
-      transparent 100%
-    );
-    -webkit-mask-image: linear-gradient(
-      90deg,
-      transparent 0%,
-      black 5%,
-      black 95%,
-      transparent 100%
-    );
-  }
-
-  .scroll-gallery-card {
-    box-shadow: 0 4px 12px rgba(120, 90, 180, 0.08);
-    border: 2px solid rgba(216, 202, 234, 0.4);
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .scroll-gallery-card:hover {
-    box-shadow: 0 8px 20px rgba(120, 90, 180, 0.15);
-    border-color: rgba(180, 156, 219, 0.6);
-    transform: scale(1.05);
-  }
 }

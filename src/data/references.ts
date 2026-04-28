@@ -241,3 +241,17 @@ export function getRefsForCategory(categoryId: string): ReferenceItem[] {
   return references.filter((r) => r.style === categoryId);
 }
 
+// ── Diagnostics (runs once on module load) ──
+console.log('[REFERENCES] Total loaded:', references.length);
+console.log('[REFERENCES] Full table:', references.map(r => ({
+  id: r.id,
+  image: r.image,
+  hasPrompt: !!r.prompt && r.prompt.trim().length > 0,
+  promptPreview: r.prompt ? r.prompt.substring(0, 60) + '…' : '(EMPTY)',
+})));
+references.forEach((r) => {
+  if (!r.prompt || r.prompt.trim() === '') {
+    console.warn('[REFERENCES] Missing prompt for id:', r.id);
+  }
+});
+

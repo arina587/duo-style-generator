@@ -20,6 +20,12 @@ function App() {
   const [preview2, setPreview2] = useState<string>('');
 
   const handleImageSelect = (ref: ReferenceItem) => {
+    console.log('[APP] SELECTED ID:', ref.id);
+    console.log('[APP] SELECTED REF:', { id: ref.id, style: ref.style, image: ref.image, hasPrompt: !!ref.prompt && ref.prompt.trim().length > 0 });
+    console.log('[APP] RESOLVED PROMPT:', ref.prompt || '(EMPTY — missing prompt)');
+    if (!ref.prompt || ref.prompt.trim() === '') {
+      console.warn('[APP] WARNING: Selected reference has no prompt. id:', ref.id);
+    }
     setSelectedCategory(ref.style);
     setSelectedRef(ref);
     setCurrentView('upload');
@@ -100,6 +106,8 @@ function App() {
       });
 
       const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
+      console.log('[APP] PROMPT SENT TO API:', prompt);
+      console.log('[APP] PROMPT LENGTH:', prompt.length);
       console.log('=== REQUEST SENT ===');
 
       const response = await fetch(apiUrl, {

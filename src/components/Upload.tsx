@@ -84,7 +84,14 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
     if (!referenceFile) { setError('Reference image still loading. Please wait.'); return; }
 
     const prompt = selectedRef.prompt;
-    if (!prompt || prompt.trim() === '') { setError('No prompt available for this scene.'); return; }
+    console.log('[UPLOAD] SELECTED REF ID:', selectedRef.id);
+    console.log('[UPLOAD] RESOLVED PROMPT:', prompt || '(EMPTY)');
+    if (!prompt || prompt.trim() === '') {
+      console.warn('[UPLOAD] Missing prompt for ref id:', selectedRef.id);
+      setError('No prompt available for this scene.');
+      return;
+    }
+    console.log('[UPLOAD] PROMPT SENT TO APP (length:', prompt.length, ')');
 
     setIsGenerating(true);
     setError('');
