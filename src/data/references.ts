@@ -48,6 +48,15 @@ CRITICAL POSE & EXPRESSION LOCK:
 Keep the exact pose and interaction from the reference —
 the woman on the left is smiling softly, looking slightly downward toward the person in front of her;
 the man on the right is turned slightly sideways, head tilted down, with a gentle calm expression.
+Enhance expressions NATURALLY:
+- The woman must have a clearly visible soft, warm, natural smile (not exaggerated, not artificial)
+- The man must have a subtle, relaxed, slight smile (very natural, low intensity, not forced)
+IMPORTANT:
+- Do NOT exaggerate smiles
+- Do NOT change mouth shape beyond natural variation
+- Do NOT change emotion tone of the scene
+- Do NOT break likeness or facial structure
+- Keep expressions consistent with original mood and realism
 Match head angles, proximity, and gaze direction exactly.
 
 CRITICAL OCCLUSION & DETAILS:
