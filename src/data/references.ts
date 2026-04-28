@@ -120,12 +120,12 @@ CRITICAL POSE LOCK (ABSOLUTE):
 Match the original pose EXACTLY as in the reference frame:
 — man on the left holds the phone with his arm extended upward
 — selfie angle from slightly above
-— woman stands at his right side, body positioned exactly as in the reference
-— maintain original body spacing, torso angles, and head positions
+— woman stands on his right side (NOT lifted), body position identical to the reference
+— the man holds her close with his other arm around her (light side hug), maintaining the same contact and positioning
+— preserve original body spacing, torso angles, and head positions
 — maintain original camera framing and crop
 
-Do NOT reinterpret, correct, or adjust the pose.
-Do NOT lift, reposition, or re-stage characters.
+Do NOT reinterpret or re-stage the pose.
 
 CRITICAL PROP LOCK:
 — phone MUST remain in the man's hand in the same position and angle
@@ -134,21 +134,18 @@ CRITICAL PROP LOCK:
 CRITICAL EXPRESSION LOCK:
 — preserve the exact expressions from the reference
 — same eye direction toward the phone
-— same intensity of emotion, no exaggeration
+— same intensity of emotion
 
 CRITICAL STYLE LOCK (VERY IMPORTANT):
 Use the exact shading, rendering, materials, and lighting style from the reference image.
 Do NOT create a new Pixar/Disney scene.
-Do NOT alter rendering style, color grading, or material response.
-Characters must blend into the existing style, not replace it.
 
 CRITICAL SCENE LOCK (HIGHEST PRIORITY):
 The background, lighting, crowd, blur, depth, and composition must remain EXACTLY unchanged.
-No regeneration, no repainting, no style shift.
 Treat the reference image as a locked base frame.
 
 CRITICAL LIGHTING:
-Characters must inherit the exact colored lighting (pink, purple, blue) with consistent shading and reflections.
+Characters must inherit the exact colored lighting (pink, purple, blue).
 
 CRITICAL HANDS (VERY IMPORTANT):
 All hands must be human — anatomically correct with realistic proportions.
@@ -157,8 +154,7 @@ Correct grip on phone and carrot, no distortion, no merged or missing fingers.
 
 FINAL:
 The output must look like the same original frame with identical composition, lighting, and style, with only the characters replaced by the uploaded man and woman.
-No scene drift, no pose change, no background alteration.
-Seamless integration, high detail, 4K.`,
+No pose drift, no background change, seamless integration, 4K.`,
   },
 
   // ── Euphoria ──
