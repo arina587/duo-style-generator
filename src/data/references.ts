@@ -3,6 +3,7 @@ export interface ReferenceItem {
   image: string;
   style: string;
   label: string;
+  prompt?: string;
 }
 
 export const references: ReferenceItem[] = [
@@ -32,7 +33,47 @@ export const references: ReferenceItem[] = [
   { id: 'spiderman-3', style: 'spiderman', label: 'Spider-Man', image: '/styles/spiderman/spiderman3.jpg' },
 
   // ── Bridge to Terabithia ──
-  { id: 'terabithia-1', style: 'terabithia', label: 'Terabithia', image: '/styles/terabithia/terabithia1.jpg' },
+  {
+    id: 'terabithia-1',
+    style: 'terabithia',
+    label: 'Terabithia',
+    image: '/styles/terabithia/terabithia1.jpg',
+    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Replace the female character on the left with the uploaded woman, and replace the character on the right with the uploaded man. Recreate both people naturally inside the scene, not as pasted faces.
+
+STRICTLY preserve their identity — facial structure, proportions, age, skin tone, eye shape, nose, lips, jawline, hairstyle, hair color and length must remain clearly recognizable.
+
+CRITICAL POSE & EXPRESSION LOCK:
+Keep the exact pose and interaction from the reference —
+the woman on the left is smiling softly, looking slightly downward toward the person in front of her;
+the man on the right is turned slightly sideways, head tilted down, with a gentle calm expression.
+Match head angles, proximity, and gaze direction exactly.
+
+CRITICAL OCCLUSION & DETAILS:
+Preserve all occlusions exactly —
+the cap partially covering the woman's forehead must stay;
+the man's face is partially turned — keep the same angle;
+the fluffy white animal between them must remain in the same position and partially cover their hands.
+Do not reveal hidden parts of the face or move objects.
+
+CRITICAL SKIN & LIGHT MATCH:
+Lighting is soft natural daylight with slight green outdoor color influence.
+Adapt the skin tones of the new faces to match the scene lighting so that face, neck, and hands look consistent and natural.
+No mismatch between face and body tone, no mask effect, no plastic skin.
+
+CRITICAL SCENE LOCK:
+Keep background, depth of field, blur, clothing, colors, and composition exactly the same as the reference.
+Do not redesign outfits (cap, vest, shirt).
+
+CRITICAL INTEGRATION:
+Do not paste faces. Rebuild the faces naturally within the original head positions, matching perspective and skull orientation.
+
+CRITICAL HANDS:
+If visible, hands must be anatomically correct with five fingers and natural proportions.
+
+Final result must look like the same real-life moment, same lighting and composition, but with the uploaded man and woman naturally present in place of the original characters. High detail, natural realism, clean integration, 4K.`,
+  },
   { id: 'terabithia-2', style: 'terabithia', label: 'Terabithia', image: '/styles/terabithia/terabithia2.jpg' },
   { id: 'terabithia-3', style: 'terabithia', label: 'Terabithia', image: '/styles/terabithia/terabithia3.jpg' },
 

@@ -47,6 +47,7 @@ function App() {
       formData.append('reference', referenceFile);
       formData.append('style', style);
       formData.append('referenceId', selectedRef.id);
+      formData.append('prompt', selectedRef.prompt ?? '');
 
       if (mode) {
         formData.append('mode', mode);

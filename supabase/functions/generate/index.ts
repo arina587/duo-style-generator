@@ -314,7 +314,13 @@ Deno.serve(async (req: Request) => {
     const replicateApiKey = Deno.env.get("REPLICATE_API_KEY");
     if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
 
-    console.log("[GENERATE] using universal prompt, length:", UNIVERSAL_PROMPT.length);
+    const clientPrompt = formData.get("prompt");
+    const finalPrompt =
+      typeof clientPrompt === "string" && clientPrompt.trim().length > 0
+        ? clientPrompt.trim()
+        : UNIVERSAL_PROMPT;
+
+    console.log("[GENERATE] prompt source:", finalPrompt === UNIVERSAL_PROMPT ? "universal" : "reference-override", "length:", finalPrompt.length);
 
     const [referenceDataUrl, person1DataUrl, person2DataUrl] = await Promise.all([
       fileToDataUrl(reference),
@@ -322,7 +328,7 @@ Deno.serve(async (req: Request) => {
       fileToDataUrl(person2),
     ]);
 
-    const { outputUrl, debugInfo } = await runReplicate(UNIVERSAL_PROMPT, referenceDataUrl, person1DataUrl, person2DataUrl, replicateApiKey);
+    const { outputUrl, debugInfo } = await runReplicate(finalPrompt, referenceDataUrl, person1DataUrl, person2DataUrl, replicateApiKey);
     const imageUrl = await fetchOutputAsDataUrl(outputUrl);
 
     return new Response(
