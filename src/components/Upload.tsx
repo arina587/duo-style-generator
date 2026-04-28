@@ -182,15 +182,19 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
         {/* Photo uploads */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           {[
-            { letter: 'A', label: 'Man Photo', preview: preview1, setPhoto: setPhoto1, setPreview: setPreview1, alt: 'Man photo' },
-            { letter: 'B', label: 'Woman Photo', preview: preview2, setPhoto: setPhoto2, setPreview: setPreview2, alt: 'Woman photo' },
-          ].map(({ letter, label, preview, setPhoto, setPreview, alt }) => (
+            { letter: 'A', label: 'Man Photo', hint: 'If the man in the reference image is shown in profile or at a 3/4 angle, upload a photo of the man with a similar face angle (profile or 3/4) for best results.', preview: preview1, setPhoto: setPhoto1, setPreview: setPreview1, alt: 'Man photo' },
+            { letter: 'B', label: 'Woman Photo', hint: 'If the woman in the reference image is shown in profile or at a 3/4 angle, upload a photo of the woman with a similar face angle (profile or 3/4) for best results.', preview: preview2, setPhoto: setPhoto2, setPreview: setPreview2, alt: 'Woman photo' },
+          ].map(({ letter, label, hint, preview, setPhoto, setPreview, alt }) => (
             <div key={letter} className="card-premium p-4">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 text-white" style={{ background: 'linear-gradient(135deg, #9b7dd4, #b49cdb)' }}>
                   {letter}
                 </div>
                 <h3 className="text-[11px] font-extrabold uppercase tracking-widest font-body text-[#9a93b0]">{label}</h3>
+              </div>
+              <div className="flex items-start gap-1.5 mb-3 px-0.5">
+                <svg className="w-3.5 h-3.5 text-[#b49cdb] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                <p className="text-[11px] leading-relaxed font-body text-[#9a93b0]">{hint}</p>
               </div>
               <label className="block cursor-pointer">
                 <input

@@ -73,7 +73,7 @@ export default function ScrollingGallery({ onImageSelect }: ScrollingGalleryProp
           gap: 14px;
           padding: 8px 8px;
           width: max-content;
-          animation: sg-scroll 30s linear infinite;
+          animation: sg-scroll 45s linear infinite;
           will-change: transform;
         }
         .scroll-gallery-track.paused {
