@@ -40,7 +40,7 @@ export default function ScrollingGallery({ onImageSelect }: ScrollingGalleryProp
                   alt={ref.label}
                   loading="lazy"
                   onError={(e) => {
-                    console.warn('[Gallery] Missing image:', ref.image, '| ref id:', ref.id);
+                    console.error('[IMAGE FAILED]', ref.image, '| ref id:', ref.id);
                     (e.target as HTMLImageElement).style.opacity = '0.15';
                   }}
                 />
