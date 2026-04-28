@@ -26,83 +26,67 @@ export const references: ReferenceItem[] = [
     image: '/styles/titanic/titanic2.jpg',
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Replace the male character on the left with the uploaded man, and the female character on the right with the uploaded woman. Recreate both people naturally inside the scene.
+Replace the male character on the left with the uploaded man, and the female character on the right with the uploaded woman. Recreate both people naturally inside the scene, not as pasted faces.
 
-STRICT IDENTITY PRESERVATION:
-Keep both people clearly recognizable — facial structure, proportions, age, eyes, nose, lips, jawline, hairstyle, hair color and length must remain true to the uploaded photos.
+STRICTLY preserve identity — facial structure, proportions, age, skin tone, eyes, nose, lips, jawline, hairstyle, hair color and length must remain clearly recognizable.
 
-CRITICAL SCENE LOCK (HIGHEST PRIORITY):
-The reference image must remain unchanged in structure.
-Keep EXACTLY the same:
-— background
-— water surface and reflections
-— lighting setup and color grading
-— clothing (same wet fabric, same colors, same folds)
-— camera angle and framing
-— depth of field and blur
+CRITICAL POSE & EMOTION LOCK:
+Keep the exact pose and emotional state from the reference —
+both characters are leaning forward over the surface, very close to each other;
+the woman is gently kissing the man's hand;
+faces are angled downward and partially hidden;
+expressions are soft, emotional, intimate, slightly tense.
+Match head angles, compression of faces, distance, and contact points exactly.
+Do NOT open the pose, do NOT rotate faces, do NOT change expression intensity.
 
-Do not redesign or reinterpret the scene. Only replace the people.
+CRITICAL VISIBILITY & FACE ANGLE:
+Faces are partially obscured —
+keep the same limited visibility;
+do not reveal hidden facial areas;
+do not force frontal view;
+preserve natural perspective distortion and facial compression from the angle.
 
-CRITICAL POSE & CONTACT LOCK:
-Match the pose exactly —
-both leaning forward, faces very close, angled downward;
-the woman kissing the man's hand;
-tight physical proximity and compression must remain identical.
+CRITICAL LIGHTING & SKIN INTEGRATION (VERY IMPORTANT):
+The scene has strong cold blue cinematic lighting with wet reflections.
+Faces must fully inherit this lighting:
+— maintain dominant blue color cast
+— preserve high-contrast lighting and deep shadows
+— keep specular highlights from water on skin
+— retain wet shine and reflective micro-details
 
-CRITICAL VISIBILITY & ANGLES:
-Faces are partially hidden —
-do not reconstruct hidden areas;
-do not rotate faces;
-preserve exact head angles and perspective compression.
+Skin must react naturally to this lighting:
+— no flat monochrome blue skin
+— preserve realistic skin depth under blue light
+— subtle natural variation must remain visible beneath lighting
+— face, neck, and hands must match perfectly in tone and lighting
 
-CRITICAL LIGHTING & SKIN RESPONSE (PHYSICALLY CORRECT):
-The cold blue lighting is dominant and must remain strong.
-Faces must fully inherit the scene lighting and color grading.
-
-However, skin must behave naturally under this light:
-— preserve realistic skin depth and subsurface scattering
-— avoid flat monochrome blue coloring
-— maintain subtle natural variation in skin tones beneath the light
-
-Lighting must affect the skin, not replace it.
-
-CRITICAL SPECULAR & WET EFFECT (VERY IMPORTANT):
-Preserve wet skin realism:
-— strong specular highlights on forehead, nose, cheeks
-— sharp light reflections from moisture
-— micro-contrast in wet areas
-— visible skin texture under highlights
-
-Do NOT soften or remove these highlights.
-
-CRITICAL SHADOW INTEGRATION:
-Maintain true cinematic shadow behavior:
-— deep shadows must remain deep
-— correct falloff across face curvature
-— subtle occlusion shadows between faces must stay
+CRITICAL SHADOW & DEPTH MATCH:
+Faces must integrate into shadows exactly:
+— correct shadow direction and intensity
+— deep shadow areas must remain deep
+— preserve soft darkness between faces and around contact areas
 — no flattening or over-brightening
 
-CRITICAL COLOR CONSISTENCY:
-Face, neck, ears, and hands must all respond identically to the same lighting.
-No mismatch, no "mask effect", no separate color zones.
+CRITICAL HAIR & WET EFFECT:
+Hair is wet and sticking to the face —
+preserve wet strands across forehead and cheeks;
+keep natural clumping and shine;
+do not clean, separate, or restyle hair.
 
-CRITICAL HAIR & OCCLUSION:
-Wet hair must stay exactly as in reference:
-— strands stuck to skin
-— no cleanup
-— no repositioning
-— preserve shadowing from hair
+CRITICAL SCENE LOCK:
+Keep background, water surface, reflections, clothing, and composition EXACTLY as in the reference.
+No changes to environment, no redesign of wet clothing or textures.
 
 CRITICAL INTEGRATION:
-Do not paste faces.
-Reconstruct them inside the original head geometry, respecting perspective, lighting, and material response.
+Rebuild faces inside the original head positions with correct perspective and lighting response.
+Do NOT paste faces.
+Do NOT alter skull orientation or proportions.
 
 CRITICAL HANDS:
-Hands must remain exactly positioned and anatomically correct — five fingers, no distortion.
+The hand being held and kissed must remain natural and anatomically correct — five fingers, correct proportions, no deformation.
 
-FINAL RESULT:
-The image must look like the same cold, wet, cinematic scene with identical lighting and mood, with the new people fully embedded into the physical lighting of the environment.
-No blue paint effect, no flat skin, no compositing artifacts — only realistic skin reacting to strong blue light.
+Final result must look like the same cold, wet, cinematic moment with identical lighting, mood, and composition, but with the uploaded man and woman fully integrated into the scene.
+No compositing artifacts, no plastic look, no lighting mismatch.
 High detail, cinematic realism, 4K.`,
   },
   { id: 'titanic-3', style: 'titanic', label: 'Titanic', image: '/styles/titanic/titanic3.jpg' },
