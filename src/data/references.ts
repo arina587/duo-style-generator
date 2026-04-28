@@ -104,7 +104,7 @@ Same tight, compressed selfie moment, exact pose preserved, stylized human versi
     image: '/styles/zootopia/zootopia3.jpg',
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized 3D human characters that inherit the exact rendering style of the reference image. Do NOT redesign the scene or re-create a new Pixar-style environment — only adapt the existing one.
+Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney-quality CGI style, not as pasted faces.
 
 STRICT IDENTITY PRESERVATION (ENHANCED):
 Faces must remain highly recognizable:
@@ -117,15 +117,16 @@ Faces must remain highly recognizable:
 — hairstyle, hair color, and hair length must match the uploaded photos
 
 CRITICAL POSE LOCK (ABSOLUTE):
-Match the original pose EXACTLY as in the reference frame:
 — man on the left holds the phone with his arm extended upward
 — selfie angle from slightly above
-— woman stands on his right side (NOT lifted), body position identical to the reference
-— the man holds her close with his other arm around her (light side hug), maintaining the same contact and positioning
-— preserve original body spacing, torso angles, and head positions
-— maintain original camera framing and crop
+— woman stands on his right side in the same position as the reference
+— both bodies positioned close, maintaining the same spacing and alignment
+— woman is NOT being held, NOT lifted, NOT supported
+— no arm wrapping around her — she stands independently next to him
+— preserve original torso angles, head positions, and framing
 
-Do NOT reinterpret or re-stage the pose.
+Do NOT reinterpret or redesign the pose.
+Do NOT introduce new interactions or contact not present in the reference.
 
 CRITICAL PROP LOCK:
 — phone MUST remain in the man's hand in the same position and angle
@@ -136,25 +137,25 @@ CRITICAL EXPRESSION LOCK:
 — same eye direction toward the phone
 — same intensity of emotion
 
-CRITICAL STYLE LOCK (VERY IMPORTANT):
-Use the exact shading, rendering, materials, and lighting style from the reference image.
-Do NOT create a new Pixar/Disney scene.
+CRITICAL STYLE (VERY IMPORTANT):
+Full Pixar/Disney 3D look — soft shading, clean stylized skin, expressive eyes.
+Use the EXACT rendering style from the reference image, do NOT redesign the scene.
 
 CRITICAL SCENE LOCK (HIGHEST PRIORITY):
-The background, lighting, crowd, blur, depth, and composition must remain EXACTLY unchanged.
+Keep background, lighting, crowd, blur, depth, and composition EXACTLY unchanged.
 Treat the reference image as a locked base frame.
 
 CRITICAL LIGHTING:
-Characters must inherit the exact colored lighting (pink, purple, blue).
+Characters must inherit the exact colored lighting (pink, purple, blue) consistently.
 
 CRITICAL HANDS (VERY IMPORTANT):
 All hands must be human — anatomically correct with realistic proportions.
 Exactly five fingers on each hand.
-Correct grip on phone and carrot, no distortion, no merged or missing fingers.
+Correct grip on phone and carrot, no deformation, no merged or missing fingers.
 
 FINAL:
 The output must look like the same original frame with identical composition, lighting, and style, with only the characters replaced by the uploaded man and woman.
-No pose drift, no background change, seamless integration, 4K.`,
+No pose drift, no added contact, no background change, seamless integration, 4K.`,
   },
 
   // ── Euphoria ──
