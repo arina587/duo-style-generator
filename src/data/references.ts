@@ -8,9 +8,103 @@ export interface ReferenceItem {
 
 export const references: ReferenceItem[] = [
   // ── Zootopia ──
-  { id: 'zootopia-1', style: 'zootopia', label: 'Zootopia', image: '/styles/zootopia/zootopia1.jpg' },
-  { id: 'zootopia-2', style: 'zootopia', label: 'Zootopia', image: '/styles/zootopia/zootopia2.jpg' },
-  { id: 'zootopia-3', style: 'zootopia', label: 'Zootopia', image: '/styles/zootopia/zootopia3.jpg' },
+  {
+    id: 'zootopia-1',
+    style: 'zootopia',
+    label: 'Zootopia',
+    image: '/styles/zootopia/zootopia1.jpg',
+    prompt: `Use the provided reference image AND separately uploaded photos of the man and woman.
+STRICTLY preserve identity from the uploaded photos — facial structure, proportions, age, skin tone, eye shape, nose, lips, hairstyle, hair color and length must remain highly recognizable.
+
+CRITICAL: transform both into full 3D Pixar/Disney characters — stylized anatomy, smooth skin, large expressive eyes, but with MAXIMUM likeness to real faces (identity fidelity priority over stylization).
+
+CRITICAL POSE LOCK:
+Reproduce the pose from the reference image EXACTLY 1:1 — no reinterpretation.
+Exact head tilt, exact distance between faces, exact shoulder angles, exact facial proximity, exact camera angle.
+Selfie perspective must match precisely — same focal distortion, same framing, same crop.
+DO NOT change composition, DO NOT shift body alignment.
+
+CRITICAL HANDS:
+Hands must be anatomically correct — exactly five fingers per hand, correct proportions, no deformation, no fusion.
+
+CRITICAL CLOTHING:
+Clothing must EXACTLY match the reference image — same colors, same design, same shapes, same folds, no simplification or reinterpretation.
+
+Scene: close-up selfie. Woman hugs the man tightly from the side, faces pressed together.
+Woman — wide joyful smile.
+Man — slightly annoyed / skeptical expression.
+Camera held in woman's hand.
+
+Background — EXACT COPY of the reference: clean light studio background, unchanged.
+
+Lighting — soft studio lighting, even, no harsh shadows, sharp focus on faces, shallow depth of field.
+High-end CGI, ultra clean render, 4K.`,
+  },
+  {
+    id: 'zootopia-2',
+    style: 'zootopia',
+    label: 'Zootopia',
+    image: '/styles/zootopia/zootopia2.jpg',
+    prompt: `Use the provided reference image AND separately uploaded photos of the man and woman.
+STRICTLY preserve identity — all facial features must remain recognizable, including proportions, skin tone, hairstyle, and hair color.
+
+CRITICAL: convert both into stylized 3D Pixar/Disney characters — cartoon realism, soft geometry, expressive eyes, but clearly the same real people.
+
+CRITICAL POSE LOCK:
+Exact 1:1 replication of the reference pose —
+body angles, head tilt, facial distance, arm placement, hand positions must match EXACTLY.
+Selfie framing must be identical — same crop, same perspective distortion, same camera angle.
+No deviation allowed.
+
+CRITICAL HANDS:
+Five fingers on each hand, correct anatomy, no artifacts.
+
+CRITICAL CLOTHING:
+Outfits must EXACTLY match the reference — same clothing pieces, same colors, same textures, no redesign.
+
+Scene: dynamic selfie.
+Woman presses tightly against the man, smiling widely with open mouth, playful expression.
+Man leans slightly away with a tense or uncomfortable look.
+Camera in woman's hand, very close framing.
+
+Background — EXACT COPY of the reference: clean light background, unchanged.
+
+Lighting — soft studio lighting, evenly distributed, high detail on faces and hair, clean Pixar-style rendering, 4K.`,
+  },
+  {
+    id: 'zootopia-3',
+    style: 'zootopia',
+    label: 'Zootopia',
+    image: '/styles/zootopia/zootopia3.jpg',
+    prompt: `Use the provided reference image AND separately uploaded photos of the man and woman.
+STRICTLY preserve identity — recognizable facial structure, proportions, skin tone, hairstyle, and hair color must remain intact.
+
+CRITICAL: fully transform both into 3D Pixar/Disney-style characters — stylized but clearly identifiable as the same individuals.
+
+CRITICAL POSE LOCK:
+Exact 1:1 replication of the reference composition —
+body positioning, arm placement, posture, camera angle, framing and distance must match EXACTLY.
+No reinterpretation, no pose drift.
+
+CRITICAL HANDS:
+Hands must be correct — five fingers per hand, proper anatomy, no deformation.
+
+CRITICAL OBJECT:
+The woman MUST hold a carrot in her hand — clearly visible, same position, same scale as in the reference. No replacement or omission.
+
+CRITICAL CLOTHING:
+Clothing must EXACTLY match the reference image — same colors, same shapes, same details, no simplification.
+
+Scene: club selfie.
+Man holds the phone and takes the selfie.
+Woman is pressed close to him, one arm around him, the other holding the carrot.
+Both looking into the camera.
+
+Background — EXACT COPY of the reference: colorful nightclub environment with blurred characters and vibrant lighting, unchanged.
+
+Lighting — neon club lighting, colorful highlights, soft glow, volumetric highlights, cinematic depth, focus on characters.
+High-end Pixar-style CGI, ultra-detailed, 4K.`,
+  },
 
   // ── Euphoria ──
   { id: 'euphoria-1', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria1.jpg' },
