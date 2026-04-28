@@ -175,7 +175,7 @@ export const references: ReferenceItem[] = [
     id: 'stranger-things-1',
     style: 'stranger-things',
     label: 'Stranger Things',
-    image: '/styles/stranger-things/stranger-things1.png',
+    image: '/styles/stranger-things/stranger-things1.jpg',
     prompt: '',
   },
   {
@@ -198,21 +198,21 @@ export const references: ReferenceItem[] = [
     id: 'end-of-the-fucking-world-1',
     style: 'end-of-the-fucking-world',
     label: 'The End of the F***ing World',
-    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.png',
+    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.jpg',
     prompt: '',
   },
   {
     id: 'end-of-the-fucking-world-2',
     style: 'end-of-the-fucking-world',
     label: 'The End of the F***ing World',
-    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world2.png',
+    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world2.jpg',
     prompt: '',
   },
   {
     id: 'end-of-the-fucking-world-3',
     style: 'end-of-the-fucking-world',
     label: 'The End of the F***ing World',
-    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world3.png',
+    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world3.jpg',
     prompt: '',
   },
 ];
@@ -233,8 +233,8 @@ export const categories: Category[] = [
   { id: 'spiderman', name: 'Spider-Man', tag: 'Action', description: 'Superhero story full of action and heart', cover: '/styles/spiderman/spiderman1.jpg' },
   { id: 'terabithia', name: 'Terabithia', tag: 'Adventure', description: 'Coming-of-age tale in an enchanted world', cover: '/styles/terabithia/terabithia1.jpg' },
   { id: 'cinderella', name: 'Cinderella', tag: 'Fantasy', description: 'A timeless fairy tale of magic and love', cover: '/styles/cinderella/cinderella1.jpg' },
-  { id: 'stranger-things', name: 'Stranger Things', tag: 'Sci-Fi', description: 'Supernatural mystery with 80s nostalgia', cover: '/styles/stranger-things/stranger-things1.png' },
-  { id: 'end-of-the-fucking-world', name: 'The End of the F***ing World', tag: 'Drama', description: 'Dark, quirky teen road trip with raw emotion', cover: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.png' },
+  { id: 'stranger-things', name: 'Stranger Things', tag: 'Sci-Fi', description: 'Supernatural mystery with 80s nostalgia', cover: '/styles/stranger-things/stranger-things1.jpg' },
+  { id: 'end-of-the-fucking-world', name: 'The End of the F***ing World', tag: 'Drama', description: 'Dark, quirky teen road trip with raw emotion', cover: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.jpg' },
 ];
 
 export function getRefsForCategory(categoryId: string): ReferenceItem[] {

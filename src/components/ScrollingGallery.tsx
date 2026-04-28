@@ -73,7 +73,7 @@ export default function ScrollingGallery({ onImageSelect }: ScrollingGalleryProp
           gap: 14px;
           padding: 8px 8px;
           width: max-content;
-          animation: sg-scroll 20s linear infinite;
+          animation: sg-scroll 23s linear infinite;
           will-change: transform;
         }
         .scroll-gallery-track.paused {
@@ -83,8 +83,8 @@ export default function ScrollingGallery({ onImageSelect }: ScrollingGalleryProp
         .scroll-gallery-card {
           position: relative;
           flex-shrink: 0;
-          width: 136px;
-          height: 136px;
+          width: 156px;
+          height: 156px;
           border-radius: 12px;
           overflow: hidden;
           cursor: pointer;
@@ -137,8 +137,8 @@ export default function ScrollingGallery({ onImageSelect }: ScrollingGalleryProp
 
         @media (min-width: 640px) {
           .scroll-gallery-card {
-            width: 156px;
-            height: 156px;
+            width: 178px;
+            height: 178px;
           }
         }
       `}</style>
