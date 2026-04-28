@@ -4,6 +4,7 @@ import {
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { categories, getRefsForCategory, type ReferenceItem } from '../data/references';
+import ScrollingGallery from './ScrollingGallery';
 
 interface HomeProps {
   onImageSelect: (ref: ReferenceItem) => void;
@@ -191,6 +192,9 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
           </button>
         </div>
       </section>
+
+      {/* ── SCROLLING GALLERY ── */}
+      <ScrollingGallery onImageSelect={onImageSelect} />
 
       {/* ── HOW IT WORKS ── */}
       <section id="how" className="py-14 relative overflow-hidden grid-bg-warm">
