@@ -51,7 +51,7 @@ export const references: ReferenceItem[] = [
     id: 'euphoria-3',
     style: 'euphoria',
     label: 'Euphoria',
-    image: '/styles/euphoria/euphoria3.jpg',
+    image: '/styles/euphoria/euphoria3.png',
     prompt: "Use the provided movie reference image and separately uploaded photos of the man and woman.\nSTRICTLY preserve identity 1:1 — all facial features must remain clearly recognizable with correct proportions, skin tone, and hairstyle.\n\nCRITICAL: integrate faces into the scene with full cinematic consistency — match neutral indoor lighting, shadows, and natural color grading. No artificial smoothing or mismatch.\n\nCRITICAL POSE LOCK:\nExact 1:1 replication —\nfull-body walking shot in a school hallway;\nman on the left, woman on the right, holding hands;\nboth walking toward the camera.\nPreserve exact posture, stride, spacing, and proportions.\n\nCRITICAL HEAD ORIENTATION:\nFaces are visible in frontal/3/4 view — replace faces accordingly, matching perspective precisely.\n\nCRITICAL HANDS:\nHands must be correct — exactly five fingers per hand, natural grip while holding hands, no deformation.\n\nCRITICAL CLOTHING & ENVIRONMENT:\nClothing must match EXACTLY — same outfits, colors, and fit.\nBackground (hallway, lockers, students) remains unchanged.\n\nCRITICAL COMPOSITION:\nDo not crop, zoom, or shift framing. Keep original camera position and lens perspective.\n\nClean cinematic realism, natural lighting, high detail, 4K.",
   },
 
@@ -175,7 +175,7 @@ export const references: ReferenceItem[] = [
     id: 'stranger-things-1',
     style: 'stranger-things',
     label: 'Stranger Things',
-    image: '/styles/stranger-things/stranger-things1.jpg',
+    image: '/styles/stranger-things/stranger-things1.png',
     prompt: '',
   },
   {
@@ -198,21 +198,21 @@ export const references: ReferenceItem[] = [
     id: 'end-of-the-fucking-world-1',
     style: 'end-of-the-fucking-world',
     label: 'The End of the F***ing World',
-    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.jpg',
+    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.png',
     prompt: '',
   },
   {
     id: 'end-of-the-fucking-world-2',
     style: 'end-of-the-fucking-world',
     label: 'The End of the F***ing World',
-    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world2.jpg',
+    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world2.png',
     prompt: '',
   },
   {
     id: 'end-of-the-fucking-world-3',
     style: 'end-of-the-fucking-world',
     label: 'The End of the F***ing World',
-    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world3.jpg',
+    image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world3.png',
     prompt: '',
   },
 ];
@@ -233,8 +233,8 @@ export const categories: Category[] = [
   { id: 'spiderman', name: 'Spider-Man', tag: 'Action', description: 'Superhero story full of action and heart', cover: '/styles/spiderman/spiderman1.jpg' },
   { id: 'terabithia', name: 'Terabithia', tag: 'Adventure', description: 'Coming-of-age tale in an enchanted world', cover: '/styles/terabithia/terabithia1.jpg' },
   { id: 'cinderella', name: 'Cinderella', tag: 'Fantasy', description: 'A timeless fairy tale of magic and love', cover: '/styles/cinderella/cinderella1.jpg' },
-  { id: 'stranger-things', name: 'Stranger Things', tag: 'Sci-Fi', description: 'Supernatural mystery with 80s nostalgia', cover: '/styles/stranger-things/stranger-things1.jpg' },
-  { id: 'end-of-the-fucking-world', name: 'The End of the F***ing World', tag: 'Drama', description: 'Dark, quirky teen road trip with raw emotion', cover: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.jpg' },
+  { id: 'stranger-things', name: 'Stranger Things', tag: 'Sci-Fi', description: 'Supernatural mystery with 80s nostalgia', cover: '/styles/stranger-things/stranger-things1.png' },
+  { id: 'end-of-the-fucking-world', name: 'The End of the F***ing World', tag: 'Drama', description: 'Dark, quirky teen road trip with raw emotion', cover: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.png' },
 ];
 
 export function getRefsForCategory(categoryId: string): ReferenceItem[] {
