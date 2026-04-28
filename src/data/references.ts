@@ -92,7 +92,75 @@ Final result must look like the same cold, wet, cinematic moment with identical 
 No compositing artifacts, no plastic look, no lighting mismatch.
 High detail, cinematic realism, 4K.`,
   },
-  { id: 'titanic-3', style: 'titanic', label: 'Titanic', image: '/styles/titanic/titanic3.jpg' },
+  {
+    id: 'titanic-3',
+    style: 'titanic',
+    label: 'Titanic',
+    image: '/styles/titanic/titanic3.jpg',
+    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Replace the male character behind with the uploaded man, and the female character in front with the uploaded woman. Recreate both people naturally inside the scene, not as pasted faces.
+
+STRICTLY preserve identity — facial structure, proportions, age, skin tone, eyes, nose, lips, jawline, hairstyle, hair color and length must remain clearly recognizable.
+
+CRITICAL POSE & EMOTION LOCK:
+Keep the exact pose and emotional interaction from the reference —
+the man stands closely behind the woman, holding her around the waist;
+his head is slightly tilted toward her face;
+the woman leans back into him, turning her head toward him;
+their faces are very close, almost touching, intimate near-kiss moment.
+Match head angles, body contact, hand placement, and distance between faces exactly.
+Do NOT change pose, spacing, or expression intensity.
+Do NOT intensify the romantic contact.
+
+CRITICAL FACE ANGLES & VISIBILITY:
+Faces are slightly turned and partially angled —
+preserve exact head rotation and perspective;
+do not force frontal view;
+do not alter gaze direction.
+
+CRITICAL LIGHTING & SKIN INTEGRATION (VERY IMPORTANT):
+The scene has warm golden cinematic lighting (sunset / tungsten tone).
+Faces must fully inherit this lighting:
+— apply warm amber color cast naturally
+— preserve soft highlights on cheeks, nose, and lips
+— maintain smooth shadow transitions
+— keep natural skin texture under warm light (no smoothing, no plastic effect)
+
+Skin must remain realistic under warm lighting:
+— no overly orange or artificial tint
+— preserve natural variation in skin tones beneath the light
+— face, neck, chest and hands must match perfectly
+
+CRITICAL SHADOW & DEPTH MATCH:
+Respect original shadow direction and softness:
+— gentle shadows around jawline and neck
+— subtle depth between faces and bodies
+— no flattening of contrast
+
+CRITICAL HAIR & DETAIL:
+Preserve natural hair flow and placement —
+loose strands, volume, and direction must remain unchanged;
+no cleanup or restyling.
+
+CRITICAL SCENE LOCK:
+Keep background, ship structure, color grading, clothing, and composition EXACTLY as in the reference.
+Do not redesign costumes (dress, coat, shawl, shirt).
+
+CRITICAL INTEGRATION:
+Rebuild faces inside the original head positions with correct perspective and lighting response.
+Do NOT paste faces.
+Do NOT alter skull orientation.
+
+CRITICAL HANDS:
+Hands around the waist must remain exactly in place and anatomically correct —
+five fingers, proper placement, no deformation.
+
+FINAL RESULT:
+The image must look like the same warm cinematic moment with identical lighting, mood, and composition, but with the uploaded man and woman fully integrated into the scene.
+No compositing artifacts, no lighting mismatch, no plastic look.
+High detail, cinematic realism, 4K.`,
+  },
 
   // ── Tangled ──
   { id: 'tangled-1', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled1.jpg' },
