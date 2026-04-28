@@ -10,39 +10,68 @@ const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da6
 const MODEL_NAME = "zsxkib/flux-pulid";
 
 const UNIVERSAL_PROMPT = `Use the provided reference image and separately uploaded photos of the man and the woman.
-The man replaces the male character in the reference, the woman replaces the female character.
+The man replaces the male character, the woman replaces the female character.
 
-STRICTLY preserve their identity from the uploaded photos — facial structure, proportions, age, skin tone, eye shape, eyebrows, nose, lips, hairstyle, hair color and length must remain clearly recognizable. The uploaded photos are the identity reference.
+STRICT IDENTITY LOCK:
+Preserve identity 1:1 from uploaded photos — exact facial structure, proportions, age, skin tone, eye shape, eyelids, eyebrows, nose, lips, jawline, hairstyle, hair color and length. Faces must remain fully recognizable.
 
-Recreate the scene using the same composition and structure as the reference image.
-Keep the original pose, body positions, head angles, gaze direction, interaction between characters, camera angle, framing, and perspective.
+CRITICAL POSE & EXPRESSION LOCK:
+Match the reference EXACTLY:
+— same head angle and rotation
+— same tilt and perspective
+— same facial expression
+— if eyes are closed → keep them closed
+— if eyes look sideways → keep same gaze direction
+— if face is partially turned → keep the same angle (no frontal correction)
 
-Adapt the man and woman to the visual style of the reference image automatically:
-— if the reference is photorealistic, render them photorealistic
-— if the reference is stylized 3D animation, render them in the same stylized 3D animated style
-— if the reference is cinematic, preserve the same cinematic lighting and color grading
+CRITICAL FACE GEOMETRY:
+Rebuild the face directly inside the original head position.
+Do NOT paste or overlay the face.
+Do NOT shift head position or proportions.
+Face must follow the exact skull orientation from the reference.
 
-Faces must be naturally integrated into the scene — not pasted, not flat, not plastic.
-Match lighting, shadows, color temperature, depth of field, motion blur, grain, and environmental effects from the reference.
+CRITICAL LIGHTING & COLOR MATCH:
+Fully inherit lighting from the scene:
+— same color temperature
+— same shadows and highlights
+— same contrast and exposure
+— same environment color influence (warm, cold, neon, etc.)
+Skin tones must be adapted to the scene lighting, not original photo lighting.
+
+CRITICAL HAIR & OCCLUSION:
+Preserve all occlusions exactly as in the reference:
+— hair covering parts of the face must stay in place
+— do not remove or move hair
+— do not reveal hidden parts of the face
+— respect shadows, objects, hands, or motion blur covering the face
 
 CRITICAL VISIBILITY RULE:
-Only generate facial details that are actually visible in the reference.
-If a face is partially turned, covered, blurred, or seen from the side or back — keep it that way.
-Do not reconstruct hidden parts of the face and do not force frontal symmetry.
+Only generate what is visible in the reference.
+Do NOT reconstruct hidden facial areas.
+Do NOT "complete" the face.
 
-CRITICAL SCENE CONSISTENCY:
-Keep background, environment, clothing, objects, and all scene elements consistent with the reference image.
-Do not redesign outfits or change the environment.
+CRITICAL BODY & PROPORTION LOCK:
+Keep original body, pose, proportions, and anatomy from the reference.
+Only minimally adapt if needed for natural integration.
+Do not distort body shape or posture.
+
+CRITICAL STYLE ADAPTATION:
+Automatically match the style of the reference:
+— if realistic → photorealistic
+— if cinematic → cinematic grading
+— if stylized 3D → same stylized 3D rendering
+Faces must be converted into the same style (not pasted realism into cartoon).
+
+CRITICAL BACKGROUND LOCK:
+Keep environment, clothing, objects, composition, framing and camera unchanged.
 
 CRITICAL HANDS:
-All visible hands must be anatomically correct — exactly five fingers per hand, natural proportions, no deformation, no extra or missing fingers.
+All visible hands must be correct — five fingers, natural anatomy, no deformation.
 
-Only modify facial identity. Do not alter body shape, proportions, or character silhouettes.
-Do NOT recreate or redesign the scene — use the reference image as the base.
-Faces must match the original head orientation and camera perspective exactly.
-
-Final image must look like the same scene with the same style, but with the man and woman naturally present instead of the original characters.
-High detail, clean rendering, consistent lighting and perspective, 4K quality.`;
+FINAL GOAL:
+The result must look like the same original scene, with identical pose, lighting, and composition, but with these two people naturally present in place of the original characters.
+No pasted look, no plastic skin, no pose drift, no lighting mismatch.
+High detail, consistent rendering, 4K.`;
 
 async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
