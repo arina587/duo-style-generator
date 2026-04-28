@@ -121,27 +121,30 @@ Do NOT change arm positions, camera angle, or body placement.
 CRITICAL PROP LOCK:
 — carrot MUST be in the woman's hand
 — phone MUST be in the man's hand
+Do NOT remove or change props.
 
 CRITICAL EXPRESSION LOCK:
-— both confident, playful, slightly mischievous expressions
+— both have confident, playful, slightly mischievous expressions
 — gaze directed toward the phone
 
 CRITICAL STYLE:
-Full Pixar/Disney 3D animated look.
+Full Pixar/Disney 3D animated look, clean stylized rendering.
 
 CRITICAL LIGHTING:
-Keep colorful club lighting — pink, purple, blue tones consistent.
+Keep colorful nightclub lighting — pink, purple, and blue tones must affect skin and clothing consistently.
 
 CRITICAL SCENE LOCK:
-Keep background, crowd, blur, lighting, and composition EXACTLY the same.
+Keep background crowd, blur, lighting, and atmosphere EXACTLY the same.
 
 CRITICAL HANDS (VERY IMPORTANT):
-All hands must be human — anatomically correct with natural proportions.
-Exactly five fingers on each hand.
-Correct grip on phone and carrot, no deformation, no extra or missing fingers.
+All hands must be HUMAN hands — not paws, not stylized animal hands.
+Each hand must have exactly five fingers with correct anatomy and natural proportions.
+Fingers must be clearly separated (no fusion), no missing or extra fingers.
+Correct and realistic grip on the phone and the carrot.
+Hands must match perspective and lighting of the scene.
 
 FINAL:
-Same nightclub selfie composition, exact pose and props preserved, stylized human characters fully integrated.`,
+Same nightclub selfie composition, exact pose and props preserved, stylized human characters fully integrated, no pose drift or scene distortion.`,
   },
 
   // ── Euphoria ──
