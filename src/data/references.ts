@@ -104,58 +104,61 @@ Same tight, compressed selfie moment, exact pose preserved, stylized human versi
     image: '/styles/zootopia/zootopia3.jpg',
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Replace the male character with the uploaded man and the female character with the uploaded woman.
-Perform natural identity integration into the original scene, not a face swap and not a redraw.
+Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized 3D human characters that inherit the exact rendering style of the reference image. Do NOT redesign the scene or re-create a new Pixar-style environment — only adapt the existing one.
 
-STRICT IDENTITY PRESERVATION:
-Preserve facial structure, proportions, age, skin tone, eyes, nose, lips, jawline, hairstyle, hair color and length so both people remain clearly recognizable.
+STRICT IDENTITY PRESERVATION (ENHANCED):
+Faces must remain highly recognizable:
+— exact facial proportions and bone structure
+— eye shape, spacing, eyelids, eyebrows
+— nose shape and bridge
+— lip shape and mouth width
+— jawline and chin
+— natural skin tone adapted to scene lighting
+— hairstyle, hair color, and hair length must match the uploaded photos
 
-CRITICAL: DO NOT CHANGE THE ORIGINAL SCENE.
-This is NOT a reinterpretation.
-This is identity replacement inside the existing frame.
+CRITICAL POSE LOCK (ABSOLUTE):
+Match the original pose EXACTLY as in the reference frame:
+— man on the left holds the phone with his arm extended upward
+— selfie angle from slightly above
+— woman stands at his right side, body positioned exactly as in the reference
+— maintain original body spacing, torso angles, and head positions
+— maintain original camera framing and crop
 
-CRITICAL STYLE LOCK:
-Keep the EXACT visual style of the reference image.
-Do NOT convert to Pixar or cartoon style.
-Do NOT change rendering style, materials, or realism level.
-
-CRITICAL POSE LOCK:
-Exact 1:1 replication —
-man holding the phone upward,
-woman close to him at his side,
-both leaning slightly inward,
-same camera angle, same framing, same perspective.
+Do NOT reinterpret, correct, or adjust the pose.
+Do NOT lift, reposition, or re-stage characters.
 
 CRITICAL PROP LOCK:
-Phone must remain in the man's hand.
-Carrot must remain in the woman's hand.
-Same position, same scale.
+— phone MUST remain in the man's hand in the same position and angle
+— carrot MUST remain in the woman's hand in the same position
+
+CRITICAL EXPRESSION LOCK:
+— preserve the exact expressions from the reference
+— same eye direction toward the phone
+— same intensity of emotion, no exaggeration
+
+CRITICAL STYLE LOCK (VERY IMPORTANT):
+Use the exact shading, rendering, materials, and lighting style from the reference image.
+Do NOT create a new Pixar/Disney scene.
+Do NOT alter rendering style, color grading, or material response.
+Characters must blend into the existing style, not replace it.
+
+CRITICAL SCENE LOCK (HIGHEST PRIORITY):
+The background, lighting, crowd, blur, depth, and composition must remain EXACTLY unchanged.
+No regeneration, no repainting, no style shift.
+Treat the reference image as a locked base frame.
 
 CRITICAL LIGHTING:
-Preserve original nightclub lighting —
-pink, purple, blue tones,
-same intensity, same glow, same contrast.
+Characters must inherit the exact colored lighting (pink, purple, blue) with consistent shading and reflections.
 
-CRITICAL BACKGROUND:
-Keep background, crowd, blur, environment EXACTLY unchanged.
-No regeneration, no repainting.
+CRITICAL HANDS (VERY IMPORTANT):
+All hands must be human — anatomically correct with realistic proportions.
+Exactly five fingers on each hand.
+Correct grip on phone and carrot, no distortion, no merged or missing fingers.
 
-CRITICAL FACE INTEGRATION:
-Faces must be reconstructed inside original head positions.
-Match perspective, lighting, shadows, and depth.
-No pasted look, no plastic skin.
-
-CRITICAL VISIBILITY:
-Respect angles and partial visibility.
-Do not rotate faces or force frontal view.
-
-CRITICAL HANDS:
-Hands must be anatomically correct — five fingers, correct grip, no deformation.
-
-FINAL RESULT:
-The same original scene with identical style, composition, and lighting,
-but with the uploaded man and woman naturally present instead of the original characters.
-Photorealistic integration, no style drift, no scene changes, 4K.`,
+FINAL:
+The output must look like the same original frame with identical composition, lighting, and style, with only the characters replaced by the uploaded man and woman.
+No scene drift, no pose change, no background alteration.
+Seamless integration, high detail, 4K.`,
   },
 
   // ── Euphoria ──
