@@ -249,8 +249,31 @@ Deno.serve(async (req: Request) => {
     const replicateApiKey = Deno.env.get("REPLICATE_API_KEY");
     if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
 
-    console.log("[GENERATE] prompt:", prompt);
-    console.log("[GENERATE] prompt length:", prompt.length);
+    const universalPrompt = `Use the provided reference image and separately uploaded photos of the man and the woman.
+The man replaces the male character in the reference, the woman replaces the female character.
+STRICTLY preserve their identity from the uploaded photos — facial structure, proportions, age, skin tone, eye shape, eyebrows, nose, lips, hairstyle, hair color and length must remain clearly recognizable. The uploaded photos are the identity reference.
+Recreate the scene using the same composition and structure as the reference image.
+Keep the original pose, body positions, head angles, gaze direction, interaction between characters, camera angle, framing, and perspective.
+Adapt the man and woman to the visual style of the reference image automatically:
+— if the reference is photorealistic, render them photorealistic
+— if the reference is stylized 3D animation, render them in the same stylized 3D animated style
+— if the reference is cinematic, preserve the same cinematic lighting and color grading
+Faces must be naturally integrated into the scene — not pasted, not flat, not plastic.
+Match lighting, shadows, color temperature, depth of field, motion blur, grain, and environmental effects from the reference.
+CRITICAL VISIBILITY RULE:
+Only generate facial details that are actually visible in the reference.
+If a face is partially turned, covered, blurred, or seen from the side or back — keep it that way.
+Do not reconstruct hidden parts of the face and do not force frontal symmetry.
+CRITICAL SCENE CONSISTENCY:
+Keep background, environment, clothing, objects, and all scene elements consistent with the reference image.
+Do not redesign outfits or change the environment.
+CRITICAL HANDS:
+All visible hands must be anatomically correct — exactly five fingers per hand, natural proportions, no deformation, no extra or missing fingers.
+Final image must look like the same scene with the same style, but with the man and woman naturally present instead of the original characters.
+High detail, clean rendering, consistent lighting and perspective, 4K quality.`;
+
+    console.log("[GENERATE] using universal prompt");
+    console.log("[GENERATE] prompt length:", universalPrompt.length);
 
     const [referenceDataUrl, person1DataUrl, person2DataUrl] = await Promise.all([
       fileToDataUrl(reference),
@@ -258,7 +281,7 @@ Deno.serve(async (req: Request) => {
       fileToDataUrl(person2),
     ]);
 
-    const { outputUrl, debugInfo } = await runReplicate(prompt, referenceDataUrl, person1DataUrl, person2DataUrl, replicateApiKey);
+    const { outputUrl, debugInfo } = await runReplicate(universalPrompt, referenceDataUrl, person1DataUrl, person2DataUrl, replicateApiKey);
     const imageUrl = await fetchOutputAsDataUrl(outputUrl);
 
     return new Response(
