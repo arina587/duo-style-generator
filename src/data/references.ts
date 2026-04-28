@@ -163,7 +163,67 @@ High detail, cinematic realism, 4K.`,
   },
 
   // ── Tangled ──
-  { id: 'tangled-1', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled1.jpg' },
+  {
+    id: 'tangled-1',
+    style: 'tangled',
+    label: 'Tangled',
+    image: '/styles/tangled/tangled1.jpg',
+    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Replace the male character with the uploaded man and the female character with the uploaded woman. Recreate both people naturally inside the scene as full characters, not as pasted faces.
+
+STRICT IDENTITY PRESERVATION:
+Keep both people clearly recognizable — facial structure, proportions, age, skin tone, eyes, nose, lips, jawline, hairstyle, hair color and length must match the uploaded photos.
+
+CRITICAL STYLE MATCH (VERY IMPORTANT):
+Render both people in the same high-end stylized 3D animated look as the reference image — soft cinematic CGI, smooth shading, expressive eyes, slightly stylized proportions, clean skin rendering, polished feature-film quality.
+Do NOT mix photorealism with animation. The result must fully match the 3D animated style of the scene.
+
+CRITICAL HAIR RULE (IMPORTANT):
+The woman's hairstyle must follow the uploaded photo.
+If her hair is short — keep it short in the final image.
+Do NOT extend or stylize it into long fantasy hair.
+Hair length, volume, and structure must remain true to her real appearance, only adapted to the animated style.
+
+CRITICAL POSE & EMOTION LOCK:
+Keep the exact pose and interaction —
+the man gently holding the woman;
+the woman looking up at him;
+the man looking down at her;
+soft romantic expressions, warm emotional connection.
+Match head tilt, eye direction, distance between faces, and body positioning exactly.
+Do NOT change hand placement or body proportions.
+
+CRITICAL LIGHTING & COLOR:
+Warm golden lantern lighting dominates the scene.
+Faces must inherit this:
+— soft warm highlights on skin
+— gentle shadow transitions
+— subtle glow from surrounding lanterns
+— maintain cinematic depth and softness
+
+Skin must remain natural within this lighting:
+— no over-orange tint
+— preserve subtle tone variation
+— face, neck, and hands must match consistently
+
+CRITICAL SCENE LOCK:
+Keep background, lanterns, water reflections, castle silhouettes, clothing, and composition EXACTLY as in the reference.
+Do not redesign environment or costumes.
+
+CRITICAL INTEGRATION:
+Rebuild faces within original head positions with correct perspective and lighting response.
+Do NOT paste faces.
+Do NOT alter skull orientation.
+
+CRITICAL HANDS:
+Hands must be clean and anatomically correct — five fingers, proper placement, no deformation.
+
+FINAL RESULT:
+The image must look like the same animated cinematic moment with identical lighting, mood, and composition, but with the uploaded man and woman fully integrated into the scene in a consistent 3D animated style.
+No realism mismatch, no plastic look, no scene drift.
+High detail, premium animated CGI, 4K.`,
+  },
   { id: 'tangled-2', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled2.jpg' },
   { id: 'tangled-3', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled3.jpg' },
 
