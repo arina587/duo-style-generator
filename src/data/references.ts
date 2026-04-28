@@ -29,7 +29,7 @@ export const references: ReferenceItem[] = [
 Replace the male character on the left with the uploaded man, and the female character on the right with the uploaded woman. Recreate both people naturally inside the scene.
 
 STRICT IDENTITY PRESERVATION:
-Keep both people clearly recognizable — facial structure, proportions, skin tone, eyes, nose, lips, jawline, hairstyle, hair color and length must remain true to the uploaded photos.
+Keep both people clearly recognizable — facial structure, proportions, age, eyes, nose, lips, jawline, hairstyle, hair color and length must remain true to the uploaded photos.
 
 CRITICAL SCENE LOCK (HIGHEST PRIORITY):
 The reference image must remain unchanged in structure.
@@ -41,48 +41,68 @@ Keep EXACTLY the same:
 — camera angle and framing
 — depth of field and blur
 
-Do not redesign, repaint, restyle, enhance or reinterpret the environment or clothing.
-Only replace the people while keeping the original scene intact.
+Do not redesign or reinterpret the scene. Only replace the people.
 
 CRITICAL POSE & CONTACT LOCK:
 Match the pose exactly —
-both characters leaning forward, very close, faces angled downward;
+both leaning forward, faces very close, angled downward;
 the woman kissing the man's hand;
-tight, compressed positioning.
-Do not change spacing, posture, or interaction.
+tight physical proximity and compression must remain identical.
 
 CRITICAL VISIBILITY & ANGLES:
-Faces are partially hidden — keep this exactly:
-— no frontal reconstruction
-— no revealing hidden areas
-— preserve original head angles and compression
+Faces are partially hidden —
+do not reconstruct hidden areas;
+do not rotate faces;
+preserve exact head angles and perspective compression.
 
-CRITICAL LIGHTING & COLOR MATCH:
-Faces must inherit the exact lighting of the scene:
-— cold blue color cast
-— strong highlights on wet skin
-— deep shadows
-— same exposure and contrast
+CRITICAL LIGHTING & SKIN RESPONSE (PHYSICALLY CORRECT):
+The cold blue lighting is dominant and must remain strong.
+Faces must fully inherit the scene lighting and color grading.
 
-Skin tone must match across face, neck, and hands and blend into the scene lighting.
-No mismatch between face and body.
+However, skin must behave naturally under this light:
+— preserve realistic skin depth and subsurface scattering
+— avoid flat monochrome blue coloring
+— maintain subtle natural variation in skin tones beneath the light
 
-CRITICAL HAIR & WET EFFECT:
-Preserve wet hair exactly:
-— strands sticking to skin
-— natural clumping and shine
-— do not clean or restyle hair
+Lighting must affect the skin, not replace it.
+
+CRITICAL SPECULAR & WET EFFECT (VERY IMPORTANT):
+Preserve wet skin realism:
+— strong specular highlights on forehead, nose, cheeks
+— sharp light reflections from moisture
+— micro-contrast in wet areas
+— visible skin texture under highlights
+
+Do NOT soften or remove these highlights.
+
+CRITICAL SHADOW INTEGRATION:
+Maintain true cinematic shadow behavior:
+— deep shadows must remain deep
+— correct falloff across face curvature
+— subtle occlusion shadows between faces must stay
+— no flattening or over-brightening
+
+CRITICAL COLOR CONSISTENCY:
+Face, neck, ears, and hands must all respond identically to the same lighting.
+No mismatch, no "mask effect", no separate color zones.
+
+CRITICAL HAIR & OCCLUSION:
+Wet hair must stay exactly as in reference:
+— strands stuck to skin
+— no cleanup
+— no repositioning
+— preserve shadowing from hair
 
 CRITICAL INTEGRATION:
 Do not paste faces.
-Reconstruct faces inside the original head geometry with correct perspective and lighting.
+Reconstruct them inside the original head geometry, respecting perspective, lighting, and material response.
 
 CRITICAL HANDS:
 Hands must remain exactly positioned and anatomically correct — five fingers, no distortion.
 
 FINAL RESULT:
-The image must look identical to the original cinematic frame in environment, clothing, and composition, with only the identities of the two people replaced naturally.
-No scene drift, no background change, no clothing change.
+The image must look like the same cold, wet, cinematic scene with identical lighting and mood, with the new people fully embedded into the physical lighting of the environment.
+No blue paint effect, no flat skin, no compositing artifacts — only realistic skin reacting to strong blue light.
 High detail, cinematic realism, 4K.`,
   },
   { id: 'titanic-3', style: 'titanic', label: 'Titanic', image: '/styles/titanic/titanic3.jpg' },
