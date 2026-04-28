@@ -192,9 +192,15 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
                 </div>
                 <h3 className="text-[11px] font-extrabold uppercase tracking-widest font-body text-[#9a93b0]">{label}</h3>
               </div>
-              <div className="flex items-start gap-1.5 mb-3 px-0.5">
-                <svg className="w-3.5 h-3.5 text-[#b49cdb] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-                <p className="text-[11px] leading-relaxed font-body text-[#9a93b0]">{hint}</p>
+              <div className="flex items-start gap-2.5 mb-3 px-3 py-2.5 rounded-xl border font-body" style={{ background: 'rgba(155,125,212,0.08)', borderColor: 'rgba(155,125,212,0.35)' }}>
+                <svg className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#9b7dd4' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                <p className="text-[12px] leading-relaxed text-[#4a3f6b]">
+                  {hint.split(/(profile|3\/4 angle|best results)/g).map((part, i) =>
+                    ['profile', '3/4 angle', 'best results'].includes(part)
+                      ? <strong key={i} className="font-extrabold text-[#2d2642]">{part}</strong>
+                      : part
+                  )}
+                </p>
               </div>
               <label className="block cursor-pointer">
                 <input

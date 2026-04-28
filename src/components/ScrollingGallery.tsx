@@ -1,16 +1,26 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useMemo } from 'react';
 import { references, type ReferenceItem } from '../data/references';
 
 interface ScrollingGalleryProps {
   onImageSelect: (ref: ReferenceItem) => void;
 }
 
+function fisherYates<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 export default function ScrollingGallery({ onImageSelect }: ScrollingGalleryProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Duplicate for seamless infinite loop — translateX(-50%) resets seamlessly
-  const allRefs = [...references, ...references];
+  // Shuffle once per mount, then duplicate for seamless infinite loop
+  const shuffled = useMemo(() => fisherYates(references), []);
+  const allRefs = [...shuffled, ...shuffled];
 
   return (
     <div className="relative w-full py-10 scroll-gallery-section">
@@ -73,7 +83,7 @@ export default function ScrollingGallery({ onImageSelect }: ScrollingGalleryProp
           gap: 14px;
           padding: 8px 8px;
           width: max-content;
-          animation: sg-scroll 45s linear infinite;
+          animation: sg-scroll 60s linear infinite;
           will-change: transform;
         }
         .scroll-gallery-track.paused {
