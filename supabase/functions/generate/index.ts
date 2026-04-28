@@ -9,42 +9,84 @@ const corsHeaders = {
 const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
 const MODEL_NAME = "zsxkib/flux-pulid";
 
-const UNIVERSAL_PROMPT = `Use the reference scene image and the separately uploaded photos of the man and the woman.
+const UNIVERSAL_PROMPT = `Use the reference scene image as the absolute base. Perform ONLY character identity replacement.
 
-Replace the male character in the reference scene with the uploaded man, and replace the female character with the uploaded woman. Recast them naturally into the same scene, not as pasted faces.
+PRIORITY ORDER (STRICT):
+1) Identity from uploaded photos
+2) Original scene geometry and composition
+3) Style adaptation
 
-Keep both people highly recognizable from their uploaded photos: facial structure, proportions, age, skin tone, eyes, eyebrows, nose, lips, jawline, hairstyle, hair color and hair length. Preserve their identity, but adapt them to the exact style of the reference scene.
+IDENTITY TRANSFER (HARD CONSTRAINT):
+Replace characters using uploaded photos only:
+- female character → woman from female photo
+- male character → man from male photo
 
-Keep the original reference scene unchanged: same composition, camera angle, framing, lens perspective, pose, body position, head rotation, head tilt, gaze direction, expression, clothing, background, objects, lighting, depth of field, grain, motion blur and color grading.
+Preserve identity EXACTLY 1:1:
+- facial structure, proportions, age
+- skin tone and texture
+- eyes, nose, lips, bone structure
+- hairline, hair color, length, and shape
 
-Expression and pose must match the reference exactly:
-if the reference character has closed eyes, keep the new person's eyes closed;
-if the reference character looks sideways, keep the same gaze direction;
-if the head is in profile, keep the same profile angle;
-if hair covers the face, keep the same hair occlusion;
-do not turn faces toward the camera unless the reference does so.
+Do NOT:
+- beautify or enhance faces
+- stylize or reinterpret identity
+- mix identities
+- generate new faces
 
-Skin and body integration:
-the face, neck, ears, hands and any visible skin must match each other naturally.
-Use the uploaded person's natural skin tone as the identity base, but harmonize it with the reference scene lighting, shadows, color temperature and environment color cast.
-No mismatched face/neck/hands. No mask-like face. No plastic skin.
+Uploaded photos are the single source of truth.
 
-Do not simply paste a face onto the original character. Rebuild the person naturally inside the existing head and body position, following the original skull angle, facial perspective and scene lighting.
+SCENE LOCK (ABSOLUTE):
+Do NOT change ANYTHING in the original scene except identity.
 
-Only replace visible facial regions. Do not reconstruct or infer hidden facial geometry.
-Faces must strictly follow the original head orientation, perspective, and lens distortion.
+Preserve EXACTLY:
+- full body pose and skeleton alignment
+- body proportions and orientation
+- head position, angle, rotation
+- gaze direction and eye state (open/closed)
+- facial expression and emotion
+- camera angle, framing, crop, perspective, lens
+- spatial composition and character placement
+- interaction between characters (distance, touch, contact)
+- background, environment, all objects
+- clothing, outfit details, accessories
+- lighting, shadows, highlights
+- color grading and mood
 
-For romantic or kissing scenes:
-keep the interaction tasteful, cinematic and faithful to the reference pose. Preserve the original emotional expression and closeness without making it more explicit or more intense. Do not add nudity or sexualized details.
+NO MODIFICATIONS:
+- no pose changes
+- no camera changes
+- no composition changes
+- no added or removed elements
+- no outfit or styling changes
+- no background alterations
 
-If the reference is photorealistic, make the result photorealistic.
-If the reference is cinematic, preserve the same cinematic grading.
-If the reference is stylized 3D animation, render the man and woman in the same stylized 3D animated style.
-If the reference is a cartoon, keep the same cartoon rendering style.
+FACE INTEGRATION (CRITICAL):
+Do NOT paste or overlay faces.
+Reconstruct faces naturally within the original head geometry.
 
-Visible hands must be anatomically correct with exactly five fingers per hand, natural joints, correct grip and no extra or missing fingers.
+Faces must match:
+- exact head orientation from the reference
+- original perspective and depth
+- original lighting and shadow direction
+- original focus and motion blur
 
-Final result: the same original scene, same style and same pose, but the man and woman from the uploaded photos are naturally present in place of the original male and female characters. Natural, seamless, unedited-looking result.`;
+VISIBILITY & OCCLUSION:
+Only generate visible parts of the face.
+Do NOT reconstruct hidden areas.
+Respect occlusion (hair, angle, motion blur, objects).
+
+STYLE MATCH:
+Match the original reference style automatically (photorealistic or animated).
+Adapt identity into that style while preserving recognizability.
+
+ANATOMY CONSISTENCY:
+Keep original body anatomy unchanged.
+Hands must be natural, 5 fingers, no deformation.
+
+OUTPUT:
+Identical scene in every aspect — same pose, composition, lighting, and environment.
+Only identities are replaced.
+Seamless, artifact-free integration with correct perspective, lighting, and realism.`;
 
 async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
