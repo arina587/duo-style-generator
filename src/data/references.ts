@@ -48,17 +48,19 @@ preserve natural perspective distortion and facial compression from the angle.
 
 CRITICAL LIGHTING & SKIN INTEGRATION (VERY IMPORTANT):
 The scene has strong cold blue cinematic lighting with wet reflections.
-Faces must fully inherit this lighting:
-— maintain dominant blue color cast
+Faces and visible skin must be more strongly influenced by this lighting while remaining physically natural.
+— increase the dominance of the blue color cast across face, neck, and hands
+— allow blue tones to affect midtones more noticeably, not only shadows
 — preserve high-contrast lighting and deep shadows
-— keep specular highlights from water on skin
+— keep strong specular highlights from water on skin
 — retain wet shine and reflective micro-details
 
-Skin must react naturally to this lighting:
-— no flat monochrome blue skin
-— preserve realistic skin depth under blue light
-— subtle natural variation must remain visible beneath lighting
-— face, neck, and hands must match perfectly in tone and lighting
+Skin must still behave naturally under this lighting:
+— avoid flat monochrome blue coloring
+— preserve realistic skin depth and subsurface scattering
+— maintain subtle natural variation beneath the lighting influence
+
+The result should feel more fully immersed in the cold blue environment, while still retaining realistic skin response.
 
 CRITICAL SHADOW & DEPTH MATCH:
 Faces must integrate into shadows exactly:
