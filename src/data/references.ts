@@ -225,7 +225,67 @@ No realism mismatch, no plastic look, no scene drift.
 High detail, premium animated CGI, 4K.`,
   },
   { id: 'tangled-2', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled2.jpg' },
-  { id: 'tangled-3', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled3.jpg' },
+  {
+    id: 'tangled-3',
+    style: 'tangled',
+    label: 'Tangled',
+    image: '/styles/tangled/tangled3.jpg',
+    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Replace the male character with the uploaded man and the female character with the uploaded woman. Recreate both people naturally inside the scene as full characters, not as pasted faces.
+
+STRICT IDENTITY PRESERVATION:
+Keep both people clearly recognizable — facial structure, proportions, age, skin tone, eyes, nose, lips, jawline, hairstyle, hair color and length must match the uploaded photos.
+
+CRITICAL STYLE MATCH (VERY IMPORTANT):
+Render both people in the same high-end stylized 3D animated look as the reference image — soft cinematic CGI, smooth shading, expressive eyes, clean stylized proportions, feature-film quality.
+Do NOT mix photorealism with animation.
+
+CRITICAL HAIR CONSISTENCY (FIXED):
+Hair must remain visually consistent with the reference scene structure while adapting identity:
+— preserve the overall silhouette and placement of hair in the scene
+— if the reference includes long hair elements, keep them as part of scene composition
+— subtly adapt texture and appearance to match the uploaded person's real hair
+— do NOT remove major compositional elements (like long braid)
+— avoid unrealistic hair extension or mismatch
+
+CRITICAL POSE & INTERACTION LOCK:
+Keep the exact pose and interaction —
+both characters sitting on the grass;
+the man gently placing flowers into the woman's hair;
+the woman looking at him with a soft, warm expression;
+preserve body positions, head tilt, gaze direction, and distance exactly.
+Do NOT change hand placement or interaction with the flowers.
+
+CRITICAL LIGHTING & COLOR:
+The scene has soft warm daylight with gentle sun rays.
+Faces must inherit this lighting:
+— natural warm highlights
+— soft shadows
+— subtle glow from sunlight through foliage
+— maintain depth and softness
+
+Skin must remain natural within this lighting:
+— no over-saturation
+— preserve natural tone variation
+— face, neck, and hands must match consistently
+
+CRITICAL SCENE LOCK:
+Keep background, grass, flowers, lighting, and composition EXACTLY as in the reference.
+Do not redesign environment or clothing.
+
+CRITICAL INTEGRATION:
+Rebuild faces within original head positions with correct perspective and lighting response.
+Do NOT paste faces.
+Do NOT alter skull orientation.
+
+CRITICAL HANDS:
+Hands must be clean and anatomically correct — five fingers, proper placement, no deformation.
+
+FINAL RESULT:
+The image must look like the same animated cinematic moment with identical lighting and composition, but with the uploaded man and woman fully integrated into the scene with consistent style and natural hair adaptation.
+High detail, premium stylized 3D animation, 4K.`,
+  },
 
   // ── Spider-Man ──
   { id: 'spiderman-1', style: 'spiderman', label: 'Spider-Man', image: '/styles/spiderman/spiderman1.jpg' },
