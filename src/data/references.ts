@@ -39,16 +39,17 @@ Do NOT change angle, framing, distance, or head tilt.
 CRITICAL EXPRESSION LOCK:
 — man: relaxed, slightly smug half-smile
 — woman: soft friendly smile
-No exaggeration or reinterpretation.
 
 CRITICAL STYLE:
-Full Pixar/Disney 3D look — soft shading, clean stylized skin, expressive eyes, no photorealism mix.
+Full Pixar/Disney 3D look — soft shading, clean stylized skin, expressive eyes.
 
 CRITICAL SCENE LOCK:
 Keep plain neutral background, framing, and lighting EXACTLY the same.
 
-CRITICAL HANDS:
-Selfie hand must be anatomically correct — five fingers, correct perspective and grip.
+CRITICAL HANDS (VERY IMPORTANT):
+All hands must be human — anatomically correct, realistic proportions, clearly defined fingers.
+Each hand must have exactly five fingers.
+Correct perspective for a selfie grip, no deformation, no fusion, no missing fingers.
 
 FINAL:
 Identical selfie composition with stylized human characters, strong identity match, no pose drift.`,
@@ -88,8 +89,10 @@ Same high-end Pixar/Disney 3D rendering.
 CRITICAL SCENE LOCK:
 Keep background and lighting identical.
 
-CRITICAL HANDS:
-Selfie hand must be correct — five fingers, no distortion.
+CRITICAL HANDS (VERY IMPORTANT):
+All visible hands must be human — anatomically correct, natural proportions.
+Exactly five fingers per hand.
+No distortion, no merging fingers, correct perspective for selfie position.
 
 FINAL:
 Same tight, compressed selfie moment, exact pose preserved, stylized human version.`,
@@ -118,26 +121,27 @@ Do NOT change arm positions, camera angle, or body placement.
 CRITICAL PROP LOCK:
 — carrot MUST be in the woman's hand
 — phone MUST be in the man's hand
-Do NOT remove or change props.
 
 CRITICAL EXPRESSION LOCK:
-— both have confident, playful, slightly mischievous expressions
+— both confident, playful, slightly mischievous expressions
 — gaze directed toward the phone
 
 CRITICAL STYLE:
-Full Pixar/Disney 3D animated look, clean stylized rendering.
+Full Pixar/Disney 3D animated look.
 
 CRITICAL LIGHTING:
-Keep colorful nightclub lighting — pink, purple, and blue tones must affect skin and clothing consistently.
+Keep colorful club lighting — pink, purple, blue tones consistent.
 
 CRITICAL SCENE LOCK:
-Keep background crowd, blur, lighting, and atmosphere EXACTLY the same.
+Keep background, crowd, blur, lighting, and composition EXACTLY the same.
 
-CRITICAL HANDS:
-All hands must be anatomically correct — five fingers, correct grip on phone and carrot.
+CRITICAL HANDS (VERY IMPORTANT):
+All hands must be human — anatomically correct with natural proportions.
+Exactly five fingers on each hand.
+Correct grip on phone and carrot, no deformation, no extra or missing fingers.
 
 FINAL:
-Same nightclub selfie composition, exact pose and props preserved, stylized human characters fully integrated, no pose drift or scene distortion.`,
+Same nightclub selfie composition, exact pose and props preserved, stylized human characters fully integrated.`,
   },
 
   // ── Euphoria ──
