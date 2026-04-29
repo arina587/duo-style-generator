@@ -172,80 +172,72 @@ No pose drift, no added contact, no background change, seamless integration, 4K.
     image: '/styles/titanic/titanic2.jpg',
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Replace the male character on the left with the uploaded man and the female character on the right with the uploaded woman. Recreate both naturally inside the scene, not as pasted faces.
+Replace the identities of the characters inside the existing head geometry:
+— male character (left) → uploaded man
+— female character (right) → uploaded woman
 
-STRICT IDENTITY PRESERVATION (ENHANCED):
-Faces must remain clearly recognizable even under occlusion:
-— preserve exact facial structure, proportions, bone geometry
-— eye shape, eyelids, eyebrows (even if partially hidden)
-— nose bridge and tip (visible parts must match precisely)
-— lips and mouth structure (even when partially covered)
-— jawline and cheek structure
-— natural skin texture, pores, wet skin behavior
-— hairstyle, hair color, and hair length must match uploaded photos
+Do NOT perform a simple face cut-and-paste.
+Rebuild the facial identity naturally inside the original head, preserving full integration with the scene.
 
-CRITICAL OCCLUSION HANDLING (VERY IMPORTANT):
-Both faces are partially hidden and must be reconstructed correctly:
-— man's face is partially hidden by angle and his arm → rebuild only the visible half accurately
-— woman's face is partially hidden by her hand and contact → preserve correct facial compression and contact
-— do NOT reveal hidden parts of the face
-— do NOT "complete" the face artificially
-— respect all occlusions exactly as in the reference
+STRICT IDENTITY PRESERVATION:
+Faces must remain clearly recognizable:
+— exact facial structure and proportions
+— eye shape, eyelids, eyebrows
+— nose shape and bridge
+— lips and mouth structure
+— jawline and cheekbones
+— natural skin texture (no smoothing, no plastic look)
+
+HAIR HANDLING (IMPORTANT — NO CONFLICT):
+— preserve the ORIGINAL hairstyle, wetness, and hair behavior from the reference
+— adapt hairline and visible hair details to match the uploaded person
+— do NOT fully replace hairstyle structure
+— keep wet hair strands, clumping, and direction EXACTLY as in the scene
+
+CRITICAL OCCLUSION:
+— faces are partially hidden → respect all occlusions exactly
+— do NOT reveal hidden parts
+— reconstruct only visible areas
+— preserve overlap from hands, arms, and wet hair strands
 
 CRITICAL POSE LOCK (ABSOLUTE):
-— both characters lying horizontally, facing each other
-— their foreheads touching
-— both leaning on their arms over a wooden floating surface
-— woman holding the man's hand and kissing it
-— man's head tilted slightly downward toward her
-— extremely close distance between faces
+— keep head position, tilt, and distance EXACTLY the same
+— do NOT rotate or re-angle heads
+— do NOT change body pose or interaction
 
-Do NOT change pose, angle, or distance.
-
-CRITICAL EXPRESSION LOCK:
-— both have closed eyes
-— calm, emotional, intimate expressions
-— no smile exaggeration, no change in emotion intensity
-
-CRITICAL CONTACT PHYSICS:
-— maintain natural pressure where faces and hands touch
-— slight skin compression where woman's lips touch the hand
-— preserve realism in contact areas
-
-CRITICAL WET DETAILS:
-— both characters are wet from water
-— hair is soaked, clumped, sticking to face and skin
-— skin has wet specular highlights
-— clothing is wet and darker in tone
-— water droplets visible on skin, hair, and clothes
+CRITICAL SCENE LOCK (HIGHEST PRIORITY):
+— background MUST remain 100% identical
+— water, debris, reflections — unchanged
+— clothing — unchanged
+— framing and camera angle — unchanged
+— NO redraw, NO reinterpretation
 
 CRITICAL LIGHTING & COLOR:
-— strong cold blue lighting dominates the scene
-— faces MUST inherit this lighting fully
-— preserve blue highlights and deep shadows
-— maintain cinematic contrast and low-key lighting
+— preserve strong cold blue cinematic lighting
+— faces must fully inherit scene lighting
+— keep blue color cast, shadows, and contrast
 — DO NOT neutralize or warm skin tones
 
-CRITICAL SKIN INTEGRATION:
-— skin tone must remain consistent across face, neck, arms
-— but fully adapted to blue lighting
-— no mismatch between face and body
-— no "cut-out" or pasted look
+CRITICAL WET SURFACE DETAILS:
+— preserve wet skin specular highlights
+— maintain water droplets on face and hair
+— keep soaked hair texture and shine
+— no loss of moisture realism
 
-CRITICAL SCENE LOCK:
-— keep water surface, wooden debris, background blur EXACTLY the same
-— preserve depth of field and cinematic composition
-— no background repaint, no object removal
+CRITICAL SKIN INTEGRATION:
+— seamless blending between face, neck, and arms
+— no seams, no cut-out effect
+— consistent color under same lighting
 
 CRITICAL HANDS:
-— hands must be human, anatomically correct
-— exactly five fingers per hand
-— correct finger proportions and natural positioning
-— no deformation, no fused fingers
+— keep original hands unchanged
+— anatomically correct, five fingers, no deformation
 
 FINAL:
-The result must look like the same cinematic moment with identical lighting, pose, occlusion, and composition, with the uploaded man and woman seamlessly integrated.
-Ultra-realistic, wet cinematic look, cold blue lighting, high detail, 4K.`,
+The output must look like the same original cinematic frame with identical composition, lighting, and atmosphere,
+with identities naturally rebuilt inside the existing characters.
+No face-paste artifacts, no background drift, no loss of realism.
+Ultra-realistic, wet cinematic look, high detail, 4K.`,
   },
   {
     id: 'titanic-3',
