@@ -432,8 +432,94 @@ No pose drift, no background changes, seamless integration, high detail Pixar/Di
   },
 
   // ── Spider-Man ──
-  { id: 'spiderman-1', style: 'spiderman', label: 'Spider-Man', image: '/styles/spiderman/spiderman1.jpg' },
-  { id: 'spiderman-2', style: 'spiderman', label: 'Spider-Man', image: '/styles/spiderman/spiderman2.jpg' },
+  {
+    id: 'spiderman-1',
+    style: 'spiderman',
+    label: 'Spider-Man',
+    image: '/styles/spiderman/spiderman1.jpg',
+    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Recreate both main characters using the uploaded man and woman, fully replacing them as whole characters (not just faces). They must be naturally integrated into the same cinematic scene.
+
+STRICT IDENTITY PRESERVATION:
+Keep both individuals clearly recognizable:
+- facial structure, proportions, eyes, nose, lips, jawline
+- hairstyle, hair color, and length from uploaded photos
+- natural skin tone adapted to scene lighting
+
+CRITICAL POSE LOCK:
+- man is turned away from camera, back facing viewer
+- woman stands behind him, close, her head near his shoulder
+- her hand rests gently on his shoulder
+- maintain exact body orientation, distance, and framing
+
+Do NOT change pose or camera angle.
+
+CRITICAL COSTUME:
+- keep the same superhero-style suit design, colors, and texture
+- adapt suit naturally to the new body without distortion
+
+CRITICAL EXPRESSION:
+- woman: calm, slightly emotional, focused gaze
+- man: neutral, introspective (face mostly not visible)
+
+CRITICAL SCENE LOCK:
+- preserve web strands in foreground exactly
+- keep lighting, background blur, and composition unchanged
+
+CRITICAL LIGHTING:
+- warm cinematic light with soft highlights and shadows must remain consistent
+
+CRITICAL HANDS:
+- all visible hands must be human, anatomically correct
+- exactly five fingers, no deformation
+
+FINAL:
+Same cinematic composition with identical lighting and framing, with characters fully recreated as the uploaded man and woman, no pasted effect, seamless integration.`,
+  },
+  {
+    id: 'spiderman-2',
+    style: 'spiderman',
+    label: 'Spider-Man',
+    image: '/styles/spiderman/spiderman2.jpg',
+    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Recreate both characters using the uploaded man and woman as full characters, not as face replacements.
+
+STRICT IDENTITY PRESERVATION:
+Faces must remain clearly recognizable with original proportions and features.
+Hair must match uploaded photos.
+
+CRITICAL POSE LOCK:
+- both characters stand very close, facing each other
+- foreheads gently touching
+- man's hands placed near the woman's head/neck
+- woman's hands positioned near his torso
+- preserve exact head angle, distance, and posture
+
+Do NOT increase intimacy or change positioning.
+
+CRITICAL EXPRESSION:
+- soft emotional connection
+- relaxed faces, calm and natural
+
+CRITICAL COSTUME:
+- keep superhero-style suit on the man exactly as in the reference
+- preserve clothing on the woman unchanged
+
+CRITICAL SCENE LOCK:
+- keep city background, depth of field, and framing exactly the same
+
+CRITICAL LIGHTING:
+- maintain soft neutral daylight tones and cinematic depth
+
+CRITICAL HANDS:
+- human hands only, anatomically correct
+- five fingers per hand, no distortion
+
+FINAL:
+Same emotional cinematic moment, identical pose and composition, characters fully recreated with the uploaded identities.`,
+  },
   {
     id: 'spiderman-3',
     style: 'spiderman',
@@ -441,49 +527,42 @@ No pose drift, no background changes, seamless integration, high detail Pixar/Di
     image: '/styles/spiderman/spiderman3.jpg',
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Recreate the upside-down male character using the uploaded man, and the woman on the right using the uploaded woman. Rebuild both naturally inside the same cinematic scene, not as pasted faces.
+Recreate both characters using the uploaded man and woman as full characters, not as face swaps.
 
 STRICT IDENTITY PRESERVATION:
-Keep both people clearly recognizable:
-- facial structure and proportions
-- eyes, eyebrows, nose, lips, jawline
-- skin texture and natural tone adapted to the scene lighting
-- hairstyle, hair color, and hair length from the uploaded photos
+Maintain recognizable facial structure, proportions, and features.
+Hair must match uploaded photos but behave naturally under wet conditions.
 
 CRITICAL POSE LOCK:
-- man is upside down at the top of the frame
-- woman is below/right, facing him
-- their faces are very close in a romantic near-contact moment
-- woman's hand rests gently on the man's cheek/jaw
-- preserve exact head angles, distance, framing, and crop
+- man is positioned upside down at the top of the frame
+- woman is below, facing upward toward him
+- faces are very close in a soft emotional moment (no explicit contact emphasis)
+- woman's hand rests gently on his face
+- preserve exact alignment, distance, and framing
 
-Do NOT rotate, reposition, or redesign the pose.
+Do NOT rotate or reinterpret the pose.
 
-CRITICAL EMOTION:
-Soft romantic tension, calm intimate expressions, relaxed eyes.
-Do NOT make the scene more explicit or more intense than the reference.
+CRITICAL WET ENVIRONMENT:
+- preserve rain, water droplets, and wet surfaces
+- skin must have natural wet highlights (subtle, not exaggerated)
+- hair appears slightly wet and follows gravity
 
-CRITICAL WET / RAIN EFFECT:
-Preserve wet hair, water droplets, glossy skin highlights, and rain reflections.
-Hair strands must stay naturally stuck to skin.
-Do not clean, dry, or restyle hair.
+CRITICAL COSTUME:
+- maintain the same suit design and texture as the reference
 
 CRITICAL LIGHTING:
-Maintain the original cinematic lighting, warm highlights, wet reflections, contrast, and shadow direction.
-Skin must respond naturally to the scene light, with no plastic or flat effect.
+- keep cinematic lighting, reflections, and contrast
+- avoid excessive color shifts or unnatural tones
 
 CRITICAL SCENE LOCK:
-Keep background, costume, rain, lighting, camera angle, framing, and color grading exactly as in the reference.
-Treat the reference as a locked base frame.
+- background, rain, framing, and composition must remain unchanged
 
 CRITICAL HANDS:
-All visible hands must be human and anatomically correct.
-Each hand must have exactly five fingers.
-No merged fingers, no missing fingers, no deformation.
+- human hands only, anatomically correct
+- exactly five fingers, no deformation
 
 FINAL:
-Same cinematic rainy close-up, same pose and lighting, with only the identities naturally replaced by the uploaded man and woman.
-High detail, cinematic realism, 4K.`,
+Same cinematic rainy scene with identical pose and lighting, characters naturally recreated using the uploaded identities, seamless and realistic integration.`,
   },
 
   // ── Bridge to Terabithia ──
