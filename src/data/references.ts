@@ -378,59 +378,57 @@ High detail, premium animated CGI, 4K.`,
     image: '/styles/tangled/tangled3.jpg',
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Replace the male character with the uploaded man and the female character with the uploaded woman. Recreate both people naturally inside the scene as full characters, not as pasted faces.
+Replace the male character on the left with the uploaded man and the female character on the right with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney-quality CGI style, not as pasted faces.
 
-STRICT IDENTITY PRESERVATION:
-Keep both people clearly recognizable — facial structure, proportions, age, skin tone, eyes, nose, lips, jawline, hairstyle, hair color and length must match the uploaded photos.
+STRICT IDENTITY PRESERVATION (ENHANCED):
+Faces must remain highly recognizable:
+— exact facial proportions and bone structure
+— eye shape, spacing, eyelids, eyebrows
+— nose shape and bridge
+— lip shape and mouth width
+— jawline and chin
+— natural skin tone adapted to scene lighting
+— hairstyle, hair color, and hair length must match the uploaded photos
 
-CRITICAL STYLE MATCH (VERY IMPORTANT):
-Render both people in the same high-end stylized 3D animated look as the reference image — soft cinematic CGI, smooth shading, expressive eyes, clean stylized proportions, feature-film quality.
-Do NOT mix photorealism with animation.
+CRITICAL POSE LOCK (ABSOLUTE):
+— man stands on the left, leaning slightly forward
+— his right arm is extended toward the woman, holding a small crown/tiara
+— woman stands on the right, body slightly turned toward him
+— her left hand is raised, palm up, positioned under the crown
+— her other arm rests naturally near her body
+— maintain exact spacing, posture, and gesture alignment between both characters
+— preserve original camera angle and framing
 
-CRITICAL HAIR CONSISTENCY (FIXED):
-Hair must remain visually consistent with the reference scene structure while adapting identity:
-— preserve the overall silhouette and placement of hair in the scene
-— if the reference includes long hair elements, keep them as part of scene composition
-— subtly adapt texture and appearance to match the uploaded person's real hair
-— do NOT remove major compositional elements (like long braid)
-— avoid unrealistic hair extension or mismatch
+Do NOT change pose, hand positions, or interaction.
 
-CRITICAL POSE & INTERACTION LOCK:
-Keep the exact pose and interaction —
-both characters sitting on the grass;
-the man gently placing flowers into the woman's hair;
-the woman looking at him with a soft, warm expression;
-preserve body positions, head tilt, gaze direction, and distance exactly.
-Do NOT change hand placement or interaction with the flowers.
+CRITICAL PROP LOCK:
+— crown/tiara MUST remain between them in the same position
+— exact hand interaction with the crown must be preserved
 
-CRITICAL LIGHTING & COLOR:
-The scene has soft warm daylight with gentle sun rays.
-Faces must inherit this lighting:
-— natural warm highlights
-— soft shadows
-— subtle glow from sunlight through foliage
-— maintain depth and softness
+CRITICAL EXPRESSION LOCK:
+— man: gentle, playful, slightly confident expression
+— woman: soft, shy, slightly amused expression
+— maintain eye direction and emotional tone exactly as in the reference
 
-Skin must remain natural within this lighting:
-— no over-saturation
-— preserve natural tone variation
-— face, neck, and hands must match consistently
+CRITICAL STYLE (VERY IMPORTANT):
+Full Pixar/Disney 3D look — soft shading, clean stylized skin, expressive eyes.
+Use the EXACT rendering style from the reference image, do NOT redesign the scene.
 
-CRITICAL SCENE LOCK:
-Keep background, grass, flowers, lighting, and composition EXACTLY as in the reference.
-Do not redesign environment or clothing.
+CRITICAL SCENE LOCK (HIGHEST PRIORITY):
+Keep background, crowd, palace architecture, decorations, lighting, depth of field, and composition EXACTLY unchanged.
+Treat the reference image as a locked base frame.
 
-CRITICAL INTEGRATION:
-Rebuild faces within original head positions with correct perspective and lighting response.
-Do NOT paste faces.
-Do NOT alter skull orientation.
+CRITICAL LIGHTING:
+Maintain warm daylight lighting with soft highlights and gentle shadows consistent with the scene.
 
-CRITICAL HANDS:
-Hands must be clean and anatomically correct — five fingers, proper placement, no deformation.
+CRITICAL HANDS (VERY IMPORTANT):
+All hands must be human — anatomically correct with realistic proportions.
+Exactly five fingers on each hand.
+Correct finger articulation when holding the crown, no deformation, no merged or missing fingers.
 
-FINAL RESULT:
-The image must look like the same animated cinematic moment with identical lighting and composition, but with the uploaded man and woman fully integrated into the scene with consistent style and natural hair adaptation.
-High detail, premium stylized 3D animation, 4K.`,
+FINAL:
+The output must look like the same original frame with identical composition, lighting, and style, with only the characters replaced by the uploaded man and woman.
+No pose drift, no background change, seamless integration, high detail Pixar/Disney CGI, 4K.`,
   },
 
   // ── Spider-Man ──
