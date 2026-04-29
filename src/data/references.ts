@@ -102,60 +102,35 @@ Same tight, compressed selfie moment, exact pose preserved, stylized human versi
     style: 'zootopia',
     label: 'Zootopia',
     image: '/styles/zootopia/zootopia3.jpg',
-    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+    prompt: `Use the provided reference image AND separately uploaded photos of the man and woman.
 
-Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney-quality CGI style, not as pasted faces.
+STRICTLY preserve identity — faces must remain highly recognizable with accurate proportions, skin tone, and hairstyles.
+CRITICAL: full transformation into Pixar/Disney 3D characters — stylized but identity-preserving.
 
-STRICT IDENTITY PRESERVATION (ENHANCED):
-Faces must remain highly recognizable:
-— exact facial proportions and bone structure
-— eye shape, spacing, eyelids, eyebrows
-— nose shape and bridge
-— lip shape and mouth width
-— jawline and chin
-— natural skin tone adapted to scene lighting
-— hairstyle, hair color, and hair length must match the uploaded photos
+CRITICAL POSE LOCK:
+Exact 1:1 replication of the reference composition —
+body positioning, arm placement, posture, camera angle, framing and distance must match EXACTLY.
+No reinterpretation, no pose drift.
 
-CRITICAL POSE LOCK (ABSOLUTE):
-— man on the left holds the phone with his arm extended upward
-— selfie angle from slightly above
-— woman stands on his right side in the same position as the reference
-— both bodies positioned close, maintaining the same spacing and alignment
-— woman is NOT being held, NOT lifted, NOT supported
-— no arm wrapping around her — she stands independently next to him
-— preserve original torso angles, head positions, and framing
+CRITICAL HANDS:
+Hands must be correct — five fingers per hand, proper anatomy, no deformation.
 
-Do NOT reinterpret or redesign the pose.
-Do NOT introduce new interactions or contact not present in the reference.
+CRITICAL OBJECT:
+The woman MUST hold a carrot in her hand — clearly visible, same position, same scale as in the reference. No replacement or omission.
 
-CRITICAL PROP LOCK:
-— phone MUST remain in the man's hand in the same position and angle
-— carrot MUST remain in the woman's hand in the same position
+CRITICAL CLOTHING:
+Clothing must EXACTLY match the reference image — same colors, same shapes, same details, no simplification.
 
-CRITICAL EXPRESSION LOCK:
-— preserve the exact expressions from the reference
-— same eye direction toward the phone
-— same intensity of emotion
+Scene: club selfie.
+Man holds the phone and takes the selfie.
+Woman is pressed close to him, one arm around him, the other holding the carrot.
+Both looking into the camera.
 
-CRITICAL STYLE (VERY IMPORTANT):
-Full Pixar/Disney 3D look — soft shading, clean stylized skin, expressive eyes.
-Use the EXACT rendering style from the reference image, do NOT redesign the scene.
+Background — EXACT COPY of the reference: colorful nightclub environment with blurred characters and vibrant lighting, unchanged.
 
-CRITICAL SCENE LOCK (HIGHEST PRIORITY):
-Keep background, lighting, crowd, blur, depth, and composition EXACTLY unchanged.
-Treat the reference image as a locked base frame.
+Lighting — neon club lighting, colorful highlights, soft glow, cinematic depth, background bokeh, strong subject focus.
 
-CRITICAL LIGHTING:
-Characters must inherit the exact colored lighting (pink, purple, blue) consistently.
-
-CRITICAL HANDS (VERY IMPORTANT):
-All hands must be human — anatomically correct with realistic proportions.
-Exactly five fingers on each hand.
-Correct grip on phone and carrot, no deformation, no merged or missing fingers.
-
-FINAL:
-The output must look like the same original frame with identical composition, lighting, and style, with only the characters replaced by the uploaded man and woman.
-No pose drift, no added contact, no background change, seamless integration, 4K.`,
+High-end Pixar-style CGI, ultra-detailed, 4K.`,
   },
 
   // ── Euphoria ──
@@ -170,41 +145,6 @@ No pose drift, no added contact, no background change, seamless integration, 4K.
     style: 'titanic',
     label: 'Titanic',
     image: '/styles/titanic/titanic2.jpg',
-    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
-
-Perform a local facial replacement on the existing frame:
-- male visible face area -> uploaded man
-- female visible face area -> uploaded woman
-
-The frame must stay structurally identical: same camera angle, same crop, same pose, same clothing, same water, same background, same lighting direction, same depth of field.
-
-Do not recreate the whole image. Do not generate a new scene. Use the reference frame as the base image and edit only the visible face regions and the immediately connected hairline/skin edges needed for seamless blending.
-
-The male face must be replaced even though it is only partially visible. Do not keep the original male face. The visible brow, nose bridge, cheek, lips, jawline, skin texture, and any visible eye/eyelid area must match the uploaded man.
-
-The female face must be replaced even though it is partially covered. Do not keep the original female face. The visible cheek, nose, lips, jawline, eyelid/eye area, skin texture, and facial proportions must match the uploaded woman.
-
-Keep all occlusions exactly as in the reference:
-- hands stay in front where they are
-- wet hair strands stay crossing the face where they are
-- shadows stay in the same places
-- hidden face parts remain hidden
-
-Hair rule:
-Keep the wet hair placement and direction from the reference, but adjust only the visible hairline and nearby strands where necessary so the new face does not look pasted. Do not fully redesign hairstyles. Do not leave obvious original-actor hairline conflicts.
-
-Lighting and color:
-Match the original cold blue cinematic lighting exactly. New faces must have the same shadow depth, wet highlights, water reflections, contrast, grain, and color temperature as the reference. Skin must look physically lit by the same blue environment, not painted blue and not warm/neutral.
-
-Wet detail:
-Preserve glossy wet skin, water droplets, clumped wet hair, and specular highlights. No plastic skin, no smoothing, no beauty filter.
-
-Hands:
-Keep hand positions unchanged. Hands must remain anatomically correct with exactly five fingers where visible.
-
-Final result:
-The same original shot, same pose, same background, same clothing, same water and lighting, with only the visible male and female faces locally replaced and naturally blended into the scene.
-Ultra-realistic cinematic result, no pasted look, no scene drift, no face left unchanged.`,
   },
   {
     id: 'titanic-3',
