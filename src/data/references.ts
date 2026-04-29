@@ -434,7 +434,79 @@ No pose drift, no background changes, seamless integration, high detail Pixar/Di
   // ── Spider-Man ──
   { id: 'spiderman-1', style: 'spiderman', label: 'Spider-Man', image: '/styles/spiderman/spiderman1.jpg' },
   { id: 'spiderman-2', style: 'spiderman', label: 'Spider-Man', image: '/styles/spiderman/spiderman2.jpg' },
-  { id: 'spiderman-3', style: 'spiderman', label: 'Spider-Man', image: '/styles/spiderman/spiderman3.jpg' },
+  {
+    id: 'spiderman-3',
+    style: 'spiderman',
+    label: 'Spider-Man',
+    image: '/styles/spiderman/spiderman3.jpg',
+    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Recreate the male character (upside down, top) using the uploaded man and the female character (bottom, right) using the uploaded woman. They must be naturally rebuilt inside the scene, not as pasted faces.
+
+STRICT IDENTITY PRESERVATION (ENHANCED):
+Faces must remain highly recognizable:
+
+exact facial proportions and bone structure
+eye shape, spacing, eyelids, eyebrows
+nose shape and bridge
+lip shape and mouth width
+jawline and chin
+natural skin tone adapted to scene lighting
+hairstyle, hair color, and hair length must match the uploaded photos
+
+CRITICAL POSE LOCK (ABSOLUTE):
+
+man is upside down, suspended from above, head tilted downward
+woman stands below, head tilted upward toward him
+their lips are very close, nearly touching (romantic near-kiss moment)
+woman's hand is placed on the man's cheek/jaw area
+preserve exact head angles, distance between faces, and alignment
+maintain original camera framing and crop
+
+Do NOT rotate, reposition, or reinterpret the pose.
+Do NOT turn the upside-down face upright.
+
+CRITICAL EXPRESSION LOCK:
+
+both have soft, intimate, focused expressions
+relaxed eyelids, emotional and romantic tension
+no exaggerated smile, no change in intensity
+
+CRITICAL OCCLUSION & HAIR:
+
+hair must appear wet and follow gravity correctly
+strands sticking to skin must remain
+do not remove or reposition wet hair clumps
+
+CRITICAL LIGHTING & WATER EFFECT:
+
+maintain strong directional lighting with highlights on wet skin
+preserve water droplets, reflections, and specular highlights
+skin must inherit wet surface behavior (gloss, reflections, micro highlights)
+no matte or plastic skin
+
+CRITICAL VISIBILITY:
+
+only generate facial areas visible in the reference
+do NOT reconstruct hidden or occluded parts of the face
+
+CRITICAL SCENE LOCK:
+
+keep background, lighting, rain/water, costume, and composition exactly unchanged
+do not redesign environment or color grading
+
+CRITICAL STYLE:
+Cinematic realism, not stylized. Maintain film-like texture, contrast, and detail.
+
+CRITICAL HANDS:
+All hands must be human, anatomically correct, realistic proportions.
+Exactly five fingers on each hand.
+No deformation, no merged fingers, correct contact with face.
+
+FINAL:
+The result must look like the same iconic cinematic moment with identical composition, lighting, and water effects, with only the identities replaced by the uploaded man and woman.
+No pose drift, no background changes, seamless integration, high detail, 4K.`,
+  },
 
   // ── Bridge to Terabithia ──
   {
