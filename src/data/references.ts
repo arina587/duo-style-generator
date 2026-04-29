@@ -225,7 +225,118 @@ Same pose, same lighting, same composition — but with real human identities ac
   // ── Euphoria ──
   { id: 'euphoria-1', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria1.jpg' },
   { id: 'euphoria-2', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria2.jpg' },
-  { id: 'euphoria-3', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria3.jpg' },
+  {
+    id: 'euphoria-3',
+    style: 'euphoria',
+    label: 'Euphoria',
+    image: '/styles/euphoria/euphoria3.jpg',
+    prompt: `Use the provided reference image as the base frame.
+
+DO NOT re-render, reinterpret, or regenerate the scene.
+Perform a localized face replacement only.
+
+Keep the original image intact and unchanged except for identity replacement inside the existing head areas.
+
+CRITICAL TASK DEFINITION (NO CONFLICT):
+— This is NOT full character generation
+— This is NOT scene recreation
+— This is precise identity transfer into existing faces
+
+Only modify facial identity while preserving all original structure, lighting, and texture.
+
+STRICT IDENTITY PRESERVATION (CRITICAL):
+Transfer identity from uploaded photos with high fidelity:
+
+— exact facial structure and proportions
+— eyes, eyelids, eyebrows
+— nose shape and bridge
+— lips and mouth shape
+— jawline and chin
+— natural skin tone (adapted to scene lighting only)
+— hairstyle, hair color, hairline must remain consistent
+
+Do NOT beautify, stylize, or average facial features.
+
+CRITICAL POSE & HEAD LOCK (ABSOLUTE):
+— keep original head positions exactly
+— keep original tilt and angles
+— keep exact gaze direction (they look at each other)
+— do NOT rotate or reproject faces
+
+No pose drift.
+
+CRITICAL EMOTION LOCK (TIGHTENED):
+Preserve subtle emotional state exactly:
+
+— soft, focused eye contact
+— low-intensity expressions (NOT smiling broadly)
+— slightly serious, attentive, intimate conversation
+— micro-expressions only (minimal mouth movement)
+
+Do NOT introduce:
+— big smiles
+— exaggerated emotions
+— romanticized expressions
+
+Emotion must remain restrained and natural.
+
+CRITICAL LIGHTING LOCK (VERY IMPORTANT):
+Match lighting pixel-accurately:
+
+— warm tungsten indoor lighting (yellow/orange)
+— soft directional light from left/front
+— gentle falloff across faces
+— natural shadow placement under eyes, nose, jaw
+
+— preserve color temperature exactly
+— no neutral or cold tones
+— no added light sources
+— no relighting
+
+Faces must inherit original lighting perfectly.
+
+CRITICAL SKIN TEXTURE (NEW — STRICT):
+— preserve natural skin texture (pores, micro-contrast)
+— NO smoothing
+— NO plastic skin
+— NO beauty filter look
+— maintain slight grain consistent with scene
+
+Skin must match:
+— face ↔ neck ↔ arms (no mismatch)
+
+CRITICAL HANDS & ANATOMY:
+— keep original hands unchanged
+— exactly five fingers per hand
+— correct anatomy and proportions
+— natural relaxed positioning
+
+No deformation, no regeneration of hands.
+
+CRITICAL SCENE LOCK (ABSOLUTE):
+Do NOT modify:
+
+— background (brick wall, room)
+— bed, objects, foreground items
+— clothing
+— composition
+— camera framing
+
+Everything must remain identical.
+
+CRITICAL INTEGRATION:
+— embed new identities into original head geometry
+— match perspective exactly
+— preserve original shadows and highlights
+— seamless blending (no cut-out effect)
+
+FINAL RESULT:
+The output must look like the same original frame, unchanged in every aspect except identity.
+
+No scene drift, no lighting shift, no pose change.
+
+Photorealistic, warm cinematic tone, natural skin texture, high detail, no artifacts.`,
+  },
 
   // ── Titanic ──
   { id: 'titanic-1', style: 'titanic', label: 'Titanic', image: '/styles/titanic/titanic1.jpg' },
