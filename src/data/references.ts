@@ -147,102 +147,123 @@ High-end Pixar-style CGI, ultra-detailed, 4K.`,
     image: '/styles/titanic/titanic2.jpg',
     prompt: `Use the provided cinematic reference image and separately uploaded photos of the man and the woman.
 
-Replace the female character (right side) with the uploaded woman, and the male character (left side) with the uploaded man. Recreate both people naturally inside the scene — not as pasted faces, but as fully integrated characters.
+Replace the female character (right side) with the uploaded woman, and the male character (left side) with the uploaded man. Recreate both people naturally inside the scene — NOT as pasted faces, but as fully reconstructed identities inside the original bodies.
 
-STRICT IDENTITY PRESERVATION:
-Maintain exact identity of both individuals:
-facial structure, proportions, age, skin tone, eyes, nose, lips, jawline, hairline must remain clearly recognizable.
-Do NOT alter or beautify.
+STRICT IDENTITY PRESERVATION (VERY IMPORTANT):
+Preserve identity with maximum accuracy:
 
-CRITICAL POSE & EMOTION LOCK:
-Preserve exact pose and emotional state:
+— exact bone structure (skull shape, cheekbones, jawline)
+— eyes shape and spacing
+— nose shape and bridge
+— lips form and volume
+— skin tone (adapted to scene lighting, but identity preserved)
+— hairline and facial proportions
 
-— both are lying close, facing each other
+Do NOT stylize, average, or simplify faces.
+
+Male identity is CRITICAL:
+he is in partial profile — preserve asymmetry and perspective distortion of his face.
+Do NOT "straighten" or frontalize his face.
+
+CRITICAL HEAD ANGLE & POSE LOCK (EXTREMELY IMPORTANT):
+Match head positioning EXACTLY as in reference:
+
+— male: head slightly turned left, partially in profile, tilted down
+— female: head resting on arms, tilted toward the man
+— distance between faces must remain identical
+— neck angles and compression must match
+
+Do NOT rotate heads. Do NOT reproject faces.
+
+CRITICAL EMOTION LOCK:
+Keep original emotional state:
+
 — woman: intense, emotional, focused gaze
-— man: weakened, passive, looking toward her
-— expression: exhaustion, cold, dramatic tension
+— man: weak, passive, low-energy expression
+— overall feeling: exhaustion, cold, dramatic tension
 
-No changes to gaze, tension, or expression.
+No changes in emotion, gaze direction, or facial tension.
 
-CRITICAL LIGHTING & ENVIRONMENT MATCH (VERY IMPORTANT):
-Cold, wet cinematic lighting:
+CRITICAL LIGHTING RECONSTRUCTION (LOCK TO REFERENCE):
+Lighting must match the reference EXACTLY:
 
-— bluish/greenish color cast
-— wet reflections on skin
-— uneven light from water
-— specular highlights on moisture
+— main light source: cold, soft, from upper-left/front
+— direction MUST remain identical
+— highlights on forehead, nose bridge, cheekbones must align pixel-accurately
+— shadow zones: under eyes, side of nose, jawline — same depth and placement
 
-No warm tones. No studio lighting.
+— color temperature: cold blue/green tint
+— no warm tones allowed
 
-CRITICAL SKIN & TEXTURE INTEGRATION:
-— pale/cold skin tone
-— water droplets and wetness
-— slight dirt/smudges matching scene
-— natural skin texture (NO smoothing)
+— specular highlights from wet skin must match intensity and placement
+— no new light sources
+— no relighting
 
-Face must perfectly match body in tone and condition.
+Faces must look like they were shot in the same frame under identical lighting conditions.
 
-CRITICAL WATER & CONTACT:
-— physical contact with wet surface
-— subtle reflections
-— moisture buildup on edges
+CRITICAL SKIN & WET TEXTURE:
+— wet skin with visible moisture
+— small reflections and gloss
+— slightly pale / cold skin tone
+— subtle dirt/smudges consistent with scene
 
-No floating or detached faces.
+Keep real skin texture (pores, micro-contrast).
+NO smoothing, NO plastic look.
+
+CRITICAL WATER & CONTACT PHYSICS:
+— correct pressure where face touches surface
+— slight deformation/compression
+— reflections from wet surface
+— moisture accumulation near contact areas
+
+No floating faces.
 
 CRITICAL HAIR & OCCLUSION:
-— keep wet hair strands on face
-— do NOT clean or remove hair
-— preserve occlusions
-— hair must look soaked and heavy
+— wet hair strands must remain exactly in place
+— hair sticks to skin
+— preserve all occlusions (do NOT reveal hidden areas)
+— no hair cleanup
 
-CRITICAL PROFILE RULE:
-— keep original head angles
-— no face rotation
-— preserve perspective
+CRITICAL SHADOW & DEPTH MATCH:
+— preserve original shadow softness and gradient
+— maintain depth between faces
+— no flattening of contrast
+— keep cinematic low-key lighting
 
-CRITICAL SHADOW & DEPTH:
-— maintain shadow direction
-— preserve depth and contrast
-— no flattening
+CRITICAL HANDS & ANATOMY (STRICT):
+— exactly five fingers on each hand
+— correct anatomy and proportions
+— natural bending and contact with surface
+— no distortions, no extra fingers
 
-CRITICAL HANDS & ANATOMY (VERY IMPORTANT):
-Hands must remain fully natural and anatomically correct:
+Hands must match lighting:
 
-— exactly five fingers per hand
-— correct proportions (no elongated or fused fingers)
-— natural bending of joints
-— proper contact with surfaces (no floating hands)
-— preserve original pose and placement of hands
-
-Hands must match scene conditions:
-
-— wet skin appearance
-— same lighting and color cast as faces
-— correct shadows and reflections
-
-NO extra fingers, NO missing fingers, NO distortions, NO broken anatomy.
+— wet skin reflections
+— same color cast
+— same shadow direction
 
 CRITICAL SCENE LOCK:
-Do NOT change:
+Do NOT change anything except faces:
 
 — background
 — water
 — composition
+— framing
 — clothing
 — color grading
 
-Only faces are replaced.
-
 CRITICAL INTEGRATION:
-— rebuild faces in original head geometry
-— correct scale and alignment
-— no face pasting
+— rebuild faces inside original head geometry
+— match perspective perfectly
+— match scale and depth
+— seamless blending with body
+
+NO face cutouts. NO visible seams.
 
 FINAL RESULT:
-Photorealistic cinematic frame with full integration.
+Must look indistinguishable from the original film frame, as if the uploaded man and woman were physically present during filming.
 
-Cold tones, wet skin, emotional intensity, correct anatomy, high detail, 4K.
-No artifacts, no distortions, no AI look.`,
+Cinematic realism, cold wet lighting, perfect identity transfer, correct profile geometry, high detail, 4K, zero artifacts.`,
   },
   {
     id: 'titanic-3',
