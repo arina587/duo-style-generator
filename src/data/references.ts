@@ -378,57 +378,57 @@ High detail, premium animated CGI, 4K.`,
     image: '/styles/tangled/tangled3.jpg',
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Replace the male character on the left with the uploaded man and the female character on the right with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney-quality CGI style, not as pasted faces.
+Recreate the male character on the left using the uploaded man and the female character on the right using the uploaded woman. They must be naturally rebuilt inside the scene, not as pasted faces.
 
 STRICT IDENTITY PRESERVATION (ENHANCED):
 Faces must remain highly recognizable:
-— exact facial proportions and bone structure
-— eye shape, spacing, eyelids, eyebrows
-— nose shape and bridge
-— lip shape and mouth width
-— jawline and chin
-— natural skin tone adapted to scene lighting
-— hairstyle, hair color, and hair length must match the uploaded photos
+- exact facial proportions and bone structure
+- eye shape, spacing, eyelids, eyebrows
+- nose shape and bridge
+- lip shape and mouth width
+- jawline and chin
+- natural skin tone adapted to scene lighting
+- hairstyle, hair color, and hair length must match the uploaded photos
 
 CRITICAL POSE LOCK (ABSOLUTE):
-— man stands on the left, leaning slightly forward
-— his right arm is extended toward the woman, holding a small crown/tiara
-— woman stands on the right, body slightly turned toward him
-— her left hand is raised, palm up, positioned under the crown
-— her other arm rests naturally near her body
-— maintain exact spacing, posture, and gesture alignment between both characters
-— preserve original camera angle and framing
+- man stands on the left, leaning slightly forward
+- his right arm is extended toward the woman, holding a small crown or tiara
+- woman stands on the right, body slightly turned toward him
+- her left hand is raised, palm up, positioned under the crown
+- her other arm rests naturally near her body
+- maintain exact spacing, posture, and gesture alignment
+- preserve original camera angle and framing
 
 Do NOT change pose, hand positions, or interaction.
 
 CRITICAL PROP LOCK:
-— crown/tiara MUST remain between them in the same position
-— exact hand interaction with the crown must be preserved
+- crown or tiara must remain between them in the same position
+- exact hand interaction must be preserved
 
 CRITICAL EXPRESSION LOCK:
-— man: gentle, playful, slightly confident expression
-— woman: soft, shy, slightly amused expression
-— maintain eye direction and emotional tone exactly as in the reference
+- man: gentle, playful, slightly confident expression
+- woman: soft, shy, slightly amused expression
+- maintain eye direction and emotional tone exactly
 
-CRITICAL STYLE (VERY IMPORTANT):
-Full Pixar/Disney 3D look — soft shading, clean stylized skin, expressive eyes.
-Use the EXACT rendering style from the reference image, do NOT redesign the scene.
+CRITICAL STYLE:
+Full Pixar/Disney 3D look with soft shading and clean stylized skin.
+Use the same rendering style as the reference image, do not redesign the scene.
 
-CRITICAL SCENE LOCK (HIGHEST PRIORITY):
-Keep background, crowd, palace architecture, decorations, lighting, depth of field, and composition EXACTLY unchanged.
+CRITICAL SCENE LOCK:
+Keep background, crowd, architecture, decorations, lighting, depth of field, and composition exactly unchanged.
 Treat the reference image as a locked base frame.
 
 CRITICAL LIGHTING:
-Maintain warm daylight lighting with soft highlights and gentle shadows consistent with the scene.
+Maintain warm daylight lighting with soft highlights and natural shadows.
 
-CRITICAL HANDS (VERY IMPORTANT):
-All hands must be human — anatomically correct with realistic proportions.
-Exactly five fingers on each hand.
-Correct finger articulation when holding the crown, no deformation, no merged or missing fingers.
+CRITICAL HANDS:
+All hands must be human, anatomically correct, with realistic proportions.
+Each hand must have exactly five fingers.
+Correct finger articulation, no deformation, no merged or missing fingers.
 
 FINAL:
-The output must look like the same original frame with identical composition, lighting, and style, with only the characters replaced by the uploaded man and woman.
-No pose drift, no background change, seamless integration, high detail Pixar/Disney CGI, 4K.`,
+The result must look like the same original frame with identical composition and lighting, with only the characters replaced by the uploaded man and woman.
+No pose drift, no background changes, seamless integration, high detail Pixar/Disney CGI.`,
   },
 
   // ── Spider-Man ──
