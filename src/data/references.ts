@@ -102,9 +102,7 @@ Same tight, compressed selfie moment, exact pose preserved, stylized human versi
     style: 'zootopia',
     label: 'Zootopia',
     image: '/styles/zootopia/zootopia3.jpg',
-    prompt: `PROMPT (Zootopia → Human Replacement, MAX PRECISION):
-
-Use the provided reference image and separately uploaded photos of the man and the woman.
+    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
 Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized 3D human characters in high-end Pixar/Disney CGI style — NOT as pasted faces, but as fully reconstructed human characters integrated into the scene.
 
@@ -177,10 +175,18 @@ All hands must be fully human:
 
 — exactly five fingers per hand
 — correct anatomy and proportions
-— proper grip on phone (man)
-— natural relaxed hand pose (woman)
+— no deformation, no fused fingers
 
-NO extra fingers, NO deformation, NO fused fingers.
+FOR THE MAN (STRICT):
+— the raised arm MUST end in a fully human hand with exactly five fingers
+— the hand MUST be clearly visible and anatomically correct
+— the man MUST be holding a smartphone in one hand (selfie position)
+— correct grip on the phone (natural finger placement, proper perspective)
+— no extra fingers, no missing fingers, no distortions
+
+FOR THE WOMAN:
+— natural relaxed human hand pose
+— correct anatomy and proportions
 
 CRITICAL CAMERA & LENS:
 — preserve selfie-style framing
@@ -209,7 +215,7 @@ NO face cutouts. NO mismatched lighting.
 FINAL RESULT:
 A Pixar-quality human version of the exact same cinematic moment.
 
-Same pose, same lighting, same composition — but with real human identities accurately integrated, natural proportions, correct hands, clean anatomy, high detail, 4K, no artifacts.`,
+Same pose, same lighting, same composition — but with real human identities accurately integrated, natural proportions, correct hands, proper phone grip, high detail, 4K, no artifacts.`,
   },
 
   // ── Euphoria ──
