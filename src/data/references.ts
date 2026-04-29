@@ -441,71 +441,49 @@ No pose drift, no background changes, seamless integration, high detail Pixar/Di
     image: '/styles/spiderman/spiderman3.jpg',
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Recreate the male character (upside down, top) using the uploaded man and the female character (bottom, right) using the uploaded woman. They must be naturally rebuilt inside the scene, not as pasted faces.
+Recreate the upside-down male character using the uploaded man, and the woman on the right using the uploaded woman. Rebuild both naturally inside the same cinematic scene, not as pasted faces.
 
-STRICT IDENTITY PRESERVATION (ENHANCED):
-Faces must remain highly recognizable:
+STRICT IDENTITY PRESERVATION:
+Keep both people clearly recognizable:
+- facial structure and proportions
+- eyes, eyebrows, nose, lips, jawline
+- skin texture and natural tone adapted to the scene lighting
+- hairstyle, hair color, and hair length from the uploaded photos
 
-exact facial proportions and bone structure
-eye shape, spacing, eyelids, eyebrows
-nose shape and bridge
-lip shape and mouth width
-jawline and chin
-natural skin tone adapted to scene lighting
-hairstyle, hair color, and hair length must match the uploaded photos
+CRITICAL POSE LOCK:
+- man is upside down at the top of the frame
+- woman is below/right, facing him
+- their faces are very close in a romantic near-contact moment
+- woman's hand rests gently on the man's cheek/jaw
+- preserve exact head angles, distance, framing, and crop
 
-CRITICAL POSE LOCK (ABSOLUTE):
+Do NOT rotate, reposition, or redesign the pose.
 
-man is upside down, suspended from above, head tilted downward
-woman stands below, head tilted upward toward him
-their lips are very close, nearly touching (romantic near-kiss moment)
-woman's hand is placed on the man's cheek/jaw area
-preserve exact head angles, distance between faces, and alignment
-maintain original camera framing and crop
+CRITICAL EMOTION:
+Soft romantic tension, calm intimate expressions, relaxed eyes.
+Do NOT make the scene more explicit or more intense than the reference.
 
-Do NOT rotate, reposition, or reinterpret the pose.
-Do NOT turn the upside-down face upright.
+CRITICAL WET / RAIN EFFECT:
+Preserve wet hair, water droplets, glossy skin highlights, and rain reflections.
+Hair strands must stay naturally stuck to skin.
+Do not clean, dry, or restyle hair.
 
-CRITICAL EXPRESSION LOCK:
-
-both have soft, intimate, focused expressions
-relaxed eyelids, emotional and romantic tension
-no exaggerated smile, no change in intensity
-
-CRITICAL OCCLUSION & HAIR:
-
-hair must appear wet and follow gravity correctly
-strands sticking to skin must remain
-do not remove or reposition wet hair clumps
-
-CRITICAL LIGHTING & WATER EFFECT:
-
-maintain strong directional lighting with highlights on wet skin
-preserve water droplets, reflections, and specular highlights
-skin must inherit wet surface behavior (gloss, reflections, micro highlights)
-no matte or plastic skin
-
-CRITICAL VISIBILITY:
-
-only generate facial areas visible in the reference
-do NOT reconstruct hidden or occluded parts of the face
+CRITICAL LIGHTING:
+Maintain the original cinematic lighting, warm highlights, wet reflections, contrast, and shadow direction.
+Skin must respond naturally to the scene light, with no plastic or flat effect.
 
 CRITICAL SCENE LOCK:
-
-keep background, lighting, rain/water, costume, and composition exactly unchanged
-do not redesign environment or color grading
-
-CRITICAL STYLE:
-Cinematic realism, not stylized. Maintain film-like texture, contrast, and detail.
+Keep background, costume, rain, lighting, camera angle, framing, and color grading exactly as in the reference.
+Treat the reference as a locked base frame.
 
 CRITICAL HANDS:
-All hands must be human, anatomically correct, realistic proportions.
-Exactly five fingers on each hand.
-No deformation, no merged fingers, correct contact with face.
+All visible hands must be human and anatomically correct.
+Each hand must have exactly five fingers.
+No merged fingers, no missing fingers, no deformation.
 
 FINAL:
-The result must look like the same iconic cinematic moment with identical composition, lighting, and water effects, with only the identities replaced by the uploaded man and woman.
-No pose drift, no background changes, seamless integration, high detail, 4K.`,
+Same cinematic rainy close-up, same pose and lighting, with only the identities naturally replaced by the uploaded man and woman.
+High detail, cinematic realism, 4K.`,
   },
 
   // ── Bridge to Terabithia ──
