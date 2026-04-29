@@ -145,6 +145,101 @@ High-end Pixar-style CGI, ultra-detailed, 4K.`,
     style: 'titanic',
     label: 'Titanic',
     image: '/styles/titanic/titanic2.jpg',
+    prompt: `Use the provided cinematic reference image and separately uploaded photos of the man and the woman.
+
+Replace the female character (right side) with the uploaded woman, and the male character (left side) with the uploaded man. Recreate both people naturally inside the scene — not as pasted faces, but as fully integrated characters.
+
+STRICT IDENTITY PRESERVATION:
+Maintain exact identity of both individuals:
+facial structure, proportions, age, skin tone, eyes, nose, lips, jawline, hairline must remain clearly recognizable.
+Do NOT beautify, stylize, or alter their natural appearance.
+
+CRITICAL POSE & EMOTION LOCK:
+Preserve the exact pose and emotional state from the reference:
+
+— both characters are lying close to the surface, facing each other
+— the woman is looking intensely at the man with emotional tension
+— the man is weaker, slightly passive, looking toward her
+— expressions must reflect exhaustion, vulnerability, dramatic intensity, near-limit state
+
+Do NOT change gaze direction, facial tension, or emotional intensity.
+
+CRITICAL LIGHTING & ENVIRONMENT MATCH (VERY IMPORTANT):
+Scene has cold, wet, low-temperature cinematic lighting.
+
+Faces must fully inherit:
+— cold bluish/greenish color cast
+— wet skin reflections
+— uneven lighting due to water surface
+— natural highlights on wet skin
+— subtle specular shine
+
+No warm tones. No studio look.
+
+CRITICAL SKIN & TEXTURE INTEGRATION:
+Skin must look physically affected by environment:
+
+— slightly pale / cold skin tone
+— visible moisture / water droplets
+— subtle dirt / smudges matching the scene
+— preserved natural skin texture (NO smoothing, NO plastic skin)
+
+Face must match body in tone, wetness, and texture exactly.
+
+CRITICAL WATER & CONTACT INTEGRATION:
+Faces must interact with environment:
+
+— parts of face touching wet surface must show pressure/contact
+— add subtle reflections from water
+— preserve moisture accumulation along edges (hairline, cheeks, lips)
+
+No floating or detached look.
+
+CRITICAL HAIR & OCCLUSION:
+Keep all natural occlusions:
+
+— wet hair strands sticking to face must remain
+— do NOT remove or clean hair
+— do NOT reveal hidden parts of the face
+— hair must look soaked and heavy
+
+CRITICAL PROFILE RULE:
+Respect head angles strictly:
+
+— if face is partially turned (especially male), preserve perspective
+— do NOT artificially rotate face toward camera
+— maintain original anatomical angle
+
+CRITICAL SHADOW & DEPTH:
+— preserve shadow direction and softness
+— keep depth between faces
+— do NOT flatten lighting
+— maintain cinematic contrast
+
+CRITICAL SCENE LOCK:
+DO NOT change anything except faces:
+
+— background
+— water
+— color grading
+— framing
+— clothing
+
+Everything must remain identical.
+
+CRITICAL INTEGRATION:
+Rebuild faces inside original head geometry:
+
+— correct perspective
+— correct scale
+— correct alignment
+
+No face pasting. No distortion.
+
+FINAL RESULT:
+Must look like an original film frame where the uploaded man and woman were actually present during filming.
+
+Cinematic realism, wet skin, cold tones, emotional intensity, high detail, 4K, natural imperfections preserved.`,
   },
   {
     id: 'titanic-3',
