@@ -177,12 +177,16 @@ All hands must be fully human:
 — correct anatomy and proportions
 — no deformation, no fused fingers
 
-FOR THE MAN (STRICT):
-— the raised arm MUST end in a fully human hand with exactly five fingers
+FOR THE MAN (MANDATORY):
+— the raised arm MUST end in a fully human hand
+— exactly five fingers on the hand
+— anatomically correct proportions
 — the hand MUST be clearly visible and anatomically correct
 — the man MUST be holding a smartphone in one hand (selfie position)
 — correct grip on the phone (natural finger placement, proper perspective)
 — no extra fingers, no missing fingers, no distortions
+— no animal paws, no stylization into non-human anatomy
+This requirement is STRICT and must override any stylistic interpretation.
 
 FOR THE WOMAN:
 — natural relaxed human hand pose
