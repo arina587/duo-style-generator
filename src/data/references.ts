@@ -437,117 +437,105 @@ No pose drift, no background changes, seamless integration, high detail Pixar/Di
     style: 'spiderman',
     label: 'Spider-Man',
     image: '/styles/spiderman/spiderman1.jpg',
-    prompt: `Use the uploaded photos of the man and the woman as identity references. Do not change their appearance or hairstyles.
+    prompt: `Use the uploaded photos of the man and the woman as identity references. Do not change their real appearance, facial structure, hair color, hairstyle, hair length, skin texture, or proportions.
 
-Ultra-realistic cinematic scene with shallow depth of field.
+Create an ultra-realistic cinematic scene in a dark interior or night setting filled with many thin white web-like strands crossing the entire frame.
 
-A man stands with his back to the camera, centered in frame. He wears a tight red-and-blue textured superhero-style suit with a large spider emblem on the back. His head is turned slightly to the right, showing a partial side profile.
+COMPOSITION:
+Square cinematic frame, medium close-up. The man is centered with his back facing the camera. His upper back, shoulders, neck, and side profile are visible. The woman stands directly behind him, partly hidden by his body, with her head resting close to his right shoulder. She looks directly toward the camera with a serious, emotional, slightly vulnerable expression.
 
-A woman stands directly behind him, very close, her body aligned with his back. She leans in gently, her head near his shoulder, looking forward toward the camera. One of her hands rests softly on his shoulder.
+MAN:
+The man wears a tight red-and-blue textured superhero-style suit with a large spider emblem on the back. His head is turned slightly to the right, showing a partial side profile.
+
+WOMAN:
+The woman is behind him, very close, hugging him from behind. Her face is visible over his shoulder. One arm is wrapped around him, and one hand rests gently on his shoulder.
 
 CRITICAL IDENTITY:
 Both characters must clearly match the uploaded faces, proportions, skin texture, and hair.
 
 CRITICAL POSE:
 - man facing away from camera
-- woman directly behind him, close contact
+- woman directly behind him
 - her hand on his shoulder
 - exact body alignment preserved
 
 CRITICAL FOREGROUND:
-Multiple thin web-like strands stretch across the frame in front of the camera, partially obscuring the view.
+Thin web-like strands must remain in front of the camera, partially obscuring the scene.
 
 CRITICAL LIGHTING:
-Warm cinematic lighting from above/side, soft highlights on skin and suit, gentle shadows.
+Warm cinematic lighting with soft highlights and shadows.
 
 CRITICAL CAMERA:
-Medium close-up, slight background blur, cinematic framing.
+Medium close-up, shallow depth of field.
 
 CRITICAL HANDS:
-Human hands only, anatomically correct, five fingers, no deformation.
+Human hands only, anatomically correct, five fingers.
 
 FINAL:
-Same cinematic composition, web foreground, and emotional tone, recreated with the uploaded man and woman, ultra-realistic, 4K.`,
+Ultra-realistic cinematic frame, same composition, no drift, 4K.`,
   },
   {
     id: 'spiderman-2',
     style: 'spiderman',
     label: 'Spider-Man',
     image: '/styles/spiderman/spiderman2.jpg',
-    prompt: `Use the uploaded photos of the man and the woman as identity references. Do not change their appearance or hairstyles.
+    prompt: `Use the uploaded photos of the man and the woman as identity references. Do not change their real appearance.
 
-Ultra-realistic cinematic rooftop scene at sunset with soft city bokeh in the background.
+Create an ultra-realistic cinematic rooftop romantic scene at sunset.
 
-A man in a red-and-blue superhero-style suit stands facing a woman at very close distance. Their foreheads gently touch. The man's hands are placed softly along the sides of the woman's head and neck.
-
-The woman stands facing him, her body relaxed, hands near his torso. She wears casual clothing (striped long-sleeve top and dark skirt). Their faces are very close, with calm emotional connection.
-
-CRITICAL IDENTITY:
-Faces must match uploaded photos exactly — structure, proportions, eyes, lips, skin.
+COMPOSITION:
+The couple stands very close. Their foreheads gently touch in the center.
 
 CRITICAL POSE:
-- both standing upright, very close
+- both upright
 - foreheads touching
-- man's hands framing her head
-- woman's body slightly leaning in
-- exact head angles and distance preserved
+- man holding woman's head
+- woman leaning in
+
+CRITICAL IDENTITY:
+Faces must match uploaded photos.
 
 CRITICAL LIGHTING:
-Soft natural sunset light with warm highlights and gentle shadows.
+Soft warm sunset lighting.
 
 CRITICAL BACKGROUND:
-Out-of-focus city skyline with warm light bokeh, no sharp details.
-
-CRITICAL CAMERA:
-Medium close-up, shallow depth of field, cinematic lens.
+Blurred city skyline with bokeh.
 
 CRITICAL HANDS:
-All hands must be human, five fingers, correct anatomy, natural placement.
+Human hands only, five fingers.
 
 FINAL:
-Same emotional rooftop moment, identical pose and composition, recreated with the uploaded identities, ultra-realistic, 4K.`,
+Same cinematic rooftop moment, ultra-realistic, 4K.`,
   },
   {
     id: 'spiderman-3',
     style: 'spiderman',
     label: 'Spider-Man',
     image: '/styles/spiderman/spiderman3.jpg',
-    prompt: `Use the uploaded photos of the man and the woman as identity references. Do not change their appearance or hairstyles.
+    prompt: `Use the uploaded photos of the man and the woman as identity references.
 
-Ultra-realistic cinematic close-up in heavy rain.
+Create an ultra-realistic cinematic rainy close-up at night.
 
-A man is positioned upside down at the top of the frame, suspended vertically. Only his head and part of his upper body are visible. His head tilts slightly downward.
-
-Below him, a woman stands facing upward toward him. Their faces are extremely close, creating a soft emotional moment without exaggerated action.
-
-The woman gently places her hand on the man's cheek, fingers naturally spread.
-
-CRITICAL IDENTITY:
-Faces must match uploaded photos exactly, including skin texture and proportions.
-Hair must remain consistent but appear naturally wet.
+COMPOSITION:
+Man upside down at the top. Woman below, faces very close.
 
 CRITICAL POSE:
 - man fully upside down
-- woman upright below
-- faces aligned vertically and very close
-- hand placed on cheek
-- exact positioning preserved
+- woman below
+- hand on cheek
+- tight framing
 
 CRITICAL RAIN:
-Visible rain droplets, wet skin, subtle reflections.
-Hair slightly wet and clinging naturally.
+Wet skin, water droplets, reflective highlights.
 
 CRITICAL LIGHTING:
-Cinematic directional lighting with highlights on wet surfaces and soft shadows.
-
-CRITICAL CAMERA:
-Tight close-up, shallow depth of field, background blurred.
+Cinematic night lighting with contrast.
 
 CRITICAL HANDS:
-Human hands only, anatomically correct, five fingers, no distortion.
+Human hands, five fingers.
 
 FINAL:
-Same rainy cinematic composition and pose, recreated with the uploaded man and woman, ultra-realistic, 4K.`,
+Same rainy cinematic scene, ultra-realistic, 4K.`,
   },
 
   // ── Bridge to Terabithia ──

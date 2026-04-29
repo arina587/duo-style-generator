@@ -106,40 +106,26 @@ async function fileToDataUrl(file: File): Promise<string> {
 
 async function runReplicate(
   prompt: string,
-  referenceDataUrl: string,
-  person1DataUrl: string,
-  person2DataUrl: string,
+  images: string[],
   apiKey: string
 ): Promise<{ outputUrl: string; debugInfo: Record<string, unknown> }> {
   const inputObject = {
     prompt,
-    image_input: [referenceDataUrl, person1DataUrl, person2DataUrl],
+    image_input: images,
   };
 
   const debugInfo: Record<string, unknown> = {
     model: MODEL_NAME,
     version: MODEL_VERSION,
     prompt_length: prompt.length,
-    images: {
-      reference: {
-        exists: !!referenceDataUrl,
-        is_data_url: referenceDataUrl.startsWith("data:"),
-        preview: referenceDataUrl.substring(0, 50),
-        size_chars: referenceDataUrl.length,
-      },
-      person1: {
-        exists: !!person1DataUrl,
-        is_data_url: person1DataUrl.startsWith("data:"),
-        preview: person1DataUrl.substring(0, 50),
-        size_chars: person1DataUrl.length,
-      },
-      person2: {
-        exists: !!person2DataUrl,
-        is_data_url: person2DataUrl.startsWith("data:"),
-        preview: person2DataUrl.substring(0, 50),
-        size_chars: person2DataUrl.length,
-      },
-    },
+    image_count: images.length,
+    images: images.map((img, i) => ({
+      index: i,
+      exists: !!img,
+      is_data_url: img.startsWith("data:"),
+      preview: img.substring(0, 50),
+      size_chars: img.length,
+    })),
   };
 
   console.log("[DEBUG] full debug info:", JSON.stringify(debugInfo, null, 2));
@@ -291,18 +277,37 @@ Deno.serve(async (req: Request) => {
   try {
     const formData = await req.formData();
 
+    const referenceId = formData.get("referenceId");
+    const isSpiderMan =
+      typeof referenceId === "string" &&
+      referenceId.startsWith("spiderman");
+
     const reference = formData.get("reference") as File | null;
     const person1 = formData.get("person1") as File | null;
     const person2 = formData.get("person2") as File | null;
 
-    if (!reference || !person1 || !person2) {
+    if (!isSpiderMan && !reference) {
       return new Response(
         JSON.stringify({ success: false, error: "Missing required images: reference, person1, person2" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    for (const [label, file] of [["reference", reference], ["person1", person1], ["person2", person2]] as [string, File][]) {
+    if (!person1 || !person2) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Missing required images: person1, person2" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (!isSpiderMan && reference && reference.size === 0) {
+      return new Response(
+        JSON.stringify({ success: false, error: "reference file is empty" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    for (const [label, file] of [["person1", person1], ["person2", person2]] as [string, File][]) {
       if (file.size === 0) {
         return new Response(
           JSON.stringify({ success: false, error: `${label} file is empty` }),
@@ -321,14 +326,22 @@ Deno.serve(async (req: Request) => {
         : UNIVERSAL_PROMPT;
 
     console.log("[GENERATE] prompt source:", finalPrompt === UNIVERSAL_PROMPT ? "universal" : "reference-override", "length:", finalPrompt.length);
+    console.log("[GENERATE] spider-man mode:", isSpiderMan);
 
-    const [referenceDataUrl, person1DataUrl, person2DataUrl] = await Promise.all([
-      fileToDataUrl(reference),
+    const [person1DataUrl, person2DataUrl] = await Promise.all([
       fileToDataUrl(person1),
       fileToDataUrl(person2),
     ]);
 
-    const { outputUrl, debugInfo } = await runReplicate(finalPrompt, referenceDataUrl, person1DataUrl, person2DataUrl, replicateApiKey);
+    const referenceDataUrl = isSpiderMan
+      ? ""
+      : await fileToDataUrl(reference!);
+
+    const images = isSpiderMan
+      ? [person1DataUrl, person2DataUrl]
+      : [referenceDataUrl, person1DataUrl, person2DataUrl];
+
+    const { outputUrl, debugInfo } = await runReplicate(finalPrompt, images, replicateApiKey);
     const imageUrl = await fetchOutputAsDataUrl(outputUrl);
 
     return new Response(
