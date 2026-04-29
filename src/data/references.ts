@@ -172,63 +172,39 @@ No pose drift, no added contact, no background change, seamless integration, 4K.
     image: '/styles/titanic/titanic2.jpg',
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Replace the visible head identity of each character:
-- male character on the left -> uploaded man
-- female character on the right -> uploaded woman
+Perform a local facial replacement on the existing frame:
+- male visible face area -> uploaded man
+- female visible face area -> uploaded woman
 
-IMPORTANT:
-This is not a simple face overlay. Rebuild the visible head identity naturally inside the existing scene: face, hairline, visible hair, eyebrows, eyes, nose, lips, jawline, skin texture.
+The frame must stay structurally identical: same camera angle, same crop, same pose, same clothing, same water, same background, same lighting direction, same depth of field.
 
-STRICT IDENTITY TRANSFER:
-The male character MUST clearly become the uploaded man.
-The female character MUST clearly become the uploaded woman.
-Do not keep the original actor's face or hair.
-Do not preserve the original actor's identity.
-Visible hair must match the uploaded person's hairstyle, hair color, and hair length, while still looking wet and affected by the scene.
+Do not recreate the whole image. Do not generate a new scene. Use the reference frame as the base image and edit only the visible face regions and the immediately connected hairline/skin edges needed for seamless blending.
 
-CRITICAL SCENE LOCK:
-Do NOT change the background.
-Do NOT change the water, wooden debris, reflections, clothing, body pose, camera angle, crop, or framing.
-Do NOT redesign the scene.
-Only update visible head identity and visible hair.
+The male face must be replaced even though it is only partially visible. Do not keep the original male face. The visible brow, nose bridge, cheek, lips, jawline, skin texture, and any visible eye/eyelid area must match the uploaded man.
 
-CRITICAL POSE AND OCCLUSION LOCK:
-Keep the exact head position, tilt, distance, and contact.
-Both faces remain partially hidden.
-Do not reveal hidden facial areas.
-Do not rotate faces toward the camera.
-Preserve all overlaps from hands, arms, wet hair, shadows, and contact points.
+The female face must be replaced even though it is partially covered. Do not keep the original female face. The visible cheek, nose, lips, jawline, eyelid/eye area, skin texture, and facial proportions must match the uploaded woman.
 
-CRITICAL MALE FACE TRANSFER:
-The man's visible half-face must be replaced even though it is partly hidden.
-His visible cheek, brow, nose bridge, eyelid area, lips, jawline, hairline, and wet hair must match the uploaded man.
-Do not leave the original male face unchanged.
+Keep all occlusions exactly as in the reference:
+- hands stay in front where they are
+- wet hair strands stay crossing the face where they are
+- shadows stay in the same places
+- hidden face parts remain hidden
 
-CRITICAL FEMALE FACE TRANSFER:
-The woman's visible face must match the uploaded woman.
-Her visible nose, lips, cheek, eye area, jawline, hairline, and wet hair must match the uploaded woman.
-Do not keep the original female face or hair.
+Hair rule:
+Keep the wet hair placement and direction from the reference, but adjust only the visible hairline and nearby strands where necessary so the new face does not look pasted. Do not fully redesign hairstyles. Do not leave obvious original-actor hairline conflicts.
 
-CRITICAL WET HAIR:
-All visible hair must match the uploaded person's hairstyle and color, but rendered wet:
-clumped strands, darkened wet tone, water shine, strands sticking to skin.
-No dry salon hair.
-No original actor hairstyle unless it matches the uploaded photo.
+Lighting and color:
+Match the original cold blue cinematic lighting exactly. New faces must have the same shadow depth, wet highlights, water reflections, contrast, grain, and color temperature as the reference. Skin must look physically lit by the same blue environment, not painted blue and not warm/neutral.
 
-CRITICAL LIGHTING:
-Keep the original cold blue cinematic lighting.
-Faces and hair must inherit the same shadows, highlights, reflections, and wet shine.
-No flat pasted face.
-No warm face mismatch.
-No plastic skin.
+Wet detail:
+Preserve glossy wet skin, water droplets, clumped wet hair, and specular highlights. No plastic skin, no smoothing, no beauty filter.
 
-CRITICAL HANDS:
-Keep hands in the same position.
-Hands must be anatomically correct with exactly five fingers.
+Hands:
+Keep hand positions unchanged. Hands must remain anatomically correct with exactly five fingers where visible.
 
-FINAL:
-The result must be the same original cinematic frame, same pose, same background, same clothes, same water and lighting, but with the visible head identity and visible wet hair clearly replaced by the uploaded man and woman.
-Ultra-realistic, seamless integration, high detail, 4K.`,
+Final result:
+The same original shot, same pose, same background, same clothing, same water and lighting, with only the visible male and female faces locally replaced and naturally blended into the scene.
+Ultra-realistic cinematic result, no pasted look, no scene drift, no face left unchanged.`,
   },
   {
     id: 'titanic-3',
