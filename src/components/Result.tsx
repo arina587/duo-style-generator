@@ -21,7 +21,7 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
   };
 
   return (
-    <div className="min-h-screen grid-bg">
+    <div className="min-h-screen" style={{ position: 'relative', zIndex: 1 }}>
 
       {/* Header */}
       <div className="sticky top-0 z-40 border-b-2" style={{ background: 'rgba(240,237,246,0.92)', backdropFilter: 'blur(20px)', borderColor: '#d8ccea' }}>

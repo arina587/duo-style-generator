@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Home from './components/Home';
 import Upload from './components/Upload';
 import Result from './components/Result';
+import AnimatedBackground from './components/AnimatedBackground';
 import type { ReferenceItem } from './data/references';
 
 type View = 'home' | 'upload' | 'result';
@@ -116,6 +117,7 @@ function App() {
 
   return (
     <>
+      <AnimatedBackground />
       {currentView === 'home' && (
         <Home onImageSelect={handleImageSelect} initialCategory={selectedCategory} />
       )}

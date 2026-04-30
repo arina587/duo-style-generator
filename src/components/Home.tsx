@@ -137,7 +137,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
   const activeRefs = openCategory ? getRefsForCategory(openCategory) : [];
 
   return (
-    <div className="min-h-screen overflow-x-hidden" style={{ background: '#f7f2fd' }}>
+    <div className="min-h-screen overflow-x-hidden" style={{ position: 'relative', zIndex: 1 }}>
 
       {/* ── HEADER ── */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -180,18 +180,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
       </header>
 
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden pt-28 pb-12 hero-grid-bg">
-
-        {/* Decorative blobs */}
-        <div className="absolute top-16 left-[5%] w-48 h-48 rounded-full opacity-30 animate-float-slow" style={{ background: 'radial-gradient(circle, #d4bef0, transparent 70%)', filter: 'blur(24px)' }} />
-        <div className="absolute top-24 right-[4%] w-56 h-56 rounded-full opacity-25 animate-float-slow" style={{ background: 'radial-gradient(circle, #f0c0d8, transparent 70%)', filter: 'blur(28px)', animationDelay: '2s' }} />
-        <div className="absolute bottom-0 left-[30%] w-72 h-24 opacity-20" style={{ background: 'radial-gradient(ellipse, #c0e8d8, transparent 70%)', filter: 'blur(20px)' }} />
-
-        {/* Doodle accents */}
-        <DoodleStar className="absolute top-20 right-[16%] animate-wiggle opacity-80" />
-        <DoodleCircle className="absolute top-32 left-[12%] animate-spin-slow opacity-60" />
-        <DoodleDots className="absolute bottom-16 right-[18%] animate-float-slow opacity-70" />
-        <DoodleStar className="absolute bottom-24 left-[22%] animate-wiggle opacity-50" style={{ animationDelay: '1.5s' } as React.CSSProperties} />
+      <section className="relative overflow-visible pt-28 pb-12 hero-grid-bg">
 
         <div className="relative z-10 max-w-2xl mx-auto px-6 lg:px-8 text-center">
           <div className="flex justify-center mb-5 animate-fade-up">
@@ -265,7 +254,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
       <ScrollingGallery onImageSelect={onImageSelect} />
 
       {/* ── HOW IT WORKS ── */}
-      <section id="how" className="py-20 relative overflow-hidden grid-bg-warm">
+      <section id="how" className="py-20 relative overflow-hidden" style={{ background: 'rgba(250,246,255,0.55)', position: 'relative', zIndex: 1 }}>
         <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-10">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-12">
             <div>
@@ -305,7 +294,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
       </section>
 
       {/* ── STYLES / CATEGORIES ── */}
-      <section id="styles" className="py-20 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #f0e8fb 0%, #f7f2fd 100%)' }}>
+      <section id="styles" className="py-20 relative overflow-hidden" style={{ background: 'rgba(244,236,252,0.50)', position: 'relative', zIndex: 1 }}>
 
         {/* Decorative bg doodles */}
         <DoodleCircle className="absolute top-10 right-10 opacity-50 animate-spin-slow" />
@@ -422,7 +411,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
       </section>
 
       {/* ── PRICING ── */}
-      <section id="pricing" className="py-20 relative overflow-hidden grid-bg-warm">
+      <section id="pricing" className="py-20 relative overflow-hidden" style={{ background: 'rgba(250,246,255,0.55)', position: 'relative', zIndex: 1 }}>
         <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-12">
             <p className="section-eyebrow mb-1">pricing</p>
@@ -480,7 +469,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
       </section>
 
       {/* ── FAQ ── */}
-      <section id="faq" className="py-20 relative overflow-hidden grid-bg">
+      <section id="faq" className="py-20 relative overflow-hidden" style={{ background: 'transparent', position: 'relative', zIndex: 1 }}>
         <div className="relative z-10 max-w-2xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-12">
             <p className="section-eyebrow mb-1">questions</p>

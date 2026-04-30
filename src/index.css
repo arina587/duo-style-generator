@@ -7,7 +7,8 @@
 
   body {
     color: #3a2f52;
-    background: #f5f0fa;
+    background: linear-gradient(160deg, #ede5f8 0%, #f4eefb 30%, #faf5ff 60%, #f7f0fd 100%);
+    background-attachment: fixed;
     min-height: 100vh;
     font-family: 'Nunito', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -27,22 +28,23 @@
 
   /* ─── Soft pastel background ─── */
   .grid-bg {
-    background-color: #f5f0fa;
-    background-image:
-      radial-gradient(circle at 20% 20%, rgba(200,180,230,0.12) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(220,195,245,0.10) 0%, transparent 50%);
+    background: transparent;
+    position: relative;
+    z-index: 1;
   }
 
   .grid-bg-warm {
-    background-color: #faf6ff;
-    background-image:
-      radial-gradient(circle at 70% 30%, rgba(210,185,240,0.10) 0%, transparent 50%),
-      radial-gradient(circle at 20% 70%, rgba(225,210,250,0.08) 0%, transparent 50%);
+    background: rgba(250,246,255,0.55);
+    backdrop-filter: blur(0px);
+    position: relative;
+    z-index: 1;
   }
 
   /* ─── Hero bg ─── */
   .hero-grid-bg {
-    background: linear-gradient(160deg, #ede5f8 0%, #f7f2fd 40%, #fdf8ff 100%);
+    background: transparent;
+    position: relative;
+    z-index: 1;
   }
 
   /* ─── Category tags ─── */
