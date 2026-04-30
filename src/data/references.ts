@@ -224,7 +224,116 @@ Same pose, same lighting, same composition — but with real human identities ac
 
   // ── Euphoria ──
   { id: 'euphoria-1', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria1.jpg' },
-  { id: 'euphoria-2', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria2.jpg' },
+  {
+    id: 'euphoria-2',
+    style: 'euphoria',
+    label: 'Euphoria',
+    image: '/styles/euphoria/euphoria2.jpg',
+    prompt: `Use the provided reference image as the base frame.
+
+DO NOT regenerate, redraw, or reinterpret the scene.
+Perform precise localized face replacement only.
+
+All non-face regions must remain pixel-identical to the original.
+
+CRITICAL TASK DEFINITION:
+— this is NOT full generation
+— this is NOT scene recreation
+— this is identity transfer inside existing faces only
+
+STRICT IDENTITY PRESERVATION (CRITICAL):
+Transfer identity from uploaded photos with high fidelity:
+
+— exact facial structure and bone geometry
+— eyes, eyelids, eyebrows
+— nose shape and bridge
+— lips, mouth width
+— jawline and chin
+— natural skin tone (adapted to lighting only)
+— facial hair must match reference identity (if present in upload)
+
+Do NOT stylize, beautify, or average features.
+
+CRITICAL HEAD ANGLE & PERSPECTIVE (EXTREMELY IMPORTANT):
+
+Man (foreground, left):
+— head tilted and slightly rotated
+— semi-profile (not frontal)
+— perspective compression must be preserved
+— DO NOT straighten or frontalize face
+— maintain exact angle of eyes, nose, and jaw
+
+Woman (foreground right, partially visible):
+— face mostly turned away
+— only visible parts should be minimally affected
+— DO NOT reconstruct hidden areas
+
+CRITICAL OCCLUSION (IMPORTANT):
+— preserve all occlusions exactly
+— do NOT reveal hidden parts of the woman's face
+— keep blur/depth-of-field on her unchanged
+
+CRITICAL GAZE & EMOTION LOCK:
+— man looks toward the woman
+— expression: calm, slightly introspective, soft attention
+— no smile exaggeration
+— no emotional shift
+
+Emotion must remain subtle and grounded.
+
+CRITICAL LIGHTING LOCK (VERY IMPORTANT):
+Match lighting exactly:
+
+— warm indoor tungsten lighting (yellow/orange)
+— soft directional light from window side (left/front)
+— smooth falloff across face
+— natural shadow under brow, nose, jaw
+
+— preserve highlight placement precisely
+— preserve color temperature
+— no added or altered light sources
+
+CRITICAL SKIN TEXTURE:
+— preserve real skin texture (pores, micro-details)
+— NO smoothing
+— NO plastic look
+— maintain slight cinematic softness
+
+Face must match neck and body tones perfectly.
+
+CRITICAL DEPTH OF FIELD:
+— keep original focus plane
+— man in focus, woman slightly out of focus
+— do NOT sharpen blurred areas
+
+CRITICAL HANDS & BODY:
+— do NOT modify hands or body
+— keep anatomy unchanged
+— no regeneration of non-face elements
+
+CRITICAL SCENE LOCK:
+Do NOT change:
+
+— background (window, wall, couch)
+— clothing
+— composition
+— framing
+— color grading
+
+Everything must remain identical.
+
+CRITICAL INTEGRATION:
+— embed new identity into existing head geometry
+— match perspective exactly
+— seamless blending with original lighting and shadows
+
+NO face cutouts. NO mismatch.
+
+FINAL RESULT:
+Image must look like the same original cinematic frame, unchanged except for identity.
+
+Perfect perspective match, preserved profile geometry, warm lighting, natural skin texture, high detail, no artifacts.`,
+  },
   {
     id: 'euphoria-3',
     style: 'euphoria',
