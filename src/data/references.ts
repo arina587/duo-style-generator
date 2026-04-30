@@ -229,7 +229,9 @@ Same pose, same lighting, same composition — but with real human identities ac
     style: 'euphoria',
     label: 'Euphoria',
     image: '/styles/euphoria/euphoria2.jpg',
-    prompt: `Use the provided reference image as the base frame.
+    prompt: `PROMPT (Euphoria-style close shot, FACE REPLACEMENT ONLY, MAX LOCK):
+
+Use the provided reference image as the base frame.
 
 DO NOT regenerate, redraw, or reinterpret the scene.
 Perform precise localized face replacement only.
@@ -250,7 +252,7 @@ Transfer identity from uploaded photos with high fidelity:
 — lips, mouth width
 — jawline and chin
 — natural skin tone (adapted to lighting only)
-— facial hair must match reference identity (if present in upload)
+— hairstyle, hairline, hair color must match uploads
 
 Do NOT stylize, beautify, or average features.
 
@@ -258,58 +260,72 @@ CRITICAL HEAD ANGLE & PERSPECTIVE (EXTREMELY IMPORTANT):
 
 Man (foreground, left):
 — head tilted and slightly rotated
-— semi-profile (not frontal)
-— perspective compression must be preserved
-— DO NOT straighten or frontalize face
-— maintain exact angle of eyes, nose, and jaw
+— semi-profile (NOT frontal)
+— preserve perspective compression
+— DO NOT straighten or frontalize
+— maintain exact angle of eyes, nose, jaw
 
-Woman (foreground right, partially visible):
-— face mostly turned away
-— only visible parts should be minimally affected
-— DO NOT reconstruct hidden areas
+Woman (foreground, right, partially visible):
+— she is turned away from camera (not a clean side profile)
+— back/side of head dominant, face partially hidden
+— only the visible facial area may receive identity transfer
+— DO NOT reconstruct or reveal hidden parts
 
-CRITICAL OCCLUSION (IMPORTANT):
+CRITICAL WOMAN STATE (NEW — STRICT):
+— emotional state: stressed, tense, withdrawn
+— body language: pulled away from camera, slight recoil
+— gaze direction: toward the man (not to camera)
+— expression intensity: restrained but visibly uneasy
+
+Do NOT convert to neutral or smiling. No romanticization.
+
+CRITICAL BEARD / FACIAL HAIR RULE (VERY IMPORTANT):
+— facial hair must come ONLY from the uploaded man's photo
+— DO NOT inherit or copy beard from the reference image
+
+If the uploaded man:
+— has no beard → result must be clean-shaven
+— has light stubble → keep light stubble only
+— has beard → match its exact style, density, and shape
+
+No artificial beard generation. No default stubble.
+
+CRITICAL OCCLUSION:
 — preserve all occlusions exactly
 — do NOT reveal hidden parts of the woman's face
-— keep blur/depth-of-field on her unchanged
+— keep original depth-of-field blur on her
 
 CRITICAL GAZE & EMOTION LOCK:
 — man looks toward the woman
-— expression: calm, slightly introspective, soft attention
-— no smile exaggeration
-— no emotional shift
+— expression: calm, attentive, slightly introspective
+— no exaggerated smile
 
-Emotion must remain subtle and grounded.
+— woman: tense, withdrawn, looking at the man
+— no eye redirection
 
 CRITICAL LIGHTING LOCK (VERY IMPORTANT):
-Match lighting exactly:
-
 — warm indoor tungsten lighting (yellow/orange)
-— soft directional light from window side (left/front)
-— smooth falloff across face
-— natural shadow under brow, nose, jaw
+— soft directional light from left/front
+— smooth falloff across faces
+— preserve highlight/shadow placement exactly
 
-— preserve highlight placement precisely
-— preserve color temperature
-— no added or altered light sources
+— no new light sources
+— no color temperature shift
 
 CRITICAL SKIN TEXTURE:
 — preserve real skin texture (pores, micro-details)
 — NO smoothing
-— NO plastic look
-— maintain slight cinematic softness
-
-Face must match neck and body tones perfectly.
+— NO plastic skin
+— match face to neck/body tones
 
 CRITICAL DEPTH OF FIELD:
 — keep original focus plane
-— man in focus, woman slightly out of focus
+— man sharp, woman slightly out of focus
 — do NOT sharpen blurred areas
 
 CRITICAL HANDS & BODY:
 — do NOT modify hands or body
 — keep anatomy unchanged
-— no regeneration of non-face elements
 
 CRITICAL SCENE LOCK:
 Do NOT change:
@@ -320,19 +336,17 @@ Do NOT change:
 — framing
 — color grading
 
-Everything must remain identical.
-
 CRITICAL INTEGRATION:
-— embed new identity into existing head geometry
-— match perspective exactly
-— seamless blending with original lighting and shadows
+— embed identity into existing head geometry
+— exact perspective match
+— seamless blending with original light and shadows
 
 NO face cutouts. NO mismatch.
 
 FINAL RESULT:
-Image must look like the same original cinematic frame, unchanged except for identity.
+Same original cinematic frame, unchanged in all aspects except identity.
 
-Perfect perspective match, preserved profile geometry, warm lighting, natural skin texture, high detail, no artifacts.`,
+Accurate semi-profile geometry, correct occlusion, stressed/withdrawn female state, strict beard control, warm lighting, natural skin texture, high detail, no artifacts.`,
   },
   {
     id: 'euphoria-3',
@@ -773,105 +787,21 @@ No pose drift, no background changes, seamless integration, high detail Pixar/Di
     style: 'spiderman',
     label: 'Spider-Man',
     image: '/styles/spiderman/spiderman1.jpg',
-    prompt: `Use the uploaded photos of the man and the woman as identity references. Do not change their real appearance, facial structure, hair color, hairstyle, hair length, skin texture, or proportions.
-
-Create an ultra-realistic cinematic scene in a dark interior or night setting filled with many thin white web-like strands crossing the entire frame.
-
-COMPOSITION:
-Square cinematic frame, medium close-up. The man is centered with his back facing the camera. His upper back, shoulders, neck, and side profile are visible. The woman stands directly behind him, partly hidden by his body, with her head resting close to his right shoulder. She looks directly toward the camera with a serious, emotional, slightly vulnerable expression.
-
-MAN:
-The man wears a tight red-and-blue textured superhero-style suit with a large spider emblem on the back. His head is turned slightly to the right, showing a partial side profile.
-
-WOMAN:
-The woman is behind him, very close, hugging him from behind. Her face is visible over his shoulder. One arm is wrapped around him, and one hand rests gently on his shoulder.
-
-CRITICAL IDENTITY:
-Both characters must clearly match the uploaded faces, proportions, skin texture, and hair.
-
-CRITICAL POSE:
-- man facing away from camera
-- woman directly behind him
-- her hand on his shoulder
-- exact body alignment preserved
-
-CRITICAL FOREGROUND:
-Thin web-like strands must remain in front of the camera, partially obscuring the scene.
-
-CRITICAL LIGHTING:
-Warm cinematic lighting with soft highlights and shadows.
-
-CRITICAL CAMERA:
-Medium close-up, shallow depth of field.
-
-CRITICAL HANDS:
-Human hands only, anatomically correct, five fingers.
-
-FINAL:
-Ultra-realistic cinematic frame, same composition, no drift, 4K.`,
+    prompt: ``,
   },
   {
     id: 'spiderman-2',
     style: 'spiderman',
     label: 'Spider-Man',
     image: '/styles/spiderman/spiderman2.jpg',
-    prompt: `Use the uploaded photos of the man and the woman as identity references. Do not change their real appearance.
-
-Create an ultra-realistic cinematic rooftop romantic scene at sunset.
-
-COMPOSITION:
-The couple stands very close. Their foreheads gently touch in the center.
-
-CRITICAL POSE:
-- both upright
-- foreheads touching
-- man holding woman's head
-- woman leaning in
-
-CRITICAL IDENTITY:
-Faces must match uploaded photos.
-
-CRITICAL LIGHTING:
-Soft warm sunset lighting.
-
-CRITICAL BACKGROUND:
-Blurred city skyline with bokeh.
-
-CRITICAL HANDS:
-Human hands only, five fingers.
-
-FINAL:
-Same cinematic rooftop moment, ultra-realistic, 4K.`,
+    prompt: ``,
   },
   {
     id: 'spiderman-3',
     style: 'spiderman',
     label: 'Spider-Man',
     image: '/styles/spiderman/spiderman3.jpg',
-    prompt: `Use the uploaded photos of the man and the woman as identity references.
-
-Create an ultra-realistic cinematic rainy close-up at night.
-
-COMPOSITION:
-Man upside down at the top. Woman below, faces very close.
-
-CRITICAL POSE:
-- man fully upside down
-- woman below
-- hand on cheek
-- tight framing
-
-CRITICAL RAIN:
-Wet skin, water droplets, reflective highlights.
-
-CRITICAL LIGHTING:
-Cinematic night lighting with contrast.
-
-CRITICAL HANDS:
-Human hands, five fingers.
-
-FINAL:
-Same rainy cinematic scene, ultra-realistic, 4K.`,
+    prompt: ``,
   },
 
   // ── Bridge to Terabithia ──
