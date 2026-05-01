@@ -7,13 +7,62 @@ import type { ReferenceItem } from './data/references';
 
 type View = 'home' | 'upload' | 'result';
 
+// ─── Diagnostic helpers ──────────────────────────────────────────────────────
+
+function getDeviceInfo() {
+  const ua = navigator.userAgent;
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(ua);
+  return { ua, isMobile, platform: navigator.platform ?? 'unknown' };
+}
+
+type FailureType = 'network' | 'http' | 'timeout' | 'invalid_url' | 'unknown';
+
+function classifyError(err: unknown): FailureType {
+  if (!err) return 'unknown';
+  const msg = err instanceof Error ? err.message : String(err);
+  if (/Load failed|Failed to fetch|NetworkError|network/i.test(msg)) return 'network';
+  if (/timeout/i.test(msg)) return 'timeout';
+  if (/Invalid URL|not a valid URL/i.test(msg)) return 'invalid_url';
+  return 'unknown';
+}
+
+// Runs a HEAD probe against a URL and logs everything about the response.
+// Never throws — designed purely for diagnostic side-effects.
+async function probeUrl(label: string, url: string): Promise<void> {
+  const tag = `[PROBE:${label}]`;
+  console.log(`${tag} starting HEAD probe: ${url.substring(0, 80)}`);
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
+    const res = await fetch(url, { method: 'HEAD', signal: controller.signal });
+    clearTimeout(timer);
+    const type: FailureType = res.ok ? 'unknown' : 'http';
+    console.log(`${tag} status=${res.status} ok=${res.ok} type=${type}`);
+    console.log(`${tag} content-type=${res.headers.get('content-type') ?? 'none'} content-length=${res.headers.get('content-length') ?? 'none'} cache-control=${res.headers.get('cache-control') ?? 'none'}`);
+    if (!res.ok) {
+      console.warn(`${tag} HTTP error: ${res.status} ${res.statusText} → failure-type=http`);
+    }
+  } catch (e) {
+    const ftype = classifyError(e);
+    const msg = e instanceof Error ? `${e.name}: ${e.message}` : String(e);
+    console.error(`${tag} probe threw → failure-type=${ftype} error="${msg}"`);
+  }
+}
+
+// ─── Image preloader with full diagnostic logging ─────────────────────────────
+
 function loadImageWithRetry(url: string, retries = 2, timeout = 9000): Promise<boolean> {
   return new Promise((resolve) => {
     let attempt = 0;
+    const { ua, isMobile } = getDeviceInfo();
+
+    console.log(`[PRELOAD] start url=${url.substring(0, 80)}`);
+    console.log(`[PRELOAD] device isMobile=${isMobile} ua="${ua.substring(0, 120)}"`);
 
     function tryLoad() {
       attempt++;
-      console.log(`[PRELOAD] attempt ${attempt}/${retries + 1} url=${url.substring(0, 60)}`);
+      const tag = `[PRELOAD attempt=${attempt}/${retries + 1}]`;
+      console.log(`${tag} creating Image element`);
 
       const img = new window.Image();
       let settled = false;
@@ -23,29 +72,34 @@ function loadImageWithRetry(url: string, retries = 2, timeout = 9000): Promise<b
         if (settled) return;
         settled = true;
         clearTimeout(timer);
-        console.log(`[PRELOAD] success on attempt ${attempt}`);
+        console.log(`[PRELOAD] SUCCESS attempt=${attempt} url=${url.substring(0, 80)}`);
         resolve(true);
       }
 
-      function fail(reason: string) {
+      function fail(reason: string, ftype: FailureType = 'unknown') {
         if (settled) return;
         settled = true;
         clearTimeout(timer);
-        console.warn(`[PRELOAD] attempt ${attempt} failed: ${reason}`);
+        console.warn(`${tag} FAILED reason="${reason}" failure-type=${ftype} isMobile=${isMobile}`);
         if (attempt <= retries) {
           const delay = attempt * 1500;
-          console.log(`[PRELOAD] retrying in ${delay}ms...`);
+          console.log(`${tag} retrying in ${delay}ms...`);
           setTimeout(tryLoad, delay);
         } else {
-          console.warn('[PRELOAD] all attempts exhausted — resolving false');
+          console.error(`[PRELOAD] ALL ATTEMPTS EXHAUSTED url=${url.substring(0, 80)} isMobile=${isMobile}`);
           resolve(false);
         }
       }
 
-      timer = setTimeout(() => fail(`timeout after ${timeout}ms`), timeout);
+      timer = setTimeout(() => fail(`timeout after ${timeout}ms`, 'timeout'), timeout);
       img.onload = () => succeed();
-      img.onerror = () => fail('onerror');
+      img.onerror = (event) => {
+        const detail = typeof event === 'string' ? event : (event as Event)?.type ?? 'onerror';
+        console.error(`[PRELOAD] img.onerror attempt=${attempt} detail="${detail}" url=${url.substring(0, 80)} ts=${Date.now()}`);
+        fail('onerror — browser rejected image load', 'network');
+      };
       img.src = url;
+      console.log(`${tag} img.src set, waiting for load/error...`);
     }
 
     tryLoad();
@@ -174,7 +228,16 @@ function App() {
 
       setRawImageUrl(imageUrl);
 
+      // ── Diagnostics: log device context and probe both URLs before any render attempt ──
+      const device = getDeviceInfo();
+      console.log(`[DIAG] device isMobile=${device.isMobile} ua="${device.ua.substring(0, 120)}"`);
+      console.log(`[DIAG] rawImageUrl=${imageUrl}`);
+
+      // Run HEAD probes in parallel — do not await, pure side-effect logging
       const proxyUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate?proxyUrl=${encodeURIComponent(imageUrl)}`;
+      probeUrl('raw', imageUrl);
+      probeUrl('proxy', proxyUrl);
+
       console.log('[IMAGE] proxy URL built:', proxyUrl.substring(0, 80));
 
       const proxyPreloadOk = await loadImageWithRetry(proxyUrl, 2, 12000);
@@ -185,7 +248,7 @@ function App() {
           const imgRes = await fetch(proxyUrl, {
             headers: { 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
           });
-          console.log('[IMAGE] proxy fetch status:', imgRes.status, 'content-type:', imgRes.headers.get('content-type'), 'content-length:', imgRes.headers.get('content-length'));
+          console.log('[IMAGE] proxy fetch status:', imgRes.status, 'ok:', imgRes.ok, 'content-type:', imgRes.headers.get('content-type'), 'content-length:', imgRes.headers.get('content-length'));
 
           if (imgRes.ok) {
             const blob = await imgRes.blob();
@@ -195,25 +258,31 @@ function App() {
               console.log('[IMAGE] upgraded to local blob URL via proxy');
               setGeneratedImageUrl(localUrl);
             } else {
-              console.warn('[IMAGE] proxy blob empty — using proxy URL directly');
+              console.warn('[IMAGE] proxy blob empty — failure-type=http using proxy URL directly');
               setGeneratedImageUrl(proxyUrl);
             }
           } else {
-            console.warn('[IMAGE] proxy fetch not ok:', imgRes.status, '— using proxy URL directly');
+            console.warn(`[IMAGE] proxy fetch not ok: status=${imgRes.status} failure-type=http — using proxy URL directly`);
             setGeneratedImageUrl(proxyUrl);
           }
         } catch (fetchErr) {
-          console.warn('[IMAGE] proxy fetch threw — using proxy URL directly:', fetchErr);
+          const ftype = classifyError(fetchErr);
+          const msg = fetchErr instanceof Error ? `${fetchErr.name}: ${fetchErr.message}` : String(fetchErr);
+          console.warn(`[IMAGE] proxy fetch threw failure-type=${ftype} error="${msg}" — using proxy URL directly`);
           setGeneratedImageUrl(proxyUrl);
         }
       } else {
-        console.warn('[IMAGE] proxy preload failed — falling back to raw URL');
+        // Proxy preload failed — run a HEAD probe now to capture why, then fall back to raw
+        console.warn(`[IMAGE] proxy preload FAILED isMobile=${device.isMobile} — running diagnostic probe and falling back to raw URL`);
+        probeUrl('proxy-postfail', proxyUrl);
+
         const rawPreloadOk = await loadImageWithRetry(imageUrl, 1, 9000);
         if (rawPreloadOk) {
-          console.log('[IMAGE] raw URL preload succeeded');
+          console.log('[IMAGE] raw URL preload succeeded — using raw URL');
           setGeneratedImageUrl(imageUrl);
         } else {
-          console.warn('[IMAGE] raw URL preload also failed — setting anyway, marking imgLoadFailed');
+          console.error(`[IMAGE] BOTH proxy and raw preload FAILED isMobile=${device.isMobile} ua="${device.ua.substring(0, 80)}" — marking imgLoadFailed`);
+          probeUrl('raw-postfail', imageUrl);
           setGeneratedImageUrl(imageUrl);
           setImgLoadFailed(true);
         }

@@ -110,7 +110,11 @@ export default function Result({
                 alt="Generated fusion result"
                 className="w-full h-full object-contain animate-scale-in"
                 onError={(e) => {
-                  onImgError((e.target as HTMLImageElement).src);
+                  const src = (e.target as HTMLImageElement).src;
+                  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+                  console.error(`[IMG onError] ts=${Date.now()} isMobile=${isMobile} src=${src.substring(0, 100)}`);
+                  console.error(`[IMG onError] ua="${navigator.userAgent.substring(0, 120)}"`);
+                  onImgError(src);
                 }}
               />
             ) : generatedImageUrl && imgLoadFailed ? (
