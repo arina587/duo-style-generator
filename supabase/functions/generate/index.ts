@@ -273,58 +273,45 @@ async function runReplicate(
 function extractOutput(prediction: Record<string, unknown>): string {
   const output = prediction?.output;
 
+  console.log("[OUTPUT] raw prediction.output:", JSON.stringify(output)?.substring(0, 300));
+  console.log("[OUTPUT] typeof output:", typeof output, "isArray:", Array.isArray(output));
+
   let outputUrl: string | undefined;
-  if (typeof output === "string" && output.startsWith("http")) {
+
+  if (typeof output === "string" && output.length > 0) {
     outputUrl = output;
   } else if (Array.isArray(output) && output.length > 0 && typeof output[0] === "string") {
     outputUrl = output[0] as string;
+  } else if (output && typeof output === "object" && !Array.isArray(output)) {
+    const obj = output as Record<string, unknown>;
+    const candidate = obj.url ?? obj.image ?? obj.output ?? obj.uri;
+    if (typeof candidate === "string") outputUrl = candidate;
   }
 
   if (!outputUrl) {
-    throw new Error(`Replicate succeeded but no output URL found: ${JSON.stringify(prediction).substring(0, 300)}`);
+    throw new Error(
+      `Replicate succeeded but output URL could not be extracted. ` +
+      `output type=${typeof output} isArray=${Array.isArray(output)} ` +
+      `raw=${JSON.stringify(output)?.substring(0, 200)}`
+    );
   }
 
-  console.log("[REPLICATE] output url:", outputUrl);
+  console.log("[OUTPUT] extracted url:", outputUrl);
   return outputUrl;
 }
 
-async function fetchOutputAsDataUrl(url: string): Promise<string> {
-  console.log("[IMAGE] fetching output image from:", url);
-
-  const imgResponse = await fetch(url);
-  console.log("[IMAGE] fetch status:", imgResponse.status, imgResponse.statusText);
-
-  if (!imgResponse.ok) {
-    throw new Error(`Failed to fetch Replicate output image (${imgResponse.status} ${imgResponse.statusText})`);
+async function probeOutputUrl(url: string): Promise<{ ok: boolean; status: number; contentType: string; contentLength: string }> {
+  try {
+    const probe = await fetch(url, { method: "HEAD" });
+    return {
+      ok: probe.ok,
+      status: probe.status,
+      contentType: probe.headers.get("content-type") ?? "unknown",
+      contentLength: probe.headers.get("content-length") ?? "unknown",
+    };
+  } catch (e) {
+    return { ok: false, status: 0, contentType: "error", contentLength: String(e) };
   }
-
-  const contentType = imgResponse.headers.get("content-type") ?? "image/jpeg";
-  console.log("[IMAGE] content-type:", contentType);
-
-  const imgBuffer = await imgResponse.arrayBuffer();
-  const imgBytes = new Uint8Array(imgBuffer);
-  console.log("[IMAGE] image byte size:", imgBytes.length);
-
-  if (imgBytes.length === 0) {
-    throw new Error("Fetched image is empty (0 bytes)");
-  }
-
-  // Use TextDecoder-safe base64 encoding that handles all byte values correctly
-  const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-  let b64 = "";
-  const len = imgBytes.length;
-  for (let i = 0; i < len; i += 3) {
-    const a = imgBytes[i];
-    const b = i + 1 < len ? imgBytes[i + 1] : 0;
-    const c = i + 2 < len ? imgBytes[i + 2] : 0;
-    b64 += CHARS[a >> 2];
-    b64 += CHARS[((a & 3) << 4) | (b >> 4)];
-    b64 += i + 1 < len ? CHARS[((b & 15) << 2) | (c >> 6)] : "=";
-    b64 += i + 2 < len ? CHARS[c & 63] : "=";
-  }
-
-  console.log("[IMAGE] base64 length:", b64.length);
-  return `data:${contentType};base64,${b64}`;
 }
 
 Deno.serve(async (req: Request) => {
@@ -413,10 +400,21 @@ Deno.serve(async (req: Request) => {
       : [referenceDataUrl, person1DataUrl, person2DataUrl];
 
     const { outputUrl, debugInfo } = await runReplicate(finalPrompt, images, replicateApiKey);
-    const imageUrl = await fetchOutputAsDataUrl(outputUrl);
 
+    // Probe the output URL so we can log accessibility before returning it
+    const probe = await probeOutputUrl(outputUrl);
+    console.log("[OUTPUT] probe:", JSON.stringify(probe));
+    debugInfo.output_url = outputUrl;
+    debugInfo.output_probe = probe;
+
+    // Return the raw output URL directly — do NOT attempt to fetch and base64-encode
+    // the output image inside the edge function. Output images from Nano Banana Pro
+    // can be 3–10 MB; base64-encoding them inflates to 4–13 MB which exceeds the
+    // Supabase Edge Function response size limit (~6 MB), causing silent truncation
+    // that the frontend sees as "Load failed". The frontend fetches the URL directly
+    // and converts it to a local blob URL instead.
     return new Response(
-      JSON.stringify({ success: true, imageUrl, debug: debugInfo }),
+      JSON.stringify({ success: true, imageUrl: outputUrl, debug: debugInfo }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {

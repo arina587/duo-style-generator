@@ -99,6 +99,9 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
                 src={generatedImageUrl}
                 alt="Generated fusion result"
                 className="w-full h-full object-contain animate-scale-in"
+                onError={(e) => {
+                  console.error('[IMG] onError — failed to render src:', (e.target as HTMLImageElement).src?.substring(0, 80));
+                }}
               />
             ) : (
               <div className="text-center p-10 animate-fade-in">
