@@ -82,15 +82,26 @@ async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
   const bytes = new Uint8Array(arrayBuffer);
 
-  let binary = "";
-  const chunkSize = 8192;
-  for (let i = 0; i < bytes.length; i += chunkSize) {
-    const chunk = bytes.subarray(i, i + chunkSize);
-    binary += String.fromCharCode(...chunk);
+  const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  let b64 = "";
+  const len = bytes.length;
+  for (let i = 0; i < len; i += 3) {
+    const a = bytes[i];
+    const b = i + 1 < len ? bytes[i + 1] : 0;
+    const c = i + 2 < len ? bytes[i + 2] : 0;
+    b64 += CHARS[a >> 2];
+    b64 += CHARS[((a & 3) << 4) | (b >> 4)];
+    b64 += i + 1 < len ? CHARS[((b & 15) << 2) | (c >> 6)] : "=";
+    b64 += i + 2 < len ? CHARS[c & 63] : "=";
   }
 
-  const b64 = btoa(binary);
-  const mime = file.type && file.type.startsWith("image/") ? file.type : "image/jpeg";
+  // Normalize MIME type — reject HEIC/HEIF which Replicate does not accept
+  let mime = file.type && file.type.startsWith("image/") ? file.type : "image/jpeg";
+  if (mime === "image/heic" || mime === "image/heif" || mime === "image/heic-sequence" || mime === "image/heif-sequence") {
+    mime = "image/jpeg";
+  }
+
+  console.log(`[FILE] name=${file.name} size=${file.size} mime=${file.type} → normalized=${mime} b64len=${b64.length}`);
   return `data:${mime};base64,${b64}`;
 }
 
@@ -333,6 +344,19 @@ Deno.serve(async (req: Request) => {
       typeof clientPrompt === "string" && clientPrompt.trim().length > 0
         ? clientPrompt.trim()
         : UNIVERSAL_PROMPT;
+
+    // Diagnostic payload log — compare desktop vs mobile submissions
+    console.log("[PAYLOAD]", JSON.stringify({
+      referenceId,
+      isSpiderMan,
+      promptSource: finalPrompt === UNIVERSAL_PROMPT ? "universal" : "reference-override",
+      promptLength: finalPrompt.length,
+      images: {
+        reference: reference ? { size: reference.size, type: reference.type, name: reference.name } : null,
+        person1: { size: person1.size, type: person1.type, name: person1.name },
+        person2: { size: person2.size, type: person2.type, name: person2.name },
+      },
+    }));
 
     console.log("[GENERATE] prompt source:", finalPrompt === UNIVERSAL_PROMPT ? "universal" : "reference-override", "length:", finalPrompt.length);
     console.log("[GENERATE] spider-man mode:", isSpiderMan);

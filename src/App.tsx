@@ -54,6 +54,17 @@ function App() {
         formData.append('mode', mode);
       }
 
+      console.log('[GENERATE] payload:', {
+        referenceId: selectedRef.id,
+        style: selectedRef.style,
+        promptLength: (selectedRef.prompt ?? '').length,
+        images: {
+          person1: { size: photo1.size, type: photo1.type, name: photo1.name },
+          person2: { size: photo2.size, type: photo2.type, name: photo2.name },
+          reference: { size: referenceFile.size, type: referenceFile.type, name: referenceFile.name },
+        },
+      });
+
       const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
 
       const response = await fetch(apiUrl, {

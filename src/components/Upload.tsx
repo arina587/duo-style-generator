@@ -35,29 +35,72 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
   }, [selectedRef.image]);
 
   const resizeImage = (file: File): Promise<{ file: File; dataUrl: string }> => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const MAX = 1024;
+
+      console.log(`[UPLOAD] input: name=${file.name} size=${file.size} type=${file.type}`);
+
+      // HEIC/HEIF files from iOS cameras cannot be decoded by canvas on all browsers.
+      // We still attempt it (Safari decodes HEIC fine), but the MIME type must be
+      // forced to image/jpeg on the resulting file regardless.
+      const isHeic = file.type === 'image/heic' || file.type === 'image/heif'
+        || /\.heic$/i.test(file.name) || /\.heif$/i.test(file.name);
+
+      if (isHeic) {
+        console.warn('[UPLOAD] HEIC/HEIF detected — will attempt canvas decode and force JPEG output');
+      }
+
       const img = new window.Image();
       const objectUrl = URL.createObjectURL(file);
+
+      img.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        console.error('[UPLOAD] img.onerror — browser cannot decode this file format:', file.type);
+        reject(new Error(`Cannot decode image format: ${file.type || 'unknown'}. Please use a JPEG or PNG photo.`));
+      };
+
       img.onload = () => {
         URL.revokeObjectURL(objectUrl);
         const { naturalWidth: w, naturalHeight: h } = img;
-        const scale = w > h ? MAX / w : MAX / h;
-        const targetW = scale < 1 ? Math.round(w * scale) : w;
-        const targetH = scale < 1 ? Math.round(h * scale) : h;
+        console.log(`[UPLOAD] decoded: ${w}x${h}`);
+
+        const scale = (w > MAX || h > MAX) ? Math.min(MAX / w, MAX / h) : 1;
+        const targetW = Math.round(w * scale);
+        const targetH = Math.round(h * scale);
+        console.log(`[UPLOAD] resize: ${w}x${h} → ${targetW}x${targetH} (scale=${scale.toFixed(3)})`);
+
         const canvas = document.createElement('canvas');
         canvas.width = targetW;
         canvas.height = targetH;
         const ctx = canvas.getContext('2d')!;
         ctx.drawImage(img, 0, 0, targetW, targetH);
+
         canvas.toBlob((blob) => {
-          if (!blob) { resolve({ file, dataUrl: canvas.toDataURL('image/jpeg', 0.9) }); return; }
+          if (!blob) {
+            // canvas.toBlob failed (memory pressure on mobile) — fall back to toDataURL
+            console.warn('[UPLOAD] canvas.toBlob returned null — falling back to toDataURL');
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            // Convert data URL back to a proper File so the backend receives correct metadata
+            const byteString = atob(dataUrl.split(',')[1]);
+            const arr = new Uint8Array(byteString.length);
+            for (let i = 0; i < byteString.length; i++) arr[i] = byteString.charCodeAt(i);
+            const fallbackBlob = new Blob([arr], { type: 'image/jpeg' });
+            const fallbackFile = new File([fallbackBlob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' });
+            console.log(`[UPLOAD] fallback file: size=${fallbackFile.size} type=${fallbackFile.type}`);
+            resolve({ file: fallbackFile, dataUrl });
+            return;
+          }
+
           const resized = new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' });
+          console.log(`[UPLOAD] output: name=${resized.name} size=${resized.size} type=${resized.type}`);
+
           const reader = new FileReader();
+          reader.onerror = () => reject(new Error('Failed to read resized image'));
           reader.onloadend = () => resolve({ file: resized, dataUrl: reader.result as string });
           reader.readAsDataURL(resized);
         }, 'image/jpeg', 0.9);
       };
+
       img.src = objectUrl;
     });
   };
@@ -69,9 +112,13 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    setError('');
     resizeImage(file).then(({ file: resized, dataUrl }) => {
       setPhoto(resized);
       setPreview(dataUrl);
+    }).catch((err: unknown) => {
+      console.error('[UPLOAD] resizeImage error:', err);
+      setError(err instanceof Error ? err.message : 'Failed to process image. Please try a different photo.');
     });
   };
 
