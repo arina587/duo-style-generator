@@ -1,11 +1,18 @@
-import { Upload as UploadIcon, ArrowLeft, ArrowRight, Image, Sparkles, Wand2, Check } from 'lucide-react';
+import { Upload as UploadIcon, ArrowLeft, ArrowRight, Image, Sparkles, Wand2, Check, Plus, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import type { ReferenceItem } from '../data/references';
 
 interface UploadProps {
   selectedRef: ReferenceItem;
   onBack: () => void;
-  onGenerate: (photo1: File, photo2: File, styleBoard: File, mode?: string) => void;
+  onGenerate: (
+    photo1: File,
+    photo2: File,
+    styleBoard: File,
+    mode?: string,
+    photo1b?: File | null,
+    photo2b?: File | null,
+  ) => void;
   photo1: File | null;
   setPhoto1: (file: File | null) => void;
   photo2: File | null;
@@ -14,12 +21,28 @@ interface UploadProps {
   setPreview1: (url: string) => void;
   preview2: string;
   setPreview2: (url: string) => void;
+  photo1b: File | null;
+  setPhoto1b: (file: File | null) => void;
+  photo2b: File | null;
+  setPhoto2b: (file: File | null) => void;
+  preview1b: string;
+  setPreview1b: (url: string) => void;
+  preview2b: string;
+  setPreview2b: (url: string) => void;
 }
 
-export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPhoto1, photo2, setPhoto2, preview1, setPreview1, preview2, setPreview2 }: UploadProps) {
+export default function Upload({
+  selectedRef, onBack, onGenerate,
+  photo1, setPhoto1, photo2, setPhoto2,
+  preview1, setPreview1, preview2, setPreview2,
+  photo1b, setPhoto1b, photo2b, setPhoto2b,
+  preview1b, setPreview1b, preview2b, setPreview2b,
+}: UploadProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string>('');
   const [referenceFile, setReferenceFile] = useState<File | null>(null);
+  const [showSecondary1, setShowSecondary1] = useState(!!photo1b);
+  const [showSecondary2, setShowSecondary2] = useState(!!photo2b);
 
   useEffect(() => {
     (async () => {
@@ -27,7 +50,6 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
         const response = await fetch(selectedRef.image);
         const blob = await response.blob();
         const rawFile = new File([blob], 'reference.jpg', { type: blob.type || 'image/jpeg' });
-        // Reference images must also be under the model's 7MB limit — resize at 900px, quality 0.75
         const { file: resizedRef } = await resizeImage(rawFile, 900, 0.75);
         console.log(`[UPLOAD] reference ready: size=${resizedRef.size} type=${resizedRef.type}`);
         setReferenceFile(resizedRef);
@@ -42,15 +64,10 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
   const resizeImage = (file: File, maxPx = 900, quality = 0.75): Promise<{ file: File; dataUrl: string }> => {
     return new Promise((resolve, reject) => {
       const MAX = maxPx;
-
       console.log(`[UPLOAD] input: name=${file.name} size=${file.size} type=${file.type}`);
 
-      // HEIC/HEIF files from iOS cameras cannot be decoded by canvas on all browsers.
-      // We still attempt it (Safari decodes HEIC fine), but the MIME type must be
-      // forced to image/jpeg on the resulting file regardless.
       const isHeic = file.type === 'image/heic' || file.type === 'image/heif'
         || /\.heic$/i.test(file.name) || /\.heif$/i.test(file.name);
-
       if (isHeic) {
         console.warn('[UPLOAD] HEIC/HEIF detected — will attempt canvas decode and force JPEG output');
       }
@@ -82,10 +99,8 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
 
         canvas.toBlob((blob) => {
           if (!blob) {
-            // canvas.toBlob failed (memory pressure on mobile) — fall back to toDataURL
             console.warn('[UPLOAD] canvas.toBlob returned null — falling back to toDataURL');
             const dataUrl = canvas.toDataURL('image/jpeg', quality);
-            // Convert data URL back to a proper File so the backend receives correct metadata
             const byteString = atob(dataUrl.split(',')[1]);
             const arr = new Uint8Array(byteString.length);
             for (let i = 0; i < byteString.length; i++) arr[i] = byteString.charCodeAt(i);
@@ -127,6 +142,17 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
     });
   };
 
+  const removeSecondary = (
+    person: 1 | 2,
+    setPhoto: (f: File | null) => void,
+    setPreview: (u: string) => void,
+    setShow: (v: boolean) => void
+  ) => {
+    setPhoto(null);
+    setPreview('');
+    setShow(false);
+  };
+
   const handleGenerate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -137,7 +163,7 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
 
     setIsGenerating(true);
     setError('');
-    onGenerate(photo1, photo2, referenceFile);
+    onGenerate(photo1, photo2, referenceFile, undefined, photo1b, photo2b);
   };
 
   const canGenerate = !isGenerating && !!photo1 && !!photo2 && !!referenceFile;
@@ -145,6 +171,55 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
   const steps = [
     { n: 1, label: 'Upload Photos', done: !!(photo1 && photo2) },
     { n: 2, label: 'Generate', done: false },
+  ];
+
+  const persons = [
+    {
+      id: 1 as const,
+      letter: 'A',
+      label: 'Man Photo',
+      hint: 'If the man in the reference is shown in profile or at a 3/4 angle, upload a matching angle for best results.',
+      secondaryHint: [
+        'For best results, upload a similar photo:',
+        'Same person, similar hairstyle and appearance',
+        'Different angle (e.g. 3/4 or profile)',
+        'Similar lighting and age',
+        'Avoid: large differences in hairstyle or age',
+      ],
+      primaryPhoto: photo1,
+      primaryPreview: preview1,
+      setPrimaryPhoto: setPhoto1,
+      setPrimaryPreview: setPreview1,
+      secondaryPhoto: photo1b,
+      secondaryPreview: preview1b,
+      setSecondaryPhoto: setPhoto1b,
+      setSecondaryPreview: setPreview1b,
+      showSecondary: showSecondary1,
+      setShowSecondary: setShowSecondary1,
+    },
+    {
+      id: 2 as const,
+      letter: 'B',
+      label: 'Woman Photo',
+      hint: 'If the woman in the reference is shown in profile or at a 3/4 angle, upload a matching angle for best results.',
+      secondaryHint: [
+        'For best results, upload a similar photo:',
+        'Same person, similar appearance and hairstyle',
+        'Different angle (e.g. 3/4 or profile)',
+        'Similar lighting, age, and makeup/style',
+        'Avoid: heavy filters or large style differences',
+      ],
+      primaryPhoto: photo2,
+      primaryPreview: preview2,
+      setPrimaryPhoto: setPhoto2,
+      setPrimaryPreview: setPreview2,
+      secondaryPhoto: photo2b,
+      secondaryPreview: preview2b,
+      setSecondaryPhoto: setPhoto2b,
+      setSecondaryPreview: setPreview2b,
+      showSecondary: showSecondary2,
+      setShowSecondary: setShowSecondary2,
+    },
   ];
 
   return (
@@ -207,7 +282,7 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
         {/* Reference preview */}
         <div className="card-premium p-4 mb-4">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 text-white" style={{ background: '#d4e157' }}>
+            <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#d4e157' }}>
               <Sparkles className="w-3 h-3 text-[#2d2642]" />
             </div>
             <h3 className="text-[11px] font-extrabold uppercase tracking-widest font-body text-[#9a93b0]">Selected Scene</h3>
@@ -233,18 +308,24 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
 
         {/* Photo uploads */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          {[
-            { letter: 'A', label: 'Man Photo', hint: 'If the man in the reference image is shown in profile or at a 3/4 angle, upload a photo of the man with a similar face angle (profile or 3/4) for best results.', preview: preview1, setPhoto: setPhoto1, setPreview: setPreview1, alt: 'Man photo' },
-            { letter: 'B', label: 'Woman Photo', hint: 'If the woman in the reference image is shown in profile or at a 3/4 angle, upload a photo of the woman with a similar face angle (profile or 3/4) for best results.', preview: preview2, setPhoto: setPhoto2, setPreview: setPreview2, alt: 'Woman photo' },
-          ].map(({ letter, label, hint, preview, setPhoto, setPreview, alt }) => (
-            <div key={letter} className="card-premium p-4">
-              <div className="flex items-center gap-2 mb-3">
+          {persons.map(({
+            letter, label, hint, secondaryHint,
+            primaryPhoto, primaryPreview, setPrimaryPhoto, setPrimaryPreview,
+            secondaryPhoto, secondaryPreview, setSecondaryPhoto, setSecondaryPreview,
+            showSecondary, setShowSecondary,
+          }) => (
+            <div key={letter} className="card-premium p-4 flex flex-col gap-3">
+
+              {/* Section label */}
+              <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 text-white" style={{ background: 'linear-gradient(135deg, #9b7dd4, #b49cdb)' }}>
                   {letter}
                 </div>
                 <h3 className="text-[11px] font-extrabold uppercase tracking-widest font-body text-[#9a93b0]">{label}</h3>
               </div>
-              <div className="flex items-start gap-2.5 mb-3 px-3 py-2.5 rounded-xl border font-body" style={{ background: 'rgba(155,125,212,0.08)', borderColor: 'rgba(155,125,212,0.35)' }}>
+
+              {/* Angle hint */}
+              <div className="flex items-start gap-2 px-3 py-2.5 rounded-xl border font-body" style={{ background: 'rgba(155,125,212,0.08)', borderColor: 'rgba(155,125,212,0.35)' }}>
                 <svg className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#9b7dd4' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
                 <p className="text-[12px] leading-relaxed text-[#4a3f6b]">
                   {hint.split(/(profile|3\/4 angle|best results)/g).map((part, i) =>
@@ -254,39 +335,123 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
                   )}
                 </p>
               </div>
-              <label className="block cursor-pointer">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleFileChange(e, setPhoto, setPreview)}
-                  className="hidden"
-                />
-                <div className="upload-zone p-3 group">
-                  {preview ? (
-                    <div className="relative">
-                      <img src={preview} alt={alt} className="w-full h-48 object-contain rounded-xl" />
-                      <div className="absolute inset-0 rounded-xl bg-[#2d2642]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                        <span className="text-white text-sm font-bold font-body bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                          Click to replace
-                        </span>
+
+              {/* Primary upload */}
+              <div>
+                <p className="text-[11px] font-extrabold uppercase tracking-wider text-[#9a93b0] font-body mb-1.5">
+                  Your photo <span className="text-red-400">*</span>
+                </p>
+                <label className="block cursor-pointer">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleFileChange(e, setPrimaryPhoto, setPrimaryPreview)}
+                    className="hidden"
+                  />
+                  <div className="upload-zone p-3 group">
+                    {primaryPreview ? (
+                      <div className="relative">
+                        <img src={primaryPreview} alt={`${label} primary`} className="w-full h-44 object-contain rounded-xl" />
+                        <div className="absolute inset-0 rounded-xl bg-[#2d2642]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                          <span className="text-white text-sm font-bold font-body bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full">
+                            Click to replace
+                          </span>
+                        </div>
                       </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center h-44 gap-2.5">
+                        <div className="w-12 h-12 rounded-2xl border-2 flex items-center justify-center group-hover:scale-105 transition-transform duration-200" style={{ background: '#f3eefa', borderColor: '#d8ccea' }}>
+                          {letter === 'A'
+                            ? <UploadIcon className="w-5 h-5 text-[#9b7dd4]" />
+                            : <Image className="w-5 h-5 text-[#9b7dd4]" />
+                          }
+                        </div>
+                        <div className="text-center">
+                          <p className="text-sm font-bold font-body text-[#2d2642]">Click to upload</p>
+                          <p className="text-[11px] mt-0.5 font-body text-[#9a93b0]">PNG, JPG up to 10MB</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </label>
+              </div>
+
+              {/* Secondary upload */}
+              {!showSecondary ? (
+                <button
+                  type="button"
+                  onClick={() => setShowSecondary(true)}
+                  className="flex items-center gap-1.5 text-[12px] font-bold font-body text-[#9b7dd4] hover:text-[#7a5cb8] transition-colors self-start"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Add a second photo for better accuracy
+                </button>
+              ) : (
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <p className="text-[11px] font-extrabold uppercase tracking-wider text-[#9a93b0] font-body">
+                      Second photo <span className="text-[#b49cdb] text-[10px] font-bold normal-case tracking-normal">optional</span>
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => removeSecondary(
+                        letter === 'A' ? 1 : 2,
+                        setSecondaryPhoto,
+                        setSecondaryPreview,
+                        setShowSecondary
+                      )}
+                      className="text-[#9a93b0] hover:text-red-400 transition-colors"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  {/* Guidance box */}
+                  <div className="mb-2 px-3 py-2.5 rounded-xl border font-body" style={{ background: 'rgba(100,180,100,0.06)', borderColor: 'rgba(100,180,100,0.3)' }}>
+                    <p className="text-[11px] font-extrabold text-[#3a7a4a] mb-1">{secondaryHint[0]}</p>
+                    <ul className="space-y-0.5">
+                      {secondaryHint.slice(1).map((line, i) => (
+                        <li key={i} className="flex items-start gap-1.5 text-[11px] text-[#4a6a54] leading-relaxed">
+                          <span className="mt-1 w-1 h-1 rounded-full bg-[#5a9a6a] flex-shrink-0" />
+                          {line}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <label className="block cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleFileChange(e, setSecondaryPhoto, setSecondaryPreview)}
+                      className="hidden"
+                    />
+                    <div className="upload-zone p-3 group">
+                      {secondaryPreview ? (
+                        <div className="relative">
+                          <img src={secondaryPreview} alt={`${label} secondary`} className="w-full h-36 object-contain rounded-xl" />
+                          <div className="absolute inset-0 rounded-xl bg-[#2d2642]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                            <span className="text-white text-sm font-bold font-body bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full">
+                              Click to replace
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center h-36 gap-2">
+                          <div className="w-10 h-10 rounded-xl border-2 flex items-center justify-center group-hover:scale-105 transition-transform duration-200" style={{ background: '#f3eefa', borderColor: '#d8ccea' }}>
+                            <Plus className="w-4 h-4 text-[#9b7dd4]" />
+                          </div>
+                          <div className="text-center">
+                            <p className="text-xs font-bold font-body text-[#2d2642]">Add second photo</p>
+                            <p className="text-[11px] mt-0.5 font-body text-[#9a93b0]">PNG, JPG up to 10MB</p>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center h-48 gap-2.5">
-                      <div className="w-12 h-12 rounded-2xl border-2 flex items-center justify-center group-hover:scale-105 transition-transform duration-200" style={{ background: '#f3eefa', borderColor: '#d8ccea' }}>
-                        {letter === 'A'
-                          ? <UploadIcon className="w-5 h-5 text-[#9b7dd4]" />
-                          : <Image className="w-5 h-5 text-[#9b7dd4]" />
-                        }
-                      </div>
-                      <div className="text-center">
-                        <p className="text-sm font-bold font-body text-[#2d2642]">Click to upload</p>
-                        <p className="text-[11px] mt-0.5 font-body text-[#9a93b0]">PNG, JPG up to 10MB</p>
-                      </div>
-                    </div>
-                  )}
+                  </label>
                 </div>
-              </label>
+              )}
+
             </div>
           ))}
         </div>

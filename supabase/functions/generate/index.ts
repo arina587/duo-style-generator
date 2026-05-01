@@ -376,7 +376,9 @@ Deno.serve(async (req: Request) => {
 
     const reference = formData.get("reference") as File | null;
     const person1 = formData.get("person1") as File | null;
+    const person1b = formData.get("person1b") as File | null;
     const person2 = formData.get("person2") as File | null;
+    const person2b = formData.get("person2b") as File | null;
 
     if (!isSpiderMan && !reference) {
       return new Response(
@@ -408,43 +410,67 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    const hasMan2 = !!person1b && person1b.size > 0;
+    const hasWoman2 = !!person2b && person2b.size > 0;
+
     const replicateApiKey = Deno.env.get("REPLICATE_API_KEY");
     if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
 
     const clientPrompt = formData.get("prompt");
-    const finalPrompt =
+    let finalPrompt =
       typeof clientPrompt === "string" && clientPrompt.trim().length > 0
         ? clientPrompt.trim()
         : UNIVERSAL_PROMPT;
+
+    // When secondary photos are provided, append a multi-image identity mapping block.
+    // This tells the model how to group the person images into two identities.
+    if (hasMan2 || hasWoman2) {
+      const manCount = hasMan2 ? 2 : 1;
+      const womanCount = hasWoman2 ? 2 : 1;
+      finalPrompt += `
+
+MULTI-IMAGE IDENTITY MAPPING:
+- First ${manCount} person image${manCount > 1 ? "s" : ""} → SAME MAN
+- Next ${womanCount} person image${womanCount > 1 ? "s" : ""} → SAME WOMAN
+Treat each group as ONE identity.
+Merge features within group.
+Do NOT mix identities.`;
+    }
 
     // Diagnostic payload log — compare desktop vs mobile submissions
     console.log("[PAYLOAD]", JSON.stringify({
       referenceId,
       isSpiderMan,
-      promptSource: finalPrompt === UNIVERSAL_PROMPT ? "universal" : "reference-override",
+      hasMan2,
+      hasWoman2,
+      promptSource: (typeof clientPrompt === "string" && clientPrompt.trim().length > 0) ? "reference-override" : "universal",
       promptLength: finalPrompt.length,
       images: {
         reference: reference ? { size: reference.size, type: reference.type, name: reference.name } : null,
         person1: { size: person1.size, type: person1.type, name: person1.name },
+        person1b: hasMan2 ? { size: person1b!.size, type: person1b!.type } : null,
         person2: { size: person2.size, type: person2.type, name: person2.name },
+        person2b: hasWoman2 ? { size: person2b!.size, type: person2b!.type } : null,
       },
     }));
 
-    console.log("[GENERATE] prompt source:", finalPrompt === UNIVERSAL_PROMPT ? "universal" : "reference-override", "length:", finalPrompt.length);
+    console.log("[GENERATE] prompt length:", finalPrompt.length);
     console.log("[GENERATE] spider-man mode:", isSpiderMan);
 
-    const [person1DataUrl, person2DataUrl] = await Promise.all([
+    const personDataUrls = await Promise.all([
       fileToDataUrl(person1),
+      ...(hasMan2 ? [fileToDataUrl(person1b!)] : []),
       fileToDataUrl(person2),
+      ...(hasWoman2 ? [fileToDataUrl(person2b!)] : []),
     ]);
 
-    const referenceDataUrl = isSpiderMan
-      ? ""
-      : await fileToDataUrl(reference!);
+    const referenceDataUrl = isSpiderMan ? "" : await fileToDataUrl(reference!);
 
     const images = isSpiderMan
-      ? [person1DataUrl, person2DataUrl]
-      : [referenceDataUrl, person1DataUrl, person2DataUrl];
+      ? personDataUrls
+      : [referenceDataUrl, ...personDataUrls];
+
+    console.log("[IMAGES COUNT]", images.length);
 
     const { outputUrl, debugInfo } = await runReplicate(finalPrompt, images, replicateApiKey);
 

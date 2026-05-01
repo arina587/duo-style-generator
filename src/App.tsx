@@ -7,8 +7,6 @@ import type { ReferenceItem } from './data/references';
 
 type View = 'home' | 'upload' | 'result';
 
-// Preloads a URL via a hidden Image element with retry + timeout.
-// Returns true if the image loaded successfully, false otherwise.
 function loadImageWithRetry(url: string, retries = 2, timeout = 9000): Promise<boolean> {
   return new Promise((resolve) => {
     let attempt = 0;
@@ -64,10 +62,18 @@ function App() {
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [, setDebugInfo] = useState<Record<string, unknown> | null>(null);
+
+  // Primary photos (required)
   const [photo1, setPhoto1] = useState<File | null>(null);
   const [photo2, setPhoto2] = useState<File | null>(null);
   const [preview1, setPreview1] = useState<string>('');
   const [preview2, setPreview2] = useState<string>('');
+
+  // Secondary photos (optional — improve identity accuracy)
+  const [photo1b, setPhoto1b] = useState<File | null>(null);
+  const [photo2b, setPhoto2b] = useState<File | null>(null);
+  const [preview1b, setPreview1b] = useState<string>('');
+  const [preview2b, setPreview2b] = useState<string>('');
 
   const handleImageSelect = (ref: ReferenceItem) => {
     setSelectedCategory(ref.style);
@@ -75,7 +81,14 @@ function App() {
     setCurrentView('upload');
   };
 
-  const handleGenerate = async (photo1: File, photo2: File, referenceFile: File, mode?: string) => {
+  const handleGenerate = async (
+    photo1: File,
+    photo2: File,
+    referenceFile: File,
+    mode?: string,
+    photo1b?: File | null,
+    photo2b?: File | null,
+  ) => {
     if (isGenerating) return;
 
     if (!photo1 || !photo2 || !referenceFile || !selectedRef) {
@@ -96,7 +109,9 @@ function App() {
     try {
       const formData = new FormData();
       formData.append('person1', photo1);
+      if (photo1b) formData.append('person1b', photo1b);
       formData.append('person2', photo2);
+      if (photo2b) formData.append('person2b', photo2b);
       formData.append('reference', referenceFile);
       formData.append('style', style);
       formData.append('referenceId', selectedRef.id);
@@ -112,7 +127,9 @@ function App() {
         promptLength: (selectedRef.prompt ?? '').length,
         images: {
           person1: { size: photo1.size, type: photo1.type, name: photo1.name },
+          person1b: photo1b ? { size: photo1b.size, type: photo1b.type } : null,
           person2: { size: photo2.size, type: photo2.type, name: photo2.name },
+          person2b: photo2b ? { size: photo2b.size, type: photo2b.type } : null,
           reference: { size: referenceFile.size, type: referenceFile.type, name: referenceFile.name },
         },
       });
@@ -155,21 +172,15 @@ function App() {
         throw new Error('Generation succeeded but no image URL was returned. Please try again.');
       }
 
-      // Always stash raw URL — used for "Open in new tab" fallback
       setRawImageUrl(imageUrl);
 
-      // Build a proxy URL that routes the image through our edge function.
-      // This eliminates mobile Safari CORS/network failures when fetching
-      // replicate.delivery URLs directly from the client.
       const proxyUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate?proxyUrl=${encodeURIComponent(imageUrl)}`;
       console.log('[IMAGE] proxy URL built:', proxyUrl.substring(0, 80));
 
-      // Step 1: Try preloading via the proxy.
       const proxyPreloadOk = await loadImageWithRetry(proxyUrl, 2, 12000);
 
       if (proxyPreloadOk) {
         console.log('[IMAGE] proxy preload succeeded — fetching blob via proxy');
-        // Fetch through proxy to get a local blob URL (best for downloads + rendering)
         try {
           const imgRes = await fetch(proxyUrl, {
             headers: { 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
@@ -196,7 +207,6 @@ function App() {
           setGeneratedImageUrl(proxyUrl);
         }
       } else {
-        // Proxy preload failed — fall back to raw Replicate URL
         console.warn('[IMAGE] proxy preload failed — falling back to raw URL');
         const rawPreloadOk = await loadImageWithRetry(imageUrl, 1, 9000);
         if (rawPreloadOk) {
@@ -229,6 +239,10 @@ function App() {
     setPhoto2(null);
     setPreview1('');
     setPreview2('');
+    setPhoto1b(null);
+    setPhoto2b(null);
+    setPreview1b('');
+    setPreview2b('');
   };
 
   const handleBackFromUpload = () => {
@@ -266,6 +280,14 @@ function App() {
           setPreview1={setPreview1}
           preview2={preview2}
           setPreview2={setPreview2}
+          photo1b={photo1b}
+          setPhoto1b={setPhoto1b}
+          photo2b={photo2b}
+          setPhoto2b={setPhoto2b}
+          preview1b={preview1b}
+          setPreview1b={setPreview1b}
+          preview2b={preview2b}
+          setPreview2b={setPreview2b}
         />
       )}
       {currentView === 'result' && (
