@@ -105,44 +105,39 @@ function App() {
         throw new Error('Generation succeeded but no image URL was returned. Please try again.');
       }
 
-      // Generation succeeded — now fetch the output image into a local blob URL.
-      // We do this client-side because the edge function cannot safely base64-encode
-      // large images without exceeding response size limits.
-      console.log('[IMAGE] fetching output from:', imageUrl);
-      let imgRes: Response;
-      try {
-        imgRes = await fetch(imageUrl);
-      } catch (fetchErr) {
-        console.error('[IMAGE] fetch threw:', fetchErr);
-        throw new Error(
-          `Your image was generated successfully but could not be loaded from the output URL. ` +
-          `Error: ${fetchErr instanceof Error ? fetchErr.message : String(fetchErr)}`
-        );
-      }
-
-      console.log('[IMAGE] fetch status:', imgRes.status, imgRes.statusText);
-      console.log('[IMAGE] content-type:', imgRes.headers.get('content-type'));
-      console.log('[IMAGE] content-length:', imgRes.headers.get('content-length'));
-
-      if (!imgRes.ok) {
-        console.error('[IMAGE] fetch not ok:', imgRes.status, imgRes.statusText);
-        throw new Error(
-          `Your image was generated successfully but the output URL returned status ${imgRes.status}. ` +
-          `The link may have expired — please try generating again.`
-        );
-      }
-
-      const blob = await imgRes.blob();
-      console.log('[IMAGE] blob size:', blob.size, 'type:', blob.type);
-
-      if (blob.size === 0) {
-        throw new Error('Your image was generated successfully but the downloaded file is empty. Please try again.');
-      }
-
-      const localUrl = URL.createObjectURL(blob);
-      console.log('[IMAGE] local blob URL created:', localUrl.substring(0, 40));
-      setGeneratedImageUrl(localUrl);
+      // Set the raw Replicate URL immediately so the result page can render via
+      // <img src> even before (or instead of) the fetch→blob path below.
+      // On mobile Safari, fetch() to a third-party URL can fail with "Load failed"
+      // due to network restrictions, but <img src> works fine for the same URL.
+      setGeneratedImageUrl(imageUrl);
       setError('');
+
+      // Attempt to upgrade to a local blob URL for reliable download support.
+      // If this fails for any reason we silently keep the raw URL — the image is
+      // already visible via <img src={imageUrl}>.
+      console.log('[IMAGE] attempting fetch→blob for:', imageUrl);
+      try {
+        const imgRes = await fetch(imageUrl);
+        console.log('[IMAGE] fetch status:', imgRes.status, imgRes.statusText);
+        console.log('[IMAGE] content-type:', imgRes.headers.get('content-type'));
+        console.log('[IMAGE] content-length:', imgRes.headers.get('content-length'));
+
+        if (imgRes.ok) {
+          const blob = await imgRes.blob();
+          console.log('[IMAGE] blob size:', blob.size, 'type:', blob.type);
+          if (blob.size > 0) {
+            const localUrl = URL.createObjectURL(blob);
+            console.log('[IMAGE] upgraded to blob URL:', localUrl.substring(0, 40));
+            setGeneratedImageUrl(localUrl);
+          } else {
+            console.warn('[IMAGE] blob was empty — keeping raw URL');
+          }
+        } else {
+          console.warn('[IMAGE] fetch not ok:', imgRes.status, '— keeping raw URL');
+        }
+      } catch (fetchErr) {
+        console.warn('[IMAGE] fetch threw (likely mobile network restriction) — keeping raw URL:', fetchErr);
+      }
     } catch (err) {
       console.error('Generation error:', err);
       if (!generatedImageUrl) {

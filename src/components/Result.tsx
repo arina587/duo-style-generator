@@ -1,4 +1,5 @@
 import { Download, ArrowLeft, Sparkles, Loader2, AlertCircle, Wand2 } from 'lucide-react';
+import { useState } from 'react';
 
 interface ResultProps {
   onBack: () => void;
@@ -9,6 +10,8 @@ interface ResultProps {
 }
 
 export default function Result({ onBack, onStartOver, generatedImageUrl, isGenerating, error }: ResultProps) {
+  const [imgLoadFailed, setImgLoadFailed] = useState(false);
+
   const handleDownload = () => {
     if (generatedImageUrl) {
       const link = document.createElement('a');
@@ -19,6 +22,9 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
       document.body.removeChild(link);
     }
   };
+
+  // Whether we have a URL to try (regardless of fetch/render outcome)
+  const hasUrl = !!generatedImageUrl && !isGenerating;
 
   return (
     <div className="min-h-screen" style={{ position: 'relative', zIndex: 1 }}>
@@ -51,12 +57,16 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
         {/* Page heading */}
         <div className="text-center mb-7">
           <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#2d2642] mb-1.5">
-            {isGenerating ? 'Creating Your Fusion' : error ? 'Generation Failed' : 'Your Styled Fusion'}
+            {isGenerating
+              ? 'Creating Your Fusion'
+              : error && !hasUrl
+              ? 'Generation Failed'
+              : 'Your Styled Fusion'}
           </h2>
           <p className="text-[#7a6f96] text-sm font-body">
             {isGenerating
-              ? 'AI is crafting your styled photo -- this may take a minute'
-              : error
+              ? 'AI is crafting your styled photo — this may take a minute'
+              : error && !hasUrl
               ? 'Something went wrong during generation'
               : 'Your AI-generated fusion is ready to download'}
           </p>
@@ -86,6 +96,38 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
                   ))}
                 </div>
               </div>
+            ) : generatedImageUrl ? (
+              imgLoadFailed ? (
+                <div className="text-center p-10 animate-fade-in">
+                  <div className="mx-auto mb-5 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
+                    <AlertCircle className="w-8 h-8 text-amber-400" />
+                  </div>
+                  <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Image Generated</p>
+                  <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body mb-4">
+                    Your image was created but cannot be displayed due to network or device restrictions.
+                    Try opening the link directly.
+                  </p>
+                  <a
+                    href={generatedImageUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-bold text-[#9b7dd4] hover:text-[#7a5cb8] underline font-body break-all"
+                  >
+                    Open image in new tab
+                  </a>
+                </div>
+              ) : (
+                <img
+                  src={generatedImageUrl}
+                  alt="Generated fusion result"
+                  className="w-full h-full object-contain animate-scale-in"
+                  onError={(e) => {
+                    const src = (e.target as HTMLImageElement).src;
+                    console.error('[IMG] onError — failed to render src:', src?.substring(0, 80));
+                    setImgLoadFailed(true);
+                  }}
+                />
+              )
             ) : error ? (
               <div className="text-center p-10 animate-fade-in">
                 <div className="mx-auto mb-5 rounded-xl border-2 border-red-200 bg-red-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
@@ -94,15 +136,6 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
                 <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Generation Error</p>
                 <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">{error}</p>
               </div>
-            ) : generatedImageUrl ? (
-              <img
-                src={generatedImageUrl}
-                alt="Generated fusion result"
-                className="w-full h-full object-contain animate-scale-in"
-                onError={(e) => {
-                  console.error('[IMG] onError — failed to render src:', (e.target as HTMLImageElement).src?.substring(0, 80));
-                }}
-              />
             ) : (
               <div className="text-center p-10 animate-fade-in">
                 <div className="mx-auto mb-5 rounded-xl border-2 flex items-center justify-center" style={{ width: 64, height: 64, background: '#f3eefa', borderColor: '#d8ccea' }}>
@@ -118,7 +151,7 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={handleDownload}
-            disabled={isGenerating || !generatedImageUrl || !!error}
+            disabled={isGenerating || !generatedImageUrl}
             className="btn-generate flex items-center justify-center gap-2 px-8 py-3.5 text-sm"
           >
             <Download className="w-4 h-4" />
