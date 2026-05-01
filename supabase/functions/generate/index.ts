@@ -10,48 +10,73 @@ const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da6
 const MODEL_NAME = "zsxkib/flux-pulid";
 
 const UNIVERSAL_PROMPT = `Use the original scene image as the base.
-Replace the female character with the woman from the female reference image, and replace the male character with the man from the male reference image.
+
+PRIMARY TASK:
+Replace both character identities using the reference photos.
+
+CHARACTER MAPPING:
+- female → woman from female reference
+- male → man from male reference
+
+PRIORITY ORDER:
+1. Identity replacement (highest priority)
+2. Pose, body position, head angle, visibility, interaction
+3. Scene, lighting, camera, background, clothing, style
+
+IDENTITY RULES:
+Completely remove the original identities.
+Use only the reference identities.
+Do NOT mix original and new identity.
+Do NOT keep any original facial features, hair identity, or recognizable traits.
+
 Perform full character replacement, not face swapping.
-Preserve the original scene exactly:
-- pose, body position, and interaction
-- camera angle, framing, and perspective
-- lighting, shadows, and color grading
-- background, environment, and all objects
+
+SCENE PRESERVATION:
+Keep unchanged:
+- pose and body alignment
+- head angle and face direction
+- camera, framing, perspective
+- lighting, shadows, color grading
+- background and all objects
 - clothing and accessories
-Recreate each person naturally in the same pose and position, adapting their identity to fit the original body, perspective, and lighting.
-Maintain strong identity accuracy:
+
+Recreate each person naturally in the same position, adapting identity to fit perspective, lighting, and body.
+
+IDENTITY ACCURACY:
+Preserve:
 - facial structure and proportions
 - skin tone and texture
 - eyes, nose, lips, bone structure
-- hair shape, color, and length
+- hair shape, color, length
 Keep the person clearly recognizable.
-Do not paste or overlay faces. Ensure seamless integration of head and body with correct proportions, perspective, and lighting.
+
+Do not paste or overlay faces.
+Ensure seamless head–body integration.
+
 STYLE ADAPTATION:
-Match the original scene style automatically:
-- if the scene is animated or cartoon → render characters in the same stylized form
-- if the scene is realistic/live-action → render in photorealistic detail
-Do not over-stylize or reinterpret the scene.
-Keep the original level of realism and detail.
-HEAD ANGLE & VISIBILITY CONTROL:
-Preserve the original head angle, face direction, and visibility exactly.
-Do not rotate, frontalize, or reveal faces that are not visible in the original scene.
-If a character is in profile, keep them in profile.
-If a character is turned away, from the back, partially hidden, blurred, or out of frame, keep the same visibility.
-Do not make hidden facial features visible.
-Do not change gaze direction or eye visibility.
-Match the original perspective, depth, and camera angle.
-ANATOMY CONTROL:
-Preserve original body anatomy.
-Hands must be natural:
-- exactly 5 fingers per hand
-- correct proportions
-- no deformation or extra fingers
-Respect occlusions (hair, hands, objects, motion blur). Do not generate hidden parts.
+Match the original style:
+- animated → same stylized/cartoon form
+- realistic → photorealistic detail
+Do not over-stylize.
+
+HEAD ANGLE & VISIBILITY:
+Keep original head angle, direction, and visibility.
+No rotation, no frontalization.
+Do not reveal hidden faces.
+Respect gaze direction and perspective.
+
+ANATOMY:
+Preserve body anatomy.
+Hands: 5 fingers, correct proportions, no distortion.
+
+Respect occlusions (hair, objects, motion blur).
+Do not generate hidden parts.
+
 QUALITY:
-- high resolution, sharp, clean image
-- natural skin texture (no plastic smoothing)
-- accurate lighting and contrast
-Output must look like an original frame with the new people, not edited or composited.`;
+High-resolution, sharp, natural skin texture, correct lighting.
+
+OUTPUT:
+Same scene, same composition — only identities replaced.`;
 
 async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
