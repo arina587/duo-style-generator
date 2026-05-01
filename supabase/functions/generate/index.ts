@@ -9,84 +9,49 @@ const corsHeaders = {
 const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
 const MODEL_NAME = "zsxkib/flux-pulid";
 
-const UNIVERSAL_PROMPT = `Use the reference scene image as the absolute base. Perform ONLY character identity replacement.
-
-PRIORITY ORDER (STRICT):
-1) Identity from uploaded photos
-2) Original scene geometry and composition
-3) Style adaptation
-
-IDENTITY TRANSFER (HARD CONSTRAINT):
-Replace characters using uploaded photos only:
-- female character → woman from female photo
-- male character → man from male photo
-
-Preserve identity EXACTLY 1:1:
-- facial structure, proportions, age
+const UNIVERSAL_PROMPT = `Use the original scene image as the base.
+Replace the female character with the woman from the female reference image, and replace the male character with the man from the male reference image.
+Perform full character replacement, not face swapping.
+Preserve the original scene exactly:
+- pose, body position, and interaction
+- camera angle, framing, and perspective
+- lighting, shadows, and color grading
+- background, environment, and all objects
+- clothing and accessories
+Recreate each person naturally in the same pose and position, adapting their identity to fit the original body, perspective, and lighting.
+Maintain strong identity accuracy:
+- facial structure and proportions
 - skin tone and texture
 - eyes, nose, lips, bone structure
-- hairline, hair color, length, and shape
-
-Do NOT:
-- beautify or enhance faces
-- stylize or reinterpret identity
-- mix identities
-- generate new faces
-
-Uploaded photos are the single source of truth.
-
-SCENE LOCK (ABSOLUTE):
-Do NOT change ANYTHING in the original scene except identity.
-
-Preserve EXACTLY:
-- full body pose and skeleton alignment
-- body proportions and orientation
-- head position, angle, rotation
-- gaze direction and eye state (open/closed)
-- facial expression and emotion
-- camera angle, framing, crop, perspective, lens
-- spatial composition and character placement
-- interaction between characters (distance, touch, contact)
-- background, environment, all objects
-- clothing, outfit details, accessories
-- lighting, shadows, highlights
-- color grading and mood
-
-NO MODIFICATIONS:
-- no pose changes
-- no camera changes
-- no composition changes
-- no added or removed elements
-- no outfit or styling changes
-- no background alterations
-
-FACE INTEGRATION (CRITICAL):
-Do NOT paste or overlay faces.
-Reconstruct faces naturally within the original head geometry.
-
-Faces must match:
-- exact head orientation from the reference
-- original perspective and depth
-- original lighting and shadow direction
-- original focus and motion blur
-
-VISIBILITY & OCCLUSION:
-Only generate visible parts of the face.
-Do NOT reconstruct hidden areas.
-Respect occlusion (hair, angle, motion blur, objects).
-
-STYLE MATCH:
-Match the original reference style automatically (photorealistic or animated).
-Adapt identity into that style while preserving recognizability.
-
-ANATOMY CONSISTENCY:
-Keep original body anatomy unchanged.
-Hands must be natural, 5 fingers, no deformation.
-
-OUTPUT:
-Identical scene in every aspect — same pose, composition, lighting, and environment.
-Only identities are replaced.
-Seamless, artifact-free integration with correct perspective, lighting, and realism.`;
+- hair shape, color, and length
+Keep the person clearly recognizable.
+Do not paste or overlay faces. Ensure seamless integration of head and body with correct proportions, perspective, and lighting.
+STYLE ADAPTATION:
+Match the original scene style automatically:
+- if the scene is animated or cartoon → render characters in the same stylized form
+- if the scene is realistic/live-action → render in photorealistic detail
+Do not over-stylize or reinterpret the scene.
+Keep the original level of realism and detail.
+HEAD ANGLE & VISIBILITY CONTROL:
+Preserve the original head angle, face direction, and visibility exactly.
+Do not rotate, frontalize, or reveal faces that are not visible in the original scene.
+If a character is in profile, keep them in profile.
+If a character is turned away, from the back, partially hidden, blurred, or out of frame, keep the same visibility.
+Do not make hidden facial features visible.
+Do not change gaze direction or eye visibility.
+Match the original perspective, depth, and camera angle.
+ANATOMY CONTROL:
+Preserve original body anatomy.
+Hands must be natural:
+- exactly 5 fingers per hand
+- correct proportions
+- no deformation or extra fingers
+Respect occlusions (hair, hands, objects, motion blur). Do not generate hidden parts.
+QUALITY:
+- high resolution, sharp, clean image
+- natural skin texture (no plastic smoothing)
+- accurate lighting and contrast
+Output must look like an original frame with the new people, not edited or composited.`;
 
 async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
