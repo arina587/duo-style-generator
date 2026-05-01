@@ -26,17 +26,22 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
       try {
         const response = await fetch(selectedRef.image);
         const blob = await response.blob();
-        setReferenceFile(new File([blob], 'reference.jpg', { type: blob.type }));
+        const rawFile = new File([blob], 'reference.jpg', { type: blob.type || 'image/jpeg' });
+        // Reference images must also be under the model's 7MB limit — resize at 900px, quality 0.75
+        const { file: resizedRef } = await resizeImage(rawFile, 900, 0.75);
+        console.log(`[UPLOAD] reference ready: size=${resizedRef.size} type=${resizedRef.type}`);
+        setReferenceFile(resizedRef);
       } catch (err) {
         console.error('Failed to load reference image:', err);
         setError('Failed to load reference image');
       }
     })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRef.image]);
 
-  const resizeImage = (file: File): Promise<{ file: File; dataUrl: string }> => {
+  const resizeImage = (file: File, maxPx = 900, quality = 0.75): Promise<{ file: File; dataUrl: string }> => {
     return new Promise((resolve, reject) => {
-      const MAX = 1024;
+      const MAX = maxPx;
 
       console.log(`[UPLOAD] input: name=${file.name} size=${file.size} type=${file.type}`);
 
@@ -79,7 +84,7 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
           if (!blob) {
             // canvas.toBlob failed (memory pressure on mobile) — fall back to toDataURL
             console.warn('[UPLOAD] canvas.toBlob returned null — falling back to toDataURL');
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            const dataUrl = canvas.toDataURL('image/jpeg', quality);
             // Convert data URL back to a proper File so the backend receives correct metadata
             const byteString = atob(dataUrl.split(',')[1]);
             const arr = new Uint8Array(byteString.length);
@@ -98,7 +103,7 @@ export default function Upload({ selectedRef, onBack, onGenerate, photo1, setPho
           reader.onerror = () => reject(new Error('Failed to read resized image'));
           reader.onloadend = () => resolve({ file: resized, dataUrl: reader.result as string });
           reader.readAsDataURL(resized);
-        }, 'image/jpeg', 0.9);
+        }, 'image/jpeg', quality);
       };
 
       img.src = objectUrl;

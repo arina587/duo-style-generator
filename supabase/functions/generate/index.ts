@@ -105,31 +105,24 @@ async function fileToDataUrl(file: File): Promise<string> {
   return `data:${mime};base64,${b64}`;
 }
 
-async function runReplicate(
+const IMAGE_SIZE_LIMIT_BYTES = 6 * 1024 * 1024; // 6MB hard limit (model max is 7MB)
+const BASE64_OVERHEAD = 4 / 3; // base64 expands ~33%
+
+function base64ByteSize(dataUrl: string): number {
+  // data:<mime>;base64,<data> — count only the base64 payload
+  const commaIdx = dataUrl.indexOf(",");
+  const b64 = commaIdx >= 0 ? dataUrl.length - commaIdx - 1 : dataUrl.length;
+  // base64 chars → raw bytes
+  return Math.floor(b64 * 3 / 4);
+}
+
+async function runReplicateOnce(
   prompt: string,
   images: string[],
-  apiKey: string
-): Promise<{ outputUrl: string; debugInfo: Record<string, unknown> }> {
-  const inputObject = {
-    prompt,
-    image_input: images,
-  };
-
-  const debugInfo: Record<string, unknown> = {
-    model: MODEL_NAME,
-    version: MODEL_VERSION,
-    prompt_length: prompt.length,
-    image_count: images.length,
-    images: images.map((img, i) => ({
-      index: i,
-      exists: !!img,
-      is_data_url: img.startsWith("data:"),
-      preview: img.substring(0, 50),
-      size_chars: img.length,
-    })),
-  };
-
-  console.log("[DEBUG] full debug info:", JSON.stringify(debugInfo, null, 2));
+  apiKey: string,
+  debugInfo: Record<string, unknown>
+): Promise<string> {
+  const inputObject = { prompt, image_input: images };
 
   const createResponse = await fetch("https://api.replicate.com/v1/predictions", {
     method: "POST",
@@ -138,57 +131,44 @@ async function runReplicate(
       "Content-Type": "application/json",
       "Prefer": "wait",
     },
-    body: JSON.stringify({
-      version: MODEL_VERSION,
-      input: inputObject,
-    }),
+    body: JSON.stringify({ version: MODEL_VERSION, input: inputObject }),
   });
 
   const createText = await createResponse.text();
   const replicateStatus = createResponse.status;
 
   console.log("[REPLICATE] create status:", replicateStatus);
-  console.log("[REPLICATE] create response:", createText.substring(0, 1200));
+  console.log("[REPLICATE] create response:", createText.substring(0, 2000));
 
   debugInfo.replicate_response_status = replicateStatus;
-  debugInfo.replicate_raw_body = createText.substring(0, 2000);
+  debugInfo.replicate_raw_body = createText.substring(0, 3000);
 
   if (!createResponse.ok) {
-    throw Object.assign(
-      new Error(`Replicate prediction creation failed (${replicateStatus}): ${createText.substring(0, 500)}`),
-      { debugInfo }
-    );
+    throw new Error(`Replicate prediction creation failed (${replicateStatus}): ${createText.substring(0, 500)}`);
   }
 
   let prediction: Record<string, unknown>;
   try {
     prediction = JSON.parse(createText);
   } catch {
-    throw Object.assign(
-      new Error(`Replicate create response non-JSON: ${createText.substring(0, 400)}`),
-      { debugInfo }
-    );
+    throw new Error(`Replicate create response non-JSON: ${createText.substring(0, 400)}`);
   }
 
   const predictionId = prediction?.id as string | undefined;
   if (!predictionId) {
-    throw Object.assign(
-      new Error(`Replicate prediction has no ID: ${JSON.stringify(prediction).substring(0, 300)}`),
-      { debugInfo }
-    );
+    throw new Error(`Replicate prediction has no ID: ${JSON.stringify(prediction).substring(0, 300)}`);
   }
 
   const immediateStatus = prediction?.status as string | undefined;
 
   if (immediateStatus === "succeeded") {
-    return { outputUrl: extractOutput(prediction), debugInfo };
+    return extractOutput(prediction);
   }
 
   if (immediateStatus === "failed" || immediateStatus === "canceled") {
-    throw Object.assign(
-      new Error(`Replicate prediction ${immediateStatus}: ${JSON.stringify(prediction?.error ?? prediction?.logs ?? immediateStatus)}`),
-      { debugInfo }
-    );
+    const errDetail = JSON.stringify(prediction?.error ?? prediction?.logs ?? immediateStatus);
+    console.error("[REPLICATE FAIL]", errDetail);
+    throw new Error(`Prediction failed (${immediateStatus}): ${errDetail}`);
   }
 
   console.log("[REPLICATE] polling prediction:", predictionId);
@@ -206,10 +186,7 @@ async function runReplicate(
 
     if (!pollResponse.ok) {
       const pollText = await pollResponse.text();
-      throw Object.assign(
-        new Error(`Replicate poll failed (${pollResponse.status}): ${pollText.substring(0, 300)}`),
-        { debugInfo }
-      );
+      throw new Error(`Replicate poll failed (${pollResponse.status}): ${pollText.substring(0, 300)}`);
     }
 
     const pollData = await pollResponse.json() as Record<string, unknown>;
@@ -218,18 +195,79 @@ async function runReplicate(
     console.log(`[REPLICATE] poll attempt ${attempt + 1}: status = ${status}`);
 
     if (status === "succeeded") {
-      return { outputUrl: extractOutput(pollData), debugInfo };
+      return extractOutput(pollData);
     }
 
     if (status === "failed" || status === "canceled") {
+      const errDetail = JSON.stringify(pollData?.error ?? pollData?.logs ?? status);
+      console.error("[REPLICATE FAIL]", { status, error: pollData?.error, logs: pollData?.logs });
+      throw new Error(`Prediction failed (${status}): ${errDetail}`);
+    }
+  }
+
+  throw new Error("Replicate prediction timed out");
+}
+
+async function runReplicate(
+  prompt: string,
+  images: string[],
+  apiKey: string
+): Promise<{ outputUrl: string; debugInfo: Record<string, unknown> }> {
+  // Log full model input for diagnostics
+  const imageSummary = images.map((img, i) => {
+    const rawBytes = base64ByteSize(img);
+    const mime = img.startsWith("data:") ? img.substring(5, img.indexOf(";")) : "unknown";
+    return { index: i, mime, rawBytes, b64Chars: img.length, overLimit: rawBytes > IMAGE_SIZE_LIMIT_BYTES };
+  });
+
+  const totalRawBytes = imageSummary.reduce((s, x) => s + x.rawBytes, 0);
+
+  const debugInfo: Record<string, unknown> = {
+    model: MODEL_NAME,
+    version: MODEL_VERSION,
+    prompt_length: prompt.length,
+    image_count: images.length,
+    images: imageSummary,
+    total_raw_bytes: totalRawBytes,
+  };
+
+  console.log("[MODEL INPUT]", JSON.stringify({
+    imageCount: images.length,
+    promptLength: prompt.length,
+    images: imageSummary,
+    totalRawBytes,
+    totalMB: (totalRawBytes / 1024 / 1024).toFixed(2),
+  }));
+
+  // Hard limit check — fail fast with a clear message before hitting E6802
+  for (const img of imageSummary) {
+    if (img.overLimit) {
       throw Object.assign(
-        new Error(`Replicate prediction ${status}: ${JSON.stringify(pollData?.error ?? pollData?.logs ?? status)}`),
+        new Error(`Image ${img.index} is ${(img.rawBytes / 1024 / 1024).toFixed(2)}MB — exceeds the 6MB per-image limit. Please use a smaller or more compressed photo.`),
         { debugInfo }
       );
     }
   }
 
-  throw Object.assign(new Error("Replicate prediction timed out"), { debugInfo });
+  // Attempt with one automatic retry for transient E6802 / model instability failures
+  const MAX_ATTEMPTS = 2;
+  let lastError: Error = new Error("Unknown error");
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      console.log(`[REPLICATE] attempt ${attempt}/${MAX_ATTEMPTS}`);
+      const outputUrl = await runReplicateOnce(prompt, images, apiKey, debugInfo);
+      return { outputUrl, debugInfo };
+    } catch (err) {
+      lastError = err instanceof Error ? err : new Error(String(err));
+      console.error(`[REPLICATE] attempt ${attempt} failed:`, lastError.message);
+      if (attempt < MAX_ATTEMPTS) {
+        console.log("[REPLICATE] retrying in 4s...");
+        await new Promise((r) => setTimeout(r, 4000));
+      }
+    }
+  }
+
+  throw Object.assign(lastError, { debugInfo });
 }
 
 function extractOutput(prediction: Record<string, unknown>): string {
