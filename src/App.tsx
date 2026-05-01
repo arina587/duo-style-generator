@@ -155,50 +155,58 @@ function App() {
         throw new Error('Generation succeeded but no image URL was returned. Please try again.');
       }
 
-      // Stash the raw URL so the fallback "Open in new tab" link always works
+      // Always stash raw URL — used for "Open in new tab" fallback
       setRawImageUrl(imageUrl);
 
-      // Step 1: Preload via Image element with retry + timeout.
-      // This is the most reliable path on mobile Safari — the browser's own image
-      // loader handles CORS + caching + redirects better than fetch().
-      const preloadOk = await loadImageWithRetry(imageUrl, 2, 9000);
+      // Build a proxy URL that routes the image through our edge function.
+      // This eliminates mobile Safari CORS/network failures when fetching
+      // replicate.delivery URLs directly from the client.
+      const proxyUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate?proxyUrl=${encodeURIComponent(imageUrl)}`;
+      console.log('[IMAGE] proxy URL built:', proxyUrl.substring(0, 80));
 
-      if (preloadOk) {
-        // Image is confirmed loadable — set it for rendering
-        setGeneratedImageUrl(imageUrl);
+      // Step 1: Try preloading via the proxy.
+      const proxyPreloadOk = await loadImageWithRetry(proxyUrl, 2, 12000);
 
-        // Step 2: Try to upgrade to a local blob URL so downloads work reliably.
-        // This is a best-effort operation — if it fails we keep the raw URL.
-        console.log('[IMAGE] attempting fetch→blob upgrade for:', imageUrl);
+      if (proxyPreloadOk) {
+        console.log('[IMAGE] proxy preload succeeded — fetching blob via proxy');
+        // Fetch through proxy to get a local blob URL (best for downloads + rendering)
         try {
-          const imgRes = await fetch(imageUrl);
-          console.log('[IMAGE] fetch status:', imgRes.status, imgRes.statusText);
-          console.log('[IMAGE] content-type:', imgRes.headers.get('content-type'));
-          console.log('[IMAGE] content-length:', imgRes.headers.get('content-length'));
+          const imgRes = await fetch(proxyUrl, {
+            headers: { 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
+          });
+          console.log('[IMAGE] proxy fetch status:', imgRes.status, 'content-type:', imgRes.headers.get('content-type'), 'content-length:', imgRes.headers.get('content-length'));
 
           if (imgRes.ok) {
             const blob = await imgRes.blob();
-            console.log('[IMAGE] blob size:', blob.size, 'type:', blob.type);
+            console.log('[IMAGE] proxy blob size:', blob.size, 'type:', blob.type);
             if (blob.size > 0) {
               const localUrl = URL.createObjectURL(blob);
-              console.log('[IMAGE] upgraded to blob URL');
+              console.log('[IMAGE] upgraded to local blob URL via proxy');
               setGeneratedImageUrl(localUrl);
             } else {
-              console.warn('[IMAGE] blob was empty — keeping raw URL');
+              console.warn('[IMAGE] proxy blob empty — using proxy URL directly');
+              setGeneratedImageUrl(proxyUrl);
             }
           } else {
-            console.warn('[IMAGE] fetch not ok:', imgRes.status, '— keeping raw URL');
+            console.warn('[IMAGE] proxy fetch not ok:', imgRes.status, '— using proxy URL directly');
+            setGeneratedImageUrl(proxyUrl);
           }
         } catch (fetchErr) {
-          console.warn('[IMAGE] fetch→blob failed — keeping raw URL:', fetchErr);
+          console.warn('[IMAGE] proxy fetch threw — using proxy URL directly:', fetchErr);
+          setGeneratedImageUrl(proxyUrl);
         }
       } else {
-        // Preload failed after all retries.
-        // Still set the URL so the <img> gets one last native browser attempt,
-        // and mark imgLoadFailed so we can show the fallback if it also fails.
-        console.warn('[IMAGE] preload failed — setting raw URL and marking imgLoadFailed');
-        setGeneratedImageUrl(imageUrl);
-        setImgLoadFailed(true);
+        // Proxy preload failed — fall back to raw Replicate URL
+        console.warn('[IMAGE] proxy preload failed — falling back to raw URL');
+        const rawPreloadOk = await loadImageWithRetry(imageUrl, 1, 9000);
+        if (rawPreloadOk) {
+          console.log('[IMAGE] raw URL preload succeeded');
+          setGeneratedImageUrl(imageUrl);
+        } else {
+          console.warn('[IMAGE] raw URL preload also failed — setting anyway, marking imgLoadFailed');
+          setGeneratedImageUrl(imageUrl);
+          setImgLoadFailed(true);
+        }
       }
     } catch (err) {
       console.error('[GENERATE] error:', err);

@@ -319,6 +319,53 @@ Deno.serve(async (req: Request) => {
     return new Response(null, { status: 200, headers: corsHeaders });
   }
 
+  // Image proxy — GET /generate?proxyUrl=<encoded-url>
+  // Streams the remote image through the edge function so mobile clients never
+  // fetch replicate.delivery directly (avoids mobile Safari CORS/network failures).
+  const reqUrl = new URL(req.url);
+  if (req.method === "GET" && reqUrl.searchParams.has("proxyUrl")) {
+    try {
+      const proxyUrl = reqUrl.searchParams.get("proxyUrl")!;
+      console.log("[PROXY] fetching:", proxyUrl.substring(0, 80));
+
+      if (!proxyUrl.startsWith("https://replicate.delivery/")) {
+        return new Response(JSON.stringify({ error: "Invalid proxy target" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const upstream = await fetch(proxyUrl);
+      console.log("[PROXY] upstream status:", upstream.status, "content-type:", upstream.headers.get("content-type"), "content-length:", upstream.headers.get("content-length"));
+
+      if (!upstream.ok) {
+        return new Response(JSON.stringify({ error: `Upstream ${upstream.status}` }), {
+          status: 502,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const contentType = upstream.headers.get("content-type") || "image/jpeg";
+      const contentLength = upstream.headers.get("content-length");
+
+      const responseHeaders: Record<string, string> = {
+        ...corsHeaders,
+        "Content-Type": contentType,
+        "Cache-Control": "public, max-age=86400",
+      };
+      if (contentLength) responseHeaders["Content-Length"] = contentLength;
+
+      return new Response(upstream.body, { status: 200, headers: responseHeaders });
+    } catch (proxyErr) {
+      const msg = proxyErr instanceof Error ? proxyErr.message : String(proxyErr);
+      console.error("[PROXY] error:", msg);
+      return new Response(JSON.stringify({ error: msg }), {
+        status: 502,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+  }
+
   try {
     const formData = await req.formData();
 
