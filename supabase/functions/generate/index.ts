@@ -240,22 +240,41 @@ function extractOutput(prediction: Record<string, unknown>): string {
 }
 
 async function fetchOutputAsDataUrl(url: string): Promise<string> {
+  console.log("[IMAGE] fetching output image from:", url);
+
   const imgResponse = await fetch(url);
+  console.log("[IMAGE] fetch status:", imgResponse.status, imgResponse.statusText);
+
   if (!imgResponse.ok) {
-    throw new Error(`Failed to fetch Replicate output image (${imgResponse.status})`);
+    throw new Error(`Failed to fetch Replicate output image (${imgResponse.status} ${imgResponse.statusText})`);
   }
+
+  const contentType = imgResponse.headers.get("content-type") ?? "image/jpeg";
+  console.log("[IMAGE] content-type:", contentType);
+
   const imgBuffer = await imgResponse.arrayBuffer();
   const imgBytes = new Uint8Array(imgBuffer);
+  console.log("[IMAGE] image byte size:", imgBytes.length);
 
-  let binary = "";
-  const chunkSize = 8192;
-  for (let i = 0; i < imgBytes.length; i += chunkSize) {
-    const chunk = imgBytes.subarray(i, i + chunkSize);
-    binary += String.fromCharCode(...chunk);
+  if (imgBytes.length === 0) {
+    throw new Error("Fetched image is empty (0 bytes)");
   }
 
-  const b64 = btoa(binary);
-  const contentType = imgResponse.headers.get("content-type") ?? "image/jpeg";
+  // Use TextDecoder-safe base64 encoding that handles all byte values correctly
+  const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  let b64 = "";
+  const len = imgBytes.length;
+  for (let i = 0; i < len; i += 3) {
+    const a = imgBytes[i];
+    const b = i + 1 < len ? imgBytes[i + 1] : 0;
+    const c = i + 2 < len ? imgBytes[i + 2] : 0;
+    b64 += CHARS[a >> 2];
+    b64 += CHARS[((a & 3) << 4) | (b >> 4)];
+    b64 += i + 1 < len ? CHARS[((b & 15) << 2) | (c >> 6)] : "=";
+    b64 += i + 2 < len ? CHARS[c & 63] : "=";
+  }
+
+  console.log("[IMAGE] base64 length:", b64.length);
   return `data:${contentType};base64,${b64}`;
 }
 
