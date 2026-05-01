@@ -74,12 +74,32 @@ function App() {
         throw new Error(data.error || 'Failed to generate image');
       }
 
+      console.log('API response:', data);
+
+      let imageUrl: string | undefined;
       if (data.success && data.imageUrl) {
-        setGeneratedImageUrl(data.imageUrl);
-        setError('');
-      } else {
+        imageUrl = data.imageUrl;
+      } else if (Array.isArray(data.output) && data.output[0]) {
+        imageUrl = data.output[0];
+      } else if (typeof data.output === 'string') {
+        imageUrl = data.output;
+      }
+
+      console.log('Image URL:', imageUrl);
+
+      if (!imageUrl) {
         throw new Error('Generation failed. Invalid response.');
       }
+
+      const imgRes = await fetch(imageUrl);
+      if (!imgRes.ok) {
+        console.error('Image fetch failed, status:', imgRes.status);
+        throw new Error(`Failed to load image (status ${imgRes.status})`);
+      }
+      const blob = await imgRes.blob();
+      const localUrl = URL.createObjectURL(blob);
+      setGeneratedImageUrl(localUrl);
+      setError('');
     } catch (err) {
       console.error('Generation error:', err);
       if (!generatedImageUrl) {
