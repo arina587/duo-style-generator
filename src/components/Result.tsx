@@ -1,16 +1,27 @@
-import { Download, ArrowLeft, Sparkles, Loader2, AlertCircle, Wand2 } from 'lucide-react';
-import { useState } from 'react';
+import { Download, ArrowLeft, Sparkles, Loader2, AlertCircle, Wand2, ExternalLink } from 'lucide-react';
 
 interface ResultProps {
   onBack: () => void;
   onStartOver: () => void;
   generatedImageUrl: string;
+  rawImageUrl: string;
+  imgLoadFailed: boolean;
+  onImgError: (src: string) => void;
   isGenerating: boolean;
   error: string;
 }
 
-export default function Result({ onBack, onStartOver, generatedImageUrl, isGenerating, error }: ResultProps) {
-  const [imgLoadFailed, setImgLoadFailed] = useState(false);
+export default function Result({
+  onBack,
+  onStartOver,
+  generatedImageUrl,
+  rawImageUrl,
+  imgLoadFailed,
+  onImgError,
+  isGenerating,
+  error,
+}: ResultProps) {
+  const hasUrl = !!generatedImageUrl && !isGenerating;
 
   const handleDownload = () => {
     if (generatedImageUrl) {
@@ -22,9 +33,6 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
       document.body.removeChild(link);
     }
   };
-
-  // Whether we have a URL to try (regardless of fetch/render outcome)
-  const hasUrl = !!generatedImageUrl && !isGenerating;
 
   return (
     <div className="min-h-screen" style={{ position: 'relative', zIndex: 1 }}>
@@ -96,38 +104,35 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
                   ))}
                 </div>
               </div>
-            ) : generatedImageUrl ? (
-              imgLoadFailed ? (
-                <div className="text-center p-10 animate-fade-in">
-                  <div className="mx-auto mb-5 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
-                    <AlertCircle className="w-8 h-8 text-amber-400" />
-                  </div>
-                  <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Image Generated</p>
-                  <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body mb-4">
-                    Your image was created but cannot be displayed due to network or device restrictions.
-                    Try opening the link directly.
-                  </p>
-                  <a
-                    href={generatedImageUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs font-bold text-[#9b7dd4] hover:text-[#7a5cb8] underline font-body break-all"
-                  >
-                    Open image in new tab
-                  </a>
+            ) : generatedImageUrl && !imgLoadFailed ? (
+              <img
+                src={generatedImageUrl}
+                alt="Generated fusion result"
+                className="w-full h-full object-contain animate-scale-in"
+                onError={(e) => {
+                  onImgError((e.target as HTMLImageElement).src);
+                }}
+              />
+            ) : generatedImageUrl && imgLoadFailed ? (
+              <div className="text-center p-10 animate-fade-in">
+                <div className="mx-auto mb-5 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
+                  <AlertCircle className="w-8 h-8 text-amber-400" />
                 </div>
-              ) : (
-                <img
-                  src={generatedImageUrl}
-                  alt="Generated fusion result"
-                  className="w-full h-full object-contain animate-scale-in"
-                  onError={(e) => {
-                    const src = (e.target as HTMLImageElement).src;
-                    console.error('[IMG] onError — failed to render src:', src?.substring(0, 80));
-                    setImgLoadFailed(true);
-                  }}
-                />
-              )
+                <p className="font-display font-bold text-[#2d2642] text-base mb-2">Image Generated</p>
+                <p className="text-[#7a6f96] text-sm max-w-xs mx-auto leading-relaxed font-body mb-5">
+                  Your image was created but could not be displayed due to network or device restrictions.
+                </p>
+                <a
+                  href={rawImageUrl || generatedImageUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white font-body transition-opacity hover:opacity-90"
+                  style={{ background: 'linear-gradient(135deg, #9b7dd4, #b49cdb)' }}
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Open Image in New Tab
+                </a>
+              </div>
             ) : error ? (
               <div className="text-center p-10 animate-fade-in">
                 <div className="mx-auto mb-5 rounded-xl border-2 border-red-200 bg-red-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
@@ -152,7 +157,7 @@ export default function Result({ onBack, onStartOver, generatedImageUrl, isGener
           <button
             onClick={handleDownload}
             disabled={isGenerating || !generatedImageUrl}
-            className="btn-generate flex items-center justify-center gap-2 px-8 py-3.5 text-sm"
+            className="btn-generate flex items-center justify-center gap-2 px-8 py-3.5 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <Download className="w-4 h-4" />
             Download Image

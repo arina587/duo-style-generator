@@ -7,11 +7,60 @@ import type { ReferenceItem } from './data/references';
 
 type View = 'home' | 'upload' | 'result';
 
+// Preloads a URL via a hidden Image element with retry + timeout.
+// Returns true if the image loaded successfully, false otherwise.
+function loadImageWithRetry(url: string, retries = 2, timeout = 9000): Promise<boolean> {
+  return new Promise((resolve) => {
+    let attempt = 0;
+
+    function tryLoad() {
+      attempt++;
+      console.log(`[PRELOAD] attempt ${attempt}/${retries + 1} url=${url.substring(0, 60)}`);
+
+      const img = new window.Image();
+      let settled = false;
+      let timer: ReturnType<typeof setTimeout>;
+
+      function succeed() {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        console.log(`[PRELOAD] success on attempt ${attempt}`);
+        resolve(true);
+      }
+
+      function fail(reason: string) {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        console.warn(`[PRELOAD] attempt ${attempt} failed: ${reason}`);
+        if (attempt <= retries) {
+          const delay = attempt * 1500;
+          console.log(`[PRELOAD] retrying in ${delay}ms...`);
+          setTimeout(tryLoad, delay);
+        } else {
+          console.warn('[PRELOAD] all attempts exhausted — resolving false');
+          resolve(false);
+        }
+      }
+
+      timer = setTimeout(() => fail(`timeout after ${timeout}ms`), timeout);
+      img.onload = () => succeed();
+      img.onerror = () => fail('onerror');
+      img.src = url;
+    }
+
+    tryLoad();
+  });
+}
+
 function App() {
   const [currentView, setCurrentView] = useState<View>('home');
   const [selectedRef, setSelectedRef] = useState<ReferenceItem | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string>('');
+  const [rawImageUrl, setRawImageUrl] = useState<string>('');
+  const [imgLoadFailed, setImgLoadFailed] = useState(false);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [, setDebugInfo] = useState<Record<string, unknown> | null>(null);
@@ -37,6 +86,9 @@ function App() {
     setIsGenerating(true);
     setError('');
     setDebugInfo(null);
+    setGeneratedImageUrl('');
+    setRawImageUrl('');
+    setImgLoadFailed(false);
     setCurrentView('result');
 
     const style = selectedRef.style;
@@ -87,7 +139,6 @@ function App() {
 
       console.log('[API] raw response:', JSON.stringify(data).substring(0, 500));
 
-      // Extract the output URL — backend always returns data.imageUrl as a raw https:// URL
       let imageUrl: string | undefined;
       if (data.success && data.imageUrl) {
         imageUrl = data.imageUrl;
@@ -98,51 +149,60 @@ function App() {
       }
 
       console.log('[API] imageUrl:', imageUrl);
-      console.log('[API] imageUrl type:', typeof imageUrl);
       console.log('[API] imageUrl prefix:', imageUrl?.substring(0, 60));
 
       if (!imageUrl) {
         throw new Error('Generation succeeded but no image URL was returned. Please try again.');
       }
 
-      // Set the raw Replicate URL immediately so the result page can render via
-      // <img src> even before (or instead of) the fetch→blob path below.
-      // On mobile Safari, fetch() to a third-party URL can fail with "Load failed"
-      // due to network restrictions, but <img src> works fine for the same URL.
-      setGeneratedImageUrl(imageUrl);
-      setError('');
+      // Stash the raw URL so the fallback "Open in new tab" link always works
+      setRawImageUrl(imageUrl);
 
-      // Attempt to upgrade to a local blob URL for reliable download support.
-      // If this fails for any reason we silently keep the raw URL — the image is
-      // already visible via <img src={imageUrl}>.
-      console.log('[IMAGE] attempting fetch→blob for:', imageUrl);
-      try {
-        const imgRes = await fetch(imageUrl);
-        console.log('[IMAGE] fetch status:', imgRes.status, imgRes.statusText);
-        console.log('[IMAGE] content-type:', imgRes.headers.get('content-type'));
-        console.log('[IMAGE] content-length:', imgRes.headers.get('content-length'));
+      // Step 1: Preload via Image element with retry + timeout.
+      // This is the most reliable path on mobile Safari — the browser's own image
+      // loader handles CORS + caching + redirects better than fetch().
+      const preloadOk = await loadImageWithRetry(imageUrl, 2, 9000);
 
-        if (imgRes.ok) {
-          const blob = await imgRes.blob();
-          console.log('[IMAGE] blob size:', blob.size, 'type:', blob.type);
-          if (blob.size > 0) {
-            const localUrl = URL.createObjectURL(blob);
-            console.log('[IMAGE] upgraded to blob URL:', localUrl.substring(0, 40));
-            setGeneratedImageUrl(localUrl);
+      if (preloadOk) {
+        // Image is confirmed loadable — set it for rendering
+        setGeneratedImageUrl(imageUrl);
+
+        // Step 2: Try to upgrade to a local blob URL so downloads work reliably.
+        // This is a best-effort operation — if it fails we keep the raw URL.
+        console.log('[IMAGE] attempting fetch→blob upgrade for:', imageUrl);
+        try {
+          const imgRes = await fetch(imageUrl);
+          console.log('[IMAGE] fetch status:', imgRes.status, imgRes.statusText);
+          console.log('[IMAGE] content-type:', imgRes.headers.get('content-type'));
+          console.log('[IMAGE] content-length:', imgRes.headers.get('content-length'));
+
+          if (imgRes.ok) {
+            const blob = await imgRes.blob();
+            console.log('[IMAGE] blob size:', blob.size, 'type:', blob.type);
+            if (blob.size > 0) {
+              const localUrl = URL.createObjectURL(blob);
+              console.log('[IMAGE] upgraded to blob URL');
+              setGeneratedImageUrl(localUrl);
+            } else {
+              console.warn('[IMAGE] blob was empty — keeping raw URL');
+            }
           } else {
-            console.warn('[IMAGE] blob was empty — keeping raw URL');
+            console.warn('[IMAGE] fetch not ok:', imgRes.status, '— keeping raw URL');
           }
-        } else {
-          console.warn('[IMAGE] fetch not ok:', imgRes.status, '— keeping raw URL');
+        } catch (fetchErr) {
+          console.warn('[IMAGE] fetch→blob failed — keeping raw URL:', fetchErr);
         }
-      } catch (fetchErr) {
-        console.warn('[IMAGE] fetch threw (likely mobile network restriction) — keeping raw URL:', fetchErr);
+      } else {
+        // Preload failed after all retries.
+        // Still set the URL so the <img> gets one last native browser attempt,
+        // and mark imgLoadFailed so we can show the fallback if it also fails.
+        console.warn('[IMAGE] preload failed — setting raw URL and marking imgLoadFailed');
+        setGeneratedImageUrl(imageUrl);
+        setImgLoadFailed(true);
       }
     } catch (err) {
-      console.error('Generation error:', err);
-      if (!generatedImageUrl) {
-        setError(err instanceof Error ? err.message : 'An error occurred during generation');
-      }
+      console.error('[GENERATE] error:', err);
+      setError(err instanceof Error ? err.message : 'An error occurred during generation');
     } finally {
       setIsGenerating(false);
     }
@@ -153,6 +213,8 @@ function App() {
     setSelectedRef(null);
     setSelectedCategory(null);
     setGeneratedImageUrl('');
+    setRawImageUrl('');
+    setImgLoadFailed(false);
     setError('');
     setDebugInfo(null);
     setPhoto1(null);
@@ -164,12 +226,16 @@ function App() {
   const handleBackFromUpload = () => {
     setCurrentView('home');
     setGeneratedImageUrl('');
+    setRawImageUrl('');
+    setImgLoadFailed(false);
     setError('');
   };
 
   const handleBackToUpload = () => {
     setCurrentView('upload');
     setGeneratedImageUrl('');
+    setRawImageUrl('');
+    setImgLoadFailed(false);
     setError('');
   };
 
@@ -199,6 +265,12 @@ function App() {
           onBack={handleBackToUpload}
           onStartOver={handleBackToHome}
           generatedImageUrl={generatedImageUrl}
+          rawImageUrl={rawImageUrl}
+          imgLoadFailed={imgLoadFailed}
+          onImgError={(src) => {
+            console.error('[IMG] onError — native render failed:', src?.substring(0, 80));
+            setImgLoadFailed(true);
+          }}
           isGenerating={isGenerating}
           error={error}
         />
