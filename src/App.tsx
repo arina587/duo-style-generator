@@ -113,13 +113,22 @@ function App() {
         throw new Error('Generation succeeded but no image URL was returned. Please try again.');
       }
 
-      // Store raw URL immediately — used for fallback "Open" link even if <img> fails
+      // Store raw URL immediately — always used for the fallback "Open" link
       setRawImageUrl(imageUrl);
 
-      // Set directly — no preload, no blob conversion, no proxy.
-      // Let the browser's <img> tag handle loading natively.
-      console.log('[RENDER START]', imageUrl);
-      setGeneratedImageUrl(imageUrl);
+      // Route the image through the edge function proxy so the browser never
+      // fetches replicate.delivery directly. This avoids:
+      //   - signed URL TTL expiry between API response and browser render
+      //   - mobile carrier / corporate proxy blocking redirects
+      //   - per-device CORS variance on the Replicate CDN
+      // The proxy sets Cache-Control: public, max-age=86400, so subsequent
+      // renders hit the browser cache with no round-trip at all.
+      const proxyUrl = imageUrl.startsWith("https://replicate.delivery/")
+        ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate?proxyUrl=${encodeURIComponent(imageUrl)}`
+        : imageUrl;
+
+      console.log('[RENDER START] proxy:', proxyUrl.substring(0, 100));
+      setGeneratedImageUrl(proxyUrl);
 
     } catch (err) {
       if (activeRequestId.current !== requestId) return;

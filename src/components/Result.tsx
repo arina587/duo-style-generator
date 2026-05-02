@@ -26,31 +26,37 @@ export default function Result({
   generationError,
 }: ResultProps) {
   const hasRetried = useRef(false);
-  const [retrySrc, setRetrySrc] = useState<string>('');
+  // retryKey increments to force <img> remount without mutating the URL
+  const [retryKey, setRetryKey] = useState(0);
 
   // Generation succeeded as long as a raw URL exists
   const generationSucceeded = !!rawImageUrl;
-  const displaySrc = retrySrc || generatedImageUrl;
-  const showImage = !!displaySrc && !imgLoadFailed && !isGenerating;
+  const showImage = !!generatedImageUrl && !imgLoadFailed && !isGenerating;
 
   // Reset retry state when a new image URL arrives
   const prevUrl = useRef('');
   if (generatedImageUrl !== prevUrl.current) {
     prevUrl.current = generatedImageUrl;
     hasRetried.current = false;
-    setRetrySrc('');
+    setRetryKey(0);
   }
 
   const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const src = (e.target as HTMLImageElement).src;
     console.log('[IMG ERROR]', src, Date.now());
-    console.log('[DEBUG] Check DevTools → Network → img request status');
+    console.log('[DEBUG] Check DevTools → Network → filter replicate.delivery or supabase — check status code and response headers');
 
     if (!hasRetried.current) {
       hasRetried.current = true;
-      const retryUrl = (rawImageUrl || generatedImageUrl) + '?retry=' + Date.now();
-      console.log('[IMG RETRY]', retryUrl);
-      setTimeout(() => setRetrySrc(retryUrl), 1500);
+      // Retry with the same proxy URL after 1500ms — the `key` prop change
+      // forces React to unmount/remount the <img> element, which triggers a
+      // fresh browser request. Do NOT append ?retry=timestamp to the URL:
+      // that mutates the signed-URL query string and causes a 403 on CDNs.
+      console.log('[IMG RETRY]', generatedImageUrl.substring(0, 100));
+      // Increment retryKey after 1500ms — the key change on <img> forces React
+      // to unmount and remount the element, issuing a fresh browser request for
+      // the same URL without mutating any query string parameters.
+      setTimeout(() => setRetryKey(k => k + 1), 1500);
     } else {
       // Both original and retry failed — show fallback, never set generationError
       console.log('[IMG RETRY EXHAUSTED] marking imgLoadFailed');
@@ -59,7 +65,7 @@ export default function Result({
   };
 
   const handleDownload = () => {
-    const url = displaySrc || rawImageUrl;
+    const url = rawImageUrl || generatedImageUrl;
     if (!url) return;
     const link = document.createElement('a');
     link.href = url;
@@ -144,11 +150,11 @@ export default function Result({
               </div>
             )}
 
-            {/* 2 — Image (normal or retry src) */}
+            {/* 2 — Image (normal or retry) */}
             {!isGenerating && showImage && (
               <img
-                key={displaySrc}
-                src={displaySrc}
+                key={retryKey}
+                src={generatedImageUrl}
                 alt="Generated fusion result"
                 className="w-full h-full object-contain animate-scale-in"
                 onLoad={(e) => {
@@ -210,7 +216,7 @@ export default function Result({
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={handleDownload}
-            disabled={isGenerating || (!displaySrc && !rawImageUrl)}
+            disabled={isGenerating || (!generatedImageUrl && !rawImageUrl)}
             className="btn-generate flex items-center justify-center gap-2 px-8 py-3.5 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <Download className="w-4 h-4" />
