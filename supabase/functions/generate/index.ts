@@ -417,9 +417,6 @@ Deno.serve(async (req: Request) => {
     const formData = await req.formData();
 
     const referenceId = formData.get("referenceId");
-    const isSpiderMan =
-      typeof referenceId === "string" &&
-      referenceId.startsWith("spiderman");
 
     const reference = formData.get("reference") as File | null;
     const person1 = formData.get("person1") as File | null;
@@ -427,7 +424,7 @@ Deno.serve(async (req: Request) => {
     const person2 = formData.get("person2") as File | null;
     const person2b = formData.get("person2b") as File | null;
 
-    if (!isSpiderMan && !reference) {
+    if (!reference) {
       return new Response(
         JSON.stringify({ success: false, error: "Missing required images: reference, person1, person2" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -441,7 +438,7 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    if (!isSpiderMan && reference && reference.size === 0) {
+    if (reference.size === 0) {
       return new Response(
         JSON.stringify({ success: false, error: "reference file is empty" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -487,13 +484,12 @@ Do NOT mix identities.`;
     // Diagnostic payload log — compare desktop vs mobile submissions
     console.log("[PAYLOAD]", JSON.stringify({
       referenceId,
-      isSpiderMan,
       hasMan2,
       hasWoman2,
       promptSource: (typeof clientPrompt === "string" && clientPrompt.trim().length > 0) ? "reference-override" : "universal",
       promptLength: finalPrompt.length,
       images: {
-        reference: reference ? { size: reference.size, type: reference.type, name: reference.name } : null,
+        reference: { size: reference.size, type: reference.type, name: reference.name },
         person1: { size: person1.size, type: person1.type, name: person1.name },
         person1b: hasMan2 ? { size: person1b!.size, type: person1b!.type } : null,
         person2: { size: person2.size, type: person2.type, name: person2.name },
@@ -502,7 +498,6 @@ Do NOT mix identities.`;
     }));
 
     console.log("[GENERATE] prompt length:", finalPrompt.length);
-    console.log("[GENERATE] spider-man mode:", isSpiderMan);
 
     const personDataUrls = await Promise.all([
       fileToDataUrl(person1),
@@ -511,11 +506,9 @@ Do NOT mix identities.`;
       ...(hasWoman2 ? [fileToDataUrl(person2b!)] : []),
     ]);
 
-    const referenceDataUrl = isSpiderMan ? "" : await fileToDataUrl(reference!);
+    const referenceDataUrl = await fileToDataUrl(reference);
 
-    const images = isSpiderMan
-      ? personDataUrls
-      : [referenceDataUrl, ...personDataUrls];
+    const images = [referenceDataUrl, ...personDataUrls];
 
     console.log("[IMAGES COUNT]", images.length);
 
