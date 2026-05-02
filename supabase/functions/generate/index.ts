@@ -9,116 +9,104 @@ const corsHeaders = {
 const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
 const MODEL_NAME = "zsxkib/flux-pulid";
 
-const UNIVERSAL_PROMPT = `Use the original scene image as the base.
-
-PRIMARY TASK:
-Recreate the original scene with the two reference people as the actual characters.
-
-The woman in the scene must be the woman from the female reference photo.
-The man in the scene must be the man from the male reference photo.
-
-This is a full scene recreation with new people,
-not a face transfer, not a face swap, and not an identity blend.
-
-PRIORITY ORDER:
-1. Identity accuracy and recognizability (highest priority)
-2. Pose, head angle, visibility, and interaction
-3. Scene, lighting, camera, background, clothing, and style
-
-IDENTITY SOURCE OF TRUTH:
-Treat the reference people as the real subjects of the scene.
-
-All appearance must come from the reference photos:
-- facial structure and proportions
-- skin tone and texture
-- eyes, nose, lips, bone structure
-- hair shape, color, length
-
-The original actors are used only for:
-- pose
-- placement
-- visibility
-- scene geometry
-
-They must not influence identity.
-
-IDENTITY DOMINANCE:
-The characters must clearly look like the reference people, not the original actors.
-
-Minimize any resemblance to the original identities as much as possible.
-Prioritize reference identity over original facial features in all cases.
-
-Avoid identity blending:
-- do not average identities
-- do not keep recognizable traits from the original actors
-
-Perform full character replacement via scene recreation.
-
-EXPRESSION LOCK:
-Preserve the original facial expression and emotion from the scene.
-Do not transfer expression or mood from the reference photos.
-
-SCENE AND POSE LOCK:
-Preserve exactly:
+const UNIVERSAL_PROMPT = `SCENE REFERENCE:
+image_input[0] is the original scene reference.
+It defines ONLY:
 - body pose and skeleton
-- head position, angle, and face direction
-- interaction and distance between characters
+- head position, angle, and visibility
+- facial expression and emotion
+- interaction between characters
 - camera angle, framing, and perspective
 - lighting, shadows, and color grading
-- background, objects, clothing, and accessories
+- clothing, environment, and objects
+Do NOT reuse, copy, or edit any pixels from image_input[0].
+Do NOT treat the scene as a base image.
+Treat the scene strictly as a blueprint.
 
-Recreate each person naturally in the same position, adapting identity to the original perspective and lighting.
+---
 
-HEAD RECONSTRUCTION:
-Reconstruct the visible head using the reference identity,
-while matching the original head position and angle.
+CHARACTER REPLACEMENT:
+Completely remove the original characters from the scene.
+Recreate both characters from scratch using the identity source images.
+The final image must look like the scene was originally created with these people.
 
-Do not use the original actor's head shape, skull structure, or facial geometry as a base.
+---
 
-Do not paste or overlay faces.
-Ensure correct 3D structure, depth, shadows, and lighting.
+IDENTITY RULES:
+Each character must be built ONLY from their assigned identity images.
+- The man must use ONLY the MAN identity images
+- The woman must use ONLY the WOMAN identity images
+Do NOT:
+- mix identities
+- blend identities
+- transfer features between people
+- use any facial traits from the original scene characters
 
-HAIR CONSISTENCY:
-Hair must come from the reference identity:
-- hairstyle, hairline, and structure from the reference images
+---
 
-Adapt naturally to lighting and motion,
-but do not inherit hair from the original character.
+IDENTITY PRIORITY:
+Identity accuracy is the highest priority.
+The characters must clearly look like the identity source images,
+not like modified versions of the original actors.
 
-STYLE ADAPTATION:
-Match the original scene style:
-- animated → same stylized/cartoon form
-- realistic → photorealistic detail
+---
 
-Do not over-stylize or reinterpret the scene.
+FULL HEAD RECONSTRUCTION:
+Reconstruct the entire head and face using identity images, including:
+- skull structure
+- facial proportions
+- bone structure
+- skin tone and texture
+- eyes, nose, lips
+- hair shape, hairline, and structure
+Do NOT:
+- reuse the original head or face
+- paste or overlay faces
+- perform face swap or face transfer
 
-HEAD ANGLE AND VISIBILITY:
-Preserve visibility exactly:
-- profile → keep profile
-- back view → keep back view, do not generate a face
-- occluded → show only visible parts
-- blurred → preserve blur level
+---
 
-Do not rotate faces toward the camera.
-Do not reveal hidden facial areas.
-Do not invent unseen features.
+EXPRESSION LOCK:
+Preserve the exact facial expression and emotion from the original scene.
+Expression must come from the scene,
+NOT from the identity photos.
 
-ANATOMY:
-Hands must be natural:
-- exactly 5 fingers per visible hand
-- correct proportions
-- no deformation or extra fingers
+---
 
-Respect occlusions (hair, hands, objects, shadows, motion blur).
+SCENE LOCK:
+Preserve exactly:
+- pose and body geometry
+- head angle and direction
+- character positioning and interaction
+- camera framing and perspective
+- lighting and shadows
+- background and environment
+- clothing and accessories
+
+---
+
+GEOMETRY AND LIGHTING INTEGRATION:
+Ensure the reconstructed faces:
+- match the exact head angle and perspective
+- match scene lighting and shadows
+- have correct depth and 3D structure
+- integrate naturally with the body
+No flat faces. No mismatched lighting.
+
+---
 
 QUALITY:
-High-resolution, sharp image.
-Natural skin texture (no plastic smoothing).
-Accurate lighting, contrast, and color.
+High-resolution image.
+Natural skin texture.
+Accurate lighting and color.
+No artifacts, distortions, or unnatural blending.
+
+---
 
 OUTPUT:
-Same scene and composition, recreated with the two reference people as the actual characters.
-The result must look natural, fully integrated, and not edited or composited.`;
+A fully reconstructed scene with the same composition,
+but with the uploaded man and woman as the real characters.
+The result must look natural, consistent, and not edited.`;
 
 async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
