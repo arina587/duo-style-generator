@@ -9,104 +9,41 @@ const corsHeaders = {
 const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
 const MODEL_NAME = "zsxkib/flux-pulid";
 
-const UNIVERSAL_PROMPT = `SCENE REFERENCE:
-image_input[0] is the original scene reference.
-It defines ONLY:
-- body pose and skeleton
-- head position, angle, and visibility
+const UNIVERSAL_PROMPT = `Use image_input[0] as the base scene.
+
+Replace the people in the scene with the provided identity images.
+
+- The man must match the MAN identity images
+- The woman must match the WOMAN identity images
+
+Keep everything else exactly the same:
+- pose and body positions
 - facial expression and emotion
-- interaction between characters
-- camera angle, framing, and perspective
-- lighting, shadows, and color grading
-- clothing, environment, and objects
-Do NOT reuse, copy, or edit any pixels from image_input[0].
-Do NOT treat the scene as a base image.
-Treat the scene strictly as a blueprint.
-
----
-
-CHARACTER REPLACEMENT:
-Completely remove the original characters from the scene.
-Recreate both characters from scratch using the identity source images.
-The final image must look like the scene was originally created with these people.
-
----
-
-IDENTITY RULES:
-Each character must be built ONLY from their assigned identity images.
-- The man must use ONLY the MAN identity images
-- The woman must use ONLY the WOMAN identity images
-Do NOT:
-- mix identities
-- blend identities
-- transfer features between people
-- use any facial traits from the original scene characters
-
----
-
-IDENTITY PRIORITY:
-Identity accuracy is the highest priority.
-The characters must clearly look like the identity source images,
-not like modified versions of the original actors.
-
----
-
-FULL HEAD RECONSTRUCTION:
-Reconstruct the entire head and face using identity images, including:
-- skull structure
-- facial proportions
-- bone structure
-- skin tone and texture
-- eyes, nose, lips
-- hair shape, hairline, and structure
-Do NOT:
-- reuse the original head or face
-- paste or overlay faces
-- perform face swap or face transfer
-
----
-
-EXPRESSION LOCK:
-Preserve the exact facial expression and emotion from the original scene.
-Expression must come from the scene,
-NOT from the identity photos.
-
----
-
-SCENE LOCK:
-Preserve exactly:
-- pose and body geometry
-- head angle and direction
-- character positioning and interaction
-- camera framing and perspective
+- camera angle and framing
 - lighting and shadows
 - background and environment
-- clothing and accessories
+- clothing and composition
 
----
+Focus on accurate identity:
+the faces must look as close as possible to the identity images.
 
-GEOMETRY AND LIGHTING INTEGRATION:
-Ensure the reconstructed faces:
-- match the exact head angle and perspective
-- match scene lighting and shadows
-- have correct depth and 3D structure
-- integrate naturally with the body
-No flat faces. No mismatched lighting.
+VISIBILITY AND ORIENTATION RULE (CRITICAL):
 
----
+Respect the original head orientation and visibility:
 
-QUALITY:
-High-resolution image.
-Natural skin texture.
-Accurate lighting and color.
-No artifacts, distortions, or unnatural blending.
+- If a person is facing away, keep them facing away
+- If a person is in profile, keep the same profile angle
+- If the face is partially visible, only show visible parts
+- If the face is not visible, do NOT generate a face
 
----
+Do NOT:
+- rotate heads toward the camera
+- reveal hidden facial features
+- invent unseen parts of the face
 
-OUTPUT:
-A fully reconstructed scene with the same composition,
-but with the uploaded man and woman as the real characters.
-The result must look natural, consistent, and not edited.`;
+Do not restyle or reinterpret the image.
+
+Make the result look natural and realistic, as if these people were originally in the scene.`;
 
 async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
@@ -478,10 +415,8 @@ Deno.serve(async (req: Request) => {
       ? `image_input[${idxWomanStart}]`
       : `image_input[${idxWomanStart}] and image_input[${idxWomanEnd}]`;
 
-    const roleMappingBlock = `
-
-IMAGE ROLE MAPPING (${totalImages} images total):
-- image_input[${idxScene}] = scene to recreate (pose, lighting, composition source)
+    const roleMappingBlock = `IMAGE ROLE MAPPING (${totalImages} images total):
+- image_input[${idxScene}] = base scene (pose, expression, lighting, composition source)
 - ${manIdxList} = MAN identity source${manCount > 1 ? " (same person, merge into one identity)" : ""}
 - ${womanIdxList} = WOMAN identity source${womanCount > 1 ? " (same person, merge into one identity)" : ""}
 
@@ -490,7 +425,12 @@ The woman in the scene must look like the person in ${womanIdxList}.
 Do NOT mix man and woman identity sources.
 Do NOT use image_input[${idxScene}] as an identity source.`;
 
-    const finalPrompt = basePrompt + roleMappingBlock;
+    const multiImageBlock = (hasMan2 || hasWoman2)
+      ? `\n\nIf multiple identity images are provided for the same person, treat them as the same identity and combine their features consistently.`
+      : "";
+
+    // Final prompt order: [IMAGE ROLE MAPPING] + [UNIVERSAL_PROMPT] + [optional multi-image block]
+    const finalPrompt = roleMappingBlock + "\n\n" + basePrompt + multiImageBlock;
 
     console.log("[PROMPT] source=" + promptSource + " base_len=" + basePrompt.length + " final_len=" + finalPrompt.length);
     console.log("[PROMPT] role mapping block:\n" + roleMappingBlock.trim());
