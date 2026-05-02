@@ -111,9 +111,12 @@ function App() {
         else if (Array.isArray(data.output) && data.output[0]) imageUrl = data.output[0];
         else if (typeof data.output === 'string') imageUrl = data.output;
         if (!imageUrl) throw new Error('Generation succeeded but no image URL was returned. Please try again.');
-        console.log('[FALLBACK] using URL mode:', imageUrl.substring(0, 100));
+        const fallbackProxy = imageUrl.startsWith("https://replicate.delivery/")
+          ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate?proxyUrl=${encodeURIComponent(imageUrl)}`
+          : imageUrl;
+        console.log('[FALLBACK] using URL mode, proxy:', fallbackProxy.substring(0, 100));
         setRawImageUrl(imageUrl);
-        setGeneratedImageUrl(imageUrl);
+        setGeneratedImageUrl(fallbackProxy);
         return;
       }
 

@@ -267,20 +267,25 @@ function extractOutput(prediction: Record<string, unknown>): string {
   return outputUrl;
 }
 
-async function fetchOutputImage(url: string): Promise<{ body: ReadableStream; contentType: string; byteLength: number }> {
+async function fetchOutputImage(url: string): Promise<{ body: ReadableStream; contentType: string; contentLength: string | null }> {
   const MAX_ATTEMPTS = 2;
   let lastErr: Error = new Error("Unknown error");
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
+      // Timeout covers only the connection + headers phase. clearTimeout fires as soon
+      // as headers arrive so the abort signal is not live during body streaming —
+      // aborting mid-stream would truncate the response body silently.
       const abort = new AbortController();
       const timeout = setTimeout(() => abort.abort(), 30000);
       const res = await fetch(url, { signal: abort.signal, headers: { "Accept": "image/*" } });
       clearTimeout(timeout);
 
       if (res.status === 403) {
-        console.error(`[FETCH IMAGE] attempt ${attempt}: signed URL expired (403)`);
-        throw new Error("Signed URL expired (403)");
+        // Signed URL has already expired — retrying the same URL will also fail.
+        // Do not retry: throw immediately so the error propagates clearly.
+        console.error(`[FETCH IMAGE] attempt ${attempt}: SIGNED URL EXPIRED (403) — not retrying`);
+        throw Object.assign(new Error("Signed URL expired (403)"), { noRetry: true });
       }
       if (!res.ok) {
         console.error(`[FETCH IMAGE] attempt ${attempt}: upstream ${res.status}`);
@@ -288,15 +293,17 @@ async function fetchOutputImage(url: string): Promise<{ body: ReadableStream; co
       }
 
       const contentType = res.headers.get("content-type") || "image/jpeg";
-      const contentLength = parseInt(res.headers.get("content-length") || "0", 10);
+      const contentLength = res.headers.get("content-length");
       console.log(`[FETCH IMAGE] attempt ${attempt}: ok content-type=${contentType} content-length=${contentLength}`);
 
-      return { body: res.body!, contentType, byteLength: contentLength };
+      return { body: res.body!, contentType, contentLength };
     } catch (err) {
       lastErr = err instanceof Error ? err : new Error(String(err));
+      // Do not retry 403 — the signed URL is permanently expired.
+      if ((err as { noRetry?: boolean }).noRetry) break;
       if (attempt < MAX_ATTEMPTS) {
-        console.log(`[FETCH IMAGE] retrying in 2s...`);
-        await new Promise((r) => setTimeout(r, 2000));
+        console.log(`[FETCH IMAGE] transient error on attempt ${attempt}, retrying immediately...`);
+        // No delay — signed URL TTL is short; every second counts.
       }
     }
   }
@@ -528,18 +535,17 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
     // it is fetched. Fetching here, inside the same execution context that just received
     // the URL, eliminates that gap entirely.
     const imageBytes = await fetchOutputImage(outputUrl);
-    console.log("[OUTPUT] fetched bytes:", imageBytes.byteLength, "content-type:", imageBytes.contentType);
+    console.log("[OUTPUT] streaming content-type:", imageBytes.contentType, "content-length:", imageBytes.contentLength);
 
-    return new Response(imageBytes.body, {
-      status: 200,
-      headers: {
-        ...corsHeaders,
-        "Content-Type": imageBytes.contentType,
-        "Cache-Control": "public, max-age=86400",
-        // Raw URL in header so the frontend can surface it as an "Open in new tab" fallback.
-        "X-Image-Url": outputUrl,
-      },
-    });
+    const responseHeaders: Record<string, string> = {
+      ...corsHeaders,
+      "Content-Type": imageBytes.contentType,
+      "Cache-Control": "public, max-age=86400",
+      "X-Image-Url": outputUrl,
+    };
+    if (imageBytes.contentLength) responseHeaders["Content-Length"] = imageBytes.contentLength;
+
+    return new Response(imageBytes.body, { status: 200, headers: responseHeaders });
   } catch (error) {
     const msg = error instanceof Error ? error.message : "Unknown error";
     const debugInfo = (error as { debugInfo?: Record<string, unknown> }).debugInfo ?? {};
