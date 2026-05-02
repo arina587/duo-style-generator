@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { Download, ArrowLeft, Sparkles, Loader2, AlertCircle, Wand2, ExternalLink } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Download, ArrowLeft, Sparkles, Loader2, AlertCircle, Wand2, ExternalLink, RefreshCw } from 'lucide-react';
 
 interface ResultProps {
   onBack: () => void;
@@ -14,6 +14,13 @@ interface ResultProps {
   generationError: string;
 }
 
+interface DebugInfo {
+  status?: number;
+  type?: string;
+  size?: number;
+  error?: string;
+}
+
 export default function Result({
   onBack,
   onStartOver,
@@ -26,20 +33,46 @@ export default function Result({
   generationError,
 }: ResultProps) {
   const hasRetried = useRef(false);
-  // retryKey increments to force <img> remount without mutating the URL
   const [retryKey, setRetryKey] = useState(0);
+  const [debugInfo, setDebugInfo] = useState<DebugInfo | null>(null);
+  const [debugFetching, setDebugFetching] = useState(false);
 
   // Generation succeeded as long as a raw URL exists
   const generationSucceeded = !!rawImageUrl;
   const showImage = !!generatedImageUrl && !imgLoadFailed && !isGenerating;
 
-  // Reset retry state when a new image URL arrives
+  // The URL to diagnose — prefer generatedImageUrl (proxy), fall back to rawImageUrl
+  const displaySrc = generatedImageUrl || rawImageUrl;
+
+  // Reset retry + debug state when a new image URL arrives
   const prevUrl = useRef('');
   if (generatedImageUrl !== prevUrl.current) {
     prevUrl.current = generatedImageUrl;
     hasRetried.current = false;
     setRetryKey(0);
+    setDebugInfo(null);
   }
+
+  // When imgLoadFailed becomes true, auto-fetch the URL to gather diagnostics
+  useEffect(() => {
+    if (!imgLoadFailed || !displaySrc || displaySrc.startsWith('blob:')) return;
+
+    setDebugFetching(true);
+    setDebugInfo(null);
+
+    fetch(displaySrc)
+      .then(async (res) => {
+        const blob = await res.blob();
+        const info: DebugInfo = { status: res.status, type: blob.type, size: blob.size };
+        console.log('[DEBUG FETCH]', info);
+        setDebugInfo(info);
+      })
+      .catch((e: Error) => {
+        console.log('[DEBUG FETCH ERROR]', e.message);
+        setDebugInfo({ error: e.message });
+      })
+      .finally(() => setDebugFetching(false));
+  }, [imgLoadFailed, displaySrc]);
 
   const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const src = (e.target as HTMLImageElement).src;
@@ -48,20 +81,18 @@ export default function Result({
 
     if (!hasRetried.current) {
       hasRetried.current = true;
-      // Retry with the same proxy URL after 1500ms — the `key` prop change
-      // forces React to unmount/remount the <img> element, which triggers a
-      // fresh browser request. Do NOT append ?retry=timestamp to the URL:
-      // that mutates the signed-URL query string and causes a 403 on CDNs.
       console.log('[IMG RETRY]', generatedImageUrl.substring(0, 100));
-      // Increment retryKey after 1500ms — the key change on <img> forces React
-      // to unmount and remount the element, issuing a fresh browser request for
-      // the same URL without mutating any query string parameters.
       setTimeout(() => setRetryKey(k => k + 1), 1500);
     } else {
-      // Both original and retry failed — show fallback, never set generationError
       console.log('[IMG RETRY EXHAUSTED] marking imgLoadFailed');
       onImgError(src);
     }
+  };
+
+  const handleRetry = () => {
+    hasRetried.current = false;
+    setDebugInfo(null);
+    setRetryKey(k => k + 1);
   };
 
   const handleDownload = () => {
@@ -167,24 +198,76 @@ export default function Result({
 
             {/* 3 — Generation succeeded but browser failed to display after retry */}
             {!isGenerating && generationSucceeded && imgLoadFailed && (
-              <div className="text-center p-10 animate-fade-in">
-                <div className="mx-auto mb-5 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
-                  <AlertCircle className="w-8 h-8 text-amber-400" />
+              <div className="w-full p-6 animate-fade-in overflow-auto">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center flex-shrink-0" style={{ width: 44, height: 44 }}>
+                    <AlertCircle className="w-6 h-6 text-amber-400" />
+                  </div>
+                  <div>
+                    <p className="font-display font-bold text-[#2d2642] text-sm">Image Generated — Display Failed</p>
+                    <p className="text-[#7a6f96] text-xs font-body">Network or browser blocked the image. Use the links below.</p>
+                  </div>
                 </div>
-                <p className="font-display font-bold text-[#2d2642] text-base mb-2">Image Generated</p>
-                <p className="text-[#7a6f96] text-sm max-w-xs mx-auto leading-relaxed font-body mb-5">
-                  Your image was created but could not be displayed due to network or device restrictions.
-                </p>
-                <a
-                  href={rawImageUrl || generatedImageUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white font-body transition-opacity hover:opacity-90"
-                  style={{ background: 'linear-gradient(135deg, #9b7dd4, #b49cdb)' }}
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  Open Image in New Tab
-                </a>
+
+                {/* Debug panel */}
+                <div className="rounded-xl border border-gray-200 bg-gray-950 text-green-400 font-mono text-xs p-4 mb-4 space-y-1 overflow-x-auto">
+                  <p className="text-gray-500 mb-2">// debug info</p>
+                  <p><span className="text-gray-400">URL:</span> <a href={displaySrc} target="_blank" rel="noopener noreferrer" className="underline break-all text-green-300">{displaySrc}</a></p>
+                  {rawImageUrl && rawImageUrl !== displaySrc && (
+                    <p><span className="text-gray-400">RAW:</span> <a href={rawImageUrl} target="_blank" rel="noopener noreferrer" className="underline break-all text-green-300">{rawImageUrl}</a></p>
+                  )}
+                  {debugFetching && (
+                    <p className="text-yellow-400">fetching diagnostics...</p>
+                  )}
+                  {debugInfo && (
+                    <>
+                      {debugInfo.status !== undefined && (
+                        <p><span className="text-gray-400">STATUS:</span> <span className={debugInfo.status === 200 ? 'text-green-400' : 'text-red-400'}>{debugInfo.status}</span></p>
+                      )}
+                      {debugInfo.type !== undefined && (
+                        <p><span className="text-gray-400">TYPE:</span> {debugInfo.type || '(empty)'}</p>
+                      )}
+                      {debugInfo.size !== undefined && (
+                        <p><span className="text-gray-400">SIZE:</span> {debugInfo.size.toLocaleString()} bytes</p>
+                      )}
+                      {debugInfo.error !== undefined && (
+                        <p><span className="text-gray-400">ERROR:</span> <span className="text-red-400">{debugInfo.error}</span></p>
+                      )}
+                    </>
+                  )}
+                </div>
+
+                {/* Actions */}
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={handleRetry}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold font-body border-2 border-[#d8ccea] text-[#7a6f96] hover:text-[#2d2642] transition-colors"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" />
+                    Retry display
+                  </button>
+                  <a
+                    href={displaySrc}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white font-body transition-opacity hover:opacity-90"
+                    style={{ background: 'linear-gradient(135deg, #9b7dd4, #b49cdb)' }}
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    Open image directly
+                  </a>
+                  {rawImageUrl && rawImageUrl !== displaySrc && (
+                    <a
+                      href={rawImageUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold font-body border-2 border-[#d8ccea] text-[#7a6f96] hover:text-[#2d2642] transition-colors"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      Open raw URL
+                    </a>
+                  )}
+                </div>
               </div>
             )}
 
