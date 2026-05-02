@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Home from './components/Home';
 import Upload from './components/Upload';
 import Result from './components/Result';
@@ -26,44 +26,34 @@ function classifyError(err: unknown): FailureType {
   return 'unknown';
 }
 
-// Runs a HEAD probe against a URL and logs everything about the response.
-// Never throws — designed purely for diagnostic side-effects.
 async function probeUrl(label: string, url: string): Promise<void> {
   const tag = `[PROBE:${label}]`;
-  console.log(`${tag} starting HEAD probe: ${url.substring(0, 80)}`);
+  console.log(`${tag} HEAD probe: ${url.substring(0, 80)}`);
   try {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 8000);
     const res = await fetch(url, { method: 'HEAD', signal: controller.signal });
     clearTimeout(timer);
-    const type: FailureType = res.ok ? 'unknown' : 'http';
-    console.log(`${tag} status=${res.status} ok=${res.ok} type=${type}`);
-    console.log(`${tag} content-type=${res.headers.get('content-type') ?? 'none'} content-length=${res.headers.get('content-length') ?? 'none'} cache-control=${res.headers.get('cache-control') ?? 'none'}`);
-    if (!res.ok) {
-      console.warn(`${tag} HTTP error: ${res.status} ${res.statusText} → failure-type=http`);
-    }
+    console.log(`${tag} status=${res.status} ok=${res.ok} content-type=${res.headers.get('content-type') ?? 'none'}`);
+    if (!res.ok) console.warn(`${tag} HTTP error: ${res.status} ${res.statusText}`);
   } catch (e) {
     const ftype = classifyError(e);
     const msg = e instanceof Error ? `${e.name}: ${e.message}` : String(e);
-    console.error(`${tag} probe threw → failure-type=${ftype} error="${msg}"`);
+    console.error(`${tag} threw failure-type=${ftype} error="${msg}"`);
   }
 }
 
-// ─── Image preloader with full diagnostic logging ─────────────────────────────
+// ─── Image preloader ─────────────────────────────────────────────────────────
 
 function loadImageWithRetry(url: string, retries = 2, timeout = 9000): Promise<boolean> {
   return new Promise((resolve) => {
     let attempt = 0;
     const { ua, isMobile } = getDeviceInfo();
-
-    console.log(`[PRELOAD] start url=${url.substring(0, 80)}`);
-    console.log(`[PRELOAD] device isMobile=${isMobile} ua="${ua.substring(0, 120)}"`);
+    console.log(`[PRELOAD] start url=${url.substring(0, 80)} isMobile=${isMobile}`);
 
     function tryLoad() {
       attempt++;
       const tag = `[PRELOAD attempt=${attempt}/${retries + 1}]`;
-      console.log(`${tag} creating Image element`);
-
       const img = new window.Image();
       let settled = false;
       let timer: ReturnType<typeof setTimeout>;
@@ -86,7 +76,7 @@ function loadImageWithRetry(url: string, retries = 2, timeout = 9000): Promise<b
           console.log(`${tag} retrying in ${delay}ms...`);
           setTimeout(tryLoad, delay);
         } else {
-          console.error(`[PRELOAD] ALL ATTEMPTS EXHAUSTED url=${url.substring(0, 80)} isMobile=${isMobile}`);
+          console.error(`[PRELOAD] ALL ATTEMPTS EXHAUSTED url=${url.substring(0, 80)} ua="${ua.substring(0, 80)}"`);
           resolve(false);
         }
       }
@@ -95,11 +85,10 @@ function loadImageWithRetry(url: string, retries = 2, timeout = 9000): Promise<b
       img.onload = () => succeed();
       img.onerror = (event) => {
         const detail = typeof event === 'string' ? event : (event as Event)?.type ?? 'onerror';
-        console.error(`[PRELOAD] img.onerror attempt=${attempt} detail="${detail}" url=${url.substring(0, 80)} ts=${Date.now()}`);
-        fail('onerror — browser rejected image load', 'network');
+        console.error(`[PRELOAD] onerror attempt=${attempt} detail="${detail}" url=${url.substring(0, 80)}`);
+        fail('onerror', 'network');
       };
       img.src = url;
-      console.log(`${tag} img.src set, waiting for load/error...`);
     }
 
     tryLoad();
@@ -114,8 +103,12 @@ function App() {
   const [rawImageUrl, setRawImageUrl] = useState<string>('');
   const [imgLoadFailed, setImgLoadFailed] = useState(false);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
+  // generationError: API/model failed, no image URL exists
+  const [generationError, setGenerationError] = useState<string>('');
   const [, setDebugInfo] = useState<Record<string, unknown> | null>(null);
+
+  // Latest request ID — stale async results from older requests are ignored
+  const activeRequestId = useRef<string>('');
 
   // Primary photos (required)
   const [photo1, setPhoto1] = useState<File | null>(null);
@@ -146,12 +139,16 @@ function App() {
     if (isGenerating) return;
 
     if (!photo1 || !photo2 || !referenceFile || !selectedRef) {
-      setError('Missing required data. Please try again.');
+      setGenerationError('Missing required data. Please try again.');
       return;
     }
 
+    // Assign a unique ID to this request; stale callbacks check against this
+    const requestId = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    activeRequestId.current = requestId;
+
     setIsGenerating(true);
-    setError('');
+    setGenerationError('');
     setDebugInfo(null);
     setGeneratedImageUrl('');
     setRawImageUrl('');
@@ -159,6 +156,9 @@ function App() {
     setCurrentView('result');
 
     const style = selectedRef.style;
+    const device = getDeviceInfo();
+
+    console.log(`[GENERATE] requestId=${requestId} referenceId=${selectedRef.id} isMobile=${device.isMobile}`);
 
     try {
       const formData = new FormData();
@@ -170,21 +170,18 @@ function App() {
       formData.append('style', style);
       formData.append('referenceId', selectedRef.id);
       formData.append('prompt', selectedRef.prompt ?? '');
+      if (mode) formData.append('mode', mode);
 
-      if (mode) {
-        formData.append('mode', mode);
-      }
-
-      console.log('[GENERATE] payload:', {
+      console.log(`[GENERATE] requestId=${requestId} payload:`, {
         referenceId: selectedRef.id,
-        style: selectedRef.style,
+        style,
         promptLength: (selectedRef.prompt ?? '').length,
         images: {
-          person1: { size: photo1.size, type: photo1.type, name: photo1.name },
-          person1b: photo1b ? { size: photo1b.size, type: photo1b.type } : null,
-          person2: { size: photo2.size, type: photo2.type, name: photo2.name },
-          person2b: photo2b ? { size: photo2b.size, type: photo2b.type } : null,
-          reference: { size: referenceFile.size, type: referenceFile.type, name: referenceFile.name },
+          person1: { size: photo1.size, type: photo1.type },
+          person1b: photo1b ? { size: photo1b.size } : null,
+          person2: { size: photo2.size, type: photo2.type },
+          person2b: photo2b ? { size: photo2b.size } : null,
+          reference: { size: referenceFile.size, type: referenceFile.type },
         },
       });
 
@@ -192,23 +189,24 @@ function App() {
 
       const response = await fetch(apiUrl, {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
+        headers: { 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
         body: formData,
       });
 
-      const data = await response.json();
-
-      if (data.debug) {
-        setDebugInfo(data.debug);
+      // Guard: ignore if a newer request was started
+      if (activeRequestId.current !== requestId) {
+        console.log(`[GENERATE] requestId=${requestId} — superseded, ignoring response`);
+        return;
       }
+
+      const data = await response.json();
+      if (data.debug) setDebugInfo(data.debug);
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to generate image');
       }
 
-      console.log('[API] raw response:', JSON.stringify(data).substring(0, 500));
+      console.log(`[GENERATE] requestId=${requestId} raw response:`, JSON.stringify(data).substring(0, 500));
 
       let imageUrl: string | undefined;
       if (data.success && data.imageUrl) {
@@ -219,88 +217,111 @@ function App() {
         imageUrl = data.output;
       }
 
-      console.log('[API] imageUrl:', imageUrl);
-      console.log('[API] imageUrl prefix:', imageUrl?.substring(0, 60));
+      console.log(`[GENERATE] requestId=${requestId} rawImageUrl=${imageUrl}`);
 
       if (!imageUrl) {
         throw new Error('Generation succeeded but no image URL was returned. Please try again.');
       }
 
+      // Store rawImageUrl immediately — this is set regardless of load outcome
       setRawImageUrl(imageUrl);
 
-      // ── Diagnostics: log device context and probe both URLs before any render attempt ──
-      const device = getDeviceInfo();
-      console.log(`[DIAG] device isMobile=${device.isMobile} ua="${device.ua.substring(0, 120)}"`);
-      console.log(`[DIAG] rawImageUrl=${imageUrl}`);
-
-      // Run HEAD probes in parallel — do not await, pure side-effect logging
       const proxyUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate?proxyUrl=${encodeURIComponent(imageUrl)}`;
+      console.log(`[GENERATE] requestId=${requestId} proxyUrl=${proxyUrl.substring(0, 80)}`);
+
+      // Fire diagnostic probes (non-blocking)
       probeUrl('raw', imageUrl);
       probeUrl('proxy', proxyUrl);
 
-      console.log('[IMAGE] proxy URL built:', proxyUrl.substring(0, 80));
+      // ── Image loading pipeline ────────────────────────────────────────────
+      // We try proxy first, then raw. If both fail, we still keep rawImageUrl
+      // and set imgLoadFailed so the UI shows a fallback link rather than
+      // an error state. Generation was successful.
 
       const proxyPreloadOk = await loadImageWithRetry(proxyUrl, 2, 12000);
 
+      if (activeRequestId.current !== requestId) {
+        console.log(`[GENERATE] requestId=${requestId} — superseded after proxy preload, ignoring`);
+        return;
+      }
+
+      console.log(`[GENERATE] requestId=${requestId} proxyPreloadOk=${proxyPreloadOk}`);
+
       if (proxyPreloadOk) {
-        console.log('[IMAGE] proxy preload succeeded — fetching blob via proxy');
+        // Try to blob it for a stable local URL
         try {
           const imgRes = await fetch(proxyUrl);
-          console.log('[IMAGE] proxy fetch status:', imgRes.status, 'ok:', imgRes.ok, 'content-type:', imgRes.headers.get('content-type'), 'content-length:', imgRes.headers.get('content-length'));
+          console.log(`[GENERATE] requestId=${requestId} proxy fetch status=${imgRes.status} ok=${imgRes.ok} content-type=${imgRes.headers.get('content-type')} content-length=${imgRes.headers.get('content-length')}`);
+
+          if (activeRequestId.current !== requestId) return;
 
           if (imgRes.ok) {
             const blob = await imgRes.blob();
-            console.log('[IMAGE] proxy blob size:', blob.size, 'type:', blob.type);
+            console.log(`[GENERATE] requestId=${requestId} proxy blob size=${blob.size} type=${blob.type}`);
             if (blob.size > 0) {
               const localUrl = URL.createObjectURL(blob);
-              console.log('[IMAGE] upgraded to local blob URL via proxy');
+              console.log(`[GENERATE] requestId=${requestId} upgraded to local blob URL`);
               setGeneratedImageUrl(localUrl);
             } else {
-              console.warn('[IMAGE] proxy blob empty — failure-type=http using proxy URL directly');
+              console.warn(`[GENERATE] requestId=${requestId} proxy blob empty — using proxy URL directly`);
               setGeneratedImageUrl(proxyUrl);
             }
           } else {
-            console.warn(`[IMAGE] proxy fetch not ok: status=${imgRes.status} failure-type=http — using proxy URL directly`);
+            console.warn(`[GENERATE] requestId=${requestId} proxy fetch not ok status=${imgRes.status} — using proxy URL directly`);
             setGeneratedImageUrl(proxyUrl);
           }
         } catch (fetchErr) {
+          if (activeRequestId.current !== requestId) return;
           const ftype = classifyError(fetchErr);
           const msg = fetchErr instanceof Error ? `${fetchErr.name}: ${fetchErr.message}` : String(fetchErr);
-          console.warn(`[IMAGE] proxy fetch threw failure-type=${ftype} error="${msg}" — using proxy URL directly`);
+          console.warn(`[GENERATE] requestId=${requestId} proxy fetch threw failure-type=${ftype} error="${msg}" — using proxy URL directly`);
           setGeneratedImageUrl(proxyUrl);
         }
       } else {
-        // Proxy preload failed — run a HEAD probe now to capture why, then fall back to raw
-        console.warn(`[IMAGE] proxy preload FAILED isMobile=${device.isMobile} — running diagnostic probe and falling back to raw URL`);
+        // Proxy failed — try raw URL
         probeUrl('proxy-postfail', proxyUrl);
+        console.warn(`[GENERATE] requestId=${requestId} proxy preload FAILED — trying raw URL`);
 
         const rawPreloadOk = await loadImageWithRetry(imageUrl, 1, 9000);
+
+        if (activeRequestId.current !== requestId) return;
+
+        console.log(`[GENERATE] requestId=${requestId} rawPreloadOk=${rawPreloadOk}`);
+
         if (rawPreloadOk) {
-          console.log('[IMAGE] raw URL preload succeeded — using raw URL');
+          console.log(`[GENERATE] requestId=${requestId} raw URL preload succeeded`);
           setGeneratedImageUrl(imageUrl);
         } else {
-          console.error(`[IMAGE] BOTH proxy and raw preload FAILED isMobile=${device.isMobile} ua="${device.ua.substring(0, 80)}" — marking imgLoadFailed`);
+          // Both failed — image was generated, but cannot be loaded in this browser/network.
+          // Keep rawImageUrl (already set) and mark imgLoadFailed so Result shows the fallback link.
           probeUrl('raw-postfail', imageUrl);
-          setGeneratedImageUrl(imageUrl);
+          console.error(`[GENERATE] requestId=${requestId} BOTH proxy and raw preload FAILED — imageLoadError (not generationError) ua="${device.ua.substring(0, 80)}"`);
+          setGeneratedImageUrl(imageUrl); // keep URL so fallback "Open" link works
           setImgLoadFailed(true);
         }
       }
     } catch (err) {
-      console.error('[GENERATE] error:', err);
-      setError(err instanceof Error ? err.message : 'An error occurred during generation');
+      if (activeRequestId.current !== requestId) return;
+      // This path = true generation failure (API error, network, no URL returned)
+      const msg = err instanceof Error ? err.message : 'An error occurred during generation';
+      console.error(`[GENERATE] requestId=${requestId} generationError:`, msg);
+      setGenerationError(msg);
     } finally {
-      setIsGenerating(false);
+      if (activeRequestId.current === requestId) {
+        setIsGenerating(false);
+      }
     }
   };
 
   const handleBackToHome = () => {
+    activeRequestId.current = '';
     setCurrentView('home');
     setSelectedRef(null);
     setSelectedCategory(null);
     setGeneratedImageUrl('');
     setRawImageUrl('');
     setImgLoadFailed(false);
-    setError('');
+    setGenerationError('');
     setDebugInfo(null);
     setPhoto1(null);
     setPhoto2(null);
@@ -317,7 +338,7 @@ function App() {
     setGeneratedImageUrl('');
     setRawImageUrl('');
     setImgLoadFailed(false);
-    setError('');
+    setGenerationError('');
   };
 
   const handleBackToUpload = () => {
@@ -325,7 +346,7 @@ function App() {
     setGeneratedImageUrl('');
     setRawImageUrl('');
     setImgLoadFailed(false);
-    setError('');
+    setGenerationError('');
   };
 
   return (
@@ -365,11 +386,11 @@ function App() {
           rawImageUrl={rawImageUrl}
           imgLoadFailed={imgLoadFailed}
           onImgError={(src) => {
-            console.error('[IMG] onError — native render failed:', src?.substring(0, 80));
+            console.error(`[IMG onError] native render failed src=${src?.substring(0, 80)} isMobile=${getDeviceInfo().isMobile} — imageLoadError (not generationError)`);
             setImgLoadFailed(true);
           }}
           isGenerating={isGenerating}
-          error={error}
+          generationError={generationError}
         />
       )}
     </>

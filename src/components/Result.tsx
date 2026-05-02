@@ -8,7 +8,8 @@ interface ResultProps {
   imgLoadFailed: boolean;
   onImgError: (src: string) => void;
   isGenerating: boolean;
-  error: string;
+  // Only set when the API/model call itself failed and no image URL exists
+  generationError: string;
 }
 
 export default function Result({
@@ -19,20 +20,36 @@ export default function Result({
   imgLoadFailed,
   onImgError,
   isGenerating,
-  error,
+  generationError,
 }: ResultProps) {
-  const hasUrl = !!generatedImageUrl && !isGenerating;
+  // An image URL exists = generation succeeded, regardless of load outcome
+  const generationSucceeded = !!rawImageUrl;
+  const showImage = !!generatedImageUrl && !imgLoadFailed && !isGenerating;
 
   const handleDownload = () => {
-    if (generatedImageUrl) {
-      const link = document.createElement('a');
-      link.href = generatedImageUrl;
-      link.download = 'duo-style-fusion.jpg';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+    const url = generatedImageUrl || rawImageUrl;
+    if (!url) return;
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'duo-style-fusion.jpg';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
+
+  // Heading / subtitle logic
+  let heading = 'Your Styled Fusion';
+  let subtitle = 'Your AI-generated fusion is ready to download';
+  if (isGenerating) {
+    heading = 'Creating Your Fusion';
+    subtitle = 'AI is crafting your styled photo — this may take a minute';
+  } else if (generationSucceeded && imgLoadFailed) {
+    heading = 'Image Generated';
+    subtitle = 'Your image was created — tap below to open it';
+  } else if (generationError) {
+    heading = 'Generation Failed';
+    subtitle = 'Something went wrong during generation';
+  }
 
   return (
     <div className="min-h-screen" style={{ position: 'relative', zIndex: 1 }}>
@@ -64,26 +81,16 @@ export default function Result({
 
         {/* Page heading */}
         <div className="text-center mb-7">
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#2d2642] mb-1.5">
-            {isGenerating
-              ? 'Creating Your Fusion'
-              : error && !hasUrl
-              ? 'Generation Failed'
-              : 'Your Styled Fusion'}
-          </h2>
-          <p className="text-[#7a6f96] text-sm font-body">
-            {isGenerating
-              ? 'AI is crafting your styled photo — this may take a minute'
-              : error && !hasUrl
-              ? 'Something went wrong during generation'
-              : 'Your AI-generated fusion is ready to download'}
-          </p>
+          <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#2d2642] mb-1.5">{heading}</h2>
+          <p className="text-[#7a6f96] text-sm font-body">{subtitle}</p>
         </div>
 
         {/* Result card */}
         <div className="card-premium overflow-hidden mb-6">
           <div className="aspect-square flex items-center justify-center relative" style={{ background: 'linear-gradient(145deg, #f3eefa, #ede6f6)' }}>
-            {isGenerating ? (
+
+            {/* 1 — Generating */}
+            {isGenerating && (
               <div className="text-center p-10 animate-fade-in">
                 <div className="relative w-16 h-16 mx-auto mb-5">
                   <div className="absolute inset-0 rounded-full border-2" style={{ borderColor: '#d8ccea' }} />
@@ -104,7 +111,10 @@ export default function Result({
                   ))}
                 </div>
               </div>
-            ) : generatedImageUrl && !imgLoadFailed ? (
+            )}
+
+            {/* 2 — Image loaded successfully */}
+            {!isGenerating && showImage && (
               <img
                 src={generatedImageUrl}
                 alt="Generated fusion result"
@@ -112,12 +122,14 @@ export default function Result({
                 onError={(e) => {
                   const src = (e.target as HTMLImageElement).src;
                   const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-                  console.error(`[IMG onError] ts=${Date.now()} isMobile=${isMobile} src=${src.substring(0, 100)}`);
-                  console.error(`[IMG onError] ua="${navigator.userAgent.substring(0, 120)}"`);
+                  console.error(`[IMG onError] ts=${Date.now()} isMobile=${isMobile} src=${src.substring(0, 100)} — imageLoadError`);
                   onImgError(src);
                 }}
               />
-            ) : generatedImageUrl && imgLoadFailed ? (
+            )}
+
+            {/* 3 — Generation succeeded but image failed to load in browser */}
+            {!isGenerating && generationSucceeded && imgLoadFailed && (
               <div className="text-center p-10 animate-fade-in">
                 <div className="mx-auto mb-5 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
                   <AlertCircle className="w-8 h-8 text-amber-400" />
@@ -137,15 +149,21 @@ export default function Result({
                   Open Image in New Tab
                 </a>
               </div>
-            ) : error ? (
+            )}
+
+            {/* 4 — API/generation error (no image URL exists) */}
+            {!isGenerating && !generationSucceeded && generationError && (
               <div className="text-center p-10 animate-fade-in">
                 <div className="mx-auto mb-5 rounded-xl border-2 border-red-200 bg-red-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
                   <AlertCircle className="w-8 h-8 text-red-400" />
                 </div>
                 <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Generation Error</p>
-                <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">{error}</p>
+                <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">{generationError}</p>
               </div>
-            ) : (
+            )}
+
+            {/* 5 — Empty state (before generation) */}
+            {!isGenerating && !generationSucceeded && !generationError && (
               <div className="text-center p-10 animate-fade-in">
                 <div className="mx-auto mb-5 rounded-xl border-2 flex items-center justify-center" style={{ width: 64, height: 64, background: '#f3eefa', borderColor: '#d8ccea' }}>
                   <Sparkles className="w-8 h-8 text-[#b49cdb]" />
@@ -153,6 +171,7 @@ export default function Result({
                 <p className="text-[#7a6f96] text-sm font-body">Generated result will appear here</p>
               </div>
             )}
+
           </div>
         </div>
 
@@ -160,7 +179,7 @@ export default function Result({
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={handleDownload}
-            disabled={isGenerating || !generatedImageUrl}
+            disabled={isGenerating || (!generatedImageUrl && !rawImageUrl)}
             className="btn-generate flex items-center justify-center gap-2 px-8 py-3.5 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <Download className="w-4 h-4" />
