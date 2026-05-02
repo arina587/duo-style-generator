@@ -39,6 +39,53 @@ function App() {
     setCurrentView('upload');
   };
 
+  const pollPrediction = (predictionId: string, requestId: string) => {
+    const POLL_INTERVAL_MS = 2500;
+    const apiBase = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
+    const authHeader = { 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` };
+
+    const poll = async () => {
+      if (activeRequestId.current !== requestId) return;
+
+      try {
+        const res = await fetch(`${apiBase}?id=${predictionId}`, { headers: authHeader });
+        if (activeRequestId.current !== requestId) return;
+
+        const data = await res.json() as { status: string; output?: string; error?: string };
+        console.log('[POLL] id=' + predictionId + ' status=' + data.status);
+
+        if (data.status === 'succeeded') {
+          const rawUrl = data.output ?? '';
+          const proxied = rawUrl.startsWith('https://replicate.delivery/')
+            ? `${apiBase}?proxyUrl=${encodeURIComponent(rawUrl)}`
+            : rawUrl;
+          console.log('[POLL] succeeded, proxied url:', proxied.substring(0, 100));
+          setRawImageUrl(rawUrl);
+          setGeneratedImageUrl(proxied);
+          setIsGenerating(false);
+          return;
+        }
+
+        if (data.status === 'failed' || data.status === 'canceled') {
+          console.error('[POLL] prediction', data.status, data.error);
+          setGenerationError(data.error || 'Generation failed. Please try again.');
+          setIsGenerating(false);
+          return;
+        }
+
+        // starting / processing — keep polling
+        setTimeout(poll, POLL_INTERVAL_MS);
+      } catch (err) {
+        if (activeRequestId.current !== requestId) return;
+        // Network hiccup during poll — retry silently, do not surface as error
+        console.warn('[POLL] network error, retrying:', err instanceof Error ? err.message : err);
+        setTimeout(poll, POLL_INTERVAL_MS);
+      }
+    };
+
+    poll();
+  };
+
   const handleGenerate = async (
     photo1: File,
     photo2: File,
@@ -91,79 +138,32 @@ function App() {
 
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
-        throw new Error((data as { error?: string }).error || 'Failed to generate image');
+        throw new Error((data as { error?: string }).error || 'Failed to start generation');
       }
 
-      // Edge function now returns image bytes directly (Content-Type: image/*).
-      // The raw Replicate signed URL is passed back in X-Image-Url for the fallback link.
-      const contentType = response.headers.get('content-type') || '';
-      const rawImageUrl = response.headers.get('x-image-url') || '';
+      const data = await response.json() as { id?: string; status?: string };
+      const predictionId = data.id;
 
-      console.log('[RESPONSE] content-type:', contentType, 'x-image-url:', rawImageUrl.substring(0, 80));
-
-      if (activeRequestId.current !== requestId) return;
-
-      if (!contentType.startsWith('image/')) {
-        // Unexpected JSON response — fall back to URL extraction for resilience
-        const data = await response.json();
-        let imageUrl: string | undefined;
-        if (data.success && data.imageUrl) imageUrl = data.imageUrl;
-        else if (Array.isArray(data.output) && data.output[0]) imageUrl = data.output[0];
-        else if (typeof data.output === 'string') imageUrl = data.output;
-        if (!imageUrl) throw new Error('Generation succeeded but no image URL was returned. Please try again.');
-        const fallbackProxy = imageUrl.startsWith('https://replicate.delivery/')
-          ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate?proxyUrl=${encodeURIComponent(imageUrl)}`
-          : imageUrl;
-        console.log('[FALLBACK] using URL mode, proxy:', fallbackProxy.substring(0, 100));
-        console.log('[IMG SRC]', fallbackProxy.substring(0, 100));
-        setRawImageUrl(imageUrl);
-        setGeneratedImageUrl(fallbackProxy);
-        return;
+      if (!predictionId) {
+        throw new Error('No prediction ID returned from server. Please try again.');
       }
 
-      // Convert the binary response to a local blob URL — zero TTL risk,
-      // no second round-trip, works offline once loaded.
-      const blob = await response.blob();
+      console.log('[GENERATE] prediction started id=' + predictionId + ' status=' + data.status);
 
-      if (activeRequestId.current !== requestId) return;
-
-      const blobUrl = URL.createObjectURL(blob);
-      console.log('[RENDER START] blob size:', blob.size, 'type:', blob.type);
-      console.log('[IMG SRC]', blobUrl.substring(0, 80));
-
-      setRawImageUrl(rawImageUrl || blobUrl);
-      setGeneratedImageUrl(blobUrl);
+      // Hand off to non-blocking poll loop — handleGenerate returns immediately
+      pollPrediction(predictionId, requestId);
 
     } catch (err) {
       if (activeRequestId.current !== requestId) return;
       const msg = err instanceof Error ? err.message : 'An error occurred during generation';
       console.error('[GENERATE ERROR] requestId=' + requestId, msg);
-
-      // Network/connection errors (fetch abort, connection reset, gateway timeout)
-      // are not generation failures — the model may still be running.
-      // Only surface a hard error when the API explicitly returned one.
-      const isNetworkError = err instanceof TypeError ||
-        msg.toLowerCase().includes('failed to fetch') ||
-        msg.toLowerCase().includes('network') ||
-        msg.toLowerCase().includes('aborted') ||
-        msg.toLowerCase().includes('504') ||
-        msg.toLowerCase().includes('502');
-
-      if (isNetworkError) {
-        console.warn('[GENERATE] network error — not treating as generation failure');
-        setGenerationError('Connection timed out. The image may still be generating — please wait or try again.');
-      } else {
-        setGenerationError(msg);
-      }
-    } finally {
-      if (activeRequestId.current === requestId) {
-        setIsGenerating(false);
-      }
+      setGenerationError(msg);
+      setIsGenerating(false);
     }
   };
 
   const handleBackToHome = () => {
-    activeRequestId.current = '';
+    activeRequestId.current = ''; // stops any running poll loop
     setCurrentView('home');
     setSelectedRef(null);
     setSelectedCategory(null);
