@@ -7,8 +7,9 @@ interface ResultProps {
   rawImageUrl: string;
   imgLoadFailed: boolean;
   onImgError: (src: string) => void;
+  onImgLoad: () => void;
   isGenerating: boolean;
-  // Only set when the API/model call itself failed and no image URL exists
+  // Only set when the API/model call itself failed and no image URL was returned
   generationError: string;
 }
 
@@ -19,10 +20,11 @@ export default function Result({
   rawImageUrl,
   imgLoadFailed,
   onImgError,
+  onImgLoad,
   isGenerating,
   generationError,
 }: ResultProps) {
-  // An image URL exists = generation succeeded, regardless of load outcome
+  // Generation succeeded as long as a raw URL exists
   const generationSucceeded = !!rawImageUrl;
   const showImage = !!generatedImageUrl && !imgLoadFailed && !isGenerating;
 
@@ -37,7 +39,6 @@ export default function Result({
     document.body.removeChild(link);
   };
 
-  // Heading / subtitle logic
   let heading = 'Your Styled Fusion';
   let subtitle = 'Your AI-generated fusion is ready to download';
   if (isGenerating) {
@@ -119,16 +120,15 @@ export default function Result({
                 src={generatedImageUrl}
                 alt="Generated fusion result"
                 className="w-full h-full object-contain animate-scale-in"
+                onLoad={onImgLoad}
                 onError={(e) => {
                   const src = (e.target as HTMLImageElement).src;
-                  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-                  console.error(`[IMG onError] ts=${Date.now()} isMobile=${isMobile} src=${src.substring(0, 100)} — imageLoadError`);
                   onImgError(src);
                 }}
               />
             )}
 
-            {/* 3 — Generation succeeded but image failed to load in browser */}
+            {/* 3 — Generation succeeded but browser failed to display the image */}
             {!isGenerating && generationSucceeded && imgLoadFailed && (
               <div className="text-center p-10 animate-fade-in">
                 <div className="mx-auto mb-5 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
@@ -151,7 +151,7 @@ export default function Result({
               </div>
             )}
 
-            {/* 4 — API/generation error (no image URL exists) */}
+            {/* 4 — API/generation error (no image URL was returned) */}
             {!isGenerating && !generationSucceeded && generationError && (
               <div className="text-center p-10 animate-fade-in">
                 <div className="mx-auto mb-5 rounded-xl border-2 border-red-200 bg-red-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
@@ -162,7 +162,7 @@ export default function Result({
               </div>
             )}
 
-            {/* 5 — Empty state (before generation) */}
+            {/* 5 — Empty idle state */}
             {!isGenerating && !generationSucceeded && !generationError && (
               <div className="text-center p-10 animate-fade-in">
                 <div className="mx-auto mb-5 rounded-xl border-2 flex items-center justify-center" style={{ width: 64, height: 64, background: '#f3eefa', borderColor: '#d8ccea' }}>
@@ -193,6 +193,7 @@ export default function Result({
             Create Another
           </button>
         </div>
+
       </div>
     </div>
   );
