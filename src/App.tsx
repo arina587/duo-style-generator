@@ -113,9 +113,6 @@ function App() {
         throw new Error('Generation succeeded but no image URL was returned. Please try again.');
       }
 
-      // Store raw URL immediately — always used for the fallback "Open" link
-      setRawImageUrl(imageUrl);
-
       // Route the image through the edge function proxy so the browser never
       // fetches replicate.delivery directly. This avoids:
       //   - signed URL TTL expiry between API response and browser render
@@ -127,7 +124,13 @@ function App() {
         ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate?proxyUrl=${encodeURIComponent(imageUrl)}`
         : imageUrl;
 
+      console.log('[RENDER START] raw:', imageUrl.substring(0, 100));
       console.log('[RENDER START] proxy:', proxyUrl.substring(0, 100));
+
+      // Set both URLs in the same render cycle — rawImageUrl must never be truthy
+      // while generatedImageUrl is still empty, or Result briefly shows the
+      // "generation succeeded but image failed" fallback before the proxy URL arrives.
+      setRawImageUrl(imageUrl);
       setGeneratedImageUrl(proxyUrl);
 
     } catch (err) {

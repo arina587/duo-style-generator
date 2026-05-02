@@ -302,7 +302,13 @@ Deno.serve(async (req: Request) => {
         });
       }
 
-      const upstream = await fetch(proxyUrl);
+      const proxyAbort = new AbortController();
+      const proxyTimeout = setTimeout(() => proxyAbort.abort(), 30000);
+      const upstream = await fetch(proxyUrl, {
+        signal: proxyAbort.signal,
+        headers: { "Accept": "image/*" },
+      });
+      clearTimeout(proxyTimeout);
       console.log("[PROXY] upstream status:", upstream.status, "content-type:", upstream.headers.get("content-type"), "content-length:", upstream.headers.get("content-length"));
 
       if (!upstream.ok) {
@@ -477,18 +483,14 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
 
     const { outputUrl, debugInfo } = await runReplicate(finalPrompt, images, replicateApiKey);
 
-    // Probe the output URL so we can log accessibility before returning it
-    const probe = await probeOutputUrl(outputUrl);
-    console.log("[OUTPUT] probe:", JSON.stringify(probe));
+    // Do NOT probe the output URL with a HEAD request here — it burns signed URL TTL
+    // (Replicate signed URLs expire in ~60–120s) and adds latency between generation
+    // completion and the client receiving the URL. The proxy fetch in the GET handler
+    // confirms reachability when the browser actually loads the image.
     debugInfo.output_url = outputUrl;
-    debugInfo.output_probe = probe;
 
-    // Return the raw output URL directly — do NOT attempt to fetch and base64-encode
-    // the output image inside the edge function. Output images from Nano Banana Pro
-    // can be 3–10 MB; base64-encoding them inflates to 4–13 MB which exceeds the
-    // Supabase Edge Function response size limit (~6 MB), causing silent truncation
-    // that the frontend sees as "Load failed". The frontend fetches the URL directly
-    // and converts it to a local blob URL instead.
+    console.log("[OUTPUT] url:", outputUrl.substring(0, 100));
+
     return new Response(
       JSON.stringify({ success: true, imageUrl: outputUrl, debug: debugInfo }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
