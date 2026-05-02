@@ -267,75 +267,6 @@ function extractOutput(prediction: Record<string, unknown>): string {
   return outputUrl;
 }
 
-// ---------------------------------------------------------------------------
-// Provider flag — switch between "replicate" (default) and "openai"
-// Set IMAGE_PROVIDER=openai in Edge Function secrets to activate GPT Image 1.5.
-// Set IMAGE_PROVIDER=replicate (or leave unset) to use the Replicate pipeline.
-// ---------------------------------------------------------------------------
-const IMAGE_PROVIDER = (Deno.env.get("IMAGE_PROVIDER") || "replicate").toLowerCase();
-
-// ---------------------------------------------------------------------------
-// GPT Image 2 — image edit via OpenAI /v1/images/edits
-// ---------------------------------------------------------------------------
-function dataUrlToUint8Array(dataUrl: string): { bytes: Uint8Array; mime: string } {
-  const [header, b64] = dataUrl.split(",");
-  const mime = header.replace("data:", "").replace(";base64", "");
-  const binary = atob(b64);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-  return { bytes, mime };
-}
-
-async function runOpenAIImageEdit(
-  prompt: string,
-  images: string[], // dataURL strings, index 0 = scene
-  apiKey: string,
-): Promise<string> {
-  console.log("[OPENAI] starting image edit, images:", images.length, "prompt_len:", prompt.length);
-
-  const form = new FormData();
-  form.append("model", "gpt-image-1.5");
-  form.append("prompt", prompt);
-  // NOTE: do NOT send response_format — gpt-image models reject it with 400.
-  // b64_json is returned by default in data[0].b64_json.
-  form.append("n", "1");
-
-  // Attach all images. The OpenAI edits endpoint accepts multiple images.
-  // image[0] is the scene reference; subsequent images are identity sources.
-  for (let i = 0; i < images.length; i++) {
-    const { bytes, mime } = dataUrlToUint8Array(images[i]);
-    const ext = mime.includes("png") ? "png" : "jpeg";
-    const blob = new Blob([bytes], { type: mime });
-    form.append("image[]", blob, `image_${i}.${ext}`);
-    console.log(`[OPENAI] attached image[${i}] mime=${mime} bytes=${bytes.length}`);
-  }
-
-  const res = await fetch("https://api.openai.com/v1/images/edits", {
-    method: "POST",
-    headers: { "Authorization": `Bearer ${apiKey}` },
-    body: form,
-  });
-
-  const text = await res.text();
-  console.log("[OPENAI] status:", res.status, "body:", text.substring(0, 300));
-
-  if (!res.ok) {
-    throw new Error(`OpenAI error ${res.status}: ${text.substring(0, 500)}`);
-  }
-
-  let json: Record<string, unknown>;
-  try {
-    json = JSON.parse(text);
-  } catch {
-    throw new Error(`OpenAI non-JSON response: ${text.substring(0, 300)}`);
-  }
-
-  const b64 = (json.data as Array<{ b64_json?: string }>)?.[0]?.b64_json;
-  if (!b64) throw new Error(`No image in OpenAI response: ${JSON.stringify(json).substring(0, 300)}`);
-
-  console.log("[OPENAI] received b64 image, length:", b64.length);
-  return `data:image/png;base64,${b64}`;
-}
 
 async function fetchOutputImage(url: string): Promise<{ buffer: ArrayBuffer; contentType: string }> {
   const MAX_ATTEMPTS = 2;
@@ -609,24 +540,6 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
       },
     }));
 
-    console.log("[PROVIDER]", IMAGE_PROVIDER);
-
-    if (IMAGE_PROVIDER === "openai") {
-      // --- OpenAI GPT Image 2 path ---
-      const openAiKey = Deno.env.get("OPENAI_API_KEY");
-      if (!openAiKey) throw new Error("OPENAI_API_KEY not configured");
-
-      const dataUrl = await runOpenAIImageEdit(finalPrompt, images, openAiKey);
-      console.log("[OUTPUT] openai data url length:", dataUrl.length);
-
-      // Return JSON — no proxy needed, data URL is self-contained.
-      return new Response(JSON.stringify({ success: true, imageUrl: dataUrl }), {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    // --- Replicate path (default) — unchanged ---
     const { outputUrl, debugInfo } = await runReplicate(finalPrompt, images, replicateApiKey);
     debugInfo.output_url = outputUrl;
     console.log("[OUTPUT] url:", outputUrl.substring(0, 100));

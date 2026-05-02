@@ -111,15 +111,11 @@ function App() {
         else if (Array.isArray(data.output) && data.output[0]) imageUrl = data.output[0];
         else if (typeof data.output === 'string') imageUrl = data.output;
         if (!imageUrl) throw new Error('Generation succeeded but no image URL was returned. Please try again.');
-        // data: URLs (OpenAI path) are used directly — no proxy needed.
-        // replicate.delivery URLs must always go through the proxy.
-        const fallbackProxy = imageUrl.startsWith('data:')
-          ? imageUrl
-          : imageUrl.startsWith('https://replicate.delivery/')
-            ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate?proxyUrl=${encodeURIComponent(imageUrl)}`
-            : imageUrl;
-        console.log('[FALLBACK] provider=json url_type=' + (imageUrl.startsWith('data:') ? 'data' : 'url') + ' proxy:', fallbackProxy.substring(0, 100));
-        setRawImageUrl(imageUrl.startsWith('data:') ? '[data:image]' : imageUrl);
+        const fallbackProxy = imageUrl.startsWith('https://replicate.delivery/')
+          ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate?proxyUrl=${encodeURIComponent(imageUrl)}`
+          : imageUrl;
+        console.log('[FALLBACK] using URL mode, proxy:', fallbackProxy.substring(0, 100));
+        setRawImageUrl(imageUrl);
         setGeneratedImageUrl(fallbackProxy);
         return;
       }
