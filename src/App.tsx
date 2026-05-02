@@ -114,51 +114,72 @@ function App() {
     console.log('[DEVICE]', navigator.userAgent);
     console.log('[GENERATE] requestId=' + requestId + ' referenceId=' + selectedRef.id);
 
-    try {
-      const formData = new FormData();
-      formData.append('person1', photo1);
-      if (photo1b) formData.append('person1b', photo1b);
-      formData.append('person2', photo2);
-      if (photo2b) formData.append('person2b', photo2b);
-      formData.append('reference', referenceFile);
-      formData.append('style', selectedRef.style);
-      formData.append('referenceId', selectedRef.id);
-      formData.append('prompt', selectedRef.prompt ?? '');
-      if (mode) formData.append('mode', mode);
+    const formData = new FormData();
+    formData.append('person1', photo1);
+    if (photo1b) formData.append('person1b', photo1b);
+    formData.append('person2', photo2);
+    if (photo2b) formData.append('person2b', photo2b);
+    formData.append('reference', referenceFile);
+    formData.append('style', selectedRef.style);
+    formData.append('referenceId', selectedRef.id);
+    formData.append('prompt', selectedRef.prompt ?? '');
+    if (mode) formData.append('mode', mode);
 
-      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
+    const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
+    const MAX_START_RETRIES = 2;
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
-        body: formData,
-      });
-
+    for (let attempt = 0; attempt <= MAX_START_RETRIES; attempt++) {
       if (activeRequestId.current !== requestId) return;
 
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error((data as { error?: string }).error || 'Failed to start generation');
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
+          body: formData,
+        });
+
+        if (activeRequestId.current !== requestId) return;
+
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          throw new Error((data as { error?: string }).error || 'Failed to start generation');
+        }
+
+        const data = await response.json() as { id?: string; status?: string };
+        const predictionId = data.id;
+
+        if (!predictionId) {
+          throw new Error('No prediction ID returned from server. Please try again.');
+        }
+
+        console.log('[GENERATE] prediction started id=' + predictionId + ' status=' + data.status);
+
+        // Hand off to non-blocking poll loop — handleGenerate returns immediately
+        pollPrediction(predictionId, requestId);
+        return;
+
+      } catch (err) {
+        if (activeRequestId.current !== requestId) return;
+
+        const msg = err instanceof Error ? err.message : String(err);
+        const lower = msg.toLowerCase();
+        const isNetworkTimeout =
+          lower.includes('failed to fetch') ||
+          lower.includes('network') ||
+          lower.includes('timeout') ||
+          lower.includes('aborted');
+
+        if (isNetworkTimeout && attempt < MAX_START_RETRIES) {
+          console.warn(`[GENERATE] network timeout on attempt ${attempt + 1}, retrying in 3s...`);
+          await new Promise((resolve) => setTimeout(resolve, 3000));
+          continue;
+        }
+
+        console.error('[GENERATE ERROR] requestId=' + requestId, msg);
+        setGenerationError(msg || 'Generation failed. Please try again.');
+        setIsGenerating(false);
+        return;
       }
-
-      const data = await response.json() as { id?: string; status?: string };
-      const predictionId = data.id;
-
-      if (!predictionId) {
-        throw new Error('No prediction ID returned from server. Please try again.');
-      }
-
-      console.log('[GENERATE] prediction started id=' + predictionId + ' status=' + data.status);
-
-      // Hand off to non-blocking poll loop — handleGenerate returns immediately
-      pollPrediction(predictionId, requestId);
-
-    } catch (err) {
-      if (activeRequestId.current !== requestId) return;
-      const msg = err instanceof Error ? err.message : 'An error occurred during generation';
-      console.error('[GENERATE ERROR] requestId=' + requestId, msg);
-      setGenerationError(msg);
-      setIsGenerating(false);
     }
   };
 
