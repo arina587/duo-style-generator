@@ -248,7 +248,9 @@ Deno.serve(async (req: Request) => {
       console.log(`[STATUS] id=${predictionId} status=${status}`);
 
       if (status === "succeeded") {
+        console.log("REPLICATE OUTPUT:", JSON.stringify(prediction.output)?.substring(0, 300));
         const outputUrl = extractOutputUrl(prediction.output);
+        console.log("PARSED IMAGE URL:", outputUrl?.substring(0, 200) ?? "(none)");
         if (!outputUrl) {
           return new Response(JSON.stringify({ status: "failed", error: "Output URL could not be extracted" }), {
             headers: { ...corsHeaders, "Content-Type": "application/json" },
