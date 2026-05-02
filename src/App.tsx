@@ -245,9 +245,7 @@ function App() {
       if (proxyPreloadOk) {
         console.log('[IMAGE] proxy preload succeeded — fetching blob via proxy');
         try {
-          const imgRes = await fetch(proxyUrl, {
-            headers: { 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
-          });
+          const imgRes = await fetch(proxyUrl);
           console.log('[IMAGE] proxy fetch status:', imgRes.status, 'ok:', imgRes.ok, 'content-type:', imgRes.headers.get('content-type'), 'content-length:', imgRes.headers.get('content-length'));
 
           if (imgRes.ok) {
