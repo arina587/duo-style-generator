@@ -224,9 +224,9 @@ Same pose, same lighting, same composition — but with real human identities ac
   },
 
   // ── Euphoria ──
-  { id: 'euphoria-1', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria1.jpg', modifier: 'Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene.' },
+  { id: 'euphoria-1', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria1.jpg', modifier: 'Force strong identity replacement for the face. Fully override the original facial identity and remove any resemblance to the original actress. The face must clearly match the identity images, even in close-up shots. Do not preserve original facial features or structure.' },
   { id: 'euphoria-2', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria2.jpg' },
-  { id: 'euphoria-3', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria3.jpg', modifier: 'Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene.' },
+  { id: 'euphoria-3', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria3.jpg', modifier: 'Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene. Apply natural film grain, subtle noise, and slight color imperfection to the face. Reduce skin smoothness and avoid clean or studio-like appearance. Ensure the face inherits the same cinematic texture as the scene.' },
 
   // ── Titanic ──
   { id: 'titanic-1', style: 'titanic', label: 'Titanic', image: '/styles/titanic/titanic1.jpg' },

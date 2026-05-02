@@ -538,8 +538,8 @@ Deno.serve(async (req: Request) => {
       : UNIVERSAL_PROMPT;
 
     const REFERENCE_MODIFIERS: Record<string, string> = {
-      "euphoria-1": "Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene.",
-      "euphoria-3": "Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene.",
+      "euphoria-1": "Force strong identity replacement for the face. Fully override the original facial identity and remove any resemblance to the original actress. The face must clearly match the identity images, even in close-up shots. Do not preserve original facial features or structure.",
+      "euphoria-3": "Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene. Apply natural film grain, subtle noise, and slight color imperfection to the face. Reduce skin smoothness and avoid clean or studio-like appearance. Ensure the face inherits the same cinematic texture as the scene.",
     };
     const modifier = (typeof referenceId === "string" && REFERENCE_MODIFIERS[referenceId]) || "";
 
