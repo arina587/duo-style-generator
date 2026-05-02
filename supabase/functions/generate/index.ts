@@ -19,17 +19,38 @@ CHARACTER MAPPING:
 - male → man from male reference
 
 PRIORITY ORDER:
-1. Identity replacement (highest priority)
-2. Pose, body position, head angle, visibility, interaction
+1. Identity accuracy (highest priority)
+2. Pose, body position, head angle, visibility
 3. Scene, lighting, camera, background, clothing, style
 
-IDENTITY RULES:
-Completely remove the original identities.
-Use only the reference identities.
-Do NOT mix original and new identity.
-Do NOT keep any original facial features, hair identity, or recognizable traits.
+IDENTITY SOURCE OF TRUTH (CRITICAL):
+The reference photos are the only source of appearance.
+
+All facial features, proportions, skin tone, and identity must come from the reference images.
+
+Do not use, inherit, or recreate any facial structure or appearance from the original scene characters.
+
+The result must look like the reference people placed into the scene, not a transformation of the original actors.
+
+IDENTITY DOMINANCE:
+The reference identity must dominate completely.
+
+Minimize any resemblance to the original scene actors as much as possible.
+
+If a conflict occurs, preserve identity accuracy over original facial features.
 
 Perform full character replacement, not face swapping.
+
+POSE LOCK (CRITICAL):
+Keep the exact original pose and skeleton.
+
+Do not change:
+- body position
+- shoulders or torso
+- head position
+- limb placement
+
+No pose reinterpretation or refinement.
 
 SCENE PRESERVATION:
 Keep unchanged:
@@ -40,43 +61,69 @@ Keep unchanged:
 - background and all objects
 - clothing and accessories
 
-Recreate each person naturally in the same position, adapting identity to fit perspective, lighting, and body.
+Recreate each person naturally in the same position, fitting identity into the original perspective and lighting.
 
 IDENTITY ACCURACY:
 Preserve:
 - facial structure and proportions
 - skin tone and texture
 - eyes, nose, lips, bone structure
-- hair shape, color, length
-Keep the person clearly recognizable.
+- hair shape, color, and length
+
+Avoid identity blending.
+The result should look like the reference person placed into the scene.
+
+HEAD RECONSTRUCTION (CRITICAL):
+Do not reuse the original head or facial structure as a base.
+
+Reconstruct the head from the reference identity while matching the original head position and angle.
+
+Do not morph the reference face to fit the original identity.
+
+Ensure correct 3D structure, depth, and lighting.
 
 Do not paste or overlay faces.
-Ensure seamless head–body integration.
 
 STYLE ADAPTATION:
-Match the original style:
+Match the original scene style:
 - animated → same stylized/cartoon form
 - realistic → photorealistic detail
-Do not over-stylize.
+
+Do not over-stylize or reinterpret the scene.
 
 HEAD ANGLE & VISIBILITY:
-Keep original head angle, direction, and visibility.
-No rotation, no frontalization.
-Do not reveal hidden faces.
-Respect gaze direction and perspective.
+Preserve original head angle, direction, and visibility.
+
+Do not rotate or frontalize faces.
+
+LOW VISIBILITY CASES (CRITICAL):
+If a face is not fully visible:
+- profile → keep strict profile
+- back view → keep back view, do not generate a face
+- partially occluded → show only visible parts
+- blurred/motion → preserve blur level
+
+Do not invent new facial features or expressions.
+Do not reveal hidden parts.
 
 ANATOMY:
-Preserve body anatomy.
-Hands: 5 fingers, correct proportions, no distortion.
+Hands must be natural:
+- 5 fingers
+- correct proportions
+- no deformation
 
 Respect occlusions (hair, objects, motion blur).
 Do not generate hidden parts.
 
 QUALITY:
-High-resolution, sharp, natural skin texture, correct lighting.
+High-resolution, sharp image.
+
+Natural skin texture (no plastic smoothing).
+Accurate lighting, contrast, and color.
 
 OUTPUT:
-Same scene, same composition — only identities replaced.`;
+Same scene and composition — only identities replaced with the reference people.
+Must look like a real, original frame, not edited or composited.`;
 
 async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
