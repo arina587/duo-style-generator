@@ -106,6 +106,8 @@ export default function Result({
     document.body.removeChild(link);
   };
 
+  const isNetworkTimeout = !isGenerating && !generationSucceeded && generationError.toLowerCase().includes('connection timed out');
+
   let heading = 'Your Styled Fusion';
   let subtitle = 'Your AI-generated fusion is ready to download';
   if (isGenerating) {
@@ -114,6 +116,9 @@ export default function Result({
   } else if (generationSucceeded && imgLoadFailed) {
     heading = 'Image Generated';
     subtitle = 'Your image was created — tap below to open it';
+  } else if (isNetworkTimeout) {
+    heading = 'Taking Longer Than Usual';
+    subtitle = 'The connection dropped but generation may still be running';
   } else if (generationError) {
     heading = 'Generation Failed';
     subtitle = 'Something went wrong during generation';
@@ -274,11 +279,29 @@ export default function Result({
             {/* 4 — API/generation error (no image URL was returned) */}
             {!isGenerating && !generationSucceeded && generationError && (
               <div className="text-center p-10 animate-fade-in">
-                <div className="mx-auto mb-5 rounded-xl border-2 border-red-200 bg-red-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
-                  <AlertCircle className="w-8 h-8 text-red-400" />
-                </div>
-                <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Generation Error</p>
-                <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">{generationError}</p>
+                {isNetworkTimeout ? (
+                  <>
+                    <div className="relative w-16 h-16 mx-auto mb-5">
+                      <div className="absolute inset-0 rounded-full border-2" style={{ borderColor: '#d8ccea' }} />
+                      <div className="absolute inset-0 rounded-full border-t-2 border-amber-400 animate-spin" />
+                      <div className="absolute inset-2.5 rounded-full bg-white flex items-center justify-center">
+                        <Loader2 className="w-6 h-6 text-amber-400 animate-spin" />
+                      </div>
+                    </div>
+                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Still Working...</p>
+                    <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">
+                      The connection dropped but the AI may still be generating. Please wait a moment, then try again if nothing appears.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <div className="mx-auto mb-5 rounded-xl border-2 border-red-200 bg-red-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
+                      <AlertCircle className="w-8 h-8 text-red-400" />
+                    </div>
+                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Generation Error</p>
+                    <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">{generationError}</p>
+                  </>
+                )}
               </div>
             )}
 

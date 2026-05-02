@@ -138,8 +138,23 @@ function App() {
       if (activeRequestId.current !== requestId) return;
       const msg = err instanceof Error ? err.message : 'An error occurred during generation';
       console.error('[GENERATE ERROR] requestId=' + requestId, msg);
-      // generationError is only set here — when the API itself failed
-      setGenerationError(msg);
+
+      // Network/connection errors (fetch abort, connection reset, gateway timeout)
+      // are not generation failures — the model may still be running.
+      // Only surface a hard error when the API explicitly returned one.
+      const isNetworkError = err instanceof TypeError ||
+        msg.toLowerCase().includes('failed to fetch') ||
+        msg.toLowerCase().includes('network') ||
+        msg.toLowerCase().includes('aborted') ||
+        msg.toLowerCase().includes('504') ||
+        msg.toLowerCase().includes('502');
+
+      if (isNetworkError) {
+        console.warn('[GENERATE] network error — not treating as generation failure');
+        setGenerationError('Connection timed out. The image may still be generating — please wait or try again.');
+      } else {
+        setGenerationError(msg);
+      }
     } finally {
       if (activeRequestId.current === requestId) {
         setIsGenerating(false);
