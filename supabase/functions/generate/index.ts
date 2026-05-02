@@ -537,6 +537,12 @@ Deno.serve(async (req: Request) => {
       ? (clientPrompt as string).trim()
       : UNIVERSAL_PROMPT;
 
+    const REFERENCE_MODIFIERS: Record<string, string> = {
+      "euphoria-1": "Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene.",
+      "euphoria-3": "Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene.",
+    };
+    const modifier = (typeof referenceId === "string" && REFERENCE_MODIFIERS[referenceId]) || "";
+
     // Compute exact image_input indices from the actual array build order.
     // image_input layout:
     //   [0]          = scene reference (always)
@@ -578,8 +584,8 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
       ? `\n\nIf multiple identity images are provided for the same person, treat them as the same identity and combine their features consistently.`
       : "";
 
-    // Final prompt order: [IMAGE ROLE MAPPING] + [UNIVERSAL_PROMPT] + [optional multi-image block]
-    const finalPrompt = roleMappingBlock + "\n\n" + basePrompt + multiImageBlock;
+    // Final prompt order: [IMAGE ROLE MAPPING] + [base prompt] + [optional multi-image block] + [optional scene modifier]
+    const finalPrompt = roleMappingBlock + "\n\n" + basePrompt + multiImageBlock + (modifier ? "\n\n" + modifier : "");
 
     console.log("[PROMPT] source=" + promptSource + " base_len=" + basePrompt.length + " final_len=" + finalPrompt.length);
     console.log("[PROMPT] role mapping block:\n" + roleMappingBlock.trim());
