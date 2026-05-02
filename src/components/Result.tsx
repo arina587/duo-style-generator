@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import { Download, ArrowLeft, Sparkles, Loader2, AlertCircle, Wand2, ExternalLink } from 'lucide-react';
 
 interface ResultProps {
@@ -24,12 +25,41 @@ export default function Result({
   isGenerating,
   generationError,
 }: ResultProps) {
+  const hasRetried = useRef(false);
+  const [retrySrc, setRetrySrc] = useState<string>('');
+
   // Generation succeeded as long as a raw URL exists
   const generationSucceeded = !!rawImageUrl;
-  const showImage = !!generatedImageUrl && !imgLoadFailed && !isGenerating;
+  const displaySrc = retrySrc || generatedImageUrl;
+  const showImage = !!displaySrc && !imgLoadFailed && !isGenerating;
+
+  // Reset retry state when a new image URL arrives
+  const prevUrl = useRef('');
+  if (generatedImageUrl !== prevUrl.current) {
+    prevUrl.current = generatedImageUrl;
+    hasRetried.current = false;
+    setRetrySrc('');
+  }
+
+  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const src = (e.target as HTMLImageElement).src;
+    console.log('[IMG ERROR]', src, Date.now());
+    console.log('[DEBUG] Check DevTools → Network → img request status');
+
+    if (!hasRetried.current) {
+      hasRetried.current = true;
+      const retryUrl = (rawImageUrl || generatedImageUrl) + '?retry=' + Date.now();
+      console.log('[IMG RETRY]', retryUrl);
+      setTimeout(() => setRetrySrc(retryUrl), 1500);
+    } else {
+      // Both original and retry failed — show fallback, never set generationError
+      console.log('[IMG RETRY EXHAUSTED] marking imgLoadFailed');
+      onImgError(src);
+    }
+  };
 
   const handleDownload = () => {
-    const url = generatedImageUrl || rawImageUrl;
+    const url = displaySrc || rawImageUrl;
     if (!url) return;
     const link = document.createElement('a');
     link.href = url;
@@ -114,21 +144,22 @@ export default function Result({
               </div>
             )}
 
-            {/* 2 — Image loaded successfully */}
+            {/* 2 — Image (normal or retry src) */}
             {!isGenerating && showImage && (
               <img
-                src={generatedImageUrl}
+                key={displaySrc}
+                src={displaySrc}
                 alt="Generated fusion result"
                 className="w-full h-full object-contain animate-scale-in"
-                onLoad={onImgLoad}
-                onError={(e) => {
-                  const src = (e.target as HTMLImageElement).src;
-                  onImgError(src);
+                onLoad={(e) => {
+                  console.log('[IMG LOADED]', (e.target as HTMLImageElement).src);
+                  onImgLoad();
                 }}
+                onError={handleImgError}
               />
             )}
 
-            {/* 3 — Generation succeeded but browser failed to display the image */}
+            {/* 3 — Generation succeeded but browser failed to display after retry */}
             {!isGenerating && generationSucceeded && imgLoadFailed && (
               <div className="text-center p-10 animate-fade-in">
                 <div className="mx-auto mb-5 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
@@ -179,7 +210,7 @@ export default function Result({
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={handleDownload}
-            disabled={isGenerating || (!generatedImageUrl && !rawImageUrl)}
+            disabled={isGenerating || (!displaySrc && !rawImageUrl)}
             className="btn-generate flex items-center justify-center gap-2 px-8 py-3.5 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <Download className="w-4 h-4" />
