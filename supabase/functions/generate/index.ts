@@ -9,70 +9,71 @@ const corsHeaders = {
 const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
 const MODEL_NAME = "zsxkib/flux-pulid";
 
-const UNIVERSAL_PROMPT = `Use image_input[0] as the locked base for scene, pose, lighting, background, clothing, and composition.
-Perform ONLY character identity replacement.
+const UNIVERSAL_PROMPT = `Use image_input[0] as the locked reference for the scene.
+Perform full character identity replacement.
 
 PRIORITY ORDER (STRICT):
-1) Identity from uploaded photos
-2) Original scene geometry and composition
-3) Style adaptation
+1) Identity from uploaded images
+2) Head pose and body geometry from the scene
+3) Scene composition and lighting
 
-IDENTITY TRANSFER (HARD CONSTRAINT):
-Replace characters using uploaded photos only:
-- female character → woman from female photo
-- male character → man from male photo
+IDENTITY (CRITICAL):
+Replace the original people with the identities from the uploaded images.
+- The man must match the MAN identity images
+- The woman must match the WOMAN identity images
 
-Preserve identity as accurately as possible:
-- facial structure, proportions, age
+Faces must be clearly recognizable and match:
+- facial structure and proportions
 - skin tone and texture
 - eyes, nose, lips, bone structure
-- hairline, hair color, length, and shape
+- hairline, hair shape and color
 
 Do NOT:
 - mix identities
-- generate new faces unrelated to the inputs
-- preserve recognizable features from original scene characters
+- preserve recognizable features from original actors
+- generate unrelated faces
 
-Uploaded photos are the source of identity.
+HEAD REPLACEMENT (KEY):
+Replace the full head identity, not just the face.
+Preserve:
+- head position
+- head angle
+- body pose
+
+Do NOT reuse the original facial structure.
 
 SCENE LOCK:
-Do NOT change the scene:
-- pose and body geometry
-- head position and angle
-- facial expression and emotion
+Keep unchanged:
+- body pose and interaction
 - camera angle and framing
-- lighting and shadows
+- lighting direction and shadows
 - background and environment
-- clothing and composition
+- clothing
 
-FACE AND HEAD INTEGRATION (CRITICAL):
-Do NOT paste or overlay faces.
-Do NOT place the new face as a flat layer over the original.
-Replace the visible facial identity while preserving:
-- original head pose and orientation
-- original perspective and scale
-- original lighting and shadow direction
+LIGHTING INTEGRATION:
+Adapt the new faces to match scene lighting:
+- same color temperature
+- same shadow direction
+- same exposure
 
-Adapt the identity naturally into the scene so that:
-- the face has correct 3D structure and depth
-- lighting matches the scene
-- skin tone matches scene lighting conditions
+Faces must look naturally lit by the scene.
 
-The result must look like the person was originally in the scene, not edited.
+DEPTH:
+Ensure correct 3D structure:
+- no flat faces
+- natural shadows on face and neck
+- correct perspective
 
-VISIBILITY RULE:
+VISIBILITY:
 Respect original visibility:
-- keep profile views unchanged
-- keep back-facing heads without generating a face
-- do not reveal hidden facial features
-
-STYLE:
-Match the original scene style (realistic or stylized) without changing composition.
+- keep profile views
+- keep back-facing heads without generating faces
+- do not reveal hidden parts
 
 OUTPUT:
-Same scene in every aspect.
+Same scene, same composition, same pose.
 Only identities are replaced.
-The result must be natural, consistent, and free of visible editing artifacts.`;
+Result must look natural and not edited.`;
 
 async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
