@@ -89,49 +89,45 @@ function App() {
 
       if (activeRequestId.current !== requestId) return;
 
-      const data = await response.json();
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error || 'Failed to generate image');
+      }
+
+      // Edge function now returns image bytes directly (Content-Type: image/*).
+      // The raw Replicate signed URL is passed back in X-Image-Url for the fallback link.
+      const contentType = response.headers.get('content-type') || '';
+      const rawImageUrl = response.headers.get('x-image-url') || '';
+
+      console.log('[RESPONSE] content-type:', contentType, 'x-image-url:', rawImageUrl.substring(0, 80));
 
       if (activeRequestId.current !== requestId) return;
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate image');
+      if (!contentType.startsWith('image/')) {
+        // Unexpected JSON response — fall back to URL extraction for resilience
+        const data = await response.json();
+        let imageUrl: string | undefined;
+        if (data.success && data.imageUrl) imageUrl = data.imageUrl;
+        else if (Array.isArray(data.output) && data.output[0]) imageUrl = data.output[0];
+        else if (typeof data.output === 'string') imageUrl = data.output;
+        if (!imageUrl) throw new Error('Generation succeeded but no image URL was returned. Please try again.');
+        console.log('[FALLBACK] using URL mode:', imageUrl.substring(0, 100));
+        setRawImageUrl(imageUrl);
+        setGeneratedImageUrl(imageUrl);
+        return;
       }
 
-      // Extract image URL from whatever shape the API returns
-      let imageUrl: string | undefined;
-      if (data.success && data.imageUrl) {
-        imageUrl = data.imageUrl;
-      } else if (Array.isArray(data.output) && data.output[0]) {
-        imageUrl = data.output[0];
-      } else if (typeof data.output === 'string') {
-        imageUrl = data.output;
-      }
+      // Convert the binary response to a local blob URL — zero TTL risk,
+      // no second round-trip, works offline once loaded.
+      const blob = await response.blob();
 
-      console.log('[IMAGE URL]', imageUrl);
+      if (activeRequestId.current !== requestId) return;
 
-      if (!imageUrl) {
-        throw new Error('Generation succeeded but no image URL was returned. Please try again.');
-      }
+      const blobUrl = URL.createObjectURL(blob);
+      console.log('[RENDER START] blob size:', blob.size, 'type:', blob.type);
 
-      // Route the image through the edge function proxy so the browser never
-      // fetches replicate.delivery directly. This avoids:
-      //   - signed URL TTL expiry between API response and browser render
-      //   - mobile carrier / corporate proxy blocking redirects
-      //   - per-device CORS variance on the Replicate CDN
-      // The proxy sets Cache-Control: public, max-age=86400, so subsequent
-      // renders hit the browser cache with no round-trip at all.
-      const proxyUrl = imageUrl.startsWith("https://replicate.delivery/")
-        ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate?proxyUrl=${encodeURIComponent(imageUrl)}`
-        : imageUrl;
-
-      console.log('[RENDER START] raw:', imageUrl.substring(0, 100));
-      console.log('[RENDER START] proxy:', proxyUrl.substring(0, 100));
-
-      // Set both URLs in the same render cycle — rawImageUrl must never be truthy
-      // while generatedImageUrl is still empty, or Result briefly shows the
-      // "generation succeeded but image failed" fallback before the proxy URL arrives.
-      setRawImageUrl(imageUrl);
-      setGeneratedImageUrl(proxyUrl);
+      setRawImageUrl(rawImageUrl || blobUrl);
+      setGeneratedImageUrl(blobUrl);
 
     } catch (err) {
       if (activeRequestId.current !== requestId) return;

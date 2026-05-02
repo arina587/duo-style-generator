@@ -267,6 +267,43 @@ function extractOutput(prediction: Record<string, unknown>): string {
   return outputUrl;
 }
 
+async function fetchOutputImage(url: string): Promise<{ body: ReadableStream; contentType: string; byteLength: number }> {
+  const MAX_ATTEMPTS = 2;
+  let lastErr: Error = new Error("Unknown error");
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const abort = new AbortController();
+      const timeout = setTimeout(() => abort.abort(), 30000);
+      const res = await fetch(url, { signal: abort.signal, headers: { "Accept": "image/*" } });
+      clearTimeout(timeout);
+
+      if (res.status === 403) {
+        console.error(`[FETCH IMAGE] attempt ${attempt}: signed URL expired (403)`);
+        throw new Error("Signed URL expired (403)");
+      }
+      if (!res.ok) {
+        console.error(`[FETCH IMAGE] attempt ${attempt}: upstream ${res.status}`);
+        throw new Error(`Upstream ${res.status}`);
+      }
+
+      const contentType = res.headers.get("content-type") || "image/jpeg";
+      const contentLength = parseInt(res.headers.get("content-length") || "0", 10);
+      console.log(`[FETCH IMAGE] attempt ${attempt}: ok content-type=${contentType} content-length=${contentLength}`);
+
+      return { body: res.body!, contentType, byteLength: contentLength };
+    } catch (err) {
+      lastErr = err instanceof Error ? err : new Error(String(err));
+      if (attempt < MAX_ATTEMPTS) {
+        console.log(`[FETCH IMAGE] retrying in 2s...`);
+        await new Promise((r) => setTimeout(r, 2000));
+      }
+    }
+  }
+
+  throw lastErr;
+}
+
 async function probeOutputUrl(url: string): Promise<{ ok: boolean; status: number; contentType: string; contentLength: string }> {
   try {
     const probe = await fetch(url, { method: "HEAD" });
@@ -482,19 +519,27 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
     }));
 
     const { outputUrl, debugInfo } = await runReplicate(finalPrompt, images, replicateApiKey);
-
-    // Do NOT probe the output URL with a HEAD request here — it burns signed URL TTL
-    // (Replicate signed URLs expire in ~60–120s) and adds latency between generation
-    // completion and the client receiving the URL. The proxy fetch in the GET handler
-    // confirms reachability when the browser actually loads the image.
     debugInfo.output_url = outputUrl;
-
     console.log("[OUTPUT] url:", outputUrl.substring(0, 100));
 
-    return new Response(
-      JSON.stringify({ success: true, imageUrl: outputUrl, debug: debugInfo }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    // Fetch the image bytes immediately — do not return the signed URL to the client.
+    // Replicate signed URLs expire in ~60–120s. Returning the URL and waiting for the
+    // browser to make a second round-trip via the proxy means the URL may expire before
+    // it is fetched. Fetching here, inside the same execution context that just received
+    // the URL, eliminates that gap entirely.
+    const imageBytes = await fetchOutputImage(outputUrl);
+    console.log("[OUTPUT] fetched bytes:", imageBytes.byteLength, "content-type:", imageBytes.contentType);
+
+    return new Response(imageBytes.body, {
+      status: 200,
+      headers: {
+        ...corsHeaders,
+        "Content-Type": imageBytes.contentType,
+        "Cache-Control": "public, max-age=86400",
+        // Raw URL in header so the frontend can surface it as an "Open in new tab" fallback.
+        "X-Image-Url": outputUrl,
+      },
+    });
   } catch (error) {
     const msg = error instanceof Error ? error.message : "Unknown error";
     const debugInfo = (error as { debugInfo?: Record<string, unknown> }).debugInfo ?? {};
