@@ -12,39 +12,54 @@ const MODEL_NAME = "zsxkib/flux-pulid";
 const UNIVERSAL_PROMPT = `Use the original scene image as the base.
 
 PRIMARY TASK:
-Replace both character identities using the reference photos.
+Recreate the original scene with the two reference people as the actual characters.
 
-CHARACTER MAPPING:
-- female → woman from female reference
-- male → man from male reference
+The woman in the scene must be the woman from the female reference photo.
+The man in the scene must be the man from the male reference photo.
+
+This is a full scene recreation with new people,
+not a face transfer, not a face swap, and not an identity blend.
 
 PRIORITY ORDER:
-1. Identity accuracy and recognizability
+1. Identity accuracy and recognizability (highest priority)
 2. Pose, head angle, visibility, and interaction
 3. Scene, lighting, camera, background, clothing, and style
 
 IDENTITY SOURCE OF TRUTH:
-Use the reference photos as the only source for each person's appearance.
+Treat the reference people as the real subjects of the scene.
 
-The new characters must clearly look like the reference people, not like the original scene characters.
+All appearance must come from the reference photos:
+- facial structure and proportions
+- skin tone and texture
+- eyes, nose, lips, bone structure
+- hair shape, color, length
 
-Avoid identity blending:
-- do not keep recognizable facial traits from the original characters
-- do not average original and reference identities
-- prioritize reference facial structure, proportions, skin texture, and hair
+The original actors are used only for:
+- pose
+- placement
+- visibility
+- scene geometry
+
+They must not influence identity.
 
 IDENTITY DOMINANCE:
-The reference identity must be dominant wherever the character is visible.
-The character must clearly look like the reference person, not the original actor.
+The characters must clearly look like the reference people, not the original actors.
 
-Perform full character identity replacement, not simple face swapping.
+Minimize any resemblance to the original identities as much as possible.
+Prioritize reference identity over original facial features in all cases.
+
+Avoid identity blending:
+- do not average identities
+- do not keep recognizable traits from the original actors
+
+Perform full character replacement via scene recreation.
 
 EXPRESSION LOCK:
 Preserve the original facial expression and emotion from the scene.
-Do not transfer expression, smile, or mood from the reference photos.
+Do not transfer expression or mood from the reference photos.
 
 SCENE AND POSE LOCK:
-Preserve the original scene as closely as possible:
+Preserve exactly:
 - body pose and skeleton
 - head position, angle, and face direction
 - interaction and distance between characters
@@ -52,27 +67,23 @@ Preserve the original scene as closely as possible:
 - lighting, shadows, and color grading
 - background, objects, clothing, and accessories
 
-Recreate each person naturally in the same position, adapting the reference identity to the original pose, perspective, and lighting.
-
-IDENTITY ACCURACY:
-Preserve from the reference photos:
-- facial structure and proportions
-- eyes, nose, lips, jawline, bone structure
-- skin tone and texture
-- hair shape, color, and length
+Recreate each person naturally in the same position, adapting identity to the original perspective and lighting.
 
 HEAD RECONSTRUCTION:
-Reconstruct the visible head identity from the reference person while matching the original head position and angle.
+Reconstruct the visible head using the reference identity,
+while matching the original head position and angle.
+
+Do not use the original actor's head shape, skull structure, or facial geometry as a base.
 
 Do not paste or overlay faces.
 Ensure correct 3D structure, depth, shadows, and lighting.
 
 HAIR CONSISTENCY:
-Hair must match the reference identity:
-- hairstyle, hairline, and hair type must come from the reference images
+Hair must come from the reference identity:
+- hairstyle, hairline, and structure from the reference images
 
-Adapt hair naturally to the scene conditions (lighting, motion, environment),
-but do not inherit hairstyle or hair structure from the original character.
+Adapt naturally to lighting and motion,
+but do not inherit hair from the original character.
 
 STYLE ADAPTATION:
 Match the original scene style:
@@ -82,11 +93,11 @@ Match the original scene style:
 Do not over-stylize or reinterpret the scene.
 
 HEAD ANGLE AND VISIBILITY:
-Preserve original visibility exactly:
+Preserve visibility exactly:
 - profile → keep profile
 - back view → keep back view, do not generate a face
 - occluded → show only visible parts
-- blurred or motion-blurred → preserve same blur level
+- blurred → preserve blur level
 
 Do not rotate faces toward the camera.
 Do not reveal hidden facial areas.
@@ -98,13 +109,15 @@ Hands must be natural:
 - correct proportions
 - no deformation or extra fingers
 
-Respect occlusions from hair, hands, objects, shadows, and motion blur.
+Respect occlusions (hair, hands, objects, shadows, motion blur).
 
 QUALITY:
-High-resolution, sharp, natural skin texture, accurate lighting and color.
+High-resolution, sharp image.
+Natural skin texture (no plastic smoothing).
+Accurate lighting, contrast, and color.
 
 OUTPUT:
-Same scene and composition, with the original character identities replaced by the reference man and woman.
+Same scene and composition, recreated with the two reference people as the actual characters.
 The result must look natural, fully integrated, and not edited or composited.`;
 
 async function fileToDataUrl(file: File): Promise<string> {
