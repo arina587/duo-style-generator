@@ -269,7 +269,7 @@ function extractOutput(prediction: Record<string, unknown>): string {
 
 // ---------------------------------------------------------------------------
 // Provider flag — switch between "replicate" (default) and "openai"
-// Set IMAGE_PROVIDER=openai in Edge Function secrets to activate GPT Image 2.
+// Set IMAGE_PROVIDER=openai in Edge Function secrets to activate GPT Image 1.5.
 // Set IMAGE_PROVIDER=replicate (or leave unset) to use the Replicate pipeline.
 // ---------------------------------------------------------------------------
 const IMAGE_PROVIDER = (Deno.env.get("IMAGE_PROVIDER") || "replicate").toLowerCase();
@@ -294,9 +294,10 @@ async function runOpenAIImageEdit(
   console.log("[OPENAI] starting image edit, images:", images.length, "prompt_len:", prompt.length);
 
   const form = new FormData();
-  form.append("model", "gpt-image-2");
+  form.append("model", "gpt-image-1.5");
   form.append("prompt", prompt);
-  form.append("response_format", "b64_json");
+  // NOTE: do NOT send response_format — gpt-image models reject it with 400.
+  // b64_json is returned by default in data[0].b64_json.
   form.append("n", "1");
 
   // Attach all images. The OpenAI edits endpoint accepts multiple images.
