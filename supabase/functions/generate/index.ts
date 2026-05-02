@@ -19,70 +19,60 @@ CHARACTER MAPPING:
 - male → man from male reference
 
 PRIORITY ORDER:
-1. Identity accuracy (highest priority)
-2. Pose, body position, head angle, visibility
-3. Scene, lighting, camera, background, clothing, style
+1. Identity accuracy and recognizability
+2. Pose, head angle, visibility, and interaction
+3. Scene, lighting, camera, background, clothing, and style
 
-IDENTITY SOURCE OF TRUTH (CRITICAL):
-The reference photos are the only source of appearance.
+IDENTITY SOURCE OF TRUTH:
+Use the reference photos as the only source for each person's appearance.
 
-All facial features, proportions, skin tone, and identity must come from the reference images.
+The new characters must clearly look like the reference people, not like the original scene characters.
 
-Do not use, inherit, or recreate any facial structure or appearance from the original scene characters.
-
-The result must look like the reference people placed into the scene, not a transformation of the original actors.
+Avoid identity blending:
+- do not keep recognizable facial traits from the original characters
+- do not average original and reference identities
+- prioritize reference facial structure, proportions, skin texture, and hair
 
 IDENTITY DOMINANCE:
-The reference identity must dominate completely.
+The reference identity must be dominant wherever the character is visible.
+The character must clearly look like the reference person, not the original actor.
 
-Minimize any resemblance to the original scene actors as much as possible.
+Perform full character identity replacement, not simple face swapping.
 
-If a conflict occurs, preserve identity accuracy over original facial features.
+EXPRESSION LOCK:
+Preserve the original facial expression and emotion from the scene.
+Do not transfer expression, smile, or mood from the reference photos.
 
-Perform full character replacement, not face swapping.
+SCENE AND POSE LOCK:
+Preserve the original scene as closely as possible:
+- body pose and skeleton
+- head position, angle, and face direction
+- interaction and distance between characters
+- camera angle, framing, and perspective
+- lighting, shadows, and color grading
+- background, objects, clothing, and accessories
 
-POSE LOCK (CRITICAL):
-Keep the exact original pose and skeleton.
-
-Do not change:
-- body position
-- shoulders or torso
-- head position
-- limb placement
-
-No pose reinterpretation or refinement.
-
-SCENE PRESERVATION:
-Keep unchanged:
-- pose and body alignment
-- head angle and face direction
-- camera, framing, perspective
-- lighting, shadows, color grading
-- background and all objects
-- clothing and accessories
-
-Recreate each person naturally in the same position, fitting identity into the original perspective and lighting.
+Recreate each person naturally in the same position, adapting the reference identity to the original pose, perspective, and lighting.
 
 IDENTITY ACCURACY:
-Preserve:
+Preserve from the reference photos:
 - facial structure and proportions
+- eyes, nose, lips, jawline, bone structure
 - skin tone and texture
-- eyes, nose, lips, bone structure
 - hair shape, color, and length
 
-Avoid identity blending.
-The result should look like the reference person placed into the scene.
-
-HEAD RECONSTRUCTION (CRITICAL):
-Do not reuse the original head or facial structure as a base.
-
-Reconstruct the head from the reference identity while matching the original head position and angle.
-
-Do not morph the reference face to fit the original identity.
-
-Ensure correct 3D structure, depth, and lighting.
+HEAD RECONSTRUCTION:
+Reconstruct the visible head identity from the reference person while matching the original head position and angle.
 
 Do not paste or overlay faces.
+Ensure correct 3D structure, depth, shadows, and lighting.
+
+HAIR CONSISTENCY:
+Hair must match the reference identity:
+- hairstyle, hairline, and hair type must come from the reference images
+
+Adapt hair naturally to the scene conditions (lighting, motion, environment),
+but do not inherit hairstyle or hair structure from the original character.
 
 STYLE ADAPTATION:
 Match the original scene style:
@@ -91,39 +81,31 @@ Match the original scene style:
 
 Do not over-stylize or reinterpret the scene.
 
-HEAD ANGLE & VISIBILITY:
-Preserve original head angle, direction, and visibility.
-
-Do not rotate or frontalize faces.
-
-LOW VISIBILITY CASES (CRITICAL):
-If a face is not fully visible:
-- profile → keep strict profile
+HEAD ANGLE AND VISIBILITY:
+Preserve original visibility exactly:
+- profile → keep profile
 - back view → keep back view, do not generate a face
-- partially occluded → show only visible parts
-- blurred/motion → preserve blur level
+- occluded → show only visible parts
+- blurred or motion-blurred → preserve same blur level
 
-Do not invent new facial features or expressions.
-Do not reveal hidden parts.
+Do not rotate faces toward the camera.
+Do not reveal hidden facial areas.
+Do not invent unseen features.
 
 ANATOMY:
 Hands must be natural:
-- 5 fingers
+- exactly 5 fingers per visible hand
 - correct proportions
-- no deformation
+- no deformation or extra fingers
 
-Respect occlusions (hair, objects, motion blur).
-Do not generate hidden parts.
+Respect occlusions from hair, hands, objects, shadows, and motion blur.
 
 QUALITY:
-High-resolution, sharp image.
-
-Natural skin texture (no plastic smoothing).
-Accurate lighting, contrast, and color.
+High-resolution, sharp, natural skin texture, accurate lighting and color.
 
 OUTPUT:
-Same scene and composition — only identities replaced with the reference people.
-Must look like a real, original frame, not edited or composited.`;
+Same scene and composition, with the original character identities replaced by the reference man and woman.
+The result must look natural, fully integrated, and not edited or composited.`;
 
 async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
