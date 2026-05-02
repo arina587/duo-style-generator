@@ -268,6 +268,8 @@ function extractOutput(prediction: Record<string, unknown>): string {
 }
 
 
+const MIN_IMAGE_BYTES = 50_000;
+
 async function fetchOutputImage(url: string): Promise<{ buffer: ArrayBuffer; contentType: string }> {
   const MAX_ATTEMPTS = 2;
   let lastErr: Error = new Error("Unknown error");
@@ -279,7 +281,7 @@ async function fetchOutputImage(url: string): Promise<{ buffer: ArrayBuffer; con
       // with no timeout. A stalled CDN connection would hang until Supabase's
       // 150s wall-clock limit killed the function and returned a broken response.
       const abort = new AbortController();
-      const timeout = setTimeout(() => abort.abort(), 60000);
+      const timeout = setTimeout(() => abort.abort(), 90_000);
 
       let res: Response;
       try {
@@ -296,11 +298,17 @@ async function fetchOutputImage(url: string): Promise<{ buffer: ArrayBuffer; con
       }
       if (!res.ok) {
         clearTimeout(timeout);
-        console.error(`[FETCH IMAGE] attempt ${attempt}: upstream ${res.status}`);
-        throw new Error(`Upstream ${res.status}`);
+        console.error(`[FETCH IMAGE] FETCH STATUS: ${res.status} attempt ${attempt}`);
+        throw new Error(`Upstream error ${res.status}`);
       }
 
-      const contentType = res.headers.get("content-type") || "image/jpeg";
+      const contentType = res.headers.get("content-type") || "";
+      if (!contentType.startsWith("image/")) {
+        clearTimeout(timeout);
+        console.error(`[FETCH IMAGE] attempt ${attempt}: invalid content-type "${contentType}"`);
+        throw Object.assign(new Error(`Invalid content type: ${contentType}`), { noRetry: true });
+      }
+
       console.log(`[FETCH IMAGE] attempt ${attempt}: headers ok content-type=${contentType} — buffering full body...`);
 
       // Buffer the complete image before returning. Streaming res.body directly to
@@ -309,11 +317,19 @@ async function fetchOutputImage(url: string): Promise<{ buffer: ArrayBuffer; con
       const buffer = await res.arrayBuffer();
       clearTimeout(timeout);
 
-      console.log(`[FETCH IMAGE] attempt ${attempt}: buffered ${buffer.byteLength} bytes`);
+      console.log(`[FETCH IMAGE] SIZE: ${buffer.byteLength} bytes (attempt ${attempt})`);
+
+      if (buffer.byteLength < MIN_IMAGE_BYTES) {
+        throw Object.assign(
+          new Error(`Image too small / corrupted: ${buffer.byteLength} bytes`),
+          { noRetry: true }
+        );
+      }
+
       return { buffer, contentType };
     } catch (err) {
       lastErr = err instanceof Error ? err : new Error(String(err));
-      // Do not retry 403 — the signed URL is permanently expired.
+      // Do not retry 403 or content-type/size failures.
       if ((err as { noRetry?: boolean }).noRetry) break;
       if (attempt < MAX_ATTEMPTS) {
         console.log(`[FETCH IMAGE] transient error on attempt ${attempt}, retrying immediately...`);
@@ -348,54 +364,92 @@ Deno.serve(async (req: Request) => {
   // fetch replicate.delivery directly (avoids mobile Safari CORS/network failures).
   const reqUrl = new URL(req.url);
   if (req.method === "GET" && reqUrl.searchParams.has("proxyUrl")) {
-    try {
-      const proxyUrl = reqUrl.searchParams.get("proxyUrl")!;
-      console.log("[PROXY] fetching:", proxyUrl.substring(0, 80));
+    const proxyUrl = reqUrl.searchParams.get("proxyUrl")!;
+    console.log("[PROXY] fetching:", proxyUrl.substring(0, 80));
 
-      if (!proxyUrl.startsWith("https://replicate.delivery/")) {
-        return new Response(JSON.stringify({ error: "Invalid proxy target" }), {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-
-      const proxyAbort = new AbortController();
-      const proxyTimeout = setTimeout(() => proxyAbort.abort(), 30000);
-      const upstream = await fetch(proxyUrl, {
-        signal: proxyAbort.signal,
-        headers: { "Accept": "image/*" },
-      });
-      clearTimeout(proxyTimeout);
-      console.log("[PROXY] upstream status:", upstream.status, "content-type:", upstream.headers.get("content-type"), "content-length:", upstream.headers.get("content-length"));
-
-      if (!upstream.ok) {
-        return new Response(JSON.stringify({ error: `Upstream ${upstream.status}` }), {
-          status: 502,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-
-      const contentType = upstream.headers.get("content-type") || "image/jpeg";
-      const buffer = await upstream.arrayBuffer();
-      console.log("[PROXY] buffered", buffer.byteLength, "bytes");
-
-      return new Response(buffer, {
-        status: 200,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": contentType,
-          "Content-Length": String(buffer.byteLength),
-          "Cache-Control": "public, max-age=86400",
-        },
-      });
-    } catch (proxyErr) {
-      const msg = proxyErr instanceof Error ? proxyErr.message : String(proxyErr);
-      console.error("[PROXY] error:", msg);
-      return new Response(JSON.stringify({ error: msg }), {
-        status: 502,
+    if (!proxyUrl.startsWith("https://replicate.delivery/")) {
+      return new Response(JSON.stringify({ error: "Invalid proxy target" }), {
+        status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    const MAX_PROXY_ATTEMPTS = 2;
+    let lastProxyErr: Error = new Error("Unknown proxy error");
+
+    for (let attempt = 1; attempt <= MAX_PROXY_ATTEMPTS; attempt++) {
+      try {
+        const proxyAbort = new AbortController();
+        const proxyTimeout = setTimeout(() => proxyAbort.abort(), 90_000);
+
+        let upstream: Response;
+        try {
+          upstream = await fetch(proxyUrl, { signal: proxyAbort.signal, headers: { "Accept": "image/*" } });
+        } catch (fetchErr) {
+          clearTimeout(proxyTimeout);
+          throw fetchErr;
+        }
+
+        console.log(`[PROXY] FETCH STATUS: ${upstream.status} content-type: ${upstream.headers.get("content-type")} content-length: ${upstream.headers.get("content-length")} (attempt ${attempt})`);
+
+        // Never retry 403 — signed URL is permanently expired.
+        if (upstream.status === 403) {
+          clearTimeout(proxyTimeout);
+          return new Response(JSON.stringify({ error: "Signed URL expired (403)" }), {
+            status: 502,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+
+        if (!upstream.ok) {
+          clearTimeout(proxyTimeout);
+          throw new Error(`Upstream error ${upstream.status}`);
+        }
+
+        const contentType = upstream.headers.get("content-type") || "";
+        if (!contentType.startsWith("image/")) {
+          clearTimeout(proxyTimeout);
+          console.error(`[PROXY] invalid content-type: "${contentType}"`);
+          return new Response(JSON.stringify({ error: `Invalid content type: ${contentType}` }), {
+            status: 502,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+
+        const buffer = await upstream.arrayBuffer();
+        clearTimeout(proxyTimeout);
+
+        console.log(`[PROXY] SIZE: ${buffer.byteLength} bytes`);
+
+        if (buffer.byteLength < MIN_IMAGE_BYTES) {
+          return new Response(JSON.stringify({ error: `Image too small / corrupted: ${buffer.byteLength} bytes` }), {
+            status: 502,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+
+        return new Response(buffer, {
+          status: 200,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": contentType,
+            "Content-Length": String(buffer.byteLength),
+            "Cache-Control": "public, max-age=86400",
+          },
+        });
+      } catch (err) {
+        lastProxyErr = err instanceof Error ? err : new Error(String(err));
+        console.error(`[PROXY] attempt ${attempt} error:`, lastProxyErr.message);
+        if (attempt < MAX_PROXY_ATTEMPTS) {
+          console.log("[PROXY] retrying immediately...");
+        }
+      }
+    }
+
+    return new Response(JSON.stringify({ error: lastProxyErr.message }), {
+      status: 502,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 
   try {

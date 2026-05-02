@@ -115,6 +115,7 @@ function App() {
           ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate?proxyUrl=${encodeURIComponent(imageUrl)}`
           : imageUrl;
         console.log('[FALLBACK] using URL mode, proxy:', fallbackProxy.substring(0, 100));
+        console.log('[IMG SRC]', fallbackProxy.substring(0, 100));
         setRawImageUrl(imageUrl);
         setGeneratedImageUrl(fallbackProxy);
         return;
@@ -128,6 +129,7 @@ function App() {
 
       const blobUrl = URL.createObjectURL(blob);
       console.log('[RENDER START] blob size:', blob.size, 'type:', blob.type);
+      console.log('[IMG SRC]', blobUrl.substring(0, 80));
 
       setRawImageUrl(rawImageUrl || blobUrl);
       setGeneratedImageUrl(blobUrl);
