@@ -267,43 +267,55 @@ function extractOutput(prediction: Record<string, unknown>): string {
   return outputUrl;
 }
 
-async function fetchOutputImage(url: string): Promise<{ body: ReadableStream; contentType: string; contentLength: string | null }> {
+async function fetchOutputImage(url: string): Promise<{ buffer: ArrayBuffer; contentType: string }> {
   const MAX_ATTEMPTS = 2;
   let lastErr: Error = new Error("Unknown error");
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
-      // Timeout covers only the connection + headers phase. clearTimeout fires as soon
-      // as headers arrive so the abort signal is not live during body streaming —
-      // aborting mid-stream would truncate the response body silently.
+      // Keep the AbortController alive through arrayBuffer() — not just headers.
+      // Previously clearTimeout fired after headers arrived, leaving body transfer
+      // with no timeout. A stalled CDN connection would hang until Supabase's
+      // 150s wall-clock limit killed the function and returned a broken response.
       const abort = new AbortController();
-      const timeout = setTimeout(() => abort.abort(), 30000);
-      const res = await fetch(url, { signal: abort.signal, headers: { "Accept": "image/*" } });
-      clearTimeout(timeout);
+      const timeout = setTimeout(() => abort.abort(), 60000);
+
+      let res: Response;
+      try {
+        res = await fetch(url, { signal: abort.signal, headers: { "Accept": "image/*" } });
+      } catch (fetchErr) {
+        clearTimeout(timeout);
+        throw fetchErr;
+      }
 
       if (res.status === 403) {
-        // Signed URL has already expired — retrying the same URL will also fail.
-        // Do not retry: throw immediately so the error propagates clearly.
+        clearTimeout(timeout);
         console.error(`[FETCH IMAGE] attempt ${attempt}: SIGNED URL EXPIRED (403) — not retrying`);
         throw Object.assign(new Error("Signed URL expired (403)"), { noRetry: true });
       }
       if (!res.ok) {
+        clearTimeout(timeout);
         console.error(`[FETCH IMAGE] attempt ${attempt}: upstream ${res.status}`);
         throw new Error(`Upstream ${res.status}`);
       }
 
       const contentType = res.headers.get("content-type") || "image/jpeg";
-      const contentLength = res.headers.get("content-length");
-      console.log(`[FETCH IMAGE] attempt ${attempt}: ok content-type=${contentType} content-length=${contentLength}`);
+      console.log(`[FETCH IMAGE] attempt ${attempt}: headers ok content-type=${contentType} — buffering full body...`);
 
-      return { body: res.body!, contentType, contentLength };
+      // Buffer the complete image before returning. Streaming res.body directly to
+      // the client risks partial transfers if the CDN connection drops mid-body —
+      // the browser receives a truncated JPEG and fires onError.
+      const buffer = await res.arrayBuffer();
+      clearTimeout(timeout);
+
+      console.log(`[FETCH IMAGE] attempt ${attempt}: buffered ${buffer.byteLength} bytes`);
+      return { buffer, contentType };
     } catch (err) {
       lastErr = err instanceof Error ? err : new Error(String(err));
       // Do not retry 403 — the signed URL is permanently expired.
       if ((err as { noRetry?: boolean }).noRetry) break;
       if (attempt < MAX_ATTEMPTS) {
         console.log(`[FETCH IMAGE] transient error on attempt ${attempt}, retrying immediately...`);
-        // No delay — signed URL TTL is short; every second counts.
       }
     }
   }
@@ -363,16 +375,18 @@ Deno.serve(async (req: Request) => {
       }
 
       const contentType = upstream.headers.get("content-type") || "image/jpeg";
-      const contentLength = upstream.headers.get("content-length");
+      const buffer = await upstream.arrayBuffer();
+      console.log("[PROXY] buffered", buffer.byteLength, "bytes");
 
-      const responseHeaders: Record<string, string> = {
-        ...corsHeaders,
-        "Content-Type": contentType,
-        "Cache-Control": "public, max-age=86400",
-      };
-      if (contentLength) responseHeaders["Content-Length"] = contentLength;
-
-      return new Response(upstream.body, { status: 200, headers: responseHeaders });
+      return new Response(buffer, {
+        status: 200,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": contentType,
+          "Content-Length": String(buffer.byteLength),
+          "Cache-Control": "public, max-age=86400",
+        },
+      });
     } catch (proxyErr) {
       const msg = proxyErr instanceof Error ? proxyErr.message : String(proxyErr);
       console.error("[PROXY] error:", msg);
@@ -535,17 +549,18 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
     // it is fetched. Fetching here, inside the same execution context that just received
     // the URL, eliminates that gap entirely.
     const imageBytes = await fetchOutputImage(outputUrl);
-    console.log("[OUTPUT] streaming content-type:", imageBytes.contentType, "content-length:", imageBytes.contentLength);
+    console.log("[OUTPUT] buffered content-type:", imageBytes.contentType, "bytes:", imageBytes.buffer.byteLength);
 
-    const responseHeaders: Record<string, string> = {
-      ...corsHeaders,
-      "Content-Type": imageBytes.contentType,
-      "Cache-Control": "public, max-age=86400",
-      "X-Image-Url": outputUrl,
-    };
-    if (imageBytes.contentLength) responseHeaders["Content-Length"] = imageBytes.contentLength;
-
-    return new Response(imageBytes.body, { status: 200, headers: responseHeaders });
+    return new Response(imageBytes.buffer, {
+      status: 200,
+      headers: {
+        ...corsHeaders,
+        "Content-Type": imageBytes.contentType,
+        "Content-Length": String(imageBytes.buffer.byteLength),
+        "Cache-Control": "public, max-age=86400",
+        "X-Image-Url": outputUrl,
+      },
+    });
   } catch (error) {
     const msg = error instanceof Error ? error.message : "Unknown error";
     const debugInfo = (error as { debugInfo?: Record<string, unknown> }).debugInfo ?? {};
