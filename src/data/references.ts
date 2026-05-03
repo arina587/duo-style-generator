@@ -250,70 +250,94 @@ A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate 
     label: 'Euphoria', 
     image: '/styles/euphoria/euphoria1.jpg', 
     mode: "locked",
-    prompt: `Create a realistic photo of the two people from the uploaded identity images.
+    prompt: `Use the reference image ONLY as a background, pose, and lighting template.
 
-Use the reference image ONLY as a pose, composition, and lighting guide.
+COMPLETELY REMOVE all original people from the reference image.
+
+Treat their positions as EMPTY SPACE.
 
 ---
 
-CRITICAL:
+CRITICAL OVERRIDE (ABSOLUTE):
 
-Do NOT use the people from the reference image.
+The original people in the reference must NOT exist in the final image.
 
-Do NOT reuse or preserve any part of their faces or identity.
+Do NOT use:
+— their faces
+— their facial structure
+— their skin
+— their identity
+— any part of their appearance
 
-The reference image must be treated only as a template for:
-— pose
-— camera angle
-— composition
-— lighting
+They must be fully erased and replaced.
+
+---
+
+RECONSTRUCTION:
+
+Place the people from the uploaded identity images into the now empty positions.
+
+Generate a NEW photo of these people in the same scene.
 
 ---
 
 CHARACTERS:
 
-Generate:
-— the woman from the uploaded female photo on the left  
-— the man from the uploaded male photo on the right  
+Insert:
+— the woman from the uploaded female photo on the left
+— the man from the uploaded male photo on the right
 
 They must fully match the uploaded identities:
 — facial structure
-— eyes, nose, lips
 — proportions
+— eyes, nose, lips
 — skin tone
 — hairline
+
+No blending with the original reference faces is allowed.
 
 ---
 
 POSE MATCH (STRICT):
 
-Match the reference exactly:
-— woman close-up on the left  
-— head turned toward the man  
-— man on the right, partially visible and slightly out of focus  
-— same framing and crop  
+Match EXACTLY:
+— body positions
+— head angle
+— gaze direction
+— facial expression
+— distance between characters
+— camera framing and crop
+
+The new people must occupy the same spatial positions as the removed characters.
 
 ---
 
-LIGHTING:
+LIGHTING ADAPTATION:
 
-Match the warm cinematic lighting.
+Match the scene lighting, but PRIORITIZE identity visibility.
 
-You may adjust brightness slightly to keep faces clearly visible.
+You are allowed to:
+— brighten the face
+— reduce shadow strength on the face
+— rebalance lighting on the face
 
-Do NOT allow shadows to hide identity.
-
----
-
-STYLE:
-
-Photorealistic cinematic close-up.
+Do NOT let shadows hide or distort the face.
 
 ---
 
-FINAL:
+INTEGRATION:
 
-A new image of the two people from the uploaded photos, posed exactly like in the reference, with no trace of the original characters.`,
+Rebuild the people naturally into the scene:
+— correct depth
+— correct perspective
+— correct shadows
+— no pasted look
+
+---
+
+FINAL RESULT:
+
+A completely new image where the original people are gone and replaced with the uploaded identities, standing in the same positions, with the same pose and composition, and no trace of the original characters remains.`,
   },
   { id: 'euphoria-2', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria2.jpg' },
   { id: 'euphoria-3', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria3.jpg', modifier: 'Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene. Apply natural film grain, subtle noise, and slight color imperfection to the face. Reduce skin smoothness and avoid clean or studio-like appearance. Ensure the face inherits the same cinematic texture as the scene.' },
