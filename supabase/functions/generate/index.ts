@@ -357,12 +357,781 @@ Deno.serve(async (req: Request) => {
       const replicateApiKey = Deno.env.get("REPLICATE_API_KEY");
       if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
 
-      // ── Locked styles: fully isolated, no global changes can affect them ──
-      const LOCKED_STYLES = ["zootopia", "cinderella", "tangled"];
-      const isLocked = typeof referenceId === "string" &&
-        LOCKED_STYLES.some((s) => referenceId.startsWith(s));
+      // ── All prompts are backend-controlled. Frontend sends no prompt text. ──
+      const STYLE_CONFIG: Record<string, { locked: boolean; prompt: string }> = {
+        "zootopia-1": {
+          locked: true,
+          prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-      // ── IMAGE ROLE MAPPING (unchanged) ──
+Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney-quality CGI style, not as pasted faces.
+
+STRICT IDENTITY PRESERVATION (ENHANCED):
+Faces must remain highly recognizable:
+— exact facial proportions and bone structure
+— eye shape, spacing, eyelids, eyebrows
+— nose shape and bridge
+— lip shape and mouth width
+— jawline and chin
+— natural skin tone adapted to scene lighting
+— hairstyle, hair color, and hair length must match the uploaded photos
+
+CRITICAL POSE LOCK (ABSOLUTE):
+— both characters extremely close, cheek-to-cheek
+— heads slightly tilted inward toward each other
+— camera held at arm's length by the woman on the right
+— tight selfie framing, cropped like a phone photo
+— both looking directly into the camera
+
+Do NOT change angle, framing, distance, or head tilt.
+
+CRITICAL EXPRESSION LOCK:
+— man: relaxed, slightly smug half-smile
+— woman: soft friendly smile
+
+CRITICAL STYLE:
+Full Pixar/Disney 3D look — soft shading, clean stylized skin, expressive eyes.
+
+CRITICAL SCENE LOCK:
+Keep plain neutral background, framing, and lighting EXACTLY the same.
+
+CRITICAL HANDS (VERY IMPORTANT):
+All hands must be human — anatomically correct, realistic proportions, clearly defined fingers.
+Each hand must have exactly five fingers.
+Correct perspective for a selfie grip, no deformation, no fusion, no missing fingers.
+
+FINAL:
+Identical selfie composition with stylized human characters, strong identity match, no pose drift.`,
+        },
+        "zootopia-2": {
+          locked: true,
+          prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney CGI style.
+
+STRICT IDENTITY PRESERVATION:
+Faces must remain fully recognizable and consistent with uploaded photos (facial structure, features, proportions, hair).
+
+CRITICAL POSE LOCK (ABSOLUTE):
+— characters pressed tightly together
+— woman (right) leans strongly into the man's face
+— her cheek pushes into his cheek
+— man's head slightly turned away due to pressure
+— camera held by woman at arm's length
+— very tight selfie framing
+
+Do NOT loosen contact. Do NOT reposition heads.
+
+CRITICAL EXPRESSION LOCK:
+— woman: playful, energetic, wide smile
+— man: slightly uncomfortable, compressed expression
+
+CRITICAL CONTACT PHYSICS:
+Maintain visible cheek compression and skin contact.
+
+CRITICAL STYLE:
+Same high-end Pixar/Disney 3D rendering.
+
+CRITICAL SCENE LOCK:
+Keep background and lighting identical.
+
+CRITICAL HANDS (VERY IMPORTANT):
+All visible hands must be human — anatomically correct, natural proportions.
+Exactly five fingers per hand.
+No distortion, no merging fingers, correct perspective for selfie position.
+
+FINAL:
+Same tight, compressed selfie moment, exact pose preserved, stylized human version.`,
+        },
+        "zootopia-3": {
+          locked: true,
+          prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman.
+
+Recreate them as stylized 3D human characters in Pixar/Disney 3D CGI style — match the exact visual style of the reference image. NOT as pasted faces, but as fully reconstructed human characters integrated into the scene.
+
+---
+
+PRIORITY ORDER (STRICT):
+1) Identity from uploaded photos
+2) Original pose and composition
+3) Lighting and style
+
+---
+
+IDENTITY (CRITICAL):
+
+Preserve identity with high accuracy:
+
+— facial structure and proportions
+— eye shape, spacing, eyelids, eyebrows
+— nose shape and bridge
+— lips, mouth width, jawline, chin
+— recognizable skin tone (adapted to scene lighting)
+— hairstyle, hair color, and length
+
+Do NOT:
+— stylize away identity
+— average or genericize faces
+— mix identities
+
+---
+
+BODY & PROPORTIONS:
+
+Convert animal characters into realistic human anatomy:
+
+— man follows the fox pose (including raised arm with phone)
+— woman replaces the rabbit with natural human proportions
+— do NOT compress or scale the woman unnaturally
+
+Maintain spatial relationship while keeping realistic human anatomy.
+
+---
+
+POSE & COMPOSITION (STRICT):
+
+Man (left):
+— arm raised holding a phone (selfie position)
+— slight head tilt toward the woman
+— relaxed, confident posture
+
+Woman (right):
+— very close to the man
+— slight lean toward him
+— upright natural stance
+
+Preserve:
+— selfie composition
+— camera angle (slightly above, angled down)
+— framing and crop
+
+Do NOT reframe or change perspective.
+
+---
+
+EXPRESSION:
+
+— man: confident, playful smirk
+— woman: cheerful, slightly mischievous smile
+
+Match emotional tone from the reference.
+
+---
+
+LIGHTING & COLOR:
+
+Match the original scene lighting:
+
+— colorful nightclub lighting (magenta, purple, blue tones)
+— mixed ambient light sources
+— soft but vivid highlights
+— visible color reflections on skin
+
+Preserve:
+— light direction
+— color spill
+— contrast and atmosphere
+
+Faces must fully inherit scene lighting (no neutral or flat lighting).
+
+---
+
+HANDS:
+
+All hands must be human:
+
+— exactly five fingers per hand
+— correct anatomy and proportions
+— natural finger placement
+
+Man:
+— holding a smartphone in selfie position
+— correct grip and perspective
+
+No deformation, no extra or missing fingers.
+
+---
+
+SCENE LOCK:
+
+Do NOT change:
+— environment
+— background characters
+— lighting setup
+— composition
+
+Only replace the characters.
+
+---
+
+INTEGRATION:
+
+Rebuild characters inside the original positions with correct perspective and depth.
+
+Ensure seamless integration with the environment.
+
+No face cutouts. No mismatched lighting.
+
+---
+
+FINAL:
+
+A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate identity, correct lighting, and stable composition.`,
+        },
+        "tangled-1": {
+          locked: true,
+          prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Treat the reference image as a scene template ONLY (composition, pose, lighting).
+
+CRITICAL RULE:
+The original characters must NOT be used as identity source in any way.
+
+Do NOT use:
+— their faces
+— their head shapes
+— their facial proportions
+— their skin tones
+— any part of their identity
+
+They must be completely ignored.
+
+---
+
+FULL CHARACTER REPLACEMENT (ABSOLUTE):
+
+Replace both characters completely:
+
+— man from uploaded male photo → left position
+— woman from uploaded female photo → right position
+
+Rebuild them as entirely new people based ONLY on uploaded identity images.
+
+Do NOT reuse or preserve any original character features.
+
+---
+
+STRICT IDENTITY PRESERVATION (ENHANCED):
+
+Faces must remain highly recognizable:
+— exact facial proportions and bone structure
+— eye shape, spacing, eyelids, eyebrows
+— nose shape and bridge
+— lip shape and mouth width
+— jawline and chin
+— natural skin tone adapted to scene lighting
+— hairstyle, hair color, and hair length
+
+---
+
+CRITICAL POSE LOCK (ABSOLUTE):
+
+— man (left) holding the woman closely
+— woman (right) leaning into the man
+— faces very close with strong eye contact
+— woman looking up toward the man
+— man looking down toward the woman
+— bodies positioned chest-to-chest
+
+Do NOT change angle, framing, or positioning.
+
+---
+
+CRITICAL STYLE:
+
+Recreate characters in Pixar/Disney 3D CGI style.
+NOT as pasted faces — fully reconstructed characters.
+
+---
+
+CRITICAL LIGHTING:
+
+— warm golden lantern lighting
+— soft glow from multiple sources
+— visible reflections from lanterns
+
+Faces must inherit scene lighting, not neutral.
+
+---
+
+CRITICAL HANDS:
+
+All hands must be human:
+— exactly five fingers
+— correct anatomy
+— natural grip
+— no deformation
+
+---
+
+FINAL:
+
+Same romantic lantern scene, but original characters fully removed and replaced with new identities from uploaded photos.`,
+        },
+        "tangled-2": {
+          locked: true,
+          prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Treat the reference image as a scene template ONLY.
+
+CRITICAL RULE:
+The original characters must be completely ignored.
+
+Do NOT use:
+— their faces
+— their head shapes
+— their proportions
+— any identity information
+
+---
+
+FULL CHARACTER REPLACEMENT:
+
+Insert entirely new people:
+
+— man from uploaded male photo → left
+— woman from uploaded female photo → right
+
+Rebuild them from scratch.
+
+---
+
+STRICT IDENTITY PRESERVATION:
+
+Faces must clearly match uploaded photos:
+— facial structure
+— features
+— proportions
+— hair
+— skin tone
+
+---
+
+CRITICAL POSE LOCK:
+
+— man sitting relaxed, slightly turned toward the woman
+— woman leaning forward with chin resting on both hands
+— strong eye contact between them
+
+Do NOT change posture or positioning.
+
+---
+
+CRITICAL LIGHTING:
+
+— dark environment with warm fire light
+— strong shadows present
+
+IMPORTANT:
+Faces must remain visible:
+— slightly reduce shadow on faces only
+— keep identity readable
+
+---
+
+CRITICAL STYLE:
+
+Pixar/Disney 3D CGI characters, fully reconstructed.
+
+---
+
+CRITICAL HANDS:
+
+— exactly five fingers
+— correct anatomy
+— proper chin support position
+
+---
+
+FINAL:
+
+Same intimate night scene, but original characters completely replaced with new identities.`,
+        },
+        "tangled-3": {
+          locked: true,
+          prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Treat the reference image as a composition and pose template ONLY.
+
+CRITICAL RULE:
+The original characters must NOT be used in any way.
+
+Do NOT use:
+— faces
+— body shapes
+— proportions
+— identity elements
+
+They must be treated as non-existent.
+
+---
+
+FULL CHARACTER REPLACEMENT:
+
+Create new people:
+
+— man → left
+— woman → right
+
+Using ONLY uploaded identity photos.
+
+---
+
+STRICT IDENTITY PRESERVATION:
+
+Preserve:
+— facial structure
+— proportions
+— features
+— skin tone
+— hair
+
+---
+
+CRITICAL POSE LOCK:
+
+— man leading the movement, slightly leaning forward
+— holding the woman's hand
+— woman extending arm toward him
+— maintaining natural dance spacing
+
+Do NOT change interaction or gesture.
+
+---
+
+CRITICAL SCENE LOCK:
+
+Keep:
+— crowd
+— architecture
+— perspective
+— framing
+
+---
+
+CRITICAL LIGHTING:
+
+— natural daylight
+— soft shadows
+— consistent color temperature
+
+Faces must match scene lighting.
+
+---
+
+CRITICAL STYLE:
+
+Pixar/Disney CGI, fully reconstructed characters.
+
+---
+
+CRITICAL HANDS:
+
+— exactly five fingers
+— correct anatomy
+— natural interaction
+
+---
+
+FINAL:
+
+Same dance scene, but with completely new characters replacing the originals.`,
+        },
+        "cinderella-1": {
+          locked: true,
+          prompt: `Use the reference scene image as the absolute base. Perform ONLY character identity replacement.
+
+PRIORITY ORDER (STRICT):
+1) Identity from uploaded photos
+2) Original scene geometry and composition
+3) Style adaptation
+
+IDENTITY TRANSFER (HARD CONSTRAINT):
+Replace characters using uploaded photos only:
+- female character → woman from female photo
+- male character → man from male photo
+
+Preserve identity EXACTLY 1:1:
+- facial structure, proportions, age
+- skin tone and texture
+- eyes, nose, lips, bone structure
+- hairline, hair color, length, and shape
+
+Do NOT:
+- beautify or enhance faces
+- stylize or reinterpret identity
+- mix identities
+- generate new faces
+
+Uploaded photos are the single source of truth.
+
+---
+
+SCENE LOCK (CONTROLLED):
+
+Do NOT change scene composition, pose, camera, or environment.
+
+HOWEVER:
+Allow minimal local adjustments to lighting, shadows, skin tone, and color on the face ONLY, to match the scene lighting and ensure natural integration.
+
+---
+
+NO MODIFICATIONS:
+- no pose changes
+- no camera changes
+- no composition changes
+- no added or removed elements
+- no outfit or styling changes
+- no background alterations
+
+---
+
+FACE INTEGRATION (CRITICAL):
+
+Do NOT paste or overlay faces.
+
+Reconstruct faces naturally within the original head geometry.
+
+Faces must match:
+- exact head orientation from the reference
+- original perspective and depth
+- original lighting direction and shadow falloff
+- original focus and motion blur
+
+The face must be fully integrated into the scene lighting, not appear flat or separately lit.
+
+---
+
+VISIBILITY & OCCLUSION:
+
+Respect occlusion from the original scene (hair, objects, motion blur).
+
+Reconstruct the visible parts of the face based on the identity images.
+
+Do NOT leave original facial features even if partially occluded.
+
+---
+
+STYLE MATCH:
+
+Match the original reference style automatically (photorealistic or animated).
+Adapt identity into that style while preserving recognizability.
+
+---
+
+ANATOMY CONSISTENCY:
+
+Keep original body anatomy unchanged.
+Hands must be natural, 5 fingers, no deformation.
+
+---
+
+OUTPUT:
+
+Identical scene in composition and structure.
+
+Only identities are replaced.
+
+Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`,
+        },
+        "cinderella-2": {
+          locked: true,
+          prompt: `Use the reference scene image as the absolute base. Perform ONLY character identity replacement.
+
+PRIORITY ORDER (STRICT):
+1) Identity from uploaded photos
+2) Original scene geometry and composition
+3) Style adaptation
+
+IDENTITY TRANSFER (HARD CONSTRAINT):
+Replace characters using uploaded photos only:
+- female character → woman from female photo
+- male character → man from male photo
+
+Preserve identity EXACTLY 1:1:
+- facial structure, proportions, age
+- skin tone and texture
+- eyes, nose, lips, bone structure
+- hairline, hair color, length, and shape
+
+Do NOT:
+- beautify or enhance faces
+- stylize or reinterpret identity
+- mix identities
+- generate new faces
+
+Uploaded photos are the single source of truth.
+
+---
+
+SCENE LOCK (CONTROLLED):
+
+Do NOT change scene composition, pose, camera, or environment.
+
+HOWEVER:
+Allow minimal local adjustments to lighting, shadows, skin tone, and color on the face ONLY, to match the scene lighting and ensure natural integration.
+
+---
+
+NO MODIFICATIONS:
+- no pose changes
+- no camera changes
+- no composition changes
+- no added or removed elements
+- no outfit or styling changes
+- no background alterations
+
+---
+
+FACE INTEGRATION (CRITICAL):
+
+Do NOT paste or overlay faces.
+
+Reconstruct faces naturally within the original head geometry.
+
+Faces must match:
+- exact head orientation from the reference
+- original perspective and depth
+- original lighting direction and shadow falloff
+- original focus and motion blur
+
+The face must be fully integrated into the scene lighting, not appear flat or separately lit.
+
+---
+
+VISIBILITY & OCCLUSION:
+
+Respect occlusion from the original scene (hair, objects, motion blur).
+
+Reconstruct the visible parts of the face based on the identity images.
+
+Do NOT leave original facial features even if partially occluded.
+
+---
+
+STYLE MATCH:
+
+Match the original reference style automatically (photorealistic or animated).
+Adapt identity into that style while preserving recognizability.
+
+---
+
+ANATOMY CONSISTENCY:
+
+Keep original body anatomy unchanged.
+Hands must be natural, 5 fingers, no deformation.
+
+---
+
+OUTPUT:
+
+Identical scene in composition and structure.
+
+Only identities are replaced.
+
+Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`,
+        },
+        "cinderella-3": {
+          locked: true,
+          prompt: `Use the reference scene image as the absolute base. Perform ONLY character identity replacement.
+
+PRIORITY ORDER (STRICT):
+1) Identity from uploaded photos
+2) Original scene geometry and composition
+3) Style adaptation
+
+IDENTITY TRANSFER (HARD CONSTRAINT):
+Replace characters using uploaded photos only:
+- female character → woman from female photo
+- male character → man from male photo
+
+Preserve identity EXACTLY 1:1:
+- facial structure, proportions, age
+- skin tone and texture
+- eyes, nose, lips, bone structure
+- hairline, hair color, length, and shape
+
+Do NOT:
+- beautify or enhance faces
+- stylize or reinterpret identity
+- mix identities
+- generate new faces
+
+Uploaded photos are the single source of truth.
+
+---
+
+SCENE LOCK (CONTROLLED):
+
+Do NOT change scene composition, pose, camera, or environment.
+
+HOWEVER:
+Allow minimal local adjustments to lighting, shadows, skin tone, and color on the face ONLY, to match the scene lighting and ensure natural integration.
+
+---
+
+NO MODIFICATIONS:
+- no pose changes
+- no camera changes
+- no composition changes
+- no added or removed elements
+- no outfit or styling changes
+- no background alterations
+
+---
+
+FACE INTEGRATION (CRITICAL):
+
+Do NOT paste or overlay faces.
+
+Reconstruct faces naturally within the original head geometry.
+
+Faces must match:
+- exact head orientation from the reference
+- original perspective and depth
+- original lighting direction and shadow falloff
+- original focus and motion blur
+
+The face must be fully integrated into the scene lighting, not appear flat or separately lit.
+
+---
+
+VISIBILITY & OCCLUSION:
+
+Respect occlusion from the original scene (hair, objects, motion blur).
+
+Reconstruct the visible parts of the face based on the identity images.
+
+Do NOT leave original facial features even if partially occluded.
+
+---
+
+STYLE MATCH:
+
+Match the original reference style automatically (photorealistic or animated).
+Adapt identity into that style while preserving recognizability.
+
+---
+
+ANATOMY CONSISTENCY:
+
+Keep original body anatomy unchanged.
+Hands must be natural, 5 fingers, no deformation.
+
+---
+
+OUTPUT:
+
+Identical scene in composition and structure.
+
+Only identities are replaced.
+
+Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`,
+        },
+      };
+
+      // ── IMAGE ROLE MAPPING ──
       const manCount = hasMan2 ? 2 : 1;
       const womanCount = hasWoman2 ? 2 : 1;
       const idxScene = 0;
@@ -389,36 +1158,16 @@ The woman in the scene must look like the person in ${womanIdxList}.
 Do NOT mix man and woman identity sources.
 Do NOT use image_input[${idxScene}] as an identity source.`;
 
-      let finalPrompt: string;
-
-      if (isLocked) {
-        // FULL ISOLATION: use only the client prompt (reference's own prompt) + role mapping.
-        // No UNIVERSAL_PROMPT, no modifiers, no multiImageBlock appended.
-        const lockedPrompt = (typeof formData.get("prompt") === "string" && (formData.get("prompt") as string).trim().length > 0)
-          ? (formData.get("prompt") as string).trim()
-          : UNIVERSAL_PROMPT;
-        finalPrompt = roleMappingBlock + "\n\n" + lockedPrompt;
-        console.log("[PROMPT] source=locked ref=" + referenceId + " base_len=" + lockedPrompt.length + " final_len=" + finalPrompt.length);
-
-} else {
-  // NORMAL FLOW
-        const clientPrompt = formData.get("prompt");
-        const hasCustomPrompt = typeof clientPrompt === "string" && clientPrompt.trim().length > 0;
-        const basePrompt = hasCustomPrompt ? (clientPrompt as string).trim() : UNIVERSAL_PROMPT;
-
-        const REFERENCE_MODIFIERS: Record<string, string> = {
-          "euphoria-1": "Force strong identity replacement for the face. Fully override the original facial identity and remove any resemblance to the original actress. The face must clearly match the identity images, even in close-up shots. Do not preserve original facial features or structure.",
-          "euphoria-3": "Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene. Apply natural film grain, subtle noise, and slight color imperfection to the face. Reduce skin smoothness and avoid clean or studio-like appearance. Ensure the face inherits the same cinematic texture as the scene.",
-        };
-        const modifier = (typeof referenceId === "string" && REFERENCE_MODIFIERS[referenceId]) || "";
-
-        const multiImageBlock = (hasMan2 || hasWoman2)
-          ? `\n\nIf multiple identity images are provided for the same person, treat them as the same identity and combine their features consistently.`
-          : "";
-
-        finalPrompt = roleMappingBlock + "\n\n" + basePrompt + multiImageBlock + (modifier ? "\n\n" + modifier : "");
-        console.log("[PROMPT] source=" + (hasCustomPrompt ? "custom" : "universal") + " base_len=" + basePrompt.length + " final_len=" + finalPrompt.length);
+      const config = STYLE_CONFIG[referenceId as string];
+      if (!config) {
+        throw new Error(`Unknown referenceId: ${referenceId}`);
       }
+
+      const finalPrompt = config.locked
+        ? roleMappingBlock + "\n\n" + config.prompt
+        : roleMappingBlock + "\n\n" + UNIVERSAL_PROMPT;
+
+      console.log("[PROMPT] locked=" + config.locked + " ref=" + referenceId + " prompt_len=" + config.prompt.length + " final_len=" + finalPrompt.length);
 
       // ── Build image array ──
       const personDataUrls = await Promise.all([
