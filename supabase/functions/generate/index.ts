@@ -391,16 +391,30 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
 
       let finalPrompt: string;
 
-      if (isLocked) {
-        // FULL ISOLATION: use only the client prompt (reference's own prompt) + role mapping.
-        // No UNIVERSAL_PROMPT, no modifiers, no multiImageBlock appended.
-        const lockedPrompt = (typeof formData.get("prompt") === "string" && (formData.get("prompt") as string).trim().length > 0)
-          ? (formData.get("prompt") as string).trim()
-          : UNIVERSAL_PROMPT;
-        finalPrompt = roleMappingBlock + "\n\n" + lockedPrompt;
-        console.log("[PROMPT] source=locked ref=" + referenceId + " base_len=" + lockedPrompt.length + " final_len=" + finalPrompt.length);
-      } else {
-        // NORMAL FLOW
+if (isLocked) {
+  // FULL ISOLATION: NO fallback, NO universal, NO modifiers
+
+  const promptValue = formData.get("prompt");
+
+  if (typeof promptValue !== "string" || promptValue.trim().length === 0) {
+    return new Response(
+      JSON.stringify({ error: "Locked reference requires a prompt but none was provided" }),
+      { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
+
+  const lockedPrompt = promptValue.trim();
+
+  finalPrompt = roleMappingBlock + "\n\n" + lockedPrompt;
+
+  console.log(
+    "[PROMPT] source=locked ref=" + referenceId +
+    " base_len=" + lockedPrompt.length +
+    " final_len=" + finalPrompt.length
+  );
+
+} else {
+  // NORMAL FLOW
         const clientPrompt = formData.get("prompt");
         const hasCustomPrompt = typeof clientPrompt === "string" && clientPrompt.trim().length > 0;
         const basePrompt = hasCustomPrompt ? (clientPrompt as string).trim() : UNIVERSAL_PROMPT;
@@ -451,7 +465,7 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
         model: MODEL_NAME,
         version: MODEL_VERSION,
         referenceId,
-        promptSource,
+        promptSource: isLocked ? "locked" : "dynamic",
         promptLength: finalPrompt.length,
         imageCount: images.length,
         images: imageSummary,
