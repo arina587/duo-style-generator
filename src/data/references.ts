@@ -348,9 +348,141 @@ A new image where the original people are completely gone and replaced by new in
   { id: 'titanic-3', style: 'titanic', label: 'Titanic', image: '/styles/titanic/titanic3.jpg' },
 
   // ── Tangled ──
-  { id: 'tangled-1', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled1.jpg' },
-  { id: 'tangled-2', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled2.jpg' },
-  { id: 'tangled-3', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled3.jpg' },
+  {
+    id: 'tangled-1',
+    style: 'tangled',
+    label: 'Tangled',
+    image: '/styles/tangled/tangled1.jpg',
+    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Treat the reference image as a scene template ONLY (composition, pose, lighting).
+
+COMPLETELY IGNORE the original characters in the reference.
+They must NOT be used as identity source.
+
+FULL CHARACTER REPLACEMENT (CRITICAL):
+Recreate both characters as new people based ONLY on the uploaded identity photos.
+
+Do NOT reuse:
+— facial features
+— head shape
+— body proportions
+— skin tone
+— any identity from the reference
+
+The original characters must be considered non-existent.
+
+CHARACTERS:
+— man from uploaded male photo → left
+— woman from uploaded female photo → right
+
+Rebuild them as stylized human characters in high-end Pixar/Disney CGI style.
+
+STRICT IDENTITY PRESERVATION:
+Faces must remain clearly recognizable:
+— facial structure and proportions
+— eyes, eyelids, eyebrows
+— nose shape
+— lips and jawline
+— skin tone adapted to scene lighting
+— hairline, color, length
+
+CRITICAL POSE LOCK:
+— characters standing very close
+— man holding the woman
+— woman looking up at the man
+— faces close, emotional eye contact
+
+CRITICAL LIGHTING:
+— warm golden lantern lighting
+— soft glow from multiple sources
+
+FINAL:
+Same romantic scene, but with completely new people replacing the originals, no trace of original characters.`,
+  },
+  {
+    id: 'tangled-2',
+    style: 'tangled',
+    label: 'Tangled',
+    image: '/styles/tangled/tangled2.jpg',
+    prompt: `Use the provided reference image and uploaded identity photos.
+
+Use the reference ONLY for scene layout, pose, and lighting.
+
+The original characters must NOT be used as identity source.
+
+FULL CHARACTER REBUILD (CRITICAL):
+Remove the original characters conceptually and rebuild new people from scratch using uploaded photos.
+
+CHARACTERS:
+— man → left
+— woman → right
+
+STRICT IDENTITY:
+Faces must clearly match uploaded photos.
+
+CRITICAL POSE LOCK:
+— both sitting close together
+— woman leaning forward, chin on hands
+— looking at each other
+
+CRITICAL LIGHTING:
+Scene is dark with warm fire light.
+
+IMPORTANT:
+— slightly brighten faces if needed
+— reduce excessive shadow on faces
+— keep identity clearly visible
+
+STYLE:
+Pixar/Disney cinematic CGI.
+
+FINAL:
+Same night scene, new people, no trace of original characters.`,
+  },
+  {
+    id: 'tangled-3',
+    style: 'tangled',
+    label: 'Tangled',
+    image: '/styles/tangled/tangled3.jpg',
+    prompt: `Use the provided reference image and uploaded identity photos.
+
+Treat the reference as a composition and pose guide ONLY.
+
+Do NOT use the original characters as identity source.
+
+FULL CHARACTER REPLACEMENT (ABSOLUTE):
+Rebuild both characters entirely using uploaded identity photos.
+
+CHARACTERS:
+— man → left
+— woman → right
+
+STRICT IDENTITY:
+Preserve:
+— facial structure
+— proportions
+— features
+— skin tone
+— hair
+
+CRITICAL POSE LOCK:
+— dancing interaction
+— holding hands
+— same distance and gesture
+
+CRITICAL SCENE LOCK:
+— keep crowd
+— keep architecture
+— keep perspective
+
+CRITICAL LIGHTING:
+— natural daylight
+— consistent shadows
+
+FINAL:
+Same dance scene, new characters fully replacing originals.`,
+  },
 
   // ── Spider-Man ──
   { id: 'spiderman-1', style: 'spiderman', label: 'Spider-Man', image: '/styles/spiderman/spiderman1.jpg' },
