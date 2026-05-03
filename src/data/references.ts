@@ -353,6 +353,7 @@ A new image where the original people are completely gone and replaced by new in
     style: 'tangled',
     label: 'Tangled',
     image: '/styles/tangled/tangled1.jpg',
+    mode: "locked",
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
 Treat the reference image as a scene template ONLY (composition, pose, lighting).
@@ -405,6 +406,7 @@ Same romantic scene, but with completely new people replacing the originals, no 
     style: 'tangled',
     label: 'Tangled',
     image: '/styles/tangled/tangled2.jpg',
+    mode: "locked",
     prompt: `Use the provided reference image and uploaded identity photos.
 
 Use the reference ONLY for scene layout, pose, and lighting.
@@ -445,6 +447,7 @@ Same night scene, new people, no trace of original characters.`,
     style: 'tangled',
     label: 'Tangled',
     image: '/styles/tangled/tangled3.jpg',
+    mode: "locked",
     prompt: `Use the provided reference image and uploaded identity photos.
 
 Treat the reference as a composition and pose guide ONLY.
