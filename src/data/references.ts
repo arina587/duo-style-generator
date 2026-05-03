@@ -250,97 +250,72 @@ A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate 
     label: 'Euphoria', 
     image: '/styles/euphoria/euphoria1.jpg', 
     mode: "locked",
-    prompt: `Use the reference scene as the absolute base.
+    prompt: `Use the reference scene as the base.
 
 Replace the woman (left) with the provided female identity and the man (right) with the provided male identity.
 
 ---
 
-PRIORITY ORDER (STRICT):
-1) Identity from uploaded photos
-2) Original pose and composition
-3) Lighting and style
+PRIORITY:
+1) Identity accuracy
+2) Pose and composition
+3) Lighting
 
 ---
 
-IDENTITY OVERRIDE (CRITICAL):
+IDENTITY (CRITICAL):
 
-Completely replace the original woman's facial identity.
+Fully replace the woman's face with the identity from the uploaded photo.
 
-Do NOT preserve any facial features from the original actress.
+The face must clearly match the identity:
+— facial structure
+— eyes, nose, lips
+— proportions
+— skin tone
+— hairline
 
-The face must clearly and unmistakably match the uploaded female identity.
-
-Preserve EXACTLY:
-— facial structure and proportions  
-— eyes, eyelids, eyebrows  
-— nose shape  
-— lips and jawline  
-— skin texture  
-— hairline and hair  
-
-No blending with the original face is allowed.
+Do NOT keep any features from the original actress.
 
 ---
 
-POSE & COMPOSITION (LOCKED):
+POSE (LOCKED):
 
-— woman on the left, close-up  
-— head turned slightly to the right  
-— looking toward the man  
-— man on the right partially visible and slightly out of focus  
-— tight cinematic framing  
+— woman on the left
+— head turned slightly to the right
+— looking toward the man
+— close-up framing
+— man on the right blurred and partially visible
 
-Do NOT change angle, crop, or positioning.
+Do NOT change composition or camera.
 
 ---
 
-LIGHTING (CRITICAL):
+LIGHTING (ADJUSTED):
 
-— strong warm directional light from the left  
-— soft shadow on the right side of the face  
-— cinematic low-light environment  
+Match the overall warm cinematic lighting of the scene.
 
 IMPORTANT:
-Apply the scene lighting to the NEW face.
+You may slightly brighten or rebalance the face lighting to keep the identity clearly visible.
 
-The identity must remain clear even in shadow.
+Do NOT keep the face too dark.
+Do NOT let shadows hide facial features.
 
-Do NOT let shadows obscure or distort facial features.
-
-Reconstruct facial features correctly inside shadow areas using the identity reference.
-
-Avoid flat lighting or over-dark shadows.
+The face must remain readable and recognizable.
 
 ---
 
 FACE INTEGRATION:
 
-Rebuild the face fully inside the head geometry.
-
-Do NOT paste or overlay.
-
-Ensure:
-— correct depth  
-— correct shadow falloff  
-— natural skin shading  
-— no visible seams  
-
----
-
-BACKGROUND & STYLE:
-
-Keep:
-— background blur  
-— warm cinematic tone  
-— depth of field  
-— film-like texture  
+Blend the face naturally into the scene:
+— correct shadows
+— correct depth
+— no pasted look
 
 ---
 
 FINAL:
 
-A cinematic close-up where the woman's identity is fully replaced and clearly recognizable, with correct lighting and natural shadow integration. No trace of the original actress must remain.`,
+A cinematic close-up where the woman clearly matches the provided identity, with natural lighting and visible facial features.`,
   },
   { id: 'euphoria-2', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria2.jpg' },
   { id: 'euphoria-3', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria3.jpg', modifier: 'Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene. Apply natural film grain, subtle noise, and slight color imperfection to the face. Reduce skin smoothness and avoid clean or studio-like appearance. Ensure the face inherits the same cinematic texture as the scene.' },
