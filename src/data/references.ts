@@ -250,85 +250,70 @@ A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate 
     label: 'Euphoria', 
     image: '/styles/euphoria/euphoria1.jpg', 
     mode: "locked",
-    prompt: `Use the reference image ONLY as a scene template (pose, composition, lighting).
+    prompt: `Create a realistic photo of the two people from the uploaded identity images.
 
-REMOVE the original characters from the reference completely.
-
-Place the people from the uploaded photos into the scene in their place.
+Use the reference image ONLY as a pose, composition, and lighting guide.
 
 ---
 
-CRITICAL RULE:
+CRITICAL:
 
-The original people in the reference image must NOT be used in any way.
+Do NOT use the people from the reference image.
 
-Do NOT preserve their faces, features, or identity.
+Do NOT reuse or preserve any part of their faces or identity.
 
-Treat the reference characters as placeholders only.
-
----
-
-CHARACTER REPLACEMENT:
-
-Insert:
-— the woman from the female photo into the left position  
-— the man from the male photo into the right position  
-
-They must fully replace the original characters.
+The reference image must be treated only as a template for:
+— pose
+— camera angle
+— composition
+— lighting
 
 ---
 
-POSE MATCH (STRICT):
+CHARACTERS:
 
-Match EXACTLY:
-— body position  
-— head angle  
-— gaze direction  
-— facial expression  
-— distance between characters  
-— framing and camera angle  
+Generate:
+— the woman from the uploaded female photo on the left  
+— the man from the uploaded male photo on the right  
 
-No changes allowed.
-
----
-
-IDENTITY (VERY IMPORTANT):
-
-The new characters must clearly match the uploaded identities:
+They must fully match the uploaded identities:
 — facial structure
 — eyes, nose, lips
 — proportions
 — skin tone
 — hairline
 
-No blending with the original reference faces.
+---
+
+POSE MATCH (STRICT):
+
+Match the reference exactly:
+— woman close-up on the left  
+— head turned toward the man  
+— man on the right, partially visible and slightly out of focus  
+— same framing and crop  
 
 ---
 
 LIGHTING:
 
-Match the scene lighting, but you may slightly adjust brightness on the face to keep identity visible.
+Match the warm cinematic lighting.
 
-Do NOT allow shadows to hide facial features.
+You may adjust brightness slightly to keep faces clearly visible.
+
+Do NOT allow shadows to hide identity.
 
 ---
 
-INTEGRATION:
+STYLE:
 
-Rebuild the characters naturally inside the scene.
-
-Do NOT paste faces.
-
-Ensure:
-— correct lighting
-— correct depth
-— no artifacts
+Photorealistic cinematic close-up.
 
 ---
 
 FINAL:
 
-The scene must look identical in composition, but with completely new people replacing the originals. No trace of the original characters must remain.`,
+A new image of the two people from the uploaded photos, posed exactly like in the reference, with no trace of the original characters.`,
   },
   { id: 'euphoria-2', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria2.jpg' },
   { id: 'euphoria-3', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria3.jpg', modifier: 'Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene. Apply natural film grain, subtle noise, and slight color imperfection to the face. Reduce skin smoothness and avoid clean or studio-like appearance. Ensure the face inherits the same cinematic texture as the scene.' },
