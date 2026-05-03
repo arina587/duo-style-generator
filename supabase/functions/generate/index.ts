@@ -358,7 +358,7 @@ Deno.serve(async (req: Request) => {
       if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
 
       // ── Locked styles: fully isolated, no global changes can affect them ──
-      const LOCKED_STYLES = ["zootopia", "cinderella"];
+      const LOCKED_STYLES = ["zootopia", "cinderella", "tangled"];
       const isLocked = typeof referenceId === "string" &&
         LOCKED_STYLES.some((s) => referenceId.startsWith(s));
 
