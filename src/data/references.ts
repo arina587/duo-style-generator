@@ -244,7 +244,104 @@ A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate 
   },
 
   // ── Euphoria ──
-  { id: 'euphoria-1', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria1.jpg', modifier: 'Force strong identity replacement for the face. Fully override the original facial identity and remove any resemblance to the original actress. The face must clearly match the identity images, even in close-up shots. Do not preserve original facial features or structure.' },
+  { 
+    id: 'euphoria-1', 
+    style: 'euphoria', 
+    label: 'Euphoria', 
+    image: '/styles/euphoria/euphoria1.jpg', 
+    mode: "locked"',
+    prompt: `Use the reference scene as the absolute base.
+
+Replace the woman (left) with the provided female identity and the man (right) with the provided male identity.
+
+---
+
+PRIORITY ORDER (STRICT):
+1) Identity from uploaded photos
+2) Original pose and composition
+3) Lighting and style
+
+---
+
+IDENTITY OVERRIDE (CRITICAL):
+
+Completely replace the original woman's facial identity.
+
+Do NOT preserve any facial features from the original actress.
+
+The face must clearly and unmistakably match the uploaded female identity.
+
+Preserve EXACTLY:
+— facial structure and proportions  
+— eyes, eyelids, eyebrows  
+— nose shape  
+— lips and jawline  
+— skin texture  
+— hairline and hair  
+
+No blending with the original face is allowed.
+
+---
+
+POSE & COMPOSITION (LOCKED):
+
+— woman on the left, close-up  
+— head turned slightly to the right  
+— looking toward the man  
+— man on the right partially visible and slightly out of focus  
+— tight cinematic framing  
+
+Do NOT change angle, crop, or positioning.
+
+---
+
+LIGHTING (CRITICAL):
+
+— strong warm directional light from the left  
+— soft shadow on the right side of the face  
+— cinematic low-light environment  
+
+IMPORTANT:
+Apply the scene lighting to the NEW face.
+
+The identity must remain clear even in shadow.
+
+Do NOT let shadows obscure or distort facial features.
+
+Reconstruct facial features correctly inside shadow areas using the identity reference.
+
+Avoid flat lighting or over-dark shadows.
+
+---
+
+FACE INTEGRATION:
+
+Rebuild the face fully inside the head geometry.
+
+Do NOT paste or overlay.
+
+Ensure:
+— correct depth  
+— correct shadow falloff  
+— natural skin shading  
+— no visible seams  
+
+---
+
+BACKGROUND & STYLE:
+
+Keep:
+— background blur  
+— warm cinematic tone  
+— depth of field  
+— film-like texture  
+
+---
+
+FINAL:
+
+A cinematic close-up where the woman's identity is fully replaced and clearly recognizable, with correct lighting and natural shadow integration. No trace of the original actress must remain.`,
+  },
   { id: 'euphoria-2', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria2.jpg' },
   { id: 'euphoria-3', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria3.jpg', modifier: 'Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene. Apply natural film grain, subtle noise, and slight color imperfection to the face. Reduce skin smoothness and avoid clean or studio-like appearance. Ensure the face inherits the same cinematic texture as the scene.' },
 
