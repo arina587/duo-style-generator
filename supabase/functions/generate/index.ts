@@ -358,7 +358,7 @@ Deno.serve(async (req: Request) => {
       if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
 
       // ── Locked styles: fully isolated, no global changes can affect them ──
-      const LOCKED_STYLES = ["zootopia", "cinderella", "tangled"];
+      const LOCKED_STYLES = ["zootopia", "cinderella"];
       const isLocked = typeof referenceId === "string" &&
         LOCKED_STYLES.some((s) => referenceId.startsWith(s));
 
@@ -391,27 +391,14 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
 
       let finalPrompt: string;
 
-if (isLocked) {
-  // FULL ISOLATION: NO fallback, NO universal, NO modifiers
-
-  const promptValue = formData.get("prompt");
-
-  if (typeof promptValue !== "string" || promptValue.trim().length === 0) {
-    return new Response(
-      JSON.stringify({ error: "Locked reference requires a prompt but none was provided" }),
-      { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
-  }
-
-  const lockedPrompt = promptValue.trim();
-
-  finalPrompt = roleMappingBlock + "\n\n" + lockedPrompt;
-
-  console.log(
-    "[PROMPT] source=locked ref=" + referenceId +
-    " base_len=" + lockedPrompt.length +
-    " final_len=" + finalPrompt.length
-  );
+      if (isLocked) {
+        // FULL ISOLATION: use only the client prompt (reference's own prompt) + role mapping.
+        // No UNIVERSAL_PROMPT, no modifiers, no multiImageBlock appended.
+        const lockedPrompt = (typeof formData.get("prompt") === "string" && (formData.get("prompt") as string).trim().length > 0)
+          ? (formData.get("prompt") as string).trim()
+          : UNIVERSAL_PROMPT;
+        finalPrompt = roleMappingBlock + "\n\n" + lockedPrompt;
+        console.log("[PROMPT] source=locked ref=" + referenceId + " base_len=" + lockedPrompt.length + " final_len=" + finalPrompt.length);
 
 } else {
   // NORMAL FLOW
