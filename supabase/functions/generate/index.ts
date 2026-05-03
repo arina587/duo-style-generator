@@ -9,71 +9,100 @@ const corsHeaders = {
 const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
 const MODEL_NAME = "zsxkib/flux-pulid";
 
-const UNIVERSAL_PROMPT = `Use image_input[0] as the locked reference for the scene.
-Perform full character identity replacement.
+const UNIVERSAL_PROMPT = `Use the reference scene image as the absolute base. Perform ONLY character identity replacement.
 
 PRIORITY ORDER (STRICT):
-1) Identity from uploaded images
-2) Head pose and body geometry from the scene
-3) Scene composition and lighting
+1) Identity from uploaded photos
+2) Original scene geometry and composition
+3) Style adaptation
 
-IDENTITY (CRITICAL):
-Replace the original people with the identities from the uploaded images.
-- The man must match the MAN identity images
-- The woman must match the WOMAN identity images
+IDENTITY TRANSFER (HARD CONSTRAINT):
+Replace characters using uploaded photos only:
+- female character → woman from female photo
+- male character → man from male photo
 
-Faces must be clearly recognizable and match:
-- facial structure and proportions
+Preserve identity EXACTLY 1:1:
+- facial structure, proportions, age
 - skin tone and texture
 - eyes, nose, lips, bone structure
-- hairline, hair shape and color
+- hairline, hair color, length, and shape
 
 Do NOT:
+- beautify or enhance faces
+- stylize or reinterpret identity
 - mix identities
-- preserve recognizable features from original actors
-- generate unrelated faces
+- generate new faces
 
-HEAD REPLACEMENT (KEY):
-Replace the full head identity, not just the face.
-Preserve:
-- head position
-- head angle
-- body pose
+Uploaded photos are the single source of truth.
 
-Do NOT reuse the original facial structure.
+---
 
-SCENE LOCK:
-Keep unchanged:
-- body pose and interaction
-- camera angle and framing
-- lighting direction and shadows
-- background and environment
-- clothing
+SCENE LOCK (CONTROLLED):
 
-LIGHTING INTEGRATION:
-Adapt the new faces to match scene lighting:
-- same color temperature
-- same shadow direction
-- same exposure
+Do NOT change scene composition, pose, camera, or environment.
 
-Faces must look naturally lit by the scene.
+HOWEVER:
+Allow minimal local adjustments to lighting, shadows, skin tone, and color on the face ONLY, to match the scene lighting and ensure natural integration.
 
-DEPTH:
-Ensure correct 3D structure:
-- no flat faces
-- natural shadows on face and neck
-- correct perspective
+---
 
-VISIBILITY:
-Respect original visibility:
-- keep profile views
-- keep back-facing heads without generating faces
-- do not reveal hidden parts
+NO MODIFICATIONS:
+- no pose changes
+- no camera changes
+- no composition changes
+- no added or removed elements
+- no outfit or styling changes
+- no background alterations
+
+---
+
+FACE INTEGRATION (CRITICAL):
+
+Do NOT paste or overlay faces.
+
+Reconstruct faces naturally within the original head geometry.
+
+Faces must match:
+- exact head orientation from the reference
+- original perspective and depth
+- original lighting direction and shadow falloff
+- original focus and motion blur
+
+The face must be fully integrated into the scene lighting, not appear flat or separately lit.
+
+---
+
+VISIBILITY & OCCLUSION:
+
+Respect occlusion from the original scene (hair, objects, motion blur).
+
+Reconstruct the visible parts of the face based on the identity images.
+
+Do NOT leave original facial features even if partially occluded.
+
+---
+
+STYLE MATCH:
+
+Match the original reference style automatically (photorealistic or animated).
+Adapt identity into that style while preserving recognizability.
+
+---
+
+ANATOMY CONSISTENCY:
+
+Keep original body anatomy unchanged.
+Hands must be natural, 5 fingers, no deformation.
+
+---
 
 OUTPUT:
-Same scene, same composition, same pose.
+
+Identical scene in composition and structure.
+
 Only identities are replaced.
-Result must look natural and not edited.`;
+
+Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
 async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
