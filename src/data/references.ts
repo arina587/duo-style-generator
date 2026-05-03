@@ -18,7 +18,7 @@ export const references: ReferenceItem[] = [
     mode: "locked",
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Replace the male character (left) with the uploaded man and the female character (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney-quality CGI style, not as pasted faces.
+Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney-quality CGI style, not as pasted faces.
 
 STRICT IDENTITY PRESERVATION (ENHANCED):
 Faces must remain highly recognizable:
@@ -31,37 +31,31 @@ Faces must remain highly recognizable:
 — hairstyle, hair color, and hair length must match the uploaded photos
 
 CRITICAL POSE LOCK (ABSOLUTE):
-— man (left) holding the woman closely
-— woman (right) leaning into the man
-— faces very close with strong eye contact
-— woman looking up, man looking down
-— intimate distance, chest-to-chest positioning
+— both characters extremely close, cheek-to-cheek
+— heads slightly tilted inward toward each other
+— camera held at arm's length by the woman on the right
+— tight selfie framing, cropped like a phone photo
+— both looking directly into the camera
 
-Do NOT change angle, framing, distance, or head positioning.
+Do NOT change angle, framing, distance, or head tilt.
 
 CRITICAL EXPRESSION LOCK:
-— man: soft, affectionate smile
-— woman: warm, admiring expression
+— man: relaxed, slightly smug half-smile
+— woman: soft friendly smile
 
 CRITICAL STYLE:
 Full Pixar/Disney 3D look — soft shading, clean stylized skin, expressive eyes.
 
 CRITICAL SCENE LOCK:
-Keep lanterns, water reflections, background, framing, and lighting EXACTLY the same.
-
-CRITICAL LIGHTING:
-— strong warm lantern glow
-— golden/orange highlights
-— soft shadows
-Faces must inherit warm lighting, not neutral.
+Keep plain neutral background, framing, and lighting EXACTLY the same.
 
 CRITICAL HANDS (VERY IMPORTANT):
-All hands must be human — anatomically correct, realistic proportions.
+All hands must be human — anatomically correct, realistic proportions, clearly defined fingers.
 Each hand must have exactly five fingers.
-Correct grip around the body, no deformation.
+Correct perspective for a selfie grip, no deformation, no fusion, no missing fingers.
 
 FINAL:
-Identical romantic lantern scene with stylized human characters, strong identity match, no pose drift.`,
+Identical selfie composition with stylized human characters, strong identity match, no pose drift.`,
   },
   {
     id: 'zootopia-2',
@@ -71,46 +65,41 @@ Identical romantic lantern scene with stylized human characters, strong identity
     mode: "locked",
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Replace the male character (left) with the uploaded man and the female character (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney CGI style, not as pasted faces.
+Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney CGI style.
 
 STRICT IDENTITY PRESERVATION:
-Faces must remain fully recognizable and consistent with uploaded photos.
+Faces must remain fully recognizable and consistent with uploaded photos (facial structure, features, proportions, hair).
 
 CRITICAL POSE LOCK (ABSOLUTE):
-— man sitting relaxed, slightly turned toward the woman
-— woman leaning forward with elbows on knees
-— chin resting on hands
-— both looking at each other
+— characters pressed tightly together
+— woman (right) leans strongly into the man's face
+— her cheek pushes into his cheek
+— man's head slightly turned away due to pressure
+— camera held by woman at arm's length
+— very tight selfie framing
 
-Do NOT reposition bodies or change posture.
+Do NOT loosen contact. Do NOT reposition heads.
 
 CRITICAL EXPRESSION LOCK:
-— man: calm, slightly amused
-— woman: curious, soft admiration
+— woman: playful, energetic, wide smile
+— man: slightly uncomfortable, compressed expression
+
+CRITICAL CONTACT PHYSICS:
+Maintain visible cheek compression and skin contact.
 
 CRITICAL STYLE:
 Same high-end Pixar/Disney 3D rendering.
 
 CRITICAL SCENE LOCK:
-Keep dark environment, composition, and framing identical.
+Keep background and lighting identical.
 
-CRITICAL LIGHTING (VERY IMPORTANT):
-— low light scene with warm fire glow
-— strong shadows present
-
-IMPORTANT OVERRIDE:
-Faces must remain clearly visible:
-— reduce shadow intensity on faces only
-— preserve identity clarity
-— do NOT allow shadows to hide facial features
-
-CRITICAL HANDS:
-— woman’s hands under chin must be natural
-— exactly five fingers per hand
-— correct proportions, no distortion
+CRITICAL HANDS (VERY IMPORTANT):
+All visible hands must be human — anatomically correct, natural proportions.
+Exactly five fingers per hand.
+No distortion, no merging fingers, correct perspective for selfie position.
 
 FINAL:
-Same intimate night scene, exact pose preserved, stylized human version with visible identity despite low light.`,
+Same tight, compressed selfie moment, exact pose preserved, stylized human version.`,
   },
   {
     id: 'zootopia-3',
@@ -120,43 +109,138 @@ Same intimate night scene, exact pose preserved, stylized human version with vis
     mode: "locked",
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Replace the male character (left) with the uploaded man and the female character (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney CGI style, not as pasted faces.
+Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman.
 
-STRICT IDENTITY PRESERVATION:
-Faces must remain fully recognizable and consistent with uploaded photos.
+Recreate them as stylized 3D human characters in Pixar/Disney 3D CGI style — match the exact visual style of the reference image. NOT as pasted faces, but as fully reconstructed human characters integrated into the scene.
 
-CRITICAL POSE LOCK (ABSOLUTE):
-— man (left) leading the dance
-— holding the woman’s hand
-— slightly leaning forward
-— woman (right) extending her arm
-— delicate hand connection
+---
 
-Do NOT change interaction, spacing, or gesture.
+PRIORITY ORDER (STRICT):
+1) Identity from uploaded photos
+2) Original pose and composition
+3) Lighting and style
 
-CRITICAL EXPRESSION LOCK:
-— both: playful, light, engaged expressions
+---
 
-CRITICAL STYLE:
-Same Pixar/Disney 3D rendering.
+IDENTITY (CRITICAL):
 
-CRITICAL SCENE LOCK:
-Keep crowd, architecture, perspective, and framing identical.
+Preserve identity with high accuracy:
 
-CRITICAL LIGHTING:
-— natural daylight
-— soft shadows
-— consistent color temperature
+— facial structure and proportions
+— eye shape, spacing, eyelids, eyebrows
+— nose shape and bridge
+— lips, mouth width, jawline, chin
+— recognizable skin tone (adapted to scene lighting)
+— hairstyle, hair color, and length
 
-Faces must match daylight lighting (no artificial tones).
+Do NOT:
+— stylize away identity
+— average or genericize faces
+— mix identities
 
-CRITICAL HANDS (VERY IMPORTANT):
-— exactly five fingers
-— correct anatomy
-— proper hand interaction (no fusion, no distortion)
+---
+
+BODY & PROPORTIONS:
+
+Convert animal characters into realistic human anatomy:
+
+— man follows the fox pose (including raised arm with phone)
+— woman replaces the rabbit with natural human proportions
+— do NOT compress or scale the woman unnaturally
+
+Maintain spatial relationship while keeping realistic human anatomy.
+
+---
+
+POSE & COMPOSITION (STRICT):
+
+Man (left):
+— arm raised holding a phone (selfie position)
+— slight head tilt toward the woman
+— relaxed, confident posture
+
+Woman (right):
+— very close to the man
+— slight lean toward him
+— upright natural stance
+
+Preserve:
+— selfie composition
+— camera angle (slightly above, angled down)
+— framing and crop
+
+Do NOT reframe or change perspective.
+
+---
+
+EXPRESSION:
+
+— man: confident, playful smirk
+— woman: cheerful, slightly mischievous smile
+
+Match emotional tone from the reference.
+
+---
+
+LIGHTING & COLOR:
+
+Match the original scene lighting:
+
+— colorful nightclub lighting (magenta, purple, blue tones)
+— mixed ambient light sources
+— soft but vivid highlights
+— visible color reflections on skin
+
+Preserve:
+— light direction
+— color spill
+— contrast and atmosphere
+
+Faces must fully inherit scene lighting (no neutral or flat lighting).
+
+---
+
+HANDS:
+
+All hands must be human:
+
+— exactly five fingers per hand
+— correct anatomy and proportions
+— natural finger placement
+
+Man:
+— holding a smartphone in selfie position
+— correct grip and perspective
+
+No deformation, no extra or missing fingers.
+
+---
+
+SCENE LOCK:
+
+Do NOT change:
+— environment
+— background characters
+— lighting setup
+— composition
+
+Only replace the characters.
+
+---
+
+INTEGRATION:
+
+Rebuild characters inside the original positions with correct perspective and depth.
+
+Ensure seamless integration with the environment.
+
+No face cutouts. No mismatched lighting.
+
+---
 
 FINAL:
-Same dance scene, exact pose preserved, stylized human version with strong identity match.`,
+
+A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate identity, correct lighting, and stable composition.`,
   },
 
   // ── Euphoria ──
@@ -272,123 +356,50 @@ A new image where the original people are completely gone and replaced by new in
     mode: "locked",
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Replace the male character (left) with the uploaded man and the female character (right) with the uploaded woman.
+Replace the male character (left) with the uploaded man and the female character (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney-quality CGI style, not as pasted faces.
 
-Recreate them as stylized 3D human characters in Pixar/Disney 3D CGI style — match the exact visual style of the reference image. NOT as pasted faces, but as fully reconstructed human characters integrated into the scene.
+STRICT IDENTITY PRESERVATION (ENHANCED):
+Faces must remain highly recognizable:
+— exact facial proportions and bone structure
+— eye shape, spacing, eyelids, eyebrows
+— nose shape and bridge
+— lip shape and mouth width
+— jawline and chin
+— natural skin tone adapted to scene lighting
+— hairstyle, hair color, and hair length must match the uploaded photos
 
----
+CRITICAL POSE LOCK (ABSOLUTE):
+— man (left) holding the woman closely
+— woman (right) leaning into the man
+— faces very close with strong eye contact
+— woman looking up, man looking down
+— intimate distance, chest-to-chest positioning
 
-PRIORITY ORDER (STRICT):
-1) Identity from uploaded photos
-2) Original pose and composition
-3) Lighting and style
+Do NOT change angle, framing, distance, or head positioning.
 
----
+CRITICAL EXPRESSION LOCK:
+— man: soft, affectionate smile
+— woman: warm, admiring expression
 
-IDENTITY (CRITICAL):
+CRITICAL STYLE:
+Full Pixar/Disney 3D look — soft shading, clean stylized skin, expressive eyes.
 
-Preserve identity with high accuracy:
+CRITICAL SCENE LOCK:
+Keep lanterns, water reflections, background, framing, and lighting EXACTLY the same.
 
-— facial structure and proportions  
-— eye shape, spacing, eyelids, eyebrows  
-— nose shape and bridge  
-— lips, mouth width, jawline, chin  
-— recognizable skin tone (adapted to scene lighting)  
-— hairstyle, hair color, and length  
+CRITICAL LIGHTING:
+— strong warm lantern glow
+— golden/orange highlights
+— soft shadows
+Faces must inherit warm lighting, not neutral.
 
-Do NOT:
-— stylize away identity  
-— average or genericize faces  
-— mix identities  
-
----
-
-BODY & PROPORTIONS:
-
-Keep natural human anatomy.
-
-— man follows original pose (holding the woman)  
-— woman positioned in his arms, looking upward  
-
-Maintain correct proportions and physical interaction.
-
----
-
-POSE & COMPOSITION (STRICT):
-
-Man (left):
-— standing upright  
-— holding the woman close with one arm  
-— head slightly tilted down toward her  
-
-Woman (right):
-— leaning into the man  
-— looking up directly at his face  
-— very close facial distance  
-
-Preserve:
-— intimate distance  
-— eye contact  
-— camera framing  
-
-Do NOT change pose or spacing.
-
----
-
-EXPRESSION:
-
-— man: soft, affectionate smile  
-— woman: warm, admiring expression  
-
----
-
-LIGHTING & COLOR:
-
-Match lantern night lighting:
-
-— warm golden/orange glow  
-— soft multi-source lighting from lanterns  
-— strong rim light and highlights  
-— soft shadows  
-
-IMPORTANT:
-Faces must inherit warm lighting and glow.
-No neutral lighting.
-
----
-
-HANDS:
-
-— exactly five fingers  
-— correct anatomy  
-— natural grip on the body  
-
----
-
-SCENE LOCK:
-
-Do NOT change:
-— lanterns  
-— background  
-— composition  
-— camera angle  
-
----
-
-INTEGRATION:
-
-Rebuild characters fully into the scene:
-
-— correct depth  
-— correct lighting  
-— no face overlay  
-— no mismatch  
-
----
+CRITICAL HANDS (VERY IMPORTANT):
+All hands must be human — anatomically correct, realistic proportions.
+Each hand must have exactly five fingers.
+Correct grip around the body, no deformation.
 
 FINAL:
-
-A romantic lantern-lit scene with fully replaced characters, perfect identity match, and seamless integration.`,
+Identical romantic lantern scene with stylized human characters, strong identity match, no pose drift.`,
   },
   {
     id: 'tangled-2',
@@ -398,115 +409,46 @@ A romantic lantern-lit scene with fully replaced characters, perfect identity ma
     mode: "locked",
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Replace the male character (left) with the uploaded man and the female character (right) with the uploaded woman.
+Replace the male character (left) with the uploaded man and the female character (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney CGI style, not as pasted faces.
 
-Recreate them as stylized 3D human characters in Pixar/Disney 3D CGI style.
+STRICT IDENTITY PRESERVATION:
+Faces must remain fully recognizable and consistent with uploaded photos.
 
----
+CRITICAL POSE LOCK (ABSOLUTE):
+— man sitting relaxed, slightly turned toward the woman
+— woman leaning forward with elbows on knees
+— chin resting on hands
+— both looking at each other
 
-PRIORITY ORDER (STRICT):
-1) Identity from uploaded photos
-2) Original pose and composition
-3) Lighting and style
+Do NOT reposition bodies or change posture.
 
----
+CRITICAL EXPRESSION LOCK:
+— man: calm, slightly amused
+— woman: curious, soft admiration
 
-IDENTITY (CRITICAL):
+CRITICAL STYLE:
+Same high-end Pixar/Disney 3D rendering.
 
-Preserve identity with high accuracy:
+CRITICAL SCENE LOCK:
+Keep dark environment, composition, and framing identical.
 
-— facial structure and proportions  
-— eyes, nose, lips, jawline  
-— skin tone adapted to lighting  
-— hair shape and color  
-
-Do NOT:
-— mix identities  
-— stylize away identity  
-
----
-
-BODY & PROPORTIONS:
-
-Maintain natural human proportions.
-
-— man sitting relaxed  
-— woman leaning forward with chin on hands  
-
----
-
-POSE & COMPOSITION (STRICT):
-
-Man (left):
-— sitting slightly turned toward the woman  
-— relaxed posture  
-
-Woman (right):
-— leaning forward  
-— elbows on knees  
-— chin resting on hands  
-— looking at the man  
-
-Preserve:
-— distance  
-— angles  
-— framing  
-
----
-
-EXPRESSION:
-
-— man: calm, slightly amused  
-— woman: curious, engaged, soft admiration  
-
----
-
-LIGHTING & COLOR:
-
-CRITICAL (this is where models fail):
-
-— very low light scene  
-— warm fire light from below/side  
-— strong shadows  
+CRITICAL LIGHTING (VERY IMPORTANT):
+— low light scene with warm fire glow
+— strong shadows present
 
 IMPORTANT OVERRIDE:
+Faces must remain clearly visible:
+— reduce shadow intensity on faces only
+— preserve identity clarity
+— do NOT allow shadows to hide facial features
 
-Faces MUST remain readable:
-— slightly reduce shadow intensity on faces ONLY  
-— preserve identity visibility  
-— do NOT let shadows hide facial features  
-
-Keep cinematic darkness but preserve identity clarity.
-
----
-
-HANDS:
-
-— 5 fingers  
-— natural placement under chin  
-
----
-
-SCENE LOCK:
-
-Do NOT change:
-— darkness  
-— environment  
-— composition  
-
----
-
-INTEGRATION:
-
-— faces must follow fire lighting  
-— soft warm highlights  
-— no flat lighting  
-
----
+CRITICAL HANDS:
+— woman’s hands under chin must be natural
+— exactly five fingers per hand
+— correct proportions, no distortion
 
 FINAL:
-
-Dark cinematic scene with correct lighting and clearly recognizable faces despite low light.`,
+Same intimate night scene, exact pose preserved, stylized human version with visible identity despite low light.`,
   },
   {
     id: 'tangled-3',
@@ -516,112 +458,43 @@ Dark cinematic scene with correct lighting and clearly recognizable faces despit
     mode: "locked",
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Replace the male character (left) with the uploaded man and the female character (right) with the uploaded woman.
+Replace the male character (left) with the uploaded man and the female character (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney CGI style, not as pasted faces.
 
-Recreate them as stylized 3D human characters in Pixar/Disney 3D CGI style.
+STRICT IDENTITY PRESERVATION:
+Faces must remain fully recognizable and consistent with uploaded photos.
 
----
+CRITICAL POSE LOCK (ABSOLUTE):
+— man (left) leading the dance
+— holding the woman’s hand
+— slightly leaning forward
+— woman (right) extending her arm
+— delicate hand connection
 
-PRIORITY ORDER (STRICT):
-1) Identity from uploaded photos
-2) Original pose and composition
-3) Lighting and style
+Do NOT change interaction, spacing, or gesture.
 
----
+CRITICAL EXPRESSION LOCK:
+— both: playful, light, engaged expressions
 
-IDENTITY (CRITICAL):
+CRITICAL STYLE:
+Same Pixar/Disney 3D rendering.
 
-Preserve identity with high accuracy:
+CRITICAL SCENE LOCK:
+Keep crowd, architecture, perspective, and framing identical.
 
-— facial structure  
-— proportions  
-— facial features  
-— skin tone  
-— hair  
+CRITICAL LIGHTING:
+— natural daylight
+— soft shadows
+— consistent color temperature
 
-Do NOT:
-— mix identities  
-— stylize away identity  
+Faces must match daylight lighting (no artificial tones).
 
----
-
-BODY & PROPORTIONS:
-
-Maintain realistic human anatomy.
-
-— man leading the dance  
-— woman following the motion  
-
----
-
-POSE & COMPOSITION (STRICT):
-
-Man (left):
-— slightly bent forward  
-— holding woman's hand  
-— guiding movement  
-
-Woman (right):
-— arm extended  
-— holding hand delicately  
-— body turned slightly  
-
-Preserve:
-— hand connection  
-— spacing  
-— perspective  
-
----
-
-EXPRESSION:
-
-— both: playful, light, engaged  
-
----
-
-LIGHTING & COLOR:
-
-— daylight scene  
-— soft natural light  
-— clean shadows  
-
-Faces must:
-— match daylight tone  
-— no artificial lighting  
-— consistent color temperature  
-
----
-
-HANDS (CRITICAL):
-
-— exactly 5 fingers  
-— correct anatomy  
-— proper grip interaction  
-— no deformation  
-
----
-
-SCENE LOCK:
-
-Do NOT change:
-— crowd  
-— background  
-— architecture  
-— camera  
-
----
-
-INTEGRATION:
-
-— correct perspective  
-— depth consistency  
-— no pasted look  
-
----
+CRITICAL HANDS (VERY IMPORTANT):
+— exactly five fingers
+— correct anatomy
+— proper hand interaction (no fusion, no distortion)
 
 FINAL:
-
-A lively dance scene with fully replaced characters, accurate identity, and natural interaction.`,
+Same dance scene, exact pose preserved, stylized human version with strong identity match.`,
   },
 
   // ── Spider-Man ──
