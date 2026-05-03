@@ -249,7 +249,7 @@ A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate 
     style: 'euphoria', 
     label: 'Euphoria', 
     image: '/styles/euphoria/euphoria1.jpg', 
-    mode: "locked"',
+    mode: "locked",
     prompt: `Use the reference scene as the absolute base.
 
 Replace the woman (left) with the provided female identity and the man (right) with the provided male identity.
