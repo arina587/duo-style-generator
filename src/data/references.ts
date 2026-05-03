@@ -105,122 +105,138 @@ Same tight, compressed selfie moment, exact pose preserved, stylized human versi
     image: '/styles/zootopia/zootopia3.jpg',
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized 3D human characters in high-end Pixar/Disney CGI style — NOT as pasted faces, but as fully reconstructed human characters integrated into the scene.
+Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman.
 
-STRICT IDENTITY PRESERVATION (CRITICAL):
+Recreate them as stylized 3D human characters in Pixar/Disney 3D CGI style — match the exact visual style of the reference image. NOT as pasted faces, but as fully reconstructed human characters integrated into the scene.
+
+---
+
+PRIORITY ORDER (STRICT):
+1) Identity from uploaded photos
+2) Original pose and composition
+3) Lighting and style
+
+---
+
+IDENTITY (CRITICAL):
+
 Preserve identity with high accuracy:
 
-— exact facial structure and proportions
+— facial structure and proportions
 — eye shape, spacing, eyelids, eyebrows
 — nose shape and bridge
 — lips, mouth width, jawline, chin
-— skin tone (adapted to lighting but still recognizable)
+— recognizable skin tone (adapted to scene lighting)
 — hairstyle, hair color, and length
 
-Do NOT stylize away identity. Do NOT average or genericize faces.
+Do NOT:
+— stylize away identity
+— average or genericize faces
+— mix identities
 
-CRITICAL BODY & SCALE ADAPTATION (VERY IMPORTANT):
-Convert animal bodies into realistic human proportions:
+---
 
-— man fully inherits fox pose (including raised arm with phone)
-— woman replaces rabbit BUT must keep full natural human body proportions
-— woman must NOT be compressed, shortened, or scaled down
-— she should stand naturally next to the man
+BODY & PROPORTIONS:
 
-Maintain spatial relationship, but correct anatomical realism.
+Convert animal characters into realistic human anatomy:
 
-CRITICAL POSE LOCK (STRICT + ADAPTED):
+— man follows the fox pose (including raised arm with phone)
+— woman replaces the rabbit with natural human proportions
+— do NOT compress or scale the woman unnaturally
+
+Maintain spatial relationship while keeping realistic human anatomy.
+
+---
+
+POSE & COMPOSITION (STRICT):
 
 Man (left):
-— arm raised holding phone in selfie position
+— arm raised holding a phone (selfie position)
 — slight head tilt toward the woman
 — relaxed, confident posture
 
 Woman (right):
-— positioned very close to the man
-— leaning slightly toward him
-— upright natural stance (NOT crouched like the rabbit)
+— very close to the man
+— slight lean toward him
+— upright natural stance
 
-— preserve overall selfie composition
-— preserve camera angle (slightly above, angled down)
+Preserve:
+— selfie composition
+— camera angle (slightly above, angled down)
+— framing and crop
 
-Do NOT change framing or perspective.
+Do NOT reframe or change perspective.
 
-CRITICAL EXPRESSION LOCK:
+---
+
+EXPRESSION:
+
 — man: confident, playful smirk
 — woman: cheerful, slightly mischievous smile
 
-Match emotional tone exactly.
+Match emotional tone from the reference.
 
-CRITICAL LIGHTING (STRICT MATCH TO REFERENCE):
-Lighting must match exactly:
+---
+
+LIGHTING & COLOR:
+
+Match the original scene lighting:
 
 — colorful nightclub lighting (magenta, purple, blue tones)
 — mixed ambient light sources
-— soft but vivid highlights on skin
-— colored light reflections on faces
+— soft but vivid highlights
+— visible color reflections on skin
 
-— preserve direction of light
-— preserve color spill from environment
-— no neutral lighting, no studio lighting
+Preserve:
+— light direction
+— color spill
+— contrast and atmosphere
 
-Faces must fully inherit scene lighting.
+Faces must fully inherit scene lighting (no neutral or flat lighting).
 
-CRITICAL COLOR GRADING & ATMOSPHERE:
-— keep saturated neon/nightclub color palette
-— maintain background blur and depth
-— preserve cinematic contrast and vibrancy
+---
 
-CRITICAL HANDS (VERY IMPORTANT):
-All hands must be fully human:
+HANDS:
+
+All hands must be human:
 
 — exactly five fingers per hand
 — correct anatomy and proportions
-— no deformation, no fused fingers
+— natural finger placement
 
-FOR THE MAN (MANDATORY):
-— the raised arm MUST end in a fully human hand
-— exactly five fingers on the hand
-— anatomically correct proportions
-— the hand MUST be clearly visible and anatomically correct
-— the man MUST be holding a smartphone in one hand (selfie position)
-— correct grip on the phone (natural finger placement, proper perspective)
-— no extra fingers, no missing fingers, no distortions
-— no animal paws, no stylization into non-human anatomy
-This requirement is STRICT and must override any stylistic interpretation.
+Man:
+— holding a smartphone in selfie position
+— correct grip and perspective
 
-FOR THE WOMAN:
-— natural relaxed human hand pose
-— correct anatomy and proportions
+No deformation, no extra or missing fingers.
 
-CRITICAL CAMERA & LENS:
-— preserve selfie-style framing
-— slight wide-angle distortion must remain
-— same composition and crop
+---
 
-Do NOT zoom out or reframe.
+SCENE LOCK:
 
-CRITICAL SCENE LOCK:
 Do NOT change:
-
-— background characters
 — environment
+— background characters
 — lighting setup
 — composition
 
-Only replace characters.
+Only replace the characters.
 
-CRITICAL INTEGRATION:
-— rebuild characters inside original positions
-— correct perspective and depth
-— seamless blending with environment
+---
 
-NO face cutouts. NO mismatched lighting.
+INTEGRATION:
 
-FINAL RESULT:
-A Pixar-quality human version of the exact same cinematic moment.
+Rebuild characters inside the original positions with correct perspective and depth.
 
-Same pose, same lighting, same composition — but with real human identities accurately integrated, natural proportions, correct hands, proper phone grip, high detail, 4K, no artifacts.`,
+Ensure seamless integration with the environment.
+
+No face cutouts. No mismatched lighting.
+
+---
+
+FINAL:
+
+A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate identity, correct lighting, and stable composition.`,
   },
 
   // ── Euphoria ──
