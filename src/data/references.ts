@@ -5,6 +5,7 @@ export interface ReferenceItem {
   label: string;
   prompt?: string;
   modifier?: string;
+  mode?: "locked";
 }
 
 export const references: ReferenceItem[] = [
@@ -14,6 +15,7 @@ export const references: ReferenceItem[] = [
     style: 'zootopia',
     label: 'Zootopia',
     image: '/styles/zootopia/zootopia1.jpg',
+    mode: "locked",
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
 Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney-quality CGI style, not as pasted faces.
@@ -60,6 +62,7 @@ Identical selfie composition with stylized human characters, strong identity mat
     style: 'zootopia',
     label: 'Zootopia',
     image: '/styles/zootopia/zootopia2.jpg',
+    mode: "locked",
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
 Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney CGI style.
@@ -103,6 +106,7 @@ Same tight, compressed selfie moment, exact pose preserved, stylized human versi
     style: 'zootopia',
     label: 'Zootopia',
     image: '/styles/zootopia/zootopia3.jpg',
+    mode: "locked",
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
 Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman.
@@ -265,9 +269,9 @@ A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate 
   { id: 'terabithia-3', style: 'terabithia', label: 'Terabithia', image: '/styles/terabithia/terabithia3.jpg' },
 
   // ── Cinderella ──
-  { id: 'cinderella-1', style: 'cinderella', label: 'Cinderella', image: '/styles/cinderella/cinderella1.jpg' },
-  { id: 'cinderella-2', style: 'cinderella', label: 'Cinderella', image: '/styles/cinderella/cinderella2.jpg' },
-  { id: 'cinderella-3', style: 'cinderella', label: 'Cinderella', image: '/styles/cinderella/cinderella3.jpg' },
+  { id: 'cinderella-1', style: 'cinderella', label: 'Cinderella', image: '/styles/cinderella/cinderella1.jpg', mode: "locked" },
+  { id: 'cinderella-2', style: 'cinderella', label: 'Cinderella', image: '/styles/cinderella/cinderella2.jpg', mode: "locked" },
+  { id: 'cinderella-3', style: 'cinderella', label: 'Cinderella', image: '/styles/cinderella/cinderella3.jpg', mode: "locked" },
 
   // ── Stranger Things ──
   { id: 'stranger-things-1', style: 'stranger-things', label: 'Stranger Things', image: '/styles/stranger-things/stranger-things1.jpg' },

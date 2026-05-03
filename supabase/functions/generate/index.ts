@@ -357,20 +357,10 @@ Deno.serve(async (req: Request) => {
       const replicateApiKey = Deno.env.get("REPLICATE_API_KEY");
       if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
 
-      // ── Prompt assembly (unchanged) ──
-      const clientPrompt = formData.get("prompt");
-      const promptSource = (typeof clientPrompt === "string" && clientPrompt.trim().length > 0)
-        ? "custom"
-        : "universal";
-      const basePrompt = promptSource === "custom"
-        ? (clientPrompt as string).trim()
-        : UNIVERSAL_PROMPT;
-
-      const REFERENCE_MODIFIERS: Record<string, string> = {
-        "euphoria-1": "Force strong identity replacement for the face. Fully override the original facial identity and remove any resemblance to the original actress. The face must clearly match the identity images, even in close-up shots. Do not preserve original facial features or structure.",
-        "euphoria-3": "Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene. Apply natural film grain, subtle noise, and slight color imperfection to the face. Reduce skin smoothness and avoid clean or studio-like appearance. Ensure the face inherits the same cinematic texture as the scene.",
-      };
-      const modifier = (typeof referenceId === "string" && REFERENCE_MODIFIERS[referenceId]) || "";
+      // ── Locked styles: fully isolated, no global changes can affect them ──
+      const LOCKED_STYLES = ["zootopia", "cinderella"];
+      const isLocked = typeof referenceId === "string" &&
+        LOCKED_STYLES.some((s) => referenceId.startsWith(s));
 
       // ── IMAGE ROLE MAPPING (unchanged) ──
       const manCount = hasMan2 ? 2 : 1;
@@ -399,13 +389,35 @@ The woman in the scene must look like the person in ${womanIdxList}.
 Do NOT mix man and woman identity sources.
 Do NOT use image_input[${idxScene}] as an identity source.`;
 
-      const multiImageBlock = (hasMan2 || hasWoman2)
-        ? `\n\nIf multiple identity images are provided for the same person, treat them as the same identity and combine their features consistently.`
-        : "";
+      let finalPrompt: string;
 
-      const finalPrompt = roleMappingBlock + "\n\n" + basePrompt + multiImageBlock + (modifier ? "\n\n" + modifier : "");
+      if (isLocked) {
+        // FULL ISOLATION: use only the client prompt (reference's own prompt) + role mapping.
+        // No UNIVERSAL_PROMPT, no modifiers, no multiImageBlock appended.
+        const lockedPrompt = (typeof formData.get("prompt") === "string" && (formData.get("prompt") as string).trim().length > 0)
+          ? (formData.get("prompt") as string).trim()
+          : UNIVERSAL_PROMPT;
+        finalPrompt = roleMappingBlock + "\n\n" + lockedPrompt;
+        console.log("[PROMPT] source=locked ref=" + referenceId + " base_len=" + lockedPrompt.length + " final_len=" + finalPrompt.length);
+      } else {
+        // NORMAL FLOW
+        const clientPrompt = formData.get("prompt");
+        const hasCustomPrompt = typeof clientPrompt === "string" && clientPrompt.trim().length > 0;
+        const basePrompt = hasCustomPrompt ? (clientPrompt as string).trim() : UNIVERSAL_PROMPT;
 
-      console.log("[PROMPT] source=" + promptSource + " base_len=" + basePrompt.length + " final_len=" + finalPrompt.length);
+        const REFERENCE_MODIFIERS: Record<string, string> = {
+          "euphoria-1": "Force strong identity replacement for the face. Fully override the original facial identity and remove any resemblance to the original actress. The face must clearly match the identity images, even in close-up shots. Do not preserve original facial features or structure.",
+          "euphoria-3": "Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene. Apply natural film grain, subtle noise, and slight color imperfection to the face. Reduce skin smoothness and avoid clean or studio-like appearance. Ensure the face inherits the same cinematic texture as the scene.",
+        };
+        const modifier = (typeof referenceId === "string" && REFERENCE_MODIFIERS[referenceId]) || "";
+
+        const multiImageBlock = (hasMan2 || hasWoman2)
+          ? `\n\nIf multiple identity images are provided for the same person, treat them as the same identity and combine their features consistently.`
+          : "";
+
+        finalPrompt = roleMappingBlock + "\n\n" + basePrompt + multiImageBlock + (modifier ? "\n\n" + modifier : "");
+        console.log("[PROMPT] source=" + (hasCustomPrompt ? "custom" : "universal") + " base_len=" + basePrompt.length + " final_len=" + finalPrompt.length);
+      }
 
       // ── Build image array ──
       const personDataUrls = await Promise.all([
