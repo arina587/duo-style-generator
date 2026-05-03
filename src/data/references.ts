@@ -250,94 +250,94 @@ A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate 
     label: 'Euphoria', 
     image: '/styles/euphoria/euphoria1.jpg', 
     mode: "locked",
-    prompt: `Use the reference image ONLY as a background, pose, and lighting template.
+    prompt: `Use the reference image as a background plate with no people.
 
-COMPLETELY REMOVE all original people from the reference image.
+Completely remove all original characters from the scene.
 
-Treat their positions as EMPTY SPACE.
+Treat the positions of the original people as empty space.
 
 ---
 
-CRITICAL OVERRIDE (ABSOLUTE):
+TASK:
 
-The original people in the reference must NOT exist in the final image.
+Create a new photo by placing the people from the uploaded identity images into this scene.
+
+---
+
+CRITICAL RULE:
+
+The original people from the reference image must NOT be used in any way.
 
 Do NOT use:
 — their faces
-— their facial structure
-— their skin
-— their identity
-— any part of their appearance
+— their head shapes
+— their body shapes
+— their proportions
+— their skin tones
+— any part of their identity
 
-They must be fully erased and replaced.
-
----
-
-RECONSTRUCTION:
-
-Place the people from the uploaded identity images into the now empty positions.
-
-Generate a NEW photo of these people in the same scene.
+They must be fully ignored.
 
 ---
 
-CHARACTERS:
+FULL CHARACTER REPLACEMENT:
 
-Insert:
-— the woman from the uploaded female photo on the left
-— the man from the uploaded male photo on the right
+Insert entirely new people:
 
-They must fully match the uploaded identities:
-— facial structure
-— proportions
-— eyes, nose, lips
-— skin tone
-— hairline
+— woman from the uploaded female photo → left position  
+— man from the uploaded male photo → right position  
 
-No blending with the original reference faces is allowed.
+Replace them as full characters, not just faces.
 
 ---
 
-POSE MATCH (STRICT):
+IDENTITY (VERY IMPORTANT):
 
-Match EXACTLY:
-— body positions
-— head angle
-— gaze direction
-— facial expression
-— distance between characters
-— camera framing and crop
+The new people must match the uploaded photos:
 
-The new people must occupy the same spatial positions as the removed characters.
+— facial structure  
+— eyes, nose, lips  
+— proportions  
+— skin tone  
+— hairline  
+
+No blending with the original reference characters.
 
 ---
 
-LIGHTING ADAPTATION:
+POSE MATCH:
 
-Match the scene lighting, but PRIORITIZE identity visibility.
+Match the original scene:
 
-You are allowed to:
-— brighten the face
-— reduce shadow strength on the face
-— rebalance lighting on the face
+— body positions  
+— head angles  
+— distance between people  
+— camera angle and crop  
 
-Do NOT let shadows hide or distort the face.
+---
+
+LIGHTING:
+
+Match the scene lighting, but adjust the face lighting if needed to keep identity clear.
+
+Do NOT allow shadows to hide facial features.
 
 ---
 
 INTEGRATION:
 
 Rebuild the people naturally into the scene:
-— correct depth
-— correct perspective
-— correct shadows
-— no pasted look
+
+— correct depth  
+— correct perspective  
+— correct shadows  
+— no pasted look  
 
 ---
 
-FINAL RESULT:
+FINAL:
 
-A completely new image where the original people are gone and replaced with the uploaded identities, standing in the same positions, with the same pose and composition, and no trace of the original characters remains.`,
+A new image where the original people are completely gone and replaced by new individuals from the uploaded photos, occupying the same positions in the scene.`,
   },
   { id: 'euphoria-2', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria2.jpg' },
   { id: 'euphoria-3', style: 'euphoria', label: 'Euphoria', image: '/styles/euphoria/euphoria3.jpg', modifier: 'Match warm cinematic low-light precisely. Apply the same color grading, shadow depth, and soft directional lighting from the scene to the faces. Ensure skin tones are affected by the scene lighting and not neutral. Increase shadow contrast on the face to match the original scene. Apply natural film grain, subtle noise, and slight color imperfection to the face. Reduce skin smoothness and avoid clean or studio-like appearance. Ensure the face inherits the same cinematic texture as the scene.' },
