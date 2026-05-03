@@ -356,50 +356,123 @@ A new image where the original people are completely gone and replaced by new in
     mode: "locked",
     prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Treat the reference image as a scene template ONLY (composition, pose, lighting).
+Replace the male character (left) with the uploaded man and the female character (right) with the uploaded woman.
 
-COMPLETELY IGNORE the original characters in the reference.
-They must NOT be used as identity source.
+Recreate them as stylized 3D human characters in Pixar/Disney 3D CGI style — match the exact visual style of the reference image. NOT as pasted faces, but as fully reconstructed human characters integrated into the scene.
 
-FULL CHARACTER REPLACEMENT (CRITICAL):
-Recreate both characters as new people based ONLY on the uploaded identity photos.
+---
 
-Do NOT reuse:
-— facial features
-— head shape
-— body proportions
-— skin tone
-— any identity from the reference
+PRIORITY ORDER (STRICT):
+1) Identity from uploaded photos
+2) Original pose and composition
+3) Lighting and style
 
-The original characters must be considered non-existent.
+---
 
-CHARACTERS:
-— man from uploaded male photo → left
-— woman from uploaded female photo → right
+IDENTITY (CRITICAL):
 
-Rebuild them as stylized human characters in high-end Pixar/Disney CGI style.
+Preserve identity with high accuracy:
 
-STRICT IDENTITY PRESERVATION:
-Faces must remain clearly recognizable:
-— facial structure and proportions
-— eyes, eyelids, eyebrows
-— nose shape
-— lips and jawline
-— skin tone adapted to scene lighting
-— hairline, color, length
+— facial structure and proportions  
+— eye shape, spacing, eyelids, eyebrows  
+— nose shape and bridge  
+— lips, mouth width, jawline, chin  
+— recognizable skin tone (adapted to scene lighting)  
+— hairstyle, hair color, and length  
 
-CRITICAL POSE LOCK:
-— characters standing very close
-— man holding the woman
-— woman looking up at the man
-— faces close, emotional eye contact
+Do NOT:
+— stylize away identity  
+— average or genericize faces  
+— mix identities  
 
-CRITICAL LIGHTING:
-— warm golden lantern lighting
-— soft glow from multiple sources
+---
+
+BODY & PROPORTIONS:
+
+Keep natural human anatomy.
+
+— man follows original pose (holding the woman)  
+— woman positioned in his arms, looking upward  
+
+Maintain correct proportions and physical interaction.
+
+---
+
+POSE & COMPOSITION (STRICT):
+
+Man (left):
+— standing upright  
+— holding the woman close with one arm  
+— head slightly tilted down toward her  
+
+Woman (right):
+— leaning into the man  
+— looking up directly at his face  
+— very close facial distance  
+
+Preserve:
+— intimate distance  
+— eye contact  
+— camera framing  
+
+Do NOT change pose or spacing.
+
+---
+
+EXPRESSION:
+
+— man: soft, affectionate smile  
+— woman: warm, admiring expression  
+
+---
+
+LIGHTING & COLOR:
+
+Match lantern night lighting:
+
+— warm golden/orange glow  
+— soft multi-source lighting from lanterns  
+— strong rim light and highlights  
+— soft shadows  
+
+IMPORTANT:
+Faces must inherit warm lighting and glow.
+No neutral lighting.
+
+---
+
+HANDS:
+
+— exactly five fingers  
+— correct anatomy  
+— natural grip on the body  
+
+---
+
+SCENE LOCK:
+
+Do NOT change:
+— lanterns  
+— background  
+— composition  
+— camera angle  
+
+---
+
+INTEGRATION:
+
+Rebuild characters fully into the scene:
+
+— correct depth  
+— correct lighting  
+— no face overlay  
+— no mismatch  
+
+---
 
 FINAL:
-Same romantic scene, but with completely new people replacing the originals, no trace of original characters.`,
+
+A romantic lantern-lit scene with fully replaced characters, perfect identity match, and seamless integration.`,
   },
   {
     id: 'tangled-2',
@@ -407,40 +480,117 @@ Same romantic scene, but with completely new people replacing the originals, no 
     label: 'Tangled',
     image: '/styles/tangled/tangled2.jpg',
     mode: "locked",
-    prompt: `Use the provided reference image and uploaded identity photos.
+    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Use the reference ONLY for scene layout, pose, and lighting.
+Replace the male character (left) with the uploaded man and the female character (right) with the uploaded woman.
 
-The original characters must NOT be used as identity source.
+Recreate them as stylized 3D human characters in Pixar/Disney 3D CGI style.
 
-FULL CHARACTER REBUILD (CRITICAL):
-Remove the original characters conceptually and rebuild new people from scratch using uploaded photos.
+---
 
-CHARACTERS:
-— man → left
-— woman → right
+PRIORITY ORDER (STRICT):
+1) Identity from uploaded photos
+2) Original pose and composition
+3) Lighting and style
 
-STRICT IDENTITY:
-Faces must clearly match uploaded photos.
+---
 
-CRITICAL POSE LOCK:
-— both sitting close together
-— woman leaning forward, chin on hands
-— looking at each other
+IDENTITY (CRITICAL):
 
-CRITICAL LIGHTING:
-Scene is dark with warm fire light.
+Preserve identity with high accuracy:
 
-IMPORTANT:
-— slightly brighten faces if needed
-— reduce excessive shadow on faces
-— keep identity clearly visible
+— facial structure and proportions  
+— eyes, nose, lips, jawline  
+— skin tone adapted to lighting  
+— hair shape and color  
 
-STYLE:
-Pixar/Disney cinematic CGI.
+Do NOT:
+— mix identities  
+— stylize away identity  
+
+---
+
+BODY & PROPORTIONS:
+
+Maintain natural human proportions.
+
+— man sitting relaxed  
+— woman leaning forward with chin on hands  
+
+---
+
+POSE & COMPOSITION (STRICT):
+
+Man (left):
+— sitting slightly turned toward the woman  
+— relaxed posture  
+
+Woman (right):
+— leaning forward  
+— elbows on knees  
+— chin resting on hands  
+— looking at the man  
+
+Preserve:
+— distance  
+— angles  
+— framing  
+
+---
+
+EXPRESSION:
+
+— man: calm, slightly amused  
+— woman: curious, engaged, soft admiration  
+
+---
+
+LIGHTING & COLOR:
+
+CRITICAL (this is where models fail):
+
+— very low light scene  
+— warm fire light from below/side  
+— strong shadows  
+
+IMPORTANT OVERRIDE:
+
+Faces MUST remain readable:
+— slightly reduce shadow intensity on faces ONLY  
+— preserve identity visibility  
+— do NOT let shadows hide facial features  
+
+Keep cinematic darkness but preserve identity clarity.
+
+---
+
+HANDS:
+
+— 5 fingers  
+— natural placement under chin  
+
+---
+
+SCENE LOCK:
+
+Do NOT change:
+— darkness  
+— environment  
+— composition  
+
+---
+
+INTEGRATION:
+
+— faces must follow fire lighting  
+— soft warm highlights  
+— no flat lighting  
+
+---
 
 FINAL:
-Same night scene, new people, no trace of original characters.`,
+
+Dark cinematic scene with correct lighting and clearly recognizable faces despite low light.`,
   },
   {
     id: 'tangled-3',
@@ -448,43 +598,114 @@ Same night scene, new people, no trace of original characters.`,
     label: 'Tangled',
     image: '/styles/tangled/tangled3.jpg',
     mode: "locked",
-    prompt: `Use the provided reference image and uploaded identity photos.
+    prompt: `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Treat the reference as a composition and pose guide ONLY.
+Replace the male character (left) with the uploaded man and the female character (right) with the uploaded woman.
 
-Do NOT use the original characters as identity source.
+Recreate them as stylized 3D human characters in Pixar/Disney 3D CGI style.
 
-FULL CHARACTER REPLACEMENT (ABSOLUTE):
-Rebuild both characters entirely using uploaded identity photos.
+---
 
-CHARACTERS:
-— man → left
-— woman → right
+PRIORITY ORDER (STRICT):
+1) Identity from uploaded photos
+2) Original pose and composition
+3) Lighting and style
 
-STRICT IDENTITY:
+---
+
+IDENTITY (CRITICAL):
+
+Preserve identity with high accuracy:
+
+— facial structure  
+— proportions  
+— facial features  
+— skin tone  
+— hair  
+
+Do NOT:
+— mix identities  
+— stylize away identity  
+
+---
+
+BODY & PROPORTIONS:
+
+Maintain realistic human anatomy.
+
+— man leading the dance  
+— woman following the motion  
+
+---
+
+POSE & COMPOSITION (STRICT):
+
+Man (left):
+— slightly bent forward  
+— holding woman's hand  
+— guiding movement  
+
+Woman (right):
+— arm extended  
+— holding hand delicately  
+— body turned slightly  
+
 Preserve:
-— facial structure
-— proportions
-— features
-— skin tone
-— hair
+— hand connection  
+— spacing  
+— perspective  
 
-CRITICAL POSE LOCK:
-— dancing interaction
-— holding hands
-— same distance and gesture
+---
 
-CRITICAL SCENE LOCK:
-— keep crowd
-— keep architecture
-— keep perspective
+EXPRESSION:
 
-CRITICAL LIGHTING:
-— natural daylight
-— consistent shadows
+— both: playful, light, engaged  
+
+---
+
+LIGHTING & COLOR:
+
+— daylight scene  
+— soft natural light  
+— clean shadows  
+
+Faces must:
+— match daylight tone  
+— no artificial lighting  
+— consistent color temperature  
+
+---
+
+HANDS (CRITICAL):
+
+— exactly 5 fingers  
+— correct anatomy  
+— proper grip interaction  
+— no deformation  
+
+---
+
+SCENE LOCK:
+
+Do NOT change:
+— crowd  
+— background  
+— architecture  
+— camera  
+
+---
+
+INTEGRATION:
+
+— correct perspective  
+— depth consistency  
+— no pasted look  
+
+---
 
 FINAL:
-Same dance scene, new characters fully replacing originals.`,
+
+A lively dance scene with fully replaced characters, accurate identity, and natural interaction.`,
   },
 
   // ── Spider-Man ──
