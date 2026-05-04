@@ -385,56 +385,51 @@ A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate 
 
 const TANGLED_1 = `Use the reference image as a visual guide for composition, pose, lighting, and atmosphere.
 
-Create a Pixar/Disney 3D CGI version of this scene using the uploaded man and woman as the main characters.
+Create a stylized 3D animated film scene using the uploaded images as character references.
 
 Keep:
-— exact camera angle  
+— camera angle  
 — framing  
 — distance between characters  
-— body contact and positioning  
+— close embrace  
 
 ---
 
-CHARACTER PLACEMENT (STRICT):
+CHARACTER PLACEMENT:
 
-— the man must be on the LEFT  
-— the woman must be on the RIGHT  
-— they are standing very close, embracing  
-— the woman is looking up at the man  
-— the man is looking down at the woman  
-— their arms are around each other  
+— left character: slightly taller, gently holding the other person  
+— right character: leaning in closely, looking upward  
+
+They are standing very close, in an intimate pose.
 
 Do NOT swap positions.
 
 ---
 
-IDENTITY (CRITICAL):
+CHARACTER APPEARANCE:
 
-The characters must clearly resemble the uploaded people:
+Use the uploaded images as visual references.
 
-— facial structure  
-— eyes, nose, lips  
-— proportions  
-— skin tone  
-— hairstyle and color  
+The characters should reflect:
 
-Do NOT:
-— create generic animated faces  
-— mix identities  
-— drift away from real appearance  
+— similar facial features  
+— similar proportions  
+— similar hairstyle and color  
+— similar skin tone  
+
+Avoid generic or unrelated faces.
 
 ---
 
 STYLE:
 
-High-end Pixar/Disney 3D CGI:
+High-quality stylized 3D animated film look:
 
-— soft stylized skin  
-— clean shading  
+— soft skin shading  
 — expressive eyes  
 — cinematic rendering  
 
-Keep identity recognizable inside this style.
+Keep characters recognizable while fitting the style.
 
 ---
 
@@ -444,141 +439,124 @@ LIGHTING:
 — soft golden glow  
 — subtle reflections  
 
-Faces must match scene lighting naturally.
+Faces must match lighting naturally.
 
 ---
 
 FINAL:
 
-A romantic lantern scene recreated in Pixar style with two characters that clearly match the uploaded people, maintaining pose, lighting, and composition.`;
+A romantic lantern scene with stylized 3D characters inspired by the uploaded photos, maintaining pose, lighting, and composition.`;
 
-const TANGLED_2 = `Use the reference image as a visual guide for composition, pose, lighting, and environment.
+const TANGLED_2 = `Use the reference image as a visual guide for composition, pose, and lighting.
 
-Create a Pixar/Disney 3D CGI version of this scene using the uploaded man and woman.
+Create a stylized 3D animated scene using the uploaded images as character references.
 
 Keep:
 — camera angle  
 — sitting positions  
 — distance between characters  
-— interaction  
 
 ---
 
 CHARACTER PLACEMENT:
 
-— the man is on the LEFT, sitting  
-— slightly leaning forward  
-— looking toward the woman  
+— left character: sitting, slightly leaning forward  
+— right character: leaning forward with chin resting on hands  
 
-— the woman is on the RIGHT  
-— leaning forward with chin resting on hands  
-— looking at the man  
-
-Do NOT change positions or posture.
+They are looking at each other.
 
 ---
 
-IDENTITY (CRITICAL):
+CHARACTER APPEARANCE:
 
-Faces must clearly resemble the uploaded people:
+Use uploaded images as visual references.
 
-— facial structure  
-— eyes, nose, lips  
-— proportions  
-— hair  
+Maintain:
+
+— similar facial features  
+— similar proportions  
+— hairstyle and color  
 — skin tone  
 
-Even in low light, identity must remain visible.
+Faces must remain recognizable.
 
 ---
 
 STYLE:
 
-Pixar/Disney 3D CGI:
+Stylized cinematic 3D animation:
 
-— stylized but realistic  
 — soft shading  
 — expressive faces  
-
-Do NOT lose identity in stylization.
+— clean rendering  
 
 ---
 
-LIGHTING (IMPORTANT):
+LIGHTING:
 
 — dark environment  
-— warm fire light (orange/red tones)  
+— warm fire light  
 — soft shadows  
 
-Faces must remain readable:
+Faces must remain visible:
 — slightly soften shadows on faces only  
-— keep identity visible  
 
 ---
 
 FINAL:
 
-An intimate firelight scene in Pixar style with two recognizable characters based on the uploaded people, preserving pose and mood.`;
+An intimate firelight scene with stylized characters inspired by the uploaded images, preserving pose and mood.`;
 
 const TANGLED_3 = `Use the reference image as a visual guide for composition, pose, and environment.
 
-Create a Pixar/Disney 3D CGI version of this scene using the uploaded man and woman.
+Create a stylized 3D animated film scene using the uploaded images as character references.
 
 Keep:
 — camera angle  
-— composition  
 — background crowd  
-— environment details  
+— environment layout  
 
 ---
 
-CHARACTER PLACEMENT (STRICT):
+CHARACTER PLACEMENT:
 
-— the man is on the LEFT  
-— slightly leaning forward  
-— holding a crown above the woman  
+— left character: leaning slightly forward, holding an object above  
+— right character: arm raised, interacting with the object  
 
-— the woman is on the RIGHT  
-— arm raised  
-— looking at the crown  
-
-Preserve gesture, spacing, and interaction.
-
-Do NOT swap positions.
+Preserve interaction and spacing.
 
 ---
 
-IDENTITY (CRITICAL):
+CHARACTER APPEARANCE:
 
-Characters must clearly resemble the uploaded people:
+Use uploaded images as visual references.
 
-— facial structure  
-— eyes, nose, lips  
+Maintain:
+
+— similar facial features  
 — proportions  
-— hair  
+— hairstyle  
 — skin tone  
 
-Do NOT create generic Disney faces.
+Avoid generic faces.
 
 ---
 
 STYLE:
 
-Pixar/Disney 3D CGI:
+High-end stylized 3D animation:
 
-— clean stylized rendering  
-— soft shading  
-— cinematic look  
-
-Identity must remain recognizable.
+— clean rendering  
+— soft lighting  
+— cinematic composition  
 
 ---
 
 LIGHTING:
 
 — daylight  
-— soft natural shadows  
-— warm tones  
+— soft shadows  
+— natural tones  
 
 Faces must match scene lighting.
 
@@ -586,7 +564,7 @@ Faces must match scene lighting.
 
 FINAL:
 
-A ceremony scene in Pixar style with two clearly recognizable characters based on the uploaded people, preserving pose and interaction.`;
+A ceremonial scene with stylized 3D characters inspired by uploaded images, maintaining pose, environment, and interaction.`;
 
 const CINDERELLA_PROMPT = `Use the reference scene image as the absolute base. Perform ONLY character identity replacement.
 
