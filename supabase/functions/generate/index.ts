@@ -682,6 +682,113 @@ Only identities are replaced.
 
 Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
+const EUPHORIA_1 = `Use the reference image as a strict composition and pose template.
+
+Completely remove both original people from the scene.
+Treat their positions as EMPTY SLOTS.
+
+---
+
+CHARACTER MAPPING (ABSOLUTE):
+
+— the person on the LEFT (in focus, foreground) → replace with the WOMAN from the uploaded female photo  
+— the person on the RIGHT (partially out of focus, closer to camera edge) → replace with the MAN from the uploaded male photo  
+
+Do NOT swap positions.
+
+---
+
+POSE LOCK (CRITICAL):
+
+Recreate the pose EXACTLY:
+
+WOMAN (LEFT):
+— head slightly turned to the right  
+— eyes looking toward the man  
+— neutral, soft, slightly serious expression  
+— upright posture  
+
+MAN (RIGHT):
+— head angled slightly forward and to the left  
+— not looking directly at the woman  
+— partially turned away  
+— calm, distant expression  
+
+Do NOT change:
+— head angles  
+— gaze direction  
+— distance between faces  
+
+---
+
+DEPTH & FOCUS (VERY IMPORTANT):
+
+Preserve depth of field exactly:
+
+— woman (left) must be sharp and in focus  
+— man (right) must be slightly blurred / out of focus  
+
+Do NOT make both faces equally sharp.
+
+---
+
+FULL CHARACTER REPLACEMENT:
+
+Rebuild both people completely from identity images:
+
+— full face  
+— head shape  
+— proportions  
+
+Do NOT reuse original faces or bodies.
+Do NOT perform face swap.
+
+---
+
+IDENTITY:
+
+Preserve identity exactly:
+
+— facial structure  
+— eyes, nose, lips  
+— skin tone  
+— hair  
+
+No blending with original characters.
+
+---
+
+LIGHTING:
+
+Match warm cinematic lighting:
+
+— soft warm highlights on skin  
+— gentle shadows  
+— low-contrast cinematic tone  
+
+Faces must inherit scene lighting.
+
+---
+
+INTEGRATION:
+
+Characters must feel naturally part of the scene:
+
+— correct depth  
+— correct perspective  
+— no pasted look  
+
+---
+
+FINAL:
+
+A realistic cinematic close-up where:
+— original people are completely removed  
+— new individuals replace them  
+— left/right roles are preserved  
+— gaze direction and emotional tension remain identical  
+— depth of field is preserved (sharp woman, blurred man)`;
+
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
   // ── Zootopia ──
@@ -697,7 +804,7 @@ const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
   "cinderella-2": { locked: true, prompt: CINDERELLA_PROMPT },
   "cinderella-3": { locked: true, prompt: CINDERELLA_PROMPT },
   // ── Default styles ──
-  "euphoria-1": { locked: false },
+  "euphoria-1": { locked: true, prompt: EUPHORIA_1 },
   "euphoria-2": { locked: false },
   "euphoria-3": { locked: false },
   "titanic-1": { locked: false },
