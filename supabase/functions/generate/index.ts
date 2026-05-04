@@ -218,27 +218,76 @@ IDENTITY (CRITICAL):
 
 Preserve identity with high accuracy:
 
-— facial structure and proportions
-— eye shape, spacing, eyelids, eyebrows
-— nose shape and bridge
-— lips, mouth width, jawline, chin
-— recognizable skin tone (adapted to scene lighting)
-— hairstyle, hair color, and length
+— facial structure and proportions  
+— eye shape, spacing, eyelids, eyebrows  
+— nose shape and bridge  
+— lips, mouth width, jawline, chin  
+— recognizable skin tone (adapted to scene lighting)  
+— hairstyle, hair color, and length  
 
 Do NOT:
-— stylize away identity
-— average or genericize faces
-— mix identities
+— stylize away identity  
+— average or genericize faces  
+— mix identities  
+
+---
+
+HUMAN ANATOMY OVERRIDE (CRITICAL):
+
+All animal traits must be completely removed.
+
+Characters must be 100% human.
+
+Do NOT generate:
+— animal paws  
+— fur  
+— tails  
+— ears  
+— animal limb structure  
+— hybrid anatomy  
+
+Every limb must be fully human:
+
+— arms → human arms  
+— hands → human hands with exactly 5 fingers  
+— legs → human legs  
+— feet → human feet  
+
+No traces of original animal anatomy are allowed.
+
+---
+
+FULL HUMAN REPLACEMENT (ABSOLUTE):
+
+Do NOT transform animals into humans.
+
+Instead:
+Completely discard the animal bodies and rebuild new HUMAN bodies from scratch using identity photos.
+
+The original animal anatomy must NOT influence the result in any way.
+
+---
+
+BODY COMPLETENESS (CRITICAL):
+
+Both characters must be fully formed human bodies:
+
+— correct full body proportions  
+— no missing limbs  
+— no truncated arms or hands  
+— no partial transformations  
+
+If any body part looks non-human, the result is incorrect.
 
 ---
 
 BODY & PROPORTIONS:
 
-Convert animal characters into realistic human anatomy:
+Convert the scene into realistic human anatomy:
 
-— man follows the fox pose (including raised arm with phone)
-— woman replaces the rabbit with natural human proportions
-— do NOT compress or scale the woman unnaturally
+— man follows the fox pose (including raised arm with phone)  
+— woman follows the rabbit pose with natural human proportions  
+— do NOT compress or distort proportions  
 
 Maintain spatial relationship while keeping realistic human anatomy.
 
@@ -247,19 +296,19 @@ Maintain spatial relationship while keeping realistic human anatomy.
 POSE & COMPOSITION (STRICT):
 
 Man (left):
-— arm raised holding a phone (selfie position)
-— slight head tilt toward the woman
-— relaxed, confident posture
+— arm raised holding a phone (selfie position)  
+— slight head tilt toward the woman  
+— relaxed, confident posture  
 
 Woman (right):
-— very close to the man
-— slight lean toward him
-— upright natural stance
+— very close to the man  
+— slight lean toward him  
+— upright natural stance  
 
 Preserve:
-— selfie composition
-— camera angle (slightly above, angled down)
-— framing and crop
+— selfie composition  
+— camera angle (slightly above, angled down)  
+— framing and crop  
 
 Do NOT reframe or change perspective.
 
@@ -267,8 +316,8 @@ Do NOT reframe or change perspective.
 
 EXPRESSION:
 
-— man: confident, playful smirk
-— woman: cheerful, slightly mischievous smile
+— man: confident, playful smirk  
+— woman: cheerful, slightly mischievous smile  
 
 Match emotional tone from the reference.
 
@@ -278,31 +327,31 @@ LIGHTING & COLOR:
 
 Match the original scene lighting:
 
-— colorful nightclub lighting (magenta, purple, blue tones)
-— mixed ambient light sources
-— soft but vivid highlights
-— visible color reflections on skin
+— colorful nightclub lighting (magenta, purple, blue tones)  
+— mixed ambient light sources  
+— soft but vivid highlights  
+— visible color reflections on skin  
 
 Preserve:
-— light direction
-— color spill
-— contrast and atmosphere
+— light direction  
+— color spill  
+— contrast and atmosphere  
 
 Faces must fully inherit scene lighting (no neutral or flat lighting).
 
 ---
 
-HANDS:
+HANDS (CRITICAL):
 
-All hands must be human:
+All hands must be fully human:
 
-— exactly five fingers per hand
-— correct anatomy and proportions
-— natural finger placement
+— exactly five fingers per hand  
+— correct anatomy and proportions  
+— natural finger placement  
 
 Man:
-— holding a smartphone in selfie position
-— correct grip and perspective
+— holding a smartphone in selfie position  
+— correct grip and perspective  
 
 No deformation, no extra or missing fingers.
 
@@ -311,10 +360,10 @@ No deformation, no extra or missing fingers.
 SCENE LOCK:
 
 Do NOT change:
-— environment
-— background characters
-— lighting setup
-— composition
+— environment  
+— background characters  
+— lighting setup  
+— composition  
 
 Only replace the characters.
 
@@ -332,7 +381,7 @@ No face cutouts. No mismatched lighting.
 
 FINAL:
 
-A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate identity, correct lighting, and stable composition.`;
+A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate identity, fully human anatomy, correct lighting, and stable composition.`;
 
 const TANGLED_1 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
