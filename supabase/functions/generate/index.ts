@@ -1425,9 +1425,9 @@ Rebuild each person completely from the identity images:
 — proportions  
 — silhouette  
 
-Do NOT perform face swap.
-Do NOT mix identities.
-Do NOT blend with original characters.
+Do NOT perform face swap.  
+Do NOT mix identities.  
+Do NOT blend with original characters.  
 
 ---
 
@@ -1445,127 +1445,179 @@ Identity must remain clearly recognizable.
 
 ---
 
+IDENTITY PRESERVATION UNDER ANGLE & OCCLUSION (CRITICAL):
+
+Identity must be preserved EVEN IF:
+
+— the face is partially turned (profile or semi-profile)  
+— the face is partially occluded  
+— the face is softly lit or low contrast  
+— the eyes are closed  
+
+The model MUST reconstruct the full identity from the uploaded photos, not rely on visible details only.
+
+Do NOT simplify or average facial features due to lighting or angle.
+
+---
+
+FACE RECONSTRUCTION (IMPORTANT):
+
+Do NOT rely only on visible pixels from the reference.
+
+Instead:
+— reconstruct full facial structure from identity images  
+— then adapt it to the pose and angle of the scene  
+
+Even in profile or soft lighting, identity must remain recognizable.
+
+---
+
+IDENTITY OVERRIDE RULE:
+
+If there is any conflict between:
+— scene lighting  
+— pose accuracy  
+— composition  
+
+AND identity accuracy,
+
+ALWAYS prioritize identity.
+
+Identity must NOT degrade under any condition.
+
+---
+
+EYES & EXPRESSION HANDLING:
+
+If the reference has closed or relaxed eyes:
+
+— preserve the identity of the eye shape anyway  
+— do NOT replace with generic closed-eye faces  
+— eyelids must match the real person’s anatomy  
+
+Closed eyes do NOT justify identity loss.
+
+---
+
 CLOTHING ADAPTATION (IMPORTANT):
 
 Clothing should be adapted to fit the scene naturally:
 
-— keep general style consistent with the scene  
-— allow changes in clothing details if needed  
-— avoid exact copying of the original outfit  
-— avoid mismatch with environment or lighting  
+— match the overall historical/cinematic style  
+— do NOT copy the exact original outfit  
+— keep silhouette and visual weight similar  
+— ensure clothing fits lighting and environment  
 
-The result must feel like the person belongs in this scene.
+The result must feel natural and not out of place.
 
 ---
 
 POSE & COMPOSITION (STRICT):
 
 Preserve:
-— camera angle  
-— pose structure  
-— body orientation  
-— spacing between people  
-— framing and crop  
 
-Important:
-Match pose and placement, NOT original anatomy or identity.
+— camera angle (medium close-up, slightly from the side)  
+— upper body positioning  
+— distance between characters  
+— framing  
+
+Woman:
+
+— positioned in front  
+— body angled slightly away from the man  
+— head turned back toward him  
+— chin slightly raised  
+— eyes closed  
+
+Man:
+
+— positioned behind the woman  
+— leaning toward her  
+— head angled toward her face  
+— face very close to hers  
+
+---
+
+HEAD ORIENTATION & CONTACT (CRITICAL):
+
+Both characters are extremely close, upper bodies touching.
+
+Head positioning is STRICT:
+
+Woman:
+— head turned toward the man  
+— chin slightly raised  
+— face angled toward his face  
+— eyes closed  
+
+Man:
+— head turned toward the woman  
+— face angled toward her  
+— positioned slightly above and behind  
+— very close to her face  
+
+CRITICAL:
+
+— both faces are oriented toward each other  
+— noses nearly touching  
+— lips almost touching  
+— faces aligned on the same interaction line  
+
+Do NOT:
+
+— turn heads away  
+— make characters look forward  
+— break face-to-face alignment  
+
+---
+
+FACE INTERACTION LOCK:
+
+The scene is defined by face-to-face interaction.
+
+If head orientation is incorrect, the result is invalid.
+
+Faces must remain directed toward each other at all times.
 
 ---
 
 LIGHTING & INTEGRATION (CRITICAL):
 
-Fully integrate the new people into the scene:
+Scene lighting is:
 
-— match lighting direction  
-— match shadows  
-— match color grading  
-— match depth of field  
-— match noise / grain  
+— warm golden cinematic light  
+— strong orange / amber tones  
+— soft directional light from the side  
+— gentle shadow falloff  
+— low contrast romantic lighting  
 
-Faces and bodies must inherit scene lighting.
+Apply to new characters:
 
-The result must NOT look pasted or composited.
+— correct light direction  
+— warm highlights on skin  
+— soft shadows matching scene  
+— color grading identical to reference  
+— depth of field  
+— subtle film grain  
 
----
+Faces and bodies must fully inherit scene lighting.
 
-REFERENCE-SPECIFIC SCENE LOCK:
-
-This is a warm sunset cinematic scene with strong golden light.
-
-LIGHTING (VERY IMPORTANT):
-
-— strong warm golden-orange light from the side  
-— soft but bright highlights on skin  
-— visible warm color cast on faces and bodies  
-— subtle glow and light wrapping around edges  
-— shadows are soft but present  
-
-Skin must reflect the warm sunset tone.
-No neutral or studio lighting is allowed.
-
----
-
-CONTACT & BODY INTERACTION (CRITICAL):
-
-— the man stands behind the woman  
-— his arms wrap around her waist  
-— hands placed on her lower torso  
-— their bodies are fully touching  
-
-IMPORTANT:
-
-Hands must:
-— be correctly positioned  
-— follow natural anatomy  
-— interact physically with the woman's body  
-
-No floating hands.
-No incorrect placement.
-No broken fingers.
-
----
-
-POSE DETAILS:
-
-WOMAN (RIGHT, FRONT):
-— leaning slightly backward into the man  
-— head tilted back toward him  
-— eyes closed or relaxed  
-— soft, intimate expression  
-
-MAN (LEFT, BEHIND):
-— leaning forward toward the woman  
-— face very close to hers  
-— intimate, calm expression  
-
----
-
-ANTI-CUTOUT (CRITICAL):
-
-The new people must NOT look pasted.
-
-They must:
-
-— blend naturally with light  
-— have correct shadow contact  
-— have consistent color grading  
-— match scene atmosphere  
-
-No flat lighting.
-No sharp edges.
-No overlay look.
+The result must NOT look pasted or artificially inserted.
 
 ---
 
 FINAL:
 
-A fully reconstructed romantic sunset scene where:
+A fully reconstructed cinematic scene where:
 
 — original people are completely removed  
-— new people replace them  
-— lighting is warm, cinematic, and consistent  
-— bodies interact naturally  
-— the result looks like a real photograph, not an edit.`;
+— new people are fully rebuilt from uploaded identity images  
+— pose, spacing, and interaction are preserved exactly  
+— heads and faces are correctly oriented toward each other  
+— identity is preserved even under angle and lighting  
+— lighting and integration are seamless  
+
+The image must look like a real photograph, not a composite.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
