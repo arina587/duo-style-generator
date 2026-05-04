@@ -9,113 +9,147 @@ const corsHeaders = {
 const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
 const MODEL_NAME = "zsxkib/flux-pulid";
 
-const UNIVERSAL_PROMPT = `Use image_input[0] as the reference scene.
+const UNIVERSAL_PROMPT = `Use the reference scene image as the absolute base. Perform COMPLETE character replacement.
 
-Perform FULL CHARACTER REPLACEMENT, not face swap.
-
-Replace the original woman in the scene with the uploaded woman identity.
-Replace the original man in the scene with the uploaded man identity.
-
-The original people in image_input[0] must be completely removed as identity sources.
-
-Do NOT preserve:
-- their faces
-- their head shapes
-- their facial structure
-- their body proportions
-- their skin tone
-- their hair
-- any recognizable identity features
-
-Treat the original people in the scene as placeholders only.
+PRIORITY ORDER (STRICT):
+1) Identity from uploaded photos (FULL BODY)
+2) Original scene composition and positioning
+3) Lighting and style adaptation
 
 ---
 
-FULL PERSON REPLACEMENT:
+CRITICAL RULE (ABSOLUTE):
 
-Rebuild each person entirely from the uploaded identity images:
-- face
-- head shape
-- hair
-- skin tone
-- body proportions
-- overall appearance
+The original characters in the reference image must be completely removed.
 
-Do NOT replace only the face.
-Do NOT paste a face onto the original body.
-Do NOT keep the original actor’s body or facial geometry.
+Do NOT use:
+— their faces
+— their head shapes
+— their body shapes
+— their proportions
+— their skin tones
+— their clothing
+— any part of their identity
 
----
-
-ROLE MAPPING:
-
-The man in the scene must be replaced by the uploaded man identity.
-The woman in the scene must be replaced by the uploaded woman identity.
-
-Do NOT mix identities.
-Do NOT use the reference scene image as an identity source.
+They must be treated as if they do not exist.
 
 ---
 
-POSE AND PLACEMENT:
+FULL CHARACTER REPLACEMENT (MANDATORY):
 
-Place the new people in the exact same positions as the original people.
+Replace each character entirely using the uploaded identity photos:
 
-Preserve:
-- body pose
-- head angle
-- gaze direction
-- facial expression
-- distance between characters
-- camera angle
-- framing
-- crop
-- perspective
+— woman in scene → woman from uploaded female photo  
+— man in scene → man from uploaded male photo  
 
-The new people must occupy the same spatial positions as the removed characters.
+Reconstruct FULL human characters:
+— face
+— head
+— body
+— proportions
+— posture base
 
----
-
-SCENE PRESERVATION:
-
-Keep everything else unchanged:
-- background
-- environment
-- objects
-- clothing style if scene requires it
-- composition
-- lighting setup
-- shadows
-- depth of field
-- color grading
-- cinematic style
+Do NOT perform face swap.
+Do NOT reuse original bodies.
 
 ---
 
-LIGHTING AND INTEGRATION:
+IDENTITY PRESERVATION (CRITICAL):
 
-Adapt the new people to the scene lighting.
+Preserve identity with high accuracy:
 
-Their skin, hair, and clothing must inherit:
-- correct light direction
-- shadow falloff
-- color temperature
-- contrast
-- depth
-- film grain / texture
+— facial structure and proportions  
+— eyes, nose, lips, bone structure  
+— skin tone  
+— hairline, hair color, length  
+— overall body proportions and silhouette  
 
-The result must look like the new people were originally filmed in this scene.
+Do NOT:
+— beautify or enhance
+— stylize identity
+— average faces
+— mix identities
 
-No pasted faces.
-No face stickers.
-No mismatched lighting.
-No remaining resemblance to the original actors.
+Uploaded photos are the ONLY identity source.
 
 ---
 
-FINAL RESULT:
+POSE & PLACEMENT (STRICT):
 
-A realistic cinematic image where the original people are completely gone and fully replaced by the uploaded identities, with identical pose, placement, lighting, and composition.`;
+Place the new characters into the exact positions of the original scene:
+
+— same pose structure  
+— same body orientation  
+— same head angles  
+— same spatial relationship between people  
+— same camera angle and framing  
+
+Important:
+You are matching POSITION — not reusing original anatomy.
+
+---
+
+CLOTHING & BODY INTEGRATION:
+
+Preserve the scene's visual consistency:
+
+— adapt clothing to match the scene naturally  
+— ensure body fits perspective and depth  
+— maintain correct proportions relative to environment  
+
+---
+
+LIGHTING & COLOR MATCH:
+
+Match the original scene lighting:
+
+— same light direction  
+— same shadows  
+— same color grading  
+— same contrast and exposure  
+
+Faces and bodies must inherit scene lighting fully.
+
+No neutral lighting allowed.
+
+---
+
+INTEGRATION (CRITICAL):
+
+Characters must be fully reconstructed into the scene:
+
+— correct depth and perspective  
+— natural shadows and contact points  
+— no cutout or pasted look  
+— no remnants of original characters  
+
+---
+
+OCCLUSION:
+
+Respect scene occlusion (objects, hair, motion blur).
+
+Do NOT leave original character parts visible.
+
+---
+
+HANDS & ANATOMY:
+
+— exactly five fingers per hand  
+— correct anatomy and proportions  
+— natural interaction with environment  
+
+---
+
+OUTPUT:
+
+Same scene, same composition, same moment.
+
+BUT:
+
+All original people are completely removed and replaced with new individuals from uploaded photos.
+
+Result must look like a real photograph captured in that scene, not an edit.`;
 
 // ── Per-style prompt constants ──
 
