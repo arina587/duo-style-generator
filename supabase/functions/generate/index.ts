@@ -9,147 +9,83 @@ const corsHeaders = {
 const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
 const MODEL_NAME = "zsxkib/flux-pulid";
 
-const UNIVERSAL_PROMPT = `Use the reference scene image as the absolute base. Perform COMPLETE character replacement.
+const UNIVERSAL_PROMPT = `Use the reference image as a composition and scene template.
 
-PRIORITY ORDER (STRICT):
-1) Identity from uploaded photos (FULL BODY)
-2) Original scene composition and positioning
-3) Lighting and style adaptation
+Completely remove all original people from the scene. Treat their positions as empty space.
 
 ---
 
-CRITICAL RULE (ABSOLUTE):
+CHARACTER REPLACEMENT (STRICT):
 
-The original characters in the reference image must be completely removed.
+Replace characters using the uploaded identity photos:
 
-Do NOT use:
-— their faces
-— their head shapes
-— their body shapes
-— their proportions
-— their skin tones
-— their clothing
-— any part of their identity
+— the woman in the scene → replace with the woman from the uploaded female photo  
+— the man in the scene → replace with the man from the uploaded male photo  
 
-They must be treated as if they do not exist.
+Gender must be preserved exactly. Do NOT swap or reinterpret roles.
 
 ---
 
-FULL CHARACTER REPLACEMENT (MANDATORY):
+FULL RECONSTRUCTION:
 
-Replace each character entirely using the uploaded identity photos:
+Rebuild the people entirely from the identity images:
 
-— woman in scene → woman from uploaded female photo  
-— man in scene → man from uploaded male photo  
+— full body  
+— face  
+— proportions  
+— silhouette  
 
-Reconstruct FULL human characters:
-— face
-— head
-— body
-— proportions
-— posture base
+Do NOT reuse any part of the original characters.
 
 Do NOT perform face swap.
-Do NOT reuse original bodies.
+Do NOT mix identities.
 
 ---
 
-IDENTITY PRESERVATION (CRITICAL):
+IDENTITY (CRITICAL):
 
-Preserve identity with high accuracy:
+The new people must match the uploaded photos:
 
-— facial structure and proportions  
-— eyes, nose, lips, bone structure  
+— facial structure  
+— features (eyes, nose, lips)  
+— proportions  
 — skin tone  
-— hairline, hair color, length  
-— overall body proportions and silhouette  
+— hair  
 
-Do NOT:
-— beautify or enhance
-— stylize identity
-— average faces
-— mix identities
-
-Uploaded photos are the ONLY identity source.
+No blending with the original characters is allowed.
 
 ---
 
-POSE & PLACEMENT (STRICT):
+POSE & COMPOSITION (STRICT):
 
-Place the new characters into the exact positions of the original scene:
-
-— same pose structure  
-— same body orientation  
-— same head angles  
-— same spatial relationship between people  
-— same camera angle and framing  
+Preserve:
+— exact camera angle  
+— pose structure  
+— body orientation  
+— spatial relationships between characters  
+— framing and crop  
 
 Important:
-You are matching POSITION — not reusing original anatomy.
+Match POSITION and pose, but NOT original anatomy.
 
 ---
 
-CLOTHING & BODY INTEGRATION:
+LIGHTING & INTEGRATION:
 
-Preserve the scene's visual consistency:
+Match the original scene:
 
-— adapt clothing to match the scene naturally  
-— ensure body fits perspective and depth  
-— maintain correct proportions relative to environment  
+— lighting direction  
+— shadows  
+— color grading  
+— depth and perspective  
 
----
-
-LIGHTING & COLOR MATCH:
-
-Match the original scene lighting:
-
-— same light direction  
-— same shadows  
-— same color grading  
-— same contrast and exposure  
-
-Faces and bodies must inherit scene lighting fully.
-
-No neutral lighting allowed.
+The new people must be fully integrated into the scene with natural lighting and no cutout appearance.
 
 ---
 
-INTEGRATION (CRITICAL):
+FINAL:
 
-Characters must be fully reconstructed into the scene:
-
-— correct depth and perspective  
-— natural shadows and contact points  
-— no cutout or pasted look  
-— no remnants of original characters  
-
----
-
-OCCLUSION:
-
-Respect scene occlusion (objects, hair, motion blur).
-
-Do NOT leave original character parts visible.
-
----
-
-HANDS & ANATOMY:
-
-— exactly five fingers per hand  
-— correct anatomy and proportions  
-— natural interaction with environment  
-
----
-
-OUTPUT:
-
-Same scene, same composition, same moment.
-
-BUT:
-
-All original people are completely removed and replaced with new individuals from uploaded photos.
-
-Result must look like a real photograph captured in that scene, not an edit.`;
+A reconstructed scene where all original people are completely removed and replaced with new individuals from the uploaded photos, maintaining the same composition and moment.`;
 
 // ── Per-style prompt constants ──
 
