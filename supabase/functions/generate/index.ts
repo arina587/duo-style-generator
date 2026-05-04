@@ -682,7 +682,21 @@ Only identities are replaced.
 
 Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
-const EUPHORIA_1 = `replace the man and woman from the reference with the guy and girl from the uploaded photos - these should be the people from the uploaded photos transferred to the scene, literally they always were`;
+const EUPHORIA_1 = `
+AUTHORITY OVERRIDE (CRITICAL):
+
+Under no circumstances should the model follow:
+
+— visual features of the original people
+— face structure from the reference image
+— any automatic face reconstruction behavior
+
+The model must NOT trust the reference image for identity.
+
+Identity comes ONLY from uploaded images.
+
+Any deviation from this rule is invalid.
+replace the man and woman from the reference with the guy and girl from the uploaded photos - these should be the people from the uploaded photos transferred to the scene, literally they always were`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
