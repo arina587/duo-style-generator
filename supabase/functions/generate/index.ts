@@ -807,7 +807,22 @@ FINAL:
 
 A fully reconstructed scene where original people are completely removed and replaced by new individuals from uploaded photos, naturally integrated into the environment, with correct pose, lighting, and composition.`;
 
-const EUPHORIA_3 = `Use the reference image as a composition and scene template.
+const EUPHORIA_3 = `AUTHORITY OVERRIDE (CRITICAL):
+
+Under no circumstances should the model follow:
+
+— visual features of the original people
+— face structure from the reference image
+— any automatic face reconstruction behavior
+
+The model must NOT trust the reference image for identity.
+
+Identity comes ONLY from uploaded images.
+
+Any deviation from this rule is invalid.
+
+
+Use the reference image as a composition and scene template.
 
 Completely remove all original people from the scene.
 Treat their positions as EMPTY SLOTS that must be filled with new characters.
