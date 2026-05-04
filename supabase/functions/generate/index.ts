@@ -807,8 +807,8 @@ const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
   "cinderella-3": { locked: true, prompt: CINDERELLA_PROMPT },
   // ── Default styles ──
   "euphoria-1": { locked: true, prompt: EUPHORIA_1 },
-  "euphoria-2": { locked: false },
-  "euphoria-3": { locked: false },
+  "euphoria-2": { locked: true, prompt: EUPHORIA_2 },
+  "euphoria-3": { locked: true, prompt: EUPHORIA_3 },
   "titanic-1": { locked: false },
   "titanic-2": { locked: false },
   "titanic-3": { locked: false },
