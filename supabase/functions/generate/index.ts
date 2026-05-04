@@ -9,100 +9,113 @@ const corsHeaders = {
 const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
 const MODEL_NAME = "zsxkib/flux-pulid";
 
-const UNIVERSAL_PROMPT = `Use the reference scene image as the absolute base. Perform ONLY character identity replacement.
+const UNIVERSAL_PROMPT = `Use image_input[0] as the reference scene.
 
-PRIORITY ORDER (STRICT):
-1) Identity from uploaded photos
-2) Original scene geometry and composition
-3) Style adaptation
+Perform FULL CHARACTER REPLACEMENT, not face swap.
 
-IDENTITY TRANSFER (HARD CONSTRAINT):
-Replace characters using uploaded photos only:
-- female character → woman from female photo
-- male character → man from male photo
+Replace the original woman in the scene with the uploaded woman identity.
+Replace the original man in the scene with the uploaded man identity.
 
-Preserve identity EXACTLY 1:1:
-- facial structure, proportions, age
-- skin tone and texture
-- eyes, nose, lips, bone structure
-- hairline, hair color, length, and shape
+The original people in image_input[0] must be completely removed as identity sources.
 
-Do NOT:
-- beautify or enhance faces
-- stylize or reinterpret identity
-- mix identities
-- generate new faces
+Do NOT preserve:
+- their faces
+- their head shapes
+- their facial structure
+- their body proportions
+- their skin tone
+- their hair
+- any recognizable identity features
 
-Uploaded photos are the single source of truth.
+Treat the original people in the scene as placeholders only.
 
 ---
 
-SCENE LOCK (CONTROLLED):
+FULL PERSON REPLACEMENT:
 
-Do NOT change scene composition, pose, camera, or environment.
+Rebuild each person entirely from the uploaded identity images:
+- face
+- head shape
+- hair
+- skin tone
+- body proportions
+- overall appearance
 
-HOWEVER:
-Allow minimal local adjustments to lighting, shadows, skin tone, and color on the face ONLY, to match the scene lighting and ensure natural integration.
-
----
-
-NO MODIFICATIONS:
-- no pose changes
-- no camera changes
-- no composition changes
-- no added or removed elements
-- no outfit or styling changes
-- no background alterations
+Do NOT replace only the face.
+Do NOT paste a face onto the original body.
+Do NOT keep the original actor’s body or facial geometry.
 
 ---
 
-FACE INTEGRATION (CRITICAL):
+ROLE MAPPING:
 
-Do NOT paste or overlay faces.
+The man in the scene must be replaced by the uploaded man identity.
+The woman in the scene must be replaced by the uploaded woman identity.
 
-Reconstruct faces naturally within the original head geometry.
-
-Faces must match:
-- exact head orientation from the reference
-- original perspective and depth
-- original lighting direction and shadow falloff
-- original focus and motion blur
-
-The face must be fully integrated into the scene lighting, not appear flat or separately lit.
+Do NOT mix identities.
+Do NOT use the reference scene image as an identity source.
 
 ---
 
-VISIBILITY & OCCLUSION:
+POSE AND PLACEMENT:
 
-Respect occlusion from the original scene (hair, objects, motion blur).
+Place the new people in the exact same positions as the original people.
 
-Reconstruct the visible parts of the face based on the identity images.
+Preserve:
+- body pose
+- head angle
+- gaze direction
+- facial expression
+- distance between characters
+- camera angle
+- framing
+- crop
+- perspective
 
-Do NOT leave original facial features even if partially occluded.
-
----
-
-STYLE MATCH:
-
-Match the original reference style automatically (photorealistic or animated).
-Adapt identity into that style while preserving recognizability.
-
----
-
-ANATOMY CONSISTENCY:
-
-Keep original body anatomy unchanged.
-Hands must be natural, 5 fingers, no deformation.
+The new people must occupy the same spatial positions as the removed characters.
 
 ---
 
-OUTPUT:
+SCENE PRESERVATION:
 
-Identical scene in composition and structure.
+Keep everything else unchanged:
+- background
+- environment
+- objects
+- clothing style if scene requires it
+- composition
+- lighting setup
+- shadows
+- depth of field
+- color grading
+- cinematic style
 
-Only identities are replaced.
+---
 
-Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
+LIGHTING AND INTEGRATION:
+
+Adapt the new people to the scene lighting.
+
+Their skin, hair, and clothing must inherit:
+- correct light direction
+- shadow falloff
+- color temperature
+- contrast
+- depth
+- film grain / texture
+
+The result must look like the new people were originally filmed in this scene.
+
+No pasted faces.
+No face stickers.
+No mismatched lighting.
+No remaining resemblance to the original actors.
+
+---
+
+FINAL RESULT:
+
+A realistic cinematic image where the original people are completely gone and fully replaced by the uploaded identities, with identical pose, placement, lighting, and composition.`;
 
 // ── Per-style prompt constants ──
 
