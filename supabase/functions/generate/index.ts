@@ -768,19 +768,79 @@ Do NOT:
 
 ---
 
-LOW LIGHT IDENTITY PRESERVATION (CRITICAL):
+IDENTITY DOMINANCE (CRITICAL):
 
-This scene has dim, warm lighting.
+The uploaded identity photos are the ONLY valid source of facial identity.
 
-Even in low light:
+The model must strictly reconstruct faces from the uploaded images.
 
-— identity must remain clearly recognizable  
-— facial features must NOT disappear into shadow  
-— do NOT over-darken faces  
-— do NOT flatten details  
+Do NOT:
+— approximate the face  
+— simplify facial structure  
+— generate a similar-looking person  
+— blend with reference identities  
 
-If needed:
-— slightly lift face visibility ONLY to preserve identity  
+If identity is weak or unclear, the result is INVALID.
+
+---
+
+LOW-LIGHT FACE PROTECTION (VERY IMPORTANT):
+
+This is a dark cinematic scene.
+
+Faces must remain clearly visible and recognizable.
+
+Do NOT:
+— let shadows hide facial features  
+— lose detail due to darkness  
+— merge facial features into soft gradients  
+
+If necessary:
+— slightly increase local face brightness  
+— increase contrast on facial features ONLY  
+
+This adjustment must NOT affect the rest of the scene.
+
+---
+
+ANTI-GENERIC FACE RULE:
+
+Do NOT generate generic attractive faces.
+
+Faces must retain:
+— unique bone structure  
+— asymmetry  
+— real proportions from the uploaded images  
+
+If the face looks standardized or model-like, it is incorrect.
+
+---
+
+FACE STRUCTURE LOCK:
+
+Preserve exact facial geometry:
+
+— distance between eyes  
+— nose shape and width  
+— jawline shape  
+— chin structure  
+— lip shape  
+
+Do NOT alter proportions for aesthetics or lighting.
+
+---
+
+IDENTITY PRIORITY OVERRIDE:
+
+If there is a conflict between:
+
+— cinematic lighting  
+— realism of shadows  
+— composition  
+
+ALWAYS prioritize identity clarity.
+
+Faces must NOT degrade under any lighting condition.
 
 ---
 
@@ -792,7 +852,7 @@ Woman (LEFT):
 — sitting upright  
 — shoulders relaxed  
 — head facing forward  
-— neutral / calm expression  
+— neutral, calm expression  
 
 Man (RIGHT):
 — sitting upright  
@@ -817,11 +877,10 @@ HEAD SCALE & PROPORTION:
 
 LIGHTING & INTEGRATION:
 
-Match original lighting exactly:
+Match original lighting:
 
-— warm, low-light environment  
+— warm low-light environment  
 — soft shadows  
-— subtle highlights  
 — cinematic color grading  
 
 Faces must:
@@ -831,8 +890,8 @@ Faces must:
 
 Do NOT:
 — apply studio lighting  
-— make faces overly bright or clean  
-— create cutout look  
+— over-brighten entire image  
+— create cutout effect  
 
 ---
 
@@ -840,7 +899,7 @@ TEXTURE & REALISM:
 
 Preserve cinematic realism:
 
-— slight noise / grain  
+— slight grain  
 — natural skin texture  
 — no over-smoothing  
 — no artificial sharpness  
@@ -854,8 +913,7 @@ Do NOT:
 — change scene layout  
 — move characters  
 — alter composition  
-— brighten the whole image  
-— reduce cinematic darkness  
+— brighten the entire frame  
 
 Only replace the identities of the two foreground people.
 
@@ -863,7 +921,7 @@ Only replace the identities of the two foreground people.
 
 FINAL:
 
-A realistic cinematic image where only the two foreground characters are replaced with new identities, while the background, lighting, composition, and atmosphere remain unchanged.`;
+A realistic cinematic audience scene where only the two foreground characters are replaced with new identities, while the background, lighting, composition, and atmosphere remain unchanged, and faces remain clearly recognizable even in low light.`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
