@@ -682,114 +682,151 @@ Only identities are replaced.
 
 Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
-const EUPHORIA_1 = `Use the reference image as a composition and scene template.
+const EUPHORIA_1 = `Use the reference image ONLY as a composition, pose, and lighting template.
 
-Completely remove all original people from the scene.
-Treat their positions as EMPTY SLOTS that must be filled with new characters.
+The original people in the reference image must be COMPLETELY REMOVED and treated as NON-EXISTENT.
 
----
-
-CHARACTER REPLACEMENT (STRICT):
-
-Replace characters using the uploaded identity photos:
-
-— the woman in the scene → replace with the woman from the uploaded female photo  
-— the man in the scene → replace with the man from the uploaded male photo  
-
-Gender must match exactly. Do NOT swap roles.
+Think of the scene as an EMPTY BACKGROUND PLATE with NO PEOPLE.
 
 ---
 
-EMPTY SLOT PLACEMENT (CRITICAL):
+HARD RESET (CRITICAL):
 
-The original characters must be considered non-existent.
+Before placing new people, the model must fully discard:
 
-Place the new people into the exact same spatial positions where the original people were:
+— all original faces  
+— all original head shapes  
+— all original skin tones  
+— all original body parts  
+— all identity information  
 
-— same location in frame  
-— same scale  
-— same depth  
-— same perspective  
+There must be ZERO visual or structural influence from the original people.
 
-Do NOT reuse any part of the original bodies.
+Any resemblance to the original characters is strictly forbidden.
 
 ---
 
-FULL RECONSTRUCTION:
+CHARACTER INSERTION (STRICT):
 
-Rebuild each person completely from the identity images:
+Insert entirely new people using the uploaded identity images:
 
-— full body  
+— woman in the scene → woman from uploaded female photo  
+— man in the scene → man from uploaded male photo  
+
+Gender must match exactly.
+Do NOT swap positions.
+
+---
+
+FULL RECONSTRUCTION (MANDATORY):
+
+Rebuild each person from scratch using ONLY identity images:
+
 — face  
+— head  
+— body  
 — proportions  
-— silhouette  
 
-Do NOT perform face swap.
-Do NOT mix identities.
-Do NOT blend with original characters.
+This is NOT a face replacement task.
+
+Do NOT:
+— reuse original bodies  
+— reuse original faces  
+— blend identities  
+— partially preserve original features  
+
+No hybrid characters are allowed.
 
 ---
 
-IDENTITY (CRITICAL):
+EMPTY SLOT PLACEMENT:
 
-Preserve the real appearance from uploaded photos:
+Place the new people into the exact positions where the original people were:
+
+— same position in frame  
+— same scale  
+— same perspective  
+— same depth  
+
+But the original bodies must NOT be used as a base.
+
+---
+
+POSE LOCK:
+
+Match the pose exactly:
+
+— same head angles  
+— same body orientation  
+— same distance between people  
+
+BUT:
+Pose is copied as abstract geometry only, not as identity.
+
+---
+
+IDENTITY (ABSOLUTE):
+
+The new people must match ONLY the uploaded photos:
 
 — facial structure  
-— features (eyes, nose, lips)  
+— eyes, nose, lips  
 — proportions  
 — skin tone  
 — hair  
 
-Identity must remain clearly recognizable.
+Identity must be clean and uncontaminated.
 
 ---
 
-CLOTHING ADAPTATION (IMPORTANT):
+CLOTHING ADAPTATION:
 
-Clothing should be adapted to fit the scene naturally:
+Clothing should be adapted to match the scene naturally:
 
-— keep general style consistent with the scene  
-— allow changes in clothing details if needed  
-— avoid exact copying of the original outfit  
-— avoid mismatch with environment or lighting  
-
-The result must feel like the person belongs in this scene.
+— consistent with lighting and environment  
+— similar style, but NOT copied exactly  
+— must look realistic in context  
 
 ---
 
-POSE & COMPOSITION (STRICT):
+LIGHTING & INTEGRATION:
 
-Preserve:
-— camera angle  
-— pose structure  
-— body orientation  
-— spacing between people  
-— framing and crop  
+Match scene perfectly:
 
-Important:
-Match pose and placement, NOT original anatomy or identity.
+— lighting direction  
+— shadows  
+— color grading  
+— depth of field  
+— film grain  
+
+People must be fully integrated into the scene.
+
+No cutout. No overlay. No paste.
 
 ---
 
-LIGHTING & INTEGRATION (CRITICAL):
+ANTI-MIXING CONSTRAINT (CRITICAL):
 
-Fully integrate the new people into the scene:
+Under no circumstances should the output contain:
 
-— match lighting direction  
-— match shadows  
-— match color grading  
-— match depth of field  
-— match noise / grain  
+— original facial features  
+— blended faces  
+— partially preserved identity  
+— ghost traces of original people  
 
-Faces and bodies must inherit scene lighting.
-
-The result must NOT look pasted or composited.
+If any original identity is visible, the result is invalid.
 
 ---
 
 FINAL:
 
-A fully reconstructed scene where original people are completely removed and replaced by new individuals from uploaded photos, naturally integrated into the environment, with correct pose, lighting, and composition.`;
+A completely reconstructed image where:
+
+— the original people are fully erased  
+— new people are generated from identity images  
+— composition and pose are preserved  
+— identities are clean and not mixed  
+— the result looks like a real photograph, not an edit`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
