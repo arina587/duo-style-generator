@@ -383,247 +383,194 @@ FINAL:
 
 A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate identity, fully human anatomy, correct lighting, and stable composition.`;
 
-const TANGLED_1 = `Use the provided reference image and separately uploaded photos of the man and the woman.
+const TANGLED_1 = `Use the reference image as a visual guide for composition, pose, lighting, and atmosphere.
 
-Replace both original characters with new people from the uploaded photos.
+Create a Pixar/Disney 3D CGI version of this scene using the uploaded man and woman as the main characters.
 
-Recreate them as stylized human characters in high-end Pixar/Disney 3D CGI style.
-
----
-
-PRIORITY ORDER (STRICT):
-1) Identity from uploaded photos  
-2) Pose and composition  
-3) Lighting and Pixar style  
+Keep:
+— exact camera angle  
+— framing  
+— distance between characters  
+— body contact and positioning  
 
 ---
 
-IDENTITY (CRITICAL):
+CHARACTER PLACEMENT (STRICT):
 
-Faces must remain highly recognizable:
-
-— exact facial structure and proportions  
-— eyes, nose, lips, jawline  
-— skin tone adapted to scene lighting  
-— hairstyle, color, and length  
-
-Do NOT:
-— stylize away identity  
-— make generic Disney faces  
-— mix identities  
-
----
-
-FULL CHARACTER REPLACEMENT:
-
-Remove original characters completely.
-
-Rebuild both people entirely from uploaded identity images:
-
-— full body  
-— face  
-— proportions  
-
-Do NOT paste faces.  
-Do NOT reuse original facial features.
-
----
-
-POSE & COMPOSITION (STRICT):
-
-— man on the LEFT, woman on the RIGHT  
-— standing very close, embracing each other  
-— woman looking up at the man  
-— man looking down at the woman  
-— hands around each other’s bodies  
-
-Preserve:
-— exact distance  
-— body contact  
-— camera framing  
+— the man must be on the LEFT  
+— the woman must be on the RIGHT  
+— they are standing very close, embracing  
+— the woman is looking up at the man  
+— the man is looking down at the woman  
+— their arms are around each other  
 
 Do NOT swap positions.
 
 ---
 
-STYLE (CRITICAL):
-
-Pixar/Disney 3D CGI:
-
-— soft stylized skin  
-— clean shading  
-— expressive eyes  
-— cinematic depth  
-
-Keep identity intact while adapting to this style.
-
----
-
-LIGHTING:
-
-— warm lantern lighting  
-— soft golden glow  
-— reflections from water and lanterns  
-
-Faces must inherit scene lighting naturally.
-
----
-
-FINAL:
-
-Romantic lantern scene with two fully reconstructed Pixar-style human characters that clearly match uploaded identities.`;
-
-const TANGLED_2 = `Use the provided reference image and separately uploaded photos of the man and the woman.
-
-Replace both characters with new people from the uploaded identity images.
-
-Recreate them as Pixar/Disney 3D CGI human characters.
-
----
-
-PRIORITY ORDER:
-1) Identity  
-2) Pose  
-3) Lighting/style  
-
----
-
 IDENTITY (CRITICAL):
 
-Preserve:
+The characters must clearly resemble the uploaded people:
 
 — facial structure  
-— features (eyes, nose, lips)  
+— eyes, nose, lips  
 — proportions  
-— hair  
 — skin tone  
+— hairstyle and color  
 
-Faces must stay recognizable even in low light.
-
----
-
-FULL RECONSTRUCTION:
-
-Completely remove original characters.
-
-Rebuild new people from scratch using identity photos.
-
-No face swap.  
-No blending.
-
----
-
-POSE LOCK:
-
-— man on the LEFT, sitting  
-— leaning slightly forward  
-— looking toward the woman  
-
-— woman on the RIGHT  
-— leaning forward with chin resting on hands  
-— looking up at the man  
-
-Preserve:
-— distance  
-— posture  
-— interaction  
+Do NOT:
+— create generic animated faces  
+— mix identities  
+— drift away from real appearance  
 
 ---
 
 STYLE:
 
-Pixar/Disney 3D:
+High-end Pixar/Disney 3D CGI:
 
-— soft shading  
-— stylized but realistic proportions  
-— expressive facial features  
+— soft stylized skin  
+— clean shading  
+— expressive eyes  
+— cinematic rendering  
 
-Do NOT lose identity.
+Keep identity recognizable inside this style.
 
 ---
 
-LIGHTING (CRITICAL):
+LIGHTING:
+
+— warm floating lantern light  
+— soft golden glow  
+— subtle reflections  
+
+Faces must match scene lighting naturally.
+
+---
+
+FINAL:
+
+A romantic lantern scene recreated in Pixar style with two characters that clearly match the uploaded people, maintaining pose, lighting, and composition.`;
+
+const TANGLED_2 = `Use the reference image as a visual guide for composition, pose, lighting, and environment.
+
+Create a Pixar/Disney 3D CGI version of this scene using the uploaded man and woman.
+
+Keep:
+— camera angle  
+— sitting positions  
+— distance between characters  
+— interaction  
+
+---
+
+CHARACTER PLACEMENT:
+
+— the man is on the LEFT, sitting  
+— slightly leaning forward  
+— looking toward the woman  
+
+— the woman is on the RIGHT  
+— leaning forward with chin resting on hands  
+— looking at the man  
+
+Do NOT change positions or posture.
+
+---
+
+IDENTITY (CRITICAL):
+
+Faces must clearly resemble the uploaded people:
+
+— facial structure  
+— eyes, nose, lips  
+— proportions  
+— hair  
+— skin tone  
+
+Even in low light, identity must remain visible.
+
+---
+
+STYLE:
+
+Pixar/Disney 3D CGI:
+
+— stylized but realistic  
+— soft shading  
+— expressive faces  
+
+Do NOT lose identity in stylization.
+
+---
+
+LIGHTING (IMPORTANT):
 
 — dark environment  
 — warm fire light (orange/red tones)  
-— strong shadows  
+— soft shadows  
 
-IMPORTANT:
 Faces must remain readable:
-— slightly reduce shadow on faces ONLY  
+— slightly soften shadows on faces only  
 — keep identity visible  
 
 ---
 
 FINAL:
 
-Intimate firelight scene with two Pixar-style human characters, identity preserved despite low lighting.`;
+An intimate firelight scene in Pixar style with two recognizable characters based on the uploaded people, preserving pose and mood.`;
 
-const TANGLED_3 = `Use the provided reference image and separately uploaded photos of the man and the woman.
+const TANGLED_3 = `Use the reference image as a visual guide for composition, pose, and environment.
 
-Replace both original characters with new people from uploaded identity images.
+Create a Pixar/Disney 3D CGI version of this scene using the uploaded man and woman.
 
-Recreate them as Pixar/Disney 3D CGI human characters.
+Keep:
+— camera angle  
+— composition  
+— background crowd  
+— environment details  
 
 ---
 
-PRIORITY ORDER:
-1) Identity  
-2) Pose  
-3) Environment/style  
+CHARACTER PLACEMENT (STRICT):
+
+— the man is on the LEFT  
+— slightly leaning forward  
+— holding a crown above the woman  
+
+— the woman is on the RIGHT  
+— arm raised  
+— looking at the crown  
+
+Preserve gesture, spacing, and interaction.
+
+Do NOT swap positions.
 
 ---
 
 IDENTITY (CRITICAL):
 
-Preserve:
+Characters must clearly resemble the uploaded people:
 
 — facial structure  
+— eyes, nose, lips  
 — proportions  
-— facial features  
 — hair  
 — skin tone  
 
-Faces must be clearly recognizable.
-
----
-
-FULL REPLACEMENT:
-
-Remove original characters completely.
-
-Rebuild new people entirely from identity images.
-
-No mixing with original faces.
-
----
-
-POSE & INTERACTION:
-
-— man on the LEFT  
-— leaning forward slightly  
-— holding crown above woman's head  
-
-— woman on the RIGHT  
-— arm raised  
-— looking at the crown  
-
-Preserve:
-— gesture  
-— spacing  
-— body orientation  
+Do NOT create generic Disney faces.
 
 ---
 
 STYLE:
 
-Pixar/Disney 3D:
+Pixar/Disney 3D CGI:
 
 — clean stylized rendering  
-— soft lighting  
-— cinematic composition  
+— soft shading  
+— cinematic look  
 
-Keep identity intact while adapting to style.
+Identity must remain recognizable.
 
 ---
 
@@ -633,24 +580,13 @@ LIGHTING:
 — soft natural shadows  
 — warm tones  
 
-Faces must match environment lighting.
-
----
-
-SCENE LOCK:
-
-Keep:
-— crowd  
-— background architecture  
-— decorations  
-
-Do NOT change composition.
+Faces must match scene lighting.
 
 ---
 
 FINAL:
 
-Ceremony scene with Pixar-style human characters, accurate identity, and preserved interaction.`;
+A ceremony scene in Pixar style with two clearly recognizable characters based on the uploaded people, preserving pose and interaction.`;
 
 const CINDERELLA_PROMPT = `Use the reference scene image as the absolute base. Perform ONLY character identity replacement.
 
