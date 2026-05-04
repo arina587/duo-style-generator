@@ -696,7 +696,7 @@ The model must NOT trust the reference image for identity.
 Identity comes ONLY from uploaded images.
 
 Any deviation from this rule is invalid.
-replace the man and woman from the reference with the guy and girl from the uploaded photos - these should be the people from the uploaded photos transferred to the scene, literally they always were`;
+replace the man and woman from the reference with the guy and the girl from the uploaded photos - these should be the people from the uploaded photos transferred to the scene, literally they always were, the girl from the uploaded photo sits on the left, the guy from the uploaded photo sits on the right - you can not mix their personalities`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
