@@ -1523,7 +1523,7 @@ Preserve:
 
 Woman:
 
-— positioned in front  
+— positioned on the RIGHT side  
 — body angled slightly away from the man  
 — head turned back toward him  
 — chin slightly raised  
@@ -1531,10 +1531,29 @@ Woman:
 
 Man:
 
-— positioned behind the woman  
+— positioned on the LEFT side  
+— slightly behind the woman  
 — leaning toward her  
 — head angled toward her face  
 — face very close to hers  
+
+Do NOT change pose, spacing, or orientation.
+
+---
+
+LEFT-RIGHT ORIENTATION LOCK (CRITICAL):
+
+The man MUST remain on the LEFT side of the frame.  
+The woman MUST remain on the RIGHT side of the frame.  
+
+This orientation is absolute.
+
+Do NOT:
+— swap characters  
+— mirror the image  
+— flip left/right positions  
+
+If orientation is incorrect, the result is invalid.
 
 ---
 
@@ -1553,7 +1572,7 @@ Woman:
 Man:
 — head turned toward the woman  
 — face angled toward her  
-— positioned slightly above and behind  
+— positioned slightly behind  
 — very close to her face  
 
 CRITICAL:
@@ -1578,6 +1597,26 @@ The scene is defined by face-to-face interaction.
 If head orientation is incorrect, the result is invalid.
 
 Faces must remain directed toward each other at all times.
+
+---
+
+HEAD SCALE & PROPORTION CONSISTENCY (CRITICAL):
+
+The heads of both characters must have natural, matching proportions relative to each other.
+
+— head sizes must be consistent with real human proportions  
+— no oversized or undersized heads  
+— no distortion of skull proportions  
+— no mismatch between face size and body  
+
+The relative scale between the man and the woman must match the reference scene.
+
+Do NOT:
+— enlarge one face unnaturally  
+— shrink one head  
+— distort proportions due to identity transfer  
+
+Identity must be preserved WITHOUT breaking anatomical scale.
 
 ---
 
@@ -1613,7 +1652,9 @@ A fully reconstructed cinematic scene where:
 — original people are completely removed  
 — new people are fully rebuilt from uploaded identity images  
 — pose, spacing, and interaction are preserved exactly  
-— heads and faces are correctly oriented toward each other  
+— heads are turned toward each other correctly  
+— left/right orientation is preserved  
+— head proportions are natural and consistent  
 — identity is preserved even under angle and lighting  
 — lighting and integration are seamless  
 
