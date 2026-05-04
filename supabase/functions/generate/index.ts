@@ -385,256 +385,272 @@ A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate 
 
 const TANGLED_1 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Treat the reference image as a scene template ONLY (composition, pose, lighting).
+Replace both original characters with new people from the uploaded photos.
 
-CRITICAL RULE:
-The original characters must NOT be used as identity source in any way.
-
-Do NOT use:
-— their faces
-— their head shapes
-— their facial proportions
-— their skin tones
-— any part of their identity
-
-They must be completely ignored.
+Recreate them as stylized human characters in high-end Pixar/Disney 3D CGI style.
 
 ---
 
-FULL CHARACTER REPLACEMENT (ABSOLUTE):
-
-Replace both characters completely:
-
-— man from uploaded male photo → left position
-— woman from uploaded female photo → right position
-
-Rebuild them as entirely new people based ONLY on uploaded identity images.
-
-Do NOT reuse or preserve any original character features.
+PRIORITY ORDER (STRICT):
+1) Identity from uploaded photos  
+2) Pose and composition  
+3) Lighting and Pixar style  
 
 ---
 
-STRICT IDENTITY PRESERVATION (ENHANCED):
+IDENTITY (CRITICAL):
 
 Faces must remain highly recognizable:
-— exact facial proportions and bone structure
-— eye shape, spacing, eyelids, eyebrows
-— nose shape and bridge
-— lip shape and mouth width
-— jawline and chin
-— natural skin tone adapted to scene lighting
-— hairstyle, hair color, and hair length
+
+— exact facial structure and proportions  
+— eyes, nose, lips, jawline  
+— skin tone adapted to scene lighting  
+— hairstyle, color, and length  
+
+Do NOT:
+— stylize away identity  
+— make generic Disney faces  
+— mix identities  
 
 ---
 
-CRITICAL POSE LOCK (ABSOLUTE):
+FULL CHARACTER REPLACEMENT:
 
-— man (left) holding the woman closely
-— woman (right) leaning into the man
-— faces very close with strong eye contact
-— woman looking up toward the man
-— man looking down toward the woman
-— bodies positioned chest-to-chest
+Remove original characters completely.
 
-Do NOT change angle, framing, or positioning.
+Rebuild both people entirely from uploaded identity images:
 
----
+— full body  
+— face  
+— proportions  
 
-CRITICAL STYLE:
-
-Recreate characters in Pixar/Disney 3D CGI style.
-NOT as pasted faces — fully reconstructed characters.
+Do NOT paste faces.  
+Do NOT reuse original facial features.
 
 ---
 
-CRITICAL LIGHTING:
+POSE & COMPOSITION (STRICT):
 
-— warm golden lantern lighting
-— soft glow from multiple sources
-— visible reflections from lanterns
+— man on the LEFT, woman on the RIGHT  
+— standing very close, embracing each other  
+— woman looking up at the man  
+— man looking down at the woman  
+— hands around each other’s bodies  
 
-Faces must inherit scene lighting, not neutral.
+Preserve:
+— exact distance  
+— body contact  
+— camera framing  
+
+Do NOT swap positions.
 
 ---
 
-CRITICAL HANDS:
+STYLE (CRITICAL):
 
-All hands must be human:
-— exactly five fingers
-— correct anatomy
-— natural grip
-— no deformation
+Pixar/Disney 3D CGI:
+
+— soft stylized skin  
+— clean shading  
+— expressive eyes  
+— cinematic depth  
+
+Keep identity intact while adapting to this style.
+
+---
+
+LIGHTING:
+
+— warm lantern lighting  
+— soft golden glow  
+— reflections from water and lanterns  
+
+Faces must inherit scene lighting naturally.
 
 ---
 
 FINAL:
 
-Same romantic lantern scene, but original characters fully removed and replaced with new identities from uploaded photos.`;
+Romantic lantern scene with two fully reconstructed Pixar-style human characters that clearly match uploaded identities.`;
 
 const TANGLED_2 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Treat the reference image as a scene template ONLY.
+Replace both characters with new people from the uploaded identity images.
 
-CRITICAL RULE:
-The original characters must be completely ignored.
-
-Do NOT use:
-— their faces
-— their head shapes
-— their proportions
-— any identity information
+Recreate them as Pixar/Disney 3D CGI human characters.
 
 ---
 
-FULL CHARACTER REPLACEMENT:
-
-Insert entirely new people:
-
-— man from uploaded male photo → left
-— woman from uploaded female photo → right
-
-Rebuild them from scratch.
+PRIORITY ORDER:
+1) Identity  
+2) Pose  
+3) Lighting/style  
 
 ---
 
-STRICT IDENTITY PRESERVATION:
+IDENTITY (CRITICAL):
 
-Faces must clearly match uploaded photos:
-— facial structure
-— features
-— proportions
-— hair
-— skin tone
+Preserve:
 
----
+— facial structure  
+— features (eyes, nose, lips)  
+— proportions  
+— hair  
+— skin tone  
 
-CRITICAL POSE LOCK:
-
-— man sitting relaxed, slightly turned toward the woman
-— woman leaning forward with chin resting on both hands
-— strong eye contact between them
-
-Do NOT change posture or positioning.
+Faces must stay recognizable even in low light.
 
 ---
 
-CRITICAL LIGHTING:
+FULL RECONSTRUCTION:
 
-— dark environment with warm fire light
-— strong shadows present
+Completely remove original characters.
+
+Rebuild new people from scratch using identity photos.
+
+No face swap.  
+No blending.
+
+---
+
+POSE LOCK:
+
+— man on the LEFT, sitting  
+— leaning slightly forward  
+— looking toward the woman  
+
+— woman on the RIGHT  
+— leaning forward with chin resting on hands  
+— looking up at the man  
+
+Preserve:
+— distance  
+— posture  
+— interaction  
+
+---
+
+STYLE:
+
+Pixar/Disney 3D:
+
+— soft shading  
+— stylized but realistic proportions  
+— expressive facial features  
+
+Do NOT lose identity.
+
+---
+
+LIGHTING (CRITICAL):
+
+— dark environment  
+— warm fire light (orange/red tones)  
+— strong shadows  
 
 IMPORTANT:
-Faces must remain visible:
-— slightly reduce shadow on faces only
-— keep identity readable
-
----
-
-CRITICAL STYLE:
-
-Pixar/Disney 3D CGI characters, fully reconstructed.
-
----
-
-CRITICAL HANDS:
-
-— exactly five fingers
-— correct anatomy
-— proper chin support position
+Faces must remain readable:
+— slightly reduce shadow on faces ONLY  
+— keep identity visible  
 
 ---
 
 FINAL:
 
-Same intimate night scene, but original characters completely replaced with new identities.`;
+Intimate firelight scene with two Pixar-style human characters, identity preserved despite low lighting.`;
 
 const TANGLED_3 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Treat the reference image as a composition and pose template ONLY.
+Replace both original characters with new people from uploaded identity images.
 
-CRITICAL RULE:
-The original characters must NOT be used in any way.
-
-Do NOT use:
-— faces
-— body shapes
-— proportions
-— identity elements
-
-They must be treated as non-existent.
+Recreate them as Pixar/Disney 3D CGI human characters.
 
 ---
 
-FULL CHARACTER REPLACEMENT:
-
-Create new people:
-
-— man → left
-— woman → right
-
-Using ONLY uploaded identity photos.
+PRIORITY ORDER:
+1) Identity  
+2) Pose  
+3) Environment/style  
 
 ---
 
-STRICT IDENTITY PRESERVATION:
+IDENTITY (CRITICAL):
 
 Preserve:
-— facial structure
-— proportions
-— features
-— skin tone
-— hair
+
+— facial structure  
+— proportions  
+— facial features  
+— hair  
+— skin tone  
+
+Faces must be clearly recognizable.
 
 ---
 
-CRITICAL POSE LOCK:
+FULL REPLACEMENT:
 
-— man leading the movement, slightly leaning forward
-— holding the woman's hand
-— woman extending arm toward him
-— maintaining natural dance spacing
+Remove original characters completely.
 
-Do NOT change interaction or gesture.
+Rebuild new people entirely from identity images.
+
+No mixing with original faces.
 
 ---
 
-CRITICAL SCENE LOCK:
+POSE & INTERACTION:
+
+— man on the LEFT  
+— leaning forward slightly  
+— holding crown above woman's head  
+
+— woman on the RIGHT  
+— arm raised  
+— looking at the crown  
+
+Preserve:
+— gesture  
+— spacing  
+— body orientation  
+
+---
+
+STYLE:
+
+Pixar/Disney 3D:
+
+— clean stylized rendering  
+— soft lighting  
+— cinematic composition  
+
+Keep identity intact while adapting to style.
+
+---
+
+LIGHTING:
+
+— daylight  
+— soft natural shadows  
+— warm tones  
+
+Faces must match environment lighting.
+
+---
+
+SCENE LOCK:
 
 Keep:
-— crowd
-— architecture
-— perspective
-— framing
+— crowd  
+— background architecture  
+— decorations  
 
----
-
-CRITICAL LIGHTING:
-
-— natural daylight
-— soft shadows
-— consistent color temperature
-
-Faces must match scene lighting.
-
----
-
-CRITICAL STYLE:
-
-Pixar/Disney CGI, fully reconstructed characters.
-
----
-
-CRITICAL HANDS:
-
-— exactly five fingers
-— correct anatomy
-— natural interaction
+Do NOT change composition.
 
 ---
 
 FINAL:
 
-Same dance scene, but with completely new characters replacing the originals.`;
+Ceremony scene with Pixar-style human characters, accurate identity, and preserved interaction.`;
 
 const CINDERELLA_PROMPT = `Use the reference scene image as the absolute base. Perform ONLY character identity replacement.
 
