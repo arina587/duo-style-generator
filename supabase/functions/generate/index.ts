@@ -682,104 +682,188 @@ Only identities are replaced.
 
 Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
-const EUPHORIA_1 = `Use the reference image strictly as a scene and composition template.
+const EUPHORIA_1 = `Use the reference image as a strict composition, crop, pose, lighting, and depth-of-field template.
 
-Remove all original people completely.
-Treat their positions as EMPTY SLOTS to be filled.
+Do NOT recreate or reinterpret the scene.
 
----
-
-PRIORITY ORDER (IMPORTANT):
-
-1) Identity accuracy (highest priority)
-2) Pose and placement
-3) Lighting and integration
-
-If conflicts occur, preserve identity first.
+Do NOT change:
+— camera angle  
+— framing  
+— crop  
+— background people  
+— environment  
+— lighting setup  
 
 ---
 
-CHARACTER REPLACEMENT:
+SCENE STRUCTURE (CRITICAL):
 
-Replace each character using uploaded identity photos:
+This is a seated audience scene.
 
-— woman → female reference photo  
-— man → male reference photo  
+There are two MAIN foreground characters:
+— woman on the LEFT  
+— man on the RIGHT  
 
-Do NOT swap genders.
-
----
-
-IDENTITY (CRITICAL — MAXIMUM PRESERVATION):
-
-Reconstruct each person to strongly match the uploaded photos:
-
-— exact facial structure and bone proportions  
-— eyes shape, spacing, eyelids  
-— nose shape and size  
-— lips shape and volume  
-— jawline and cheekbones  
-— skin tone and texture  
-— hairline, hairstyle, color  
-
-Faces must be immediately recognizable as the reference individuals.
-
-Avoid generic or averaged faces.
+Background contains multiple people and must remain unchanged.
 
 ---
 
-RECONSTRUCTION (STRICT):
+CHARACTER MAPPING (ABSOLUTE):
 
-Build each person fully from the identity images.
+— the woman on the LEFT → replace with the woman from the uploaded female photo  
+— the man on the RIGHT → replace with the man from the uploaded male photo  
+
+Do NOT swap.
+Do NOT mirror.
+Do NOT move them.
+
+---
+
+FOREGROUND-ONLY REPLACEMENT:
+
+Replace ONLY the two main foreground people.
+
+Do NOT modify:
+— background people  
+— their faces  
+— their positions  
+
+Background must remain identical.
+
+---
+
+VISIBLE-PARTS RECONSTRUCTION:
+
+Rebuild only what is visible:
+
+— face  
+— head  
+— hair  
+— upper body  
+— hands  
+
+Do NOT invent new body positions.
+Do NOT change posture.
+
+---
+
+IDENTITY (CRITICAL):
+
+Faces must clearly match uploaded identity images:
+
+— facial structure  
+— eyes  
+— nose  
+— lips  
+— jawline  
+— proportions  
+— skin tone  
+— hair  
 
 Do NOT:
-— face swap  
-— blend with original people  
-— reuse original bodies  
-
-Result must look like the real person placed in the scene.
-
----
-
-PLACEMENT & POSE:
-
-Place new characters into the same positions as the originals:
-
-— same pose structure  
-— similar body orientation  
-— consistent scale and perspective  
-
-Pose should match the scene, but identity must not be distorted to force the pose.
+— stylize  
+— beautify  
+— average  
+— replace with generic faces  
 
 ---
 
-CLOTHING:
+LOW LIGHT IDENTITY PRESERVATION (CRITICAL):
 
-Use scene-appropriate clothing:
+This scene has dim, warm lighting.
 
-— consistent with environment and role  
-— natural and believable  
-— not identical copy of original outfits  
+Even in low light:
+
+— identity must remain clearly recognizable  
+— facial features must NOT disappear into shadow  
+— do NOT over-darken faces  
+— do NOT flatten details  
+
+If needed:
+— slightly lift face visibility ONLY to preserve identity  
+
+---
+
+POSE & BODY POSITION (STRICT):
+
+Preserve exactly:
+
+Woman (LEFT):
+— sitting upright  
+— shoulders relaxed  
+— head facing forward  
+— neutral / calm expression  
+
+Man (RIGHT):
+— sitting upright  
+— hands together in front  
+— head facing forward  
+— calm, slightly serious expression  
+
+Do NOT:
+— change posture  
+— change head direction  
+— change spacing  
+
+---
+
+HEAD SCALE & PROPORTION:
+
+— both heads must have natural proportions  
+— no scaling distortion  
+— no mismatch between face and body  
 
 ---
 
 LIGHTING & INTEGRATION:
 
-Match the scene:
+Match original lighting exactly:
 
-— lighting direction and intensity  
-— shadows  
-— color grading  
-— depth of field  
-— noise / grain  
+— warm, low-light environment  
+— soft shadows  
+— subtle highlights  
+— cinematic color grading  
 
-People must look naturally part of the scene, not composited.
+Faces must:
+— inherit scene lighting  
+— match contrast level  
+— match noise / grain  
+
+Do NOT:
+— apply studio lighting  
+— make faces overly bright or clean  
+— create cutout look  
+
+---
+
+TEXTURE & REALISM:
+
+Preserve cinematic realism:
+
+— slight noise / grain  
+— natural skin texture  
+— no over-smoothing  
+— no artificial sharpness  
+
+---
+
+ANTI-SCENE-BREAK RULE:
+
+Do NOT:
+— modify background people  
+— change scene layout  
+— move characters  
+— alter composition  
+— brighten the whole image  
+— reduce cinematic darkness  
+
+Only replace the identities of the two foreground people.
 
 ---
 
 FINAL:
 
-A realistic scene where original people are fully replaced by the individuals from uploaded photos, with strong identity recognition, correct placement, and natural integration.`;
+A realistic cinematic image where only the two foreground characters are replaced with new identities, while the background, lighting, composition, and atmosphere remain unchanged.`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
