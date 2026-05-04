@@ -1214,174 +1214,172 @@ A fully reconstructed cinematic scene where:
 
 The image must look like a real photograph, not a composite.`;
 
-const TITANIC_2 = `Use the reference image as a composition and scene template.
+const TITANIC_2 = `Use the reference image as a strict composition, crop, pose, lighting, and depth-of-field template.
 
-Completely remove all original people from the scene.
-Treat their positions as EMPTY SLOTS that must be filled with new characters.
+Do NOT recreate the scene freely.
+Do NOT change framing, camera angle, crop, background, objects, surface, water, lighting, or depth of field.
 
----
-
-CHARACTER REPLACEMENT (STRICT):
-
-Replace characters using the uploaded identity photos:
-
-— the woman in the scene → replace with the woman from the uploaded female photo  
-— the man in the scene → replace with the man from the uploaded male photo  
-
-Gender must match exactly. Do NOT swap roles.
+Completely remove the original identities of both people.
+Treat the original people only as empty pose/location placeholders.
 
 ---
 
-EMPTY SLOT PLACEMENT (CRITICAL):
+CHARACTER MAPPING (ABSOLUTE):
 
-The original characters must be considered non-existent.
+— the person on the LEFT → replace with the man from the uploaded male photo
+— the person on the RIGHT → replace with the woman from the uploaded female photo
 
-Place the new people into the exact same spatial positions where the original people were:
-
-— same location in frame  
-— same scale  
-— same depth  
-— same perspective  
-
-Do NOT reuse any part of the original bodies.
+Do NOT swap roles.
+Do NOT mirror the image.
+The man must stay on the LEFT.
+The woman must stay on the RIGHT.
 
 ---
 
-FULL RECONSTRUCTION:
+VISIBLE-PARTS REPLACEMENT:
 
-Rebuild each person completely from the identity images:
+This is a close-up scene. Only visible parts of the people should be reconstructed.
 
-— full body  
-— face  
-— proportions  
-— silhouette  
+Replace only the visible human areas in the same positions:
+— visible face
+— visible head
+— visible hair
+— visible neck / shoulders / hands where shown
 
-Do NOT perform face swap.
-Do NOT mix identities.
-Do NOT blend with original characters.
-
----
-
-IDENTITY (CRITICAL):
-
-Preserve the real appearance from uploaded photos:
-
-— facial structure  
-— features (eyes, nose, lips)  
-— proportions  
-— skin tone  
-— hair  
-
-Identity must remain clearly recognizable.
+Do NOT invent full bodies outside the crop.
+Do NOT zoom out.
+Do NOT change the scene to show more body.
 
 ---
 
-CLOTHING ADAPTATION (IMPORTANT):
+IDENTITY REPLACEMENT (CRITICAL):
 
-Clothing should be adapted to fit the scene naturally:
+The original faces and identity must be fully discarded.
 
-— keep general style consistent with the scene  
-— allow changes in clothing details if needed  
-— avoid exact copying of the original outfit  
-— avoid mismatch with environment or lighting  
+Do NOT use:
+— original facial features
+— original head shape
+— original nose / lips / jawline
+— original skin tone
+— original hair
 
-The result must feel like the person belongs in this scene.
-
----
-
-POSE & COMPOSITION (STRICT):
-
-Preserve:
-— camera angle  
-— pose structure  
-— body orientation  
-— spacing between people  
-— framing and crop  
-
-Important:
-Match pose and placement, NOT original anatomy or identity.
+The uploaded identity photos are the only identity source.
 
 ---
 
-LIGHTING & INTEGRATION (CRITICAL):
+MAN ON LEFT (VERY IMPORTANT):
 
-Fully integrate the new people into the scene:
+The man is on the LEFT side of the frame.
 
-— match lighting direction  
-— match shadows  
-— match color grading  
-— match depth of field  
-— match noise / grain  
+He is:
+— in near-profile / side view
+— low in the frame
+— close to the wet surface
+— softly focused
+— partially obscured by angle and shallow depth of field
 
-Faces and bodies must inherit scene lighting.
+Even though his face is turned sideways, his identity must still clearly come from the uploaded male photo.
 
-The result must NOT look pasted or composited.
+Reconstruct his visible profile using the uploaded male identity:
+— nose bridge and nose shape
+— jawline
+— chin
+— lips
+— visible eye area
+— hairline and hair texture
 
----
-
-REFERENCE-SPECIFIC POSE LOCK:
-
-This is a close, horizontal, intimate scene with two people lying face-to-face.
-
-LEFT (MAN):
-
-— positioned on the LEFT side of the frame  
-— lying sideways, head low  
-— face partially turned away (profile / near-profile)  
-— very close to the surface  
-— partially occluded by angle and perspective  
-
-CRITICAL:
-Even though the face is not fully visible, the man must STILL match the identity from the uploaded male photo.
-
-Reconstruct the visible parts of the face (profile, jawline, nose, eye area) using the identity image.
-
-Do NOT keep or reuse the original face just because it is turned away.
+Do NOT default to the original male face.
+Do NOT make him generic.
+Do NOT weaken identity because the face is in profile.
 
 Profile view does NOT reduce identity accuracy requirements.
 
 ---
 
-RIGHT (WOMAN):
+WOMAN ON RIGHT:
 
-— positioned on the RIGHT side of the frame  
-— leaning forward, head tilted down toward the man  
-— face fully visible and in focus  
-— intense emotional eye contact toward the man  
+The woman is on the RIGHT side of the frame.
 
----
+She is:
+— leaning forward over the surface
+— head tilted sideways/down toward the man
+— face more visible than the man
+— sharp and emotionally focused
+— looking toward the man
 
-CONTACT & DISTANCE:
-
-— faces very close to each other  
-— same distance and intimacy level must be preserved  
-— no repositioning of heads  
+Preserve her intense gaze and head tilt.
 
 ---
 
-FOCUS & DEPTH:
+POSE & GEOMETRY LOCK:
 
-— woman (right) must be sharp  
-— man (left) may be slightly softer, but identity must still be visible  
+Preserve exactly:
+— close horizontal composition
+— low camera angle
+— faces very close across the surface
+— woman leaning down toward the man
+— man facing her from the left
+— distance between faces
+— head heights
+— surface contact points
+— crop and framing
+
+Do NOT reposition heads.
+Do NOT straighten the man’s face.
+Do NOT make the man frontal.
+Do NOT separate the characters.
 
 ---
 
-ANTI-FALLBACK (CRITICAL):
+FOCUS & DEPTH OF FIELD:
 
-The model must NOT default to the original male face due to:
-— profile angle  
-— partial visibility  
-— occlusion  
+Preserve the original focus structure:
+— woman on the right is sharper
+— man on the left is softer / slightly blurred
+— background remains blurred
+— foreground surface remains cinematic and wet
 
-Even in profile, the identity must be replaced.
+Important:
+The man may be slightly soft, but his identity must still be recognizable.
 
-Leaving the original face is NOT allowed.
+---
+
+LIGHTING & INTEGRATION:
+
+Match the original cinematic lighting exactly:
+— wet reflective highlights
+— warm light on skin
+— high contrast between highlights and shadows
+— shallow depth of field
+— film-like grain and softness
+
+Faces, hair, skin, and hands must inherit the same lighting and wet-scene atmosphere.
+
+No clean studio lighting.
+No pasted faces.
+No cutout look.
+No mismatched sharpness.
+
+---
+
+ANTI-SCENE-BREAK RULE:
+
+This reference is a close-up cinematic crop.
+
+Do NOT:
+— generate full standing bodies
+— change clothing significantly
+— change background
+— change the surface
+— change camera distance
+— change the emotional composition
+— over-clean or modernize the scene
 
 ---
 
 FINAL:
 
-A fully reconstructed scene where original people are completely removed and replaced by new individuals from uploaded photos, naturally integrated into the environment, with correct pose, lighting, and composition.`;
+A realistic cinematic close-up where the original identities are completely removed, the man on the left and woman on the right are replaced by the uploaded identities, the original crop and pose are preserved exactly, and the man’s profile identity is clearly recognizable despite shallow focus and side angle.`;
 
 const TITANIC_3 = `Use the reference image as a composition and scene template.
 
