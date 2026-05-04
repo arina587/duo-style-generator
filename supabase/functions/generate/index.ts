@@ -1362,6 +1362,26 @@ No mismatched sharpness.
 
 ---
 
+COLD ENVIRONMENT RESPONSE (SUBTLE):
+
+The scene is cold and wet. The characters are slightly freezing.
+
+Reflect this subtly:
+
+— slight skin tension  
+— faint coolness in skin tones where appropriate  
+— minimal natural stiffness in posture  
+— subtle tightening of lips or jaw  
+
+Do NOT exaggerate:
+— no dramatic shaking  
+— no extreme facial distortion  
+— no change to pose or composition  
+
+This must remain very subtle and cinematic.
+
+---
+
 ANTI-SCENE-BREAK RULE:
 
 This reference is a close-up cinematic crop.
