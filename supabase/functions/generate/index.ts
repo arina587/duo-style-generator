@@ -11,7 +11,8 @@ const MODEL_NAME = "zsxkib/flux-pulid";
 
 const UNIVERSAL_PROMPT = `Use the reference image as a composition and scene template.
 
-Completely remove all original people from the scene. Treat their positions as empty space.
+Completely remove all original people from the scene.
+Treat their positions as EMPTY SLOTS that must be filled with new characters.
 
 ---
 
@@ -22,29 +23,43 @@ Replace characters using the uploaded identity photos:
 — the woman in the scene → replace with the woman from the uploaded female photo  
 — the man in the scene → replace with the man from the uploaded male photo  
 
-Gender must be preserved exactly. Do NOT swap or reinterpret roles.
+Gender must match exactly. Do NOT swap roles.
+
+---
+
+EMPTY SLOT PLACEMENT (CRITICAL):
+
+The original characters must be considered non-existent.
+
+Place the new people into the exact same spatial positions where the original people were:
+
+— same location in frame  
+— same scale  
+— same depth  
+— same perspective  
+
+Do NOT reuse any part of the original bodies.
 
 ---
 
 FULL RECONSTRUCTION:
 
-Rebuild the people entirely from the identity images:
+Rebuild each person completely from the identity images:
 
 — full body  
 — face  
 — proportions  
 — silhouette  
 
-Do NOT reuse any part of the original characters.
-
 Do NOT perform face swap.
 Do NOT mix identities.
+Do NOT blend with original characters.
 
 ---
 
 IDENTITY (CRITICAL):
 
-The new people must match the uploaded photos:
+Preserve the real appearance from uploaded photos:
 
 — facial structure  
 — features (eyes, nose, lips)  
@@ -52,40 +67,56 @@ The new people must match the uploaded photos:
 — skin tone  
 — hair  
 
-No blending with the original characters is allowed.
+Identity must remain clearly recognizable.
+
+---
+
+CLOTHING ADAPTATION (IMPORTANT):
+
+Clothing should be adapted to fit the scene naturally:
+
+— keep general style consistent with the scene  
+— allow changes in clothing details if needed  
+— avoid exact copying of the original outfit  
+— avoid mismatch with environment or lighting  
+
+The result must feel like the person belongs in this scene.
 
 ---
 
 POSE & COMPOSITION (STRICT):
 
 Preserve:
-— exact camera angle  
+— camera angle  
 — pose structure  
 — body orientation  
-— spatial relationships between characters  
+— spacing between people  
 — framing and crop  
 
 Important:
-Match POSITION and pose, but NOT original anatomy.
+Match pose and placement, NOT original anatomy or identity.
 
 ---
 
-LIGHTING & INTEGRATION:
+LIGHTING & INTEGRATION (CRITICAL):
 
-Match the original scene:
+Fully integrate the new people into the scene:
 
-— lighting direction  
-— shadows  
-— color grading  
-— depth and perspective  
+— match lighting direction  
+— match shadows  
+— match color grading  
+— match depth of field  
+— match noise / grain  
 
-The new people must be fully integrated into the scene with natural lighting and no cutout appearance.
+Faces and bodies must inherit scene lighting.
+
+The result must NOT look pasted or composited.
 
 ---
 
 FINAL:
 
-A reconstructed scene where all original people are completely removed and replaced with new individuals from the uploaded photos, maintaining the same composition and moment.`;
+A fully reconstructed scene where original people are completely removed and replaced by new individuals from uploaded photos, naturally integrated into the environment, with correct pose, lighting, and composition.`;
 
 // ── Per-style prompt constants ──
 
