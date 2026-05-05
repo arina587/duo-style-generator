@@ -6,8 +6,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
-const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
-const MODEL_NAME = "zsxkib/flux-pulid";
+const REPLICATE_MODEL = "google/nano-banana-2";
 
 const UNIVERSAL_PROMPT = `Use the reference image as a composition and scene template.
 
@@ -1272,8 +1271,7 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
         bytes: base64ByteSize(img),
       }));
       console.log("[MODEL INPUT]", JSON.stringify({
-        model: MODEL_NAME,
-        version: MODEL_VERSION,
+        model: REPLICATE_MODEL,
         referenceId,
         promptSource: config.locked ? "locked" : "universal",
         promptLength: finalPrompt.length,
@@ -1290,8 +1288,14 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          version: MODEL_VERSION,
-          input: { prompt: finalPrompt, image_input: images },
+          model: REPLICATE_MODEL,
+          input: {
+            prompt: finalPrompt,
+            image_input: images,
+            aspect_ratio: "match_input_image",
+            output_format: "jpg",
+            safety_filter_level: "block_only_high",
+          },
         }),
       });
 
