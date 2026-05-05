@@ -1281,23 +1281,22 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
       }));
 
       // ── Create prediction WITHOUT waiting for it to complete ──
-      const createRes = await fetch("https://api.replicate.com/v1/predictions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${replicateApiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: REPLICATE_MODEL,
-          input: {
-            prompt: finalPrompt,
-            image_input: images,
-            aspect_ratio: "match_input_image",
-            output_format: "jpg",
-            safety_filter_level: "block_only_high",
-          },
-        }),
-      });
+const createRes = await fetch(`https://api.replicate.com/v1/models/${REPLICATE_MODEL}/predictions`, {
+  method: "POST",
+  headers: {
+    "Authorization": `Bearer ${replicateApiKey}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    input: {
+      prompt: finalPrompt,
+      input_images: images, // ← лучше так
+      aspect_ratio: "match_input_image",
+      output_format: "jpg",
+      safety_filter_level: "block_only_high",
+    },
+  }),
+});
 
       const createText = await createRes.text();
       console.log("[CREATE] status:", createRes.status, "body:", createText.substring(0, 500));
