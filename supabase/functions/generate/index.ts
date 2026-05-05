@@ -11,22 +11,37 @@ const MODEL_NAME = "zsxkib/flux-pulid";
 
 // ── GPT Image 2 prompt (упрощённый, лучше для этой модели) ──
 const GPT_EUPHORIA_PROMPT = `
-Replace the two people in the scene with the people from the reference images.
+Use the reference image as a scene template.
 
-The woman on the left must match the female reference.
-The man on the right must match the male reference.
+Introduce two people into the scene based on the provided reference photos.
+
+Placement:
+- one person sits on the left
+- one person sits on the right
+
+They should naturally fit into the same positions, scale, and perspective as the original subjects in the scene.
+
+Appearance:
+- the person on the left should resemble the female reference
+- the person on the right should resemble the male reference
 
 Preserve:
-- pose
-- lighting
-- composition
+- pose and body position from the scene
+- camera angle and framing
+- lighting direction, shadows, and color
 
 Ensure:
-- full identity transfer (face and body)
-- natural integration into the scene
-- no blending with original people
+- realistic integration into the environment
+- consistent skin tone with scene lighting
+- natural contact shadows and depth
+- no cutout or pasted appearance
 
-The result must look like these exact people are naturally present in the scene.
+Important:
+- create fully natural-looking people inspired by the references
+- avoid blending with the original subjects
+- maintain believable anatomy and proportions
+
+The final image should look like a real photograph with two people naturally present in the scene.
 `;
 
 // ── твои промпты (оставлены как есть, сокращать не стал) ──
