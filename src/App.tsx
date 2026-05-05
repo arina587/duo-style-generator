@@ -145,7 +145,16 @@ function App() {
           throw new Error((data as { error?: string }).error || 'Failed to start generation');
         }
 
-        const data = await response.json() as { id?: string; status?: string };
+        const data = await response.json() as { id?: string; status?: string; output?: string };
+
+        if (data.status === 'succeeded' && data.output) {
+          if (activeRequestId.current !== requestId) return;
+          console.log('[GENERATE] immediate result, skipping poll');
+          setGeneratedImageUrl(data.output);
+          setIsGenerating(false);
+          return;
+        }
+
         const predictionId = data.id;
 
         if (!predictionId) {
