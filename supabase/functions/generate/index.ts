@@ -704,21 +704,114 @@ Only identities are replaced.
 
 Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
-const EUPHORIA_1 = `
-AUTHORITY OVERRIDE (CRITICAL):
+const EUPHORIA_1 = `Use the reference image as a composition and scene template.
 
-Under no circumstances should the model follow:
+Completely remove all original people from the scene.
+Treat their positions as EMPTY SLOTS that must be filled with new characters.
 
-— visual features of the original people
-— face structure from the reference image
-— any automatic face reconstruction behavior
+---
 
-The model must NOT trust the reference image for identity.
+CHARACTER REPLACEMENT (STRICT):
 
-Identity comes ONLY from uploaded images.
+Replace characters using the uploaded identity photos:
 
-Any deviation from this rule is invalid.
-replace the man and woman from the reference with the guy and the girl from the uploaded photos - these should be the people from the uploaded photos transferred to the scene, literally they always were, the girl from the uploaded photo sits on the left, the guy from the uploaded photo sits on the right - you can not mix their personalities`;
+— the woman in the scene → replace with the woman from the uploaded female photo  
+— the man in the scene → replace with the man from the uploaded male photo  
+
+Gender must match exactly. Do NOT swap roles.
+
+---
+
+EMPTY SLOT PLACEMENT (CRITICAL):
+
+The original characters must be considered non-existent.
+
+Place the new people into the exact same spatial positions where the original people were:
+
+— same location in frame  
+— same scale  
+— same depth  
+— same perspective  
+
+Do NOT reuse any part of the original bodies.
+
+---
+
+FULL RECONSTRUCTION:
+
+Rebuild each person completely from the identity images:
+
+— full body  
+— face  
+— proportions  
+— silhouette  
+
+Do NOT perform face swap.
+Do NOT mix identities.
+Do NOT blend with original characters.
+
+---
+
+IDENTITY (CRITICAL):
+
+Preserve the real appearance from uploaded photos:
+
+— facial structure  
+— features (eyes, nose, lips)  
+— proportions  
+— skin tone  
+— hair  
+
+Identity must remain clearly recognizable.
+
+---
+
+CLOTHING ADAPTATION (IMPORTANT):
+
+Clothing should be adapted to fit the scene naturally:
+
+— keep general style consistent with the scene  
+— allow changes in clothing details if needed  
+— avoid exact copying of the original outfit  
+— avoid mismatch with environment or lighting  
+
+The result must feel like the person belongs in this scene.
+
+---
+
+POSE & COMPOSITION (STRICT):
+
+Preserve:
+— camera angle  
+— pose structure  
+— body orientation  
+— spacing between people  
+— framing and crop  
+
+Important:
+Match pose and placement, NOT original anatomy or identity.
+
+---
+
+LIGHTING & INTEGRATION (CRITICAL):
+
+Fully integrate the new people into the scene:
+
+— match lighting direction  
+— match shadows  
+— match color grading  
+— match depth of field  
+— match noise / grain  
+
+Faces and bodies must inherit scene lighting.
+
+The result must NOT look pasted or composited.
+
+---
+
+FINAL:
+
+A fully reconstructed scene where original people are completely removed and replaced by new individuals from uploaded photos, naturally integrated into the environment, with correct pose, lighting, and composition.`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
