@@ -683,20 +683,29 @@ Only identities are replaced.
 Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
 const EUPHORIA_1 = `
-AUTHORITY OVERRIDE (CRITICAL):
+Replace the two main subjects in the scene with the people from the provided reference images.
 
-Under no circumstances should the model follow:
+The woman on the left must be fully replaced with the woman from the reference image.
+The man on the right must be fully replaced with the man from the reference image.
 
-— visual features of the original people
-— face structure from the reference image
-— any automatic face reconstruction behavior
+Preserve:
+- exact body pose and posture
+- camera angle and framing
+- lighting conditions and shadows
+- scene composition
 
-The model must NOT trust the reference image for identity.
+Transfer from references:
+- full identity (face, hair, skin tone)
+- body proportions
+- clothing style if possible
 
-Identity comes ONLY from uploaded images.
+Important:
+- perform a full-body identity transfer, not just a face swap
+- the result must look like these exact people are naturally sitting in the scene
+- no blending with the original identities
+- no partial resemblance — strong identity consistency is required
 
-Any deviation from this rule is invalid.
-replace the man and woman from the reference with the guy and the girl from the uploaded photos - these should be the people from the uploaded photos transferred to the scene, literally they always were, the girl from the uploaded photo sits on the left, the guy from the uploaded photo sits on the right - you can not mix their personalities`;
+The final image should look like a real photograph where these people were originally present in the scene.`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
