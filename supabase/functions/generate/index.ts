@@ -682,30 +682,41 @@ Only identities are replaced.
 
 Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
-const EUPHORIA_1 = `
-Replace the two main subjects in the scene with the people from the provided reference images.
+const EUPHORIA_1 = `Replace the two main subjects in the scene with the people from the provided reference images.
 
-The woman on the left must be fully replaced with the woman from the reference image.
-The man on the right must be fully replaced with the man from the reference image.
+Assignment:
+- The woman on the left must be fully replaced with the woman from the references.
+- The man on the right must be fully replaced with the man from the references.
+- Do not swap or mix identities.
 
-Preserve:
-- exact body pose and posture
-- camera angle and framing
-- lighting conditions and shadows
-- scene composition
+Scene constraints (must be preserved exactly):
+- pose and body posture
+- camera angle, framing, and perspective
+- depth, scale, and spatial relationships
+- lighting direction, intensity, color temperature, and shadows
+- background and overall composition
 
-Transfer from references:
-- full identity (face, hair, skin tone)
-- body proportions
-- clothing style if possible
+Identity transfer (from references, high priority):
+- exact facial identity (eyes, nose, lips, jawline, face shape)
+- hair style, color, and texture
+- skin tone adapted to scene lighting
+- full body proportions (shoulders, torso, hands) — not just faces
 
-Important:
-- perform a full-body identity transfer, not just a face swap
-- the result must look like these exact people are naturally sitting in the scene
-- no blending with the original identities
-- no partial resemblance — strong identity consistency is required
+Integration requirements:
+- seamless full-body replacement, not a face swap
+- accurate contact shadows where bodies touch the seat and each other
+- correct ambient light wrap and color matching with the scene
+- consistent grain/noise and depth of field
+- no cutout, halo, or pasted edges
 
-The final image should look like a real photograph where these people were originally present in the scene.`;
+Quality constraints:
+- no blending with original subjects
+- avoid generic or averaged faces; identities must be clearly recognizable
+- maintain sharp facial features without distorting pose
+- keep hands and fingers natural and consistent with the pose
+
+Output:
+A photorealistic frame where these exact two people appear naturally seated in the scene as if they were originally there.`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
