@@ -9,28 +9,6 @@ const corsHeaders = {
 const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
 const MODEL_NAME = "zsxkib/flux-pulid";
 
-type ImageProvider = "replicate" | "openai";
-
-const OPENAI_IMAGE_MODEL = "gpt-image-2";
-
-const STYLE_PROVIDER_MAP: Record<string, ImageProvider> = {
-  // включи сначала только одну категорию для теста
-  "euphoria": "openai",
-
-  "zootopia": "replicate",
-  "tangled": "replicate",
-  "ci:contentReference[oaicite:0]{index=0},
-  "titanic": "replicate",
-  "spiderman": "replicate",
-  "terabithia": "replicate",
-  "stranger-things": "replicate",
-  "end-of-the-fucking-world": "replicate",
-};
-
-function getStyleFromReferenceId(referenceId: string): string {
-  return referenceId.replace(/-\d+$/, "");
-}
-
 const UNIVERSAL_PROMPT = `Use the reference image as a composition and scene template.
 
 Completely remove all original people from the scene.
@@ -704,114 +682,21 @@ Only identities are replaced.
 
 Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
-const EUPHORIA_1 = `Use the reference image as a composition and scene template.
+const EUPHORIA_1 = `
+AUTHORITY OVERRIDE (CRITICAL):
 
-Completely remove all original people from the scene.
-Treat their positions as EMPTY SLOTS that must be filled with new characters.
+Under no circumstances should the model follow:
 
----
+— visual features of the original people
+— face structure from the reference image
+— any automatic face reconstruction behavior
 
-CHARACTER REPLACEMENT (STRICT):
+The model must NOT trust the reference image for identity.
 
-Replace characters using the uploaded identity photos:
+Identity comes ONLY from uploaded images.
 
-— the woman in the scene → replace with the woman from the uploaded female photo  
-— the man in the scene → replace with the man from the uploaded male photo  
-
-Gender must match exactly. Do NOT swap roles.
-
----
-
-EMPTY SLOT PLACEMENT (CRITICAL):
-
-The original characters must be considered non-existent.
-
-Place the new people into the exact same spatial positions where the original people were:
-
-— same location in frame  
-— same scale  
-— same depth  
-— same perspective  
-
-Do NOT reuse any part of the original bodies.
-
----
-
-FULL RECONSTRUCTION:
-
-Rebuild each person completely from the identity images:
-
-— full body  
-— face  
-— proportions  
-— silhouette  
-
-Do NOT perform face swap.
-Do NOT mix identities.
-Do NOT blend with original characters.
-
----
-
-IDENTITY (CRITICAL):
-
-Preserve the real appearance from uploaded photos:
-
-— facial structure  
-— features (eyes, nose, lips)  
-— proportions  
-— skin tone  
-— hair  
-
-Identity must remain clearly recognizable.
-
----
-
-CLOTHING ADAPTATION (IMPORTANT):
-
-Clothing should be adapted to fit the scene naturally:
-
-— keep general style consistent with the scene  
-— allow changes in clothing details if needed  
-— avoid exact copying of the original outfit  
-— avoid mismatch with environment or lighting  
-
-The result must feel like the person belongs in this scene.
-
----
-
-POSE & COMPOSITION (STRICT):
-
-Preserve:
-— camera angle  
-— pose structure  
-— body orientation  
-— spacing between people  
-— framing and crop  
-
-Important:
-Match pose and placement, NOT original anatomy or identity.
-
----
-
-LIGHTING & INTEGRATION (CRITICAL):
-
-Fully integrate the new people into the scene:
-
-— match lighting direction  
-— match shadows  
-— match color grading  
-— match depth of field  
-— match noise / grain  
-
-Faces and bodies must inherit scene lighting.
-
-The result must NOT look pasted or composited.
-
----
-
-FINAL:
-
-A fully reconstructed scene where original people are completely removed and replaced by new individuals from uploaded photos, naturally integrated into the environment, with correct pose, lighting, and composition.`;
+Any deviation from this rule is invalid.
+replace the man and woman from the reference with the guy and the girl from the uploaded photos - these should be the people from the uploaded photos transferred to the scene, literally they always were, the girl from the uploaded photo sits on the left, the guy from the uploaded photo sits on the right - you can not mix their personalities`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
@@ -1347,27 +1232,16 @@ The woman in the scene must look like the person in ${womanIdxList}.
 Do NOT mix man and woman identity sources.
 Do NOT use image_input[${idxScene}] as an identity source.`;
 
-const refId = String(referenceId);
-const config = STYLE_CONFIG[refId];
+      const config = STYLE_CONFIG[referenceId as string];
+      if (!config) {
+        throw new Error(`Unknown referenceId: ${referenceId}`);
+      }
 
-if (!config) {
-  throw new Error(`Unknown referenceId: ${refId}`);
-}
+      const finalPrompt = config.locked
+        ? roleMappingBlock + "\n\n" + config.prompt
+        : roleMappingBlock + "\n\n" + UNIVERSAL_PROMPT;
 
-const style = getStyleFromReferenceId(refId);
-const provider = STYLE_PROVIDER_MAP[style] ?? "replicate";
-
-const basePrompt = config.prompt ?? UNIVERSAL_PROMPT;
-const finalPrompt = roleMappingBlock + "\n\n" + basePrompt;
-
-console.log("[PROMPT]", JSON.stringify({
-  refId,
-  style,
-  provider,
-  locked: config.locked,
-  promptSource: config.prompt ? "custom" : "universal",
-  finalLen: finalPrompt.length,
-}));
+      console.log("[PROMPT] locked=" + config.locked + " ref=" + referenceId + " final_len=" + finalPrompt.length);
 
       // ── Build image array ──
       const personDataUrls = await Promise.all([
@@ -1398,7 +1272,7 @@ console.log("[PROMPT]", JSON.stringify({
         bytes: base64ByteSize(img),
       }));
       console.log("[MODEL INPUT]", JSON.stringify({
-        model: provider === "openai" ? OPENAI_IMAGE_MODEL : MODEL_NAME,
+        model: MODEL_NAME,
         version: MODEL_VERSION,
         referenceId,
         promptSource: config.locked ? "locked" : "universal",
@@ -1408,84 +1282,6 @@ console.log("[PROMPT]", JSON.stringify({
         totalMB: (imageSummary.reduce((s, x) => s + x.bytes, 0) / 1024 / 1024).toFixed(2),
       }));
 
-
-if (provider === "openai") {
-  const openaiApiKey = Deno.env.get("OPENAI_API_KEY");
-  if (!openaiApiKey) {
-    throw new Error("OPENAI_API_KEY not configured");
-  }
-
-  const openaiForm = new FormData();
-
-  openaiForm.append("model", OPENAI_IMAGE_MODEL);
-  openaiForm.append("prompt", finalPrompt);
-  openaiForm.append("size", "1024x1024");
-  openaiForm.append("quality", "high");
-  openaiForm.append("output_format", "png");
-  openaiForm.append("input_fidelity", "high");
-  openaiForm.append("moderation", "low");
-
-  // Order must match roleMappingBlock:
-  // image[0] = scene, then man images, then woman images.
-  openaiForm.append("image[]", reference, reference.name || "reference.jpg");
-  openaiForm.append("image[]", person1, person1.name || "person1.jpg");
-
-  if (hasMan2 && person1b) {
-    openaiForm.append("image[]", person1b, person1b.name || "person1b.jpg");
-  }
-
-  openaiForm.append("image[]", person2, person2.name || "person2.jpg");
-
-  if (hasWoman2 && person2b) {
-    openaiForm.append("image[]", person2b, person2b.name || "person2b.jpg");
-  }
-
-  console.log("[OPENAI CREATE]", JSON.stringify({
-    model: OPENAI_IMAGE_MODEL,
-    referenceId: refId,
-    imageCount: images.length,
-    promptLength: finalPrompt.length,
-  }));
-
-  const openaiRes = await fetch("https://api.openai.com/v1/images/edits", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${openaiApiKey}`,
-    },
-    body: openaiForm,
-  });
-
-  const openaiText = await openaiRes.text();
-  console.log("[OPENAI RESPONSE]", openaiRes.status, openaiText.substring(0, 500));
-
-  if (!openaiRes.ok) {
-    throw new Error(`OpenAI image edit failed (${openaiRes.status}): ${openaiText.substring(0, 400)}`);
-  }
-
-  let openaiJson: Record<string, unknown>;
-  try {
-    openaiJson = JSON.parse(openaiText);
-  } catch {
-    throw new Error(`OpenAI response non-JSON: ${openaiText.substring(0, 300)}`);
-  }
-
-  const data = openaiJson.data as Array<Record<string, unknown>> | undefined;
-  const b64 = data?.[0]?.b64_json;
-
-  if (typeof b64 !== "string" || b64.length === 0) {
-    throw new Error(`OpenAI response has no b64_json: ${openaiText.substring(0, 400)}`);
-  }
-
-  return new Response(JSON.stringify({
-    status: "succeeded",
-    output: `data:image/png;base64,${b64}`,
-    provider: "openai",
-  }), {
-    status: 201,
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
-  });
-}
-      
       // ── Create prediction WITHOUT waiting for it to complete ──
       const createRes = await fetch("https://api.replicate.com/v1/predictions", {
         method: "POST",
