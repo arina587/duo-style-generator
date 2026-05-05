@@ -10,38 +10,23 @@ const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da6
 const MODEL_NAME = "zsxkib/flux-pulid";
 
 // ── GPT Image 2 prompt (упрощённый, лучше для этой модели) ──
-const GPT_EUPHORIA_PROMPT = `
-Use the reference image as a scene template.
+const GPT_EUPHORIA_PROMPT = `Use the reference image as a general scene.
 
-Introduce two people into the scene based on the provided reference photos.
+Create a similar scene with two people sitting in a comparable composition.
 
-Placement:
-- one person sits on the left
-- one person sits on the right
+Use the additional images as inspiration for the appearance of the people.
 
-They should naturally fit into the same positions, scale, and perspective as the original subjects in the scene.
-
-Appearance:
-- the person on the left should resemble the female reference
-- the person on the right should resemble the male reference
-
-Preserve:
-- pose and body position from the scene
-- camera angle and framing
-- lighting direction, shadows, and color
+Maintain:
+- similar camera angle
+- similar lighting mood
+- similar positioning of two people
 
 Ensure:
-- realistic integration into the environment
-- consistent skin tone with scene lighting
-- natural contact shadows and depth
-- no cutout or pasted appearance
+- natural looking people
+- consistent lighting and shadows
+- realistic integration into the scene
 
-Important:
-- create fully natural-looking people inspired by the references
-- avoid blending with the original subjects
-- maintain believable anatomy and proportions
-
-The final image should look like a real photograph with two people naturally present in the scene.
+The result should look like a new photograph inspired by the original scene.
 `;
 
 // ── твои промпты (оставлены как есть, сокращать не стал) ──
