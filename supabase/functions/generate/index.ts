@@ -1558,7 +1558,6 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
       }));
       console.log("[MODEL INPUT]", JSON.stringify({
         model: MODEL_NAME,
-        version: MODEL_VERSION,
         referenceId,
         promptSource: config.locked ? "locked" : "universal",
         promptLength: finalPrompt.length,
