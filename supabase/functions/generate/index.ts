@@ -487,88 +487,87 @@ PRIORITY ORDER:
 4. emotional pose and composition
 5. cinematic Titanic atmosphere.`;
 
-const TITANIC_3 = `Use the reference image as a composition and cinematic scene template.
+const TITANIC_3 = `Use the reference image as a strict composition and pose template.
 
-Erase all original people completely. Their positions are empty slots — fill them with the people from the uploaded photos.
+Preserve the original:
+— camera angle
+— framing
+— body positions
+— pose
+— hand placement
+— spacing
+— facial direction
+— crop
+— lighting
+— background
+— cinematic mood
+
+Do NOT alter or reinterpret the scene composition.
+
+Remove only the original identities.
 
 REPLACEMENT:
-— woman slot → woman from uploaded female photo
-— man slot → man from uploaded male photo
+— woman → uploaded female reference
+— man → uploaded male reference
 
 Do NOT swap genders or roles.
 
 IMPORTANT:
-The man is partially angled and viewed from a side perspective.
-He still must be fully replaced with the uploaded male identity.
+Keep the exact original pose and anatomy layout.
+Do NOT change posture, body position, composition, or interaction.
+
+The goal is identity replacement only.
 
 RECONSTRUCTION:
-Rebuild each person fully:
-— full body
-— face
-— anatomy
-— proportions
-— silhouette
+Rebuild both people using the uploaded identities while preserving the original scene structure.
 
-Do NOT face-swap.
-Do NOT blend with the original actors.
-Do NOT preserve original faces or anatomy.
+Do NOT:
+— face swap
+— blend identities
+— redesign the shot
+— change composition
+— generate new poses
+— alter framing
 
 IDENTITY:
 Preserve:
 — facial structure
-— eye shape
 — jawline
 — nose
+— eyes
 — lips
 — hairstyle
 — skin tone
-— proportions
+— recognizable appearance
 
-Both people must remain recognizable as the uploaded identities.
+IMPORTANT — MALE CHARACTER:
+The male character is partially turned and viewed at an angle.
 
-SIDE PROFILE CONSISTENCY:
-Maintain male identity consistency under:
-— angled face
-— side profile
-— partial visibility
-— cinematic perspective
+Keep the exact original head angle and positioning,
+but replace his identity completely with the uploaded male reference.
 
-Infer the uploaded male identity naturally from side-angle view.
+Preserve recognizable male identity even in side-profile view.
+
+Do NOT preserve any resemblance to the original actor.
 
 CLOTHING:
-Adapt naturally to the scene.
-Elegant Titanic-era cinematic clothing.
-Clothing should match environment, lighting, and mood.
-
-POSE & COMPOSITION:
-Preserve:
-— camera angle
-— pose
-— body orientation
-— spacing
-— framing
-— romantic interaction
-— hand placement
-— close positioning
-
-Match placement and composition, not original anatomy.
+Keep clothing style close to the original Titanic-era scene.
+Do not redesign wardrobe aggressively.
 
 LIGHTING:
-Match:
-— warm sunset lighting
-— cinematic shadows
-— amber glow
-— filmic color grading
-— depth of field
-— subtle grain
-
-Faces and skin must inherit scene lighting naturally.
+Preserve the exact original cinematic lighting:
+— warm sunset tones
+— soft shadows
+— golden highlights
+— shallow depth of field
+— filmic atmosphere
 
 INTEGRATION:
-Result must look like a real cinematic photograph.
-No pasted faces.
-No compositing artifacts.
-No traces of original actors.`;
+Result must look like the original shot with different actors cast into it.
+
+Minimal scene deviation.
+Maximum composition preservation.
+Maximum identity preservation.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
