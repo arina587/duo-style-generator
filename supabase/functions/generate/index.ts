@@ -283,76 +283,84 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference image as a composition, pose, and cinematic scene template.
+const TITANIC_1 = `Use the reference image ONLY for:
+— composition
+— camera angle
+— pose
+— framing
+— lighting
+— environment
 
-Remove both original characters completely. Preserve the ship deck, railings, sunset atmosphere, framing, perspective, and overall Titanic-style cinematic composition.
+DO NOT preserve the original people in any way.
 
-REPLACEMENT:
-— female front position → woman from uploaded female reference photo
-— male rear position → man from uploaded male reference photo
-Do NOT swap roles or genders.
+FULL CHARACTER REPLACEMENT:
+Delete the original man and woman completely.
+Their bodies, faces, skin, hair, silhouettes, and clothing must NOT remain visible.
 
-RECONSTRUCTION:
-Recreate both people entirely from scratch using the uploaded reference identities.
-Do NOT perform face-swapping, morphing, partial blending, or identity mixing with the original movie characters.
+Insert entirely new people using ONLY the uploaded reference photos.
 
-Generate:
-— full body anatomy
-— realistic proportions
-— natural facial structure
-— authentic silhouette and posture
+CASTING:
+— front female character = uploaded female reference
+— rear male character = uploaded male reference
 
-IDENTITY:
-Preserve:
-— facial features and bone structure
-— eyes, lips, nose, jawline
-— hairstyle and hair texture
+STRICT IDENTITY LOCK:
+The generated people must match the uploaded references, NOT the original Titanic actors.
+
+Preserve from uploaded references:
+— facial anatomy
+— eye shape
+— nose
+— lips
+— jawline
+— hairstyle
 — skin tone
 — body proportions
+— overall recognizable appearance
 
-Both individuals must remain clearly recognizable as the uploaded people while naturally fitting the cinematic scene.
+ABSOLUTE RESTRICTIONS:
+— no face swap
+— no morphing with original actors
+— no blending identities
+— no partial preservation of original faces
+— no traces of Leonardo DiCaprio or Kate Winslet
+— do not resemble the original movie characters
 
-POSE & BODY LANGUAGE:
-Preserve:
-— iconic “standing at the bow” pose
-— female arms-out posture
-— male standing closely behind
-— exact body orientation and interaction
-— framing and camera angle
-— emotional cinematic composition
+RECONSTRUCTION:
+Generate completely new full bodies and faces from scratch based on uploaded identities.
 
-Use the uploaded people’s anatomy and proportions, not the originals’.
+POSE:
+Keep the exact iconic pose:
+— woman in front with arms extended
+— man behind her
+— same body positioning
+— same camera framing
+— same cinematic perspective
 
 CLOTHING:
-Adapt clothing naturally into elegant late-1910s Titanic-era fashion inspired by the original scene:
-— flowing dress for the woman
-— period-appropriate coat/shirt/trousers for the man
+Create realistic Titanic-era clothing adapted to the uploaded people.
 
-Clothing should look cinematic, realistic, wind-affected, and integrated into the environment.
-
-LIGHTING & CINEMATIC MATCHING:
+LIGHTING:
 Match:
-— warm golden sunset lighting
-— soft cinematic shadows
-— orange/pink atmospheric glow
-— filmic color grading
-— shallow depth perception
-— subtle vintage softness and grain
-
-Faces and skin must inherit the environmental sunset lighting naturally.
-The final image must look like a real cinematic still, not a composited edit.
-
-BACKGROUND:
-Preserve:
-— ship railings
-— deck structure
-— ocean horizon
-— sunset sky gradient
+— golden sunset lighting
+— warm cinematic tones
 — atmospheric haze
-— original framing and perspective
+— soft filmic shadows
+— shallow depth of field
+— realistic skin shading
 
-STYLE:
-Ultra-realistic cinematic Titanic-inspired scene, romantic sunset atmosphere, emotionally immersive, film still quality, natural textures, premium cinematic realism.`;
+INTEGRATION:
+The result must look like a real photographed movie scene.
+No pasted faces.
+No compositing artifacts.
+No identity leakage from the original actors.
+
+PRIORITY ORDER:
+
+uploaded identities
+pose/composition
+cinematic style
+
+The uploaded reference identities are the highest priority.`;
 
 const TITANIC_2 = `Use the reference image as a cinematic scene template. Erase the original couple completely — they are nonexistent.
 
