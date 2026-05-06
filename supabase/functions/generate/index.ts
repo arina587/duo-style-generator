@@ -100,87 +100,110 @@ SCENE: Do NOT change environment, background characters, or composition. Only re
 
 HANDS: Exactly five fingers, correct anatomy, natural placement. Man holds smartphone in proper selfie grip.`;
 
-const TANGLED_1 = `Use the reference image as a composition, pose, and lighting template only.
+const TANGLED_1 = `Use the reference image as a composition and scene template.
 
-Replace both original characters completely.
-Do NOT preserve the original identities, faces, anatomy, or proportions.
+Erase all original characters completely.
+Their positions are empty slots — fill them with the people from the uploaded photos.
 
 REPLACEMENT:
-— uploaded male reference → left character
-— uploaded female reference → right character
+— man slot (left) → man from uploaded male photo
+— woman slot (right) → woman from uploaded female photo
 
-Rebuild both characters entirely from scratch using only the uploaded reference photos.
+Do NOT swap genders or roles.
+
+IMPORTANT:
+The original animated characters are NOT identity references.
+Do NOT preserve their faces, anatomy, proportions, hairstyles, or facial features.
+
+RECONSTRUCTION:
+Rebuild each person fully:
+— full body
+— face
+— anatomy
+— proportions
+— silhouette
+
+Generate completely new people using only the uploaded identities.
+
+Do NOT:
+— face-swap
+— blend with original characters
+— preserve original facial structure
+— preserve original animated features
+— generate lookalikes of the original movie characters
 
 IDENTITY:
 Preserve:
-— facial proportions
-— bone structure
+— facial structure
 — eye shape
+— jawline
 — nose
 — lips
-— jawline
 — skin tone
 — hairstyle
 — hair color
 — hair length
 — recognizable appearance
 
-POSE (STRICT):
-Preserve the exact original pose and composition:
-— man on the left holding the woman closely
-— woman on the right leaning toward him
-— faces very close together
-— strong eye contact between them
+Both people must remain clearly recognizable as the uploaded identities.
+
+POSE & COMPOSITION:
+Preserve:
+— exact camera angle
+— exact pose
+— body orientation
+— spacing
+— framing
+— close romantic interaction
+— eye contact
 — woman looking upward
 — man looking downward
-— bodies close together
-— same framing and camera angle
+— intimate positioning
 
-Do NOT alter:
-— positioning
-— composition
-— body orientation
-— facial direction
-— intimacy of the scene
+Match placement and composition only.
+Do NOT preserve original anatomy.
 
 STYLE:
-Stylized animated fantasy movie aesthetic.
-High-end 3D animated film look.
-Soft cinematic character rendering.
-Natural expressive eyes and facial animation quality.
-
-LIGHTING:
-Warm floating lantern lighting.
-Soft golden glow from multiple light sources.
-Warm cinematic reflections on skin and hair.
-Lantern reflections visible in the environment.
-
-Faces and bodies must inherit scene lighting naturally.
+Stylized cinematic fantasy animation.
+High-end animated movie aesthetic.
+Soft realistic CGI rendering.
+Natural expressive faces.
 
 CLOTHING:
-Adapt clothing naturally into fantasy fairytale-style outfits matching the scene aesthetic.
+Adapt clothing naturally to the fantasy fairytale environment.
+Elegant fantasy-inspired outfits matching the original scene mood.
+
+LIGHTING:
+Match:
+— warm floating lantern lighting
+— soft golden glow
+— cinematic shadows
+— warm reflections
+— depth of field
+— atmospheric blur
+— cinematic color grading
+
+Faces inherit scene lighting naturally.
 
 HANDS:
-Natural human hand anatomy.
+Natural human anatomy.
 Exactly five fingers per hand.
-Correct proportions.
-Natural grip and positioning.
+Correct proportions and natural positioning.
 
 BACKGROUND:
 Preserve:
 — floating lanterns
 — castle environment
 — water reflections
-— warm nighttime atmosphere
-— cinematic depth of field
-— original framing
+— nighttime fantasy atmosphere
+— original framing and perspective
 
 INTEGRATION:
-Result must look like a professionally animated movie frame with the uploaded identities naturally cast into the scene.
+Result must look like a professionally animated cinematic frame featuring the uploaded people naturally inserted into the scene.
 
-No face swap artifacts.
+No pasted faces.
 No compositing artifacts.
-No traces of the original characters.`;
+No traces of the original animated characters.`;
 
 const TANGLED_2 = `Use the reference image as a scene template only. Replace both original characters completely — ignore their faces, proportions, and identity entirely.
 
