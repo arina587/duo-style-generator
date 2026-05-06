@@ -682,44 +682,51 @@ Only identities are replaced.
 
 Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
-const EUPHORIA_1 = `Create a realistic cinematic photo of the uploaded man and uploaded woman together in this exact scene.
+const EUPHORIA_1 = `Generate a high-quality cinematic photorealistic image of the uploaded man and uploaded woman together.
 
-Use the first image ONLY as the background, environment, lighting, composition, and camera reference.
+The first image must be used ONLY as a background and scene environment reference.
 
-Use ONLY the uploaded male and female photos for the people.
+Completely remove the two main characters from the original movie frame before generation.
 
-The original people from the movie frame must NOT be used in any way.
+The original actors must be fully ignored and treated as nonexistent.
 
-Do NOT preserve, transform, edit, blend, or reuse the original actors.
+Do NOT use, preserve, transform, blend, edit, or reuse any part of the original people:
+— no faces
+— no bodies
+— no anatomy
+— no identity
+— no facial structure
+— no skin
+— no proportions
 
-Ignore the original people completely.
-Take ONLY the background and scene from the first image.
+Use ONLY:
+— the background
+— the environment
+— the lighting
+— the camera angle
+— the composition
+— the perspective
+from the first image.
 
-Generate a completely new realistic couple from the uploaded photos naturally sitting in the same positions in the scene:
+Generate completely new realistic people using ONLY the uploaded male and female photos.
+
+Create a realistic cinematic couple naturally sitting together in the same positions in the scene:
 
 — uploaded woman on the left  
 — uploaded man on the right  
 
-Preserve only:
-— background
-— auditorium environment
-— seating positions
-— camera angle
-— perspective
-— framing
-— cinematic atmosphere
-— warm low-light mood
+The uploaded photos are the ONLY source of identity and appearance information.
 
-Accurately match:
-— cinematic lighting
+Accurately adapt the generated people to the scene:
+— cinematic warm lighting
 — realistic shadows
-— skin shading
-— depth of field
+— low-light skin shading
 — film grain
+— depth of field
 — lens softness
 — cinematic color grading
 
-The final image must look like a real cinematic photo of the uploaded couple naturally photographed in this environment.`;
+The final image must look like a real professionally filmed cinematic photo of the uploaded couple naturally photographed in this exact environment.`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
