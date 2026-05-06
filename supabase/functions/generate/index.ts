@@ -682,139 +682,140 @@ Only identities are replaced.
 
 Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
-const EUPHORIA_1 = `Use the reference movie frame as a strict cinematic composition template.
+const EUPHORIA_1 = `Use the uploaded movie frame as a cinematic scene reference only.
 
-The scene is an intimate low-light auditorium / theater shot with two seated characters in the foreground and blurred audience members in the background.
+The uploaded male and female identity photos are the ONLY source of human identity information.
 
-Completely remove the original man and woman from the scene.
-Treat them as non-existent placeholders only.
+===================================
+PHASE 1 — REMOVE ORIGINAL ACTORS
+===================================
 
-Replace them using the uploaded identity photos:
+Completely erase the original foreground man and woman from the movie frame.
 
-— seated woman on the left → replace with uploaded female identity  
-— seated man on the right → replace with uploaded male identity  
+Treat them as temporary placeholders only.
 
-Gender roles must remain unchanged.
+Their identities must be fully discarded before generation.
 
------------------------------------
-SCENE RECONSTRUCTION (STRICT)
------------------------------------
+Remove all original:
+— facial structure
+— skull shape
+— anatomy
+— skin texture
+— facial proportions
+— jawline
+— eye shape
+— hair
+— body structure
+— identity traits
 
-Recreate both people entirely from the uploaded identity images.
+The original actors must become completely nonexistent.
 
-Do NOT perform a face swap.
-Do NOT preserve any original facial features, anatomy, skin, or body parts.
-Do NOT blend identities with the original actors.
+Only preserve:
+— seating positions
+— scene composition
+— camera framing
+— cinematic environment
+— perspective
+— depth
+— auditorium atmosphere
 
-Generate completely new realistic humans that match the uploaded identities while preserving the original cinematic staging.
+Do NOT preserve any original human anatomy or facial geometry.
+
+===================================
+PHASE 2 — GENERATE NEW PEOPLE
+===================================
+
+Generate two completely new photorealistic people from scratch using ONLY the uploaded identity photos.
+
+LEFT SIDE:
+— generate the uploaded female identity
+
+RIGHT SIDE:
+— generate the uploaded male identity
+
+The generated people must strongly and clearly resemble the uploaded reference identities.
 
 Preserve:
-— exact seating positions
-— exact framing
-— same camera angle
-— same body orientation
-— same relative spacing
-— same perspective
-— same crop
-— same foreground/background depth
-
-The woman must remain seated on the left side of the frame.
-The man must remain seated on the right side of the frame.
-
------------------------------------
-IDENTITY PRESERVATION (CRITICAL)
------------------------------------
-
-The generated characters must strongly resemble the uploaded identity photos.
-
-Preserve:
-— real facial structure
+— recognizable face structure
+— natural proportions
+— skin tone
 — eye shape
 — nose shape
 — lips
-— jawline
-— natural skin tone
-— hairstyle and hair texture
-— age appearance
-— realistic proportions
-
-Identity consistency is critical.
-
-The final result must clearly look like the uploaded people photographed in this movie scene.
-
------------------------------------
-POSE & BODY LANGUAGE
------------------------------------
-
-Preserve the relaxed seated posture and subtle cinematic body language from the reference frame.
-
-Maintain:
-— natural shoulder positioning
-— seated pose
-— gaze direction
+— hairstyle
 — realistic anatomy
-— relaxed hands and arms
 
-Do not exaggerate expressions or poses.
+Do NOT blend with original actors.
 
------------------------------------
-CLOTHING ADAPTATION
------------------------------------
+Do NOT inherit facial geometry from the movie frame.
 
-Adapt wardrobe naturally to the identities while keeping the cinematic tone of the scene.
+Human anatomy must come exclusively from uploaded identity photos.
 
-The clothing should:
-— fit naturally on the generated people
-— remain realistic for a dark dramatic movie scene
-— preserve the upscale modern aesthetic
-— harmonize with scene lighting and color palette
+===================================
+PHASE 3 — CINEMATIC INTEGRATION
+===================================
 
-Avoid exact duplication of the original outfits if identity proportions differ.
-
------------------------------------
-LIGHTING & CINEMATIC MATCHING
------------------------------------
-
-This is a dark warm cinematic scene with soft directional lighting.
+Naturally integrate the generated people into the movie environment.
 
 Accurately match:
-— warm amber cinema lighting
-— soft facial shadows
-— low-key contrast
-— subtle skin highlights
-— realistic shadow falloff
+— warm cinematic theater lighting
+— low-light shadows
+— soft contrast
 — ambient darkness
-— lens depth of field
-— natural film grain
-— realistic low-light texture
+— realistic shadow direction
+— skin shading
+— depth of field
+— lens softness
+— film grain
+— cinematic color grading
 
-Faces must inherit scene lighting naturally.
+Lighting must affect faces and bodies naturally.
 
-No pasted look.
-No artificial glow.
-No over-sharpening.
-No beauty filter effect.
+The generated people must look physically present inside the scene.
 
------------------------------------
-BACKGROUND & ENVIRONMENT
------------------------------------
+No pasted appearance.
+No artificial sharpness.
+No face swap artifacts.
+No identity blending.
+No uncanny valley effect.
+
+===================================
+POSE & COMPOSITION
+===================================
 
 Preserve:
-— blurred audience in background
-— auditorium atmosphere
-— dark cinematic mood
-— shallow depth of field
-— overall scene composition
+— seated posture
+— camera angle
+— body orientation
+— relative positioning
+— framing
+— perspective
+— scene spacing
 
-Do not alter the environment or camera setup.
+Only preserve pose placement.
+Do NOT preserve original anatomy.
 
------------------------------------
-FINAL OUTPUT
------------------------------------
+===================================
+WARDROBE
+===================================
 
-Generate a fully photorealistic cinematic movie frame where the original couple has been completely replaced by the uploaded identities.
+Generate realistic clothing naturally appropriate for an upscale cinematic theater scene.
 
-The final image must look indistinguishable from a real professionally shot live-action film still.`;
+Clothing should:
+— fit naturally
+— match cinematic tone
+— harmonize with lighting
+— remain photorealistic
+
+Avoid distracting patterns or artificial fashion styling.
+
+===================================
+FINAL RESULT
+===================================
+
+Generate a fully photorealistic cinematic movie frame where the original actors have been completely removed and replaced by the uploaded identities.
+
+The final image must look indistinguishable from a real professionally filmed live-action movie still.`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
