@@ -817,55 +817,114 @@ Generate a fully photorealistic cinematic movie frame where the original actors 
 
 The final image must look indistinguishable from a real professionally filmed live-action movie still.`;
 
-const EUPHORIA_2 = `Use the uploaded movie frame only as a cinematic scene and composition reference.
+const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
-The original man and woman are temporary placeholders only and must NOT be preserved.
+Completely remove all original people from the scene.
+Treat their positions as EMPTY SLOTS that must be filled with new characters.
 
-Generate two completely new people using the uploaded identity photos:
+---
 
-— woman on the left = uploaded female identity  
-— man on the right = uploaded male identity  
+CHARACTER REPLACEMENT (STRICT):
 
-The uploaded identity photos are the ONLY source of facial and human identity information.
+Replace characters using the uploaded identity photos:
 
-Do NOT preserve or reuse:
-— original faces
-— facial structure
-— skull shape
-— anatomy
-— skin
-— jawline
-— eye shape
-— hair
-— body features
+— the woman in the scene → replace with the woman from the uploaded female photo  
+— the man in the scene → replace with the man from the uploaded male photo  
+
+Gender must match exactly. Do NOT swap roles.
+
+---
+
+EMPTY SLOT PLACEMENT (CRITICAL):
+
+The original characters must be considered non-existent.
+
+Place the new people into the exact same spatial positions where the original people were:
+
+— same location in frame  
+— same scale  
+— same depth  
+— same perspective  
+
+Do NOT reuse any part of the original bodies.
+
+---
+
+FULL RECONSTRUCTION:
+
+Rebuild each person completely from the identity images:
+
+— full body  
+— face  
+— proportions  
+— silhouette  
 
 Do NOT perform face swap.
-Do NOT morph existing actors.
-Do NOT blend identities.
+Do NOT mix identities.
+Do NOT blend with original characters.
 
-Generate entirely new realistic humans naturally sitting in the same positions.
+---
 
-Preserve only:
-— camera angle
-— seating positions
-— framing
-— body orientation
-— perspective
-— cinematic auditorium environment
-— warm low-light movie atmosphere
+IDENTITY (CRITICAL):
 
-Accurately match:
-— warm cinematic lighting
-— facial shadows
-— skin shading
-— depth of field
-— film grain
-— realistic low-light texture
-— cinematic color grading
+Preserve the real appearance from uploaded photos:
 
-The generated people must look physically present in the scene and must NOT resemble the original actors in any way.
+— facial structure  
+— features (eyes, nose, lips)  
+— proportions  
+— skin tone  
+— hair  
 
-Photorealistic live-action movie still.`;
+Identity must remain clearly recognizable.
+
+---
+
+CLOTHING ADAPTATION (IMPORTANT):
+
+Clothing should be adapted to fit the scene naturally:
+
+— keep general style consistent with the scene  
+— allow changes in clothing details if needed  
+— avoid exact copying of the original outfit  
+— avoid mismatch with environment or lighting  
+
+The result must feel like the person belongs in this scene.
+
+---
+
+POSE & COMPOSITION (STRICT):
+
+Preserve:
+— camera angle  
+— pose structure  
+— body orientation  
+— spacing between people  
+— framing and crop  
+
+Important:
+Match pose and placement, NOT original anatomy or identity.
+
+---
+
+LIGHTING & INTEGRATION (CRITICAL):
+
+Fully integrate the new people into the scene:
+
+— match lighting direction  
+— match shadows  
+— match color grading  
+— match depth of field  
+— match noise / grain  
+
+Faces and bodies must inherit scene lighting.
+
+The result must NOT look pasted or composited.
+
+---
+
+FINAL:
+
+A fully reconstructed scene where original people are completely removed and replaced by new individuals from uploaded photos, naturally integrated into the environment, with correct pose, lighting, and composition.`;
 
 const EUPHORIA_3 = `Use the reference image as a composition and scene template.
 
