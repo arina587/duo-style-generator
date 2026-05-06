@@ -205,8 +205,6 @@ Replace the fox (left) with the uploaded man and the rabbit (right) with the upl
 
 Recreate them as stylized Pixar-style 3D CGI humans matching the exact cinematic visual style of the reference image.
 
-NOT as pasted faces, and NOT as humanized animals.
-
 Generate fully reconstructed human characters naturally integrated into the scene.
 
 ---
@@ -224,121 +222,74 @@ IDENTITY (CRITICAL):
 Preserve identity with high accuracy:
 
 — facial structure and proportions  
-— eye shape, spacing, eyelids, eyebrows  
-— nose shape and bridge  
-— lips, mouth width, jawline, chin  
-— recognizable skin tone adapted to scene lighting  
+— eye shape, eyebrows, eyelids  
+— nose shape  
+— lips and jawline  
+— skin tone adapted to scene lighting  
 — hairstyle, hair color, and hair length  
 
 Do NOT:
-— stylize away identity  
-— average or genericize faces  
+— genericize faces  
 — mix identities  
+— stylize away identity  
 
 ---
 
 BODY & PROPORTIONS (CRITICAL):
 
-The fox and rabbit are ONLY pose and composition references.
+The fox and rabbit are ONLY pose references.
 
-Treat them as temporary placeholders, NOT anatomy references.
+Both characters must be fully human with realistic human anatomy.
 
-Completely transform both characters into fully human anatomy.
+Remove all animal features:
+— paws
+— fur
+— tails
+— whiskers
+— animal ears
+— animal limbs
 
-Remove all:
-— animal ears  
-— paws  
-— fur  
-— whiskers  
-— snouts  
-— muzzles  
-— tails  
-— claws  
-— animal legs  
-— animal hands  
-— animal shoulders  
-— animal body structure  
-— animal proportions  
-— anthropomorphic animal traits  
+The woman must have full realistic adult human proportions.
 
-Both characters must have:
-— realistic human skeletal structure  
-— human heads  
-— human faces  
-— human shoulders  
-— human arms  
-— human hands  
-— human fingers  
-— human legs  
-— natural human body proportions  
+She must NOT be:
+— tiny
+— shortened
+— compressed
+— scaled down compared to the man
 
-No animal anatomy may remain visible anywhere in the final image.
+The man and woman must have natural proportional adult human height relative to each other.
 
-The woman must remain FULL HEIGHT with natural realistic adult human proportions.
+The woman must be standing naturally with fully human legs and realistic feminine body proportions.
 
-Do NOT:
-— shrink the woman  
-— shorten her body  
-— compress her proportions  
-— make her unusually small compared to the man  
+The man must have two fully human arms and two fully human hands with exactly five fingers on each hand.
 
-The man and woman must have realistic proportional adult human scale relative to each other.
-
-Woman:
-— full-height realistic human proportions  
-— natural feminine anatomy  
-— standing naturally next to the man  
-— leaning slightly toward him  
-
-Man:
-— follows the fox pose including raised arm with phone  
-— natural confident posture  
-
----
-
-HANDS & ARMS (STRICT):
-
-Both characters must have exactly TWO fully human arms and TWO fully human hands.
-
-Hands must be completely human.
-
-Every hand must have:
-— exactly five fingers  
-— realistic anatomy  
-— correct proportions  
-— natural finger placement  
-
-No:
-— paws  
-— claws  
-— furry limbs  
-— extra arms  
-— missing arms  
-— extra fingers  
-— missing fingers  
-— distorted hands  
-— animal limbs  
-
-Man:
-— naturally holding a smartphone in selfie position  
-— realistic grip and perspective  
+No paws.
+No claws.
+No extra fingers.
+No missing fingers.
+No animal anatomy.
 
 ---
 
 POSE & COMPOSITION (STRICT):
 
+Man:
+— raised arm holding a phone in selfie position  
+— slight head tilt toward the woman  
+— relaxed confident posture  
+
+Woman:
+— standing naturally close to the man  
+— slight lean toward him  
+
 Preserve:
 — selfie composition  
 — camera angle  
 — framing and crop  
-— relative positioning  
 — perspective  
 — depth  
 
-Do NOT:
-— reframe  
-— alter perspective  
-— change composition  
+Do NOT change composition or camera perspective.
 
 ---
 
@@ -350,8 +301,6 @@ Man:
 Woman:
 — cheerful slightly mischievous smile  
 
-Match the emotional tone from the reference image.
-
 ---
 
 LIGHTING & COLOR:
@@ -361,20 +310,16 @@ Match the original scene lighting:
 — colorful nightclub lighting  
 — magenta, purple, and blue tones  
 — mixed ambient lighting  
-— vivid soft highlights  
-— realistic colored reflections on skin  
+— realistic color reflections on skin  
 
 Preserve:
 — light direction  
-— color spill  
 — atmosphere  
 — cinematic contrast  
+— depth of field  
+— film grain  
 
 Faces and bodies must fully inherit scene lighting.
-
-No flat lighting.
-No studio lighting.
-No pasted appearance.
 
 ---
 
@@ -385,7 +330,6 @@ Do NOT change:
 — background characters  
 — lighting setup  
 — composition  
-— nightclub atmosphere  
 
 Only replace the characters.
 
@@ -395,18 +339,18 @@ INTEGRATION:
 
 Rebuild the characters naturally inside the original positions with correct perspective and depth.
 
-Ensure seamless cinematic integration into the environment.
+Ensure seamless cinematic integration.
 
-No face cutouts.
-No morphing.
+No pasted faces.
 No furry anatomy.
-No mismatched lighting.
+No animal limbs.
+No face swap artifacts.
 
 ---
 
 FINAL:
 
-A high-quality Pixar-style 3D CGI cinematic image of two fully human characters based on the uploaded photos, naturally recreated in the same selfie moment with realistic human anatomy, correct human proportions, fully human hands and arms, accurate identity, cinematic lighting, and stable composition.`;
+A high-quality Pixar-style 3D CGI cinematic image of two fully human characters based on the uploaded photos, with realistic human anatomy, proportional body sizes, correct human hands and legs, accurate identity, cinematic lighting, and stable composition.`;
 
 const TANGLED_1 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
