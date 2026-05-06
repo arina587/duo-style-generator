@@ -283,29 +283,76 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference image as a cinematic scene template. Erase the original couple completely — they are nonexistent.
+const TITANIC_1 = `Use the reference image as a composition, pose, and cinematic scene template.
+
+Remove both original characters completely. Preserve the ship deck, railings, sunset atmosphere, framing, perspective, and overall Titanic-style cinematic composition.
 
 REPLACEMENT:
-— woman at the ship's bow (arms extended) → woman from uploaded female photo
-— man standing behind her → man from uploaded male photo
-Do NOT swap roles.
+— female front position → woman from uploaded female reference photo
+— male rear position → man from uploaded male reference photo
+Do NOT swap roles or genders.
 
-PLACEMENT:
-Woman: standing at front railing, arms fully extended outward, body slightly forward, same frame position, scale, depth, perspective.
-Man: standing directly and closely behind the woman, same frame position, scale, depth.
-Do NOT reuse any part of the original bodies.
+RECONSTRUCTION:
+Recreate both people entirely from scratch using the uploaded reference identities.
+Do NOT perform face-swapping, morphing, partial blending, or identity mixing with the original movie characters.
 
-RECONSTRUCTION: Rebuild each person fully — face, head, body, arms, hands, proportions, silhouette. Do NOT face-swap or mix identities.
+Generate:
+— full body anatomy
+— realistic proportions
+— natural facial structure
+— authentic silhouette and posture
 
-IDENTITY: Preserve from uploaded photos — facial structure, eyes, nose, lips, jawline, skin tone, hair. Clearly recognizable.
+IDENTITY:
+Preserve:
+— facial features and bone structure
+— eyes, lips, nose, jawline
+— hairstyle and hair texture
+— skin tone
+— body proportions
 
-BODY: Realistic adult human proportions. Woman must NOT be shortened or compressed. Woman's extended arms must be anatomically correct. Man must have two fully human arms and hands with exactly five fingers each. No distorted anatomy.
+Both individuals must remain clearly recognizable as the uploaded people while naturally fitting the cinematic scene.
 
-CLOTHING: Elegant romantic aesthetic, flowing fabric, realistic cloth folds, cinematic realism. Adapt naturally to the Titanic atmosphere.
+POSE & BODY LANGUAGE:
+Preserve:
+— iconic “standing at the bow” pose
+— female arms-out posture
+— male standing closely behind
+— exact body orientation and interaction
+— framing and camera angle
+— emotional cinematic composition
 
-POSE: Preserve iconic Titanic pose — woman arms extended, man closely behind, camera angle, body orientation, spacing, framing, ship railing perspective.
+Use the uploaded people’s anatomy and proportions, not the originals’.
 
-LIGHTING: Warm sunset lighting, golden-hour shadows, atmospheric haze, cinematic color grading, depth of field, film grain, realistic sunset skin shading. Faces fully inherit scene lighting. Result must NOT look pasted or AI-generated.`;
+CLOTHING:
+Adapt clothing naturally into elegant late-1910s Titanic-era fashion inspired by the original scene:
+— flowing dress for the woman
+— period-appropriate coat/shirt/trousers for the man
+
+Clothing should look cinematic, realistic, wind-affected, and integrated into the environment.
+
+LIGHTING & CINEMATIC MATCHING:
+Match:
+— warm golden sunset lighting
+— soft cinematic shadows
+— orange/pink atmospheric glow
+— filmic color grading
+— shallow depth perception
+— subtle vintage softness and grain
+
+Faces and skin must inherit the environmental sunset lighting naturally.
+The final image must look like a real cinematic still, not a composited edit.
+
+BACKGROUND:
+Preserve:
+— ship railings
+— deck structure
+— ocean horizon
+— sunset sky gradient
+— atmospheric haze
+— original framing and perspective
+
+STYLE:
+Ultra-realistic cinematic Titanic-inspired scene, romantic sunset atmosphere, emotionally immersive, film still quality, natural textures, premium cinematic realism.`;
 
 const TITANIC_2 = `Use the reference image as a cinematic scene template. Erase the original couple completely — they are nonexistent.
 
