@@ -369,7 +369,7 @@ Treat them as empty placeholders only.
 
 FULL CHARACTER REPLACEMENT:
 — woman on floating debris → uploaded female reference
-— man in water → uploaded male reference
+— man in freezing water → uploaded male reference
 
 Do NOT swap genders or roles.
 
@@ -387,26 +387,45 @@ Preserve from uploaded references:
 — body proportions
 — recognizable identity
 
-IMPORTANT — MALE CHARACTER:
-The male character is partially turned away and partially obscured by angle and water.
+CRITICAL SIDE-PROFILE RECONSTRUCTION:
 
-Even with limited visibility:
-— fully reconstruct the uploaded male identity
-— preserve his recognizable side profile
-— replace the original male actor completely
-— use the uploaded male reference as the ONLY identity source
+The male character is NOT front-facing.
+His face is partially turned away, partially obscured, wet, and viewed from an angled profile.
 
-The original male actor must NOT remain visible.
+Despite this:
+— reconstruct his identity from the uploaded male reference photo
+— generate a recognizable side-profile version of the uploaded man
+— preserve his jawline, nose shape, brow structure, hairline, cheek structure, and side silhouette
+— infer his appearance correctly from angled perspective
+— maintain identity consistency under profile view and partial visibility
 
-NO:
+Treat the uploaded male reference as a full 3D identity source, not only a frontal face reference.
+
+The male character must be fully recast from the uploaded identity even in side-angle view.
+
+IMPORTANT:
+The uploaded male identity is MORE IMPORTANT than exact similarity to the original movie frame.
+
+Use identity persistence across non-frontal angles.
+
+DO NOT fallback to:
+— generic male face
+— original Titanic actor
 — Leonardo DiCaprio resemblance
-— original male facial structure
+— approximate resemblance
+— blended identity
 — original male profile
 — original male hair
-— identity blending
-— partial preservation
+— original male facial structure
+— partial preservation of original actor
 
-This is a full recast, not a face swap.
+This is a complete cinematic recast, NOT a face swap.
+
+FEMALE CHARACTER:
+Also fully replace the woman using the uploaded female reference while preserving:
+— recognizable identity
+— facial structure
+— wet/cold emotional realism
 
 POSE & COMPOSITION:
 Preserve:
@@ -415,45 +434,58 @@ Preserve:
 — man in freezing water beside her
 — same framing and camera angle
 — same cinematic intimacy
+— same body positioning
 
 ENVIRONMENT & PHYSICAL STATE:
-Both people are freezing and exhausted from icy ocean water.
+Both characters are freezing and exhausted from icy ocean water.
 
 Add realistic cold exposure details:
-— wet skin
 — soaked hair
+— wet skin
 — pale cold skin tones
 — slightly blue lips
-— damp clothing
-— subtle shivering tension
+— trembling tension
+— exhausted emotional expressions
+— damp clothing texture
 — realistic water reflections
 
 LIGHTING:
 Match:
 — cold night cinematic lighting
-— wet reflective skin highlights
-— dim warm/cool mixed tones
+— wet reflective highlights
+— realistic moisture
+— dim oceanic atmosphere
 — shallow depth of field
-— filmic grain
-— realistic moisture and water shading
+— cinematic film grain
+— realistic skin shading
 
 CLOTHING:
 Adapt clothing naturally into realistic wet Titanic-era clothing appropriate to the scene.
 
+BACKGROUND:
+Preserve:
+— floating debris
+— dark ocean atmosphere
+— cinematic Titanic environment
+— water reflections
+— original framing and perspective
+
 INTEGRATION:
-The final image must look like a real cinematic frame captured on set.
+The result must look like a real photographed cinematic frame.
 No pasted faces.
 No compositing artifacts.
 No identity leakage from original actors.
 
+FINAL REQUIREMENT:
+The original actors must disappear completely.
+The scene must look like a fully recast version of Titanic using the uploaded identities.
+
 PRIORITY ORDER:
-
-uploaded male identity
-uploaded female identity
-emotional pose and composition
-cinematic Titanic atmosphere
-
-The uploaded identities are the highest priority.`;
+1. uploaded male identity
+2. uploaded female identity
+3. full replacement of original actors
+4. emotional pose and composition
+5. cinematic Titanic atmosphere.`;
 
 const TITANIC_3 = `Use the reference image as a cinematic scene template. Erase the original couple completely — they are nonexistent.
 
