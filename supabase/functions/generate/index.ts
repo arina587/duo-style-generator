@@ -261,11 +261,9 @@ The man and woman must have natural proportional adult human height relative to 
 
 The woman must be standing naturally with fully human legs and realistic feminine body proportions.
 
-The man must have exactly TWO fully human arms and TWO fully human hands.
+The man must have two fully human arms and two fully human hands with exactly five fingers on each hand.
 
-The arm around the woman must also be fully human.
-
-Every hand must have exactly five human fingers with realistic anatomy and natural proportions.
+The left arm wrapped around the woman must also be fully human with realistic anatomy and a realistic human hand.
 
 No paws.
 No claws.
@@ -281,7 +279,6 @@ Man:
 — raised arm holding a phone in selfie position  
 — slight head tilt toward the woman  
 — relaxed confident posture  
-— second human arm naturally around the woman  
 
 Woman:
 — standing naturally close to the man  
