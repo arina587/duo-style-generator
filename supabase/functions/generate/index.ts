@@ -487,120 +487,88 @@ PRIORITY ORDER:
 4. emotional pose and composition
 5. cinematic Titanic atmosphere.`;
 
-const TITANIC_3 = `Use the reference image ONLY as a cinematic composition, romantic pose, lighting, and environment template.
+const TITANIC_3 = `Use the reference image as a composition and cinematic scene template.
 
-Completely remove the original man and woman from the scene.
-Treat the original actors as empty placeholders only.
+Erase all original people completely. Their positions are empty slots — fill them with the people from the uploaded photos.
 
-FULL CHARACTER REPLACEMENT:
-— female character → uploaded female reference
-— male character behind her → uploaded male reference
+REPLACEMENT:
+— woman slot → woman from uploaded female photo
+— man slot → man from uploaded male photo
 
 Do NOT swap genders or roles.
 
-STRICT IDENTITY LOCK:
-The generated people must clearly match the uploaded reference photos and must NOT resemble the original Titanic actors in any way.
+IMPORTANT:
+The man is partially angled and viewed from a side perspective.
+He still must be fully replaced with the uploaded male identity.
 
-Preserve from uploaded references:
-— facial anatomy
+RECONSTRUCTION:
+Rebuild each person fully:
+— full body
+— face
+— anatomy
+— proportions
+— silhouette
+
+Do NOT face-swap.
+Do NOT blend with the original actors.
+Do NOT preserve original faces or anatomy.
+
+IDENTITY:
+Preserve:
+— facial structure
 — eye shape
+— jawline
 — nose
 — lips
-— jawline
-— hairstyle and hair texture
+— hairstyle
 — skin tone
-— body proportions
-— recognizable identity
+— proportions
 
-IMPORTANT — MALE CHARACTER:
-The male character is viewed from a partially angled perspective and close side angle.
+Both people must remain recognizable as the uploaded identities.
 
-Even with partial visibility:
-— fully reconstruct the uploaded male identity
-— preserve recognizable side-profile anatomy
-— preserve jawline, brow structure, nose shape, cheek structure, and hairline
-— maintain identity consistency from angled cinematic perspective
+SIDE PROFILE CONSISTENCY:
+Maintain male identity consistency under:
+— angled face
+— side profile
+— partial visibility
+— cinematic perspective
 
-Treat the uploaded male reference as a full 3D identity source, not only a frontal face reference.
+Infer the uploaded male identity naturally from side-angle view.
 
-The uploaded male identity is MORE IMPORTANT than preserving exact similarity to the original movie frame.
-
-DO NOT preserve:
-— Leonardo DiCaprio resemblance
-— original male facial structure
-— original male hairstyle
-— original male profile
-— blended identities
-— generic male face
-
-This is a complete cinematic recast, NOT a face swap.
-
-FEMALE CHARACTER:
-Fully replace the woman using the uploaded female reference while preserving:
-— recognizable identity
-— facial structure
-— romantic cinematic realism
-— natural expression
+CLOTHING:
+Adapt naturally to the scene.
+Elegant Titanic-era cinematic clothing.
+Clothing should match environment, lighting, and mood.
 
 POSE & COMPOSITION:
 Preserve:
-— intimate Titanic-style embrace
-— exact body positioning
-— hand placement around the waist
-— close face proximity
-— romantic leaning posture
-— same framing and camera angle
-— same cinematic intimacy
+— camera angle
+— pose
+— body orientation
+— spacing
+— framing
+— romantic interaction
+— hand placement
+— close positioning
 
-CLOTHING:
-Adapt clothing naturally into elegant Titanic-era fashion:
-— realistic flowing dress for the woman
-— period-appropriate shirt and coat for the man
-
-Clothing should feel cinematic, luxurious, realistic, and naturally integrated.
+Match placement and composition, not original anatomy.
 
 LIGHTING:
 Match:
-— warm golden sunset lighting
-— soft cinematic shadows
-— warm skin highlights
-— romantic amber glow
+— warm sunset lighting
+— cinematic shadows
+— amber glow
 — filmic color grading
-— shallow depth of field
-— subtle cinematic grain
+— depth of field
+— subtle grain
 
-SKIN & HAIR:
-Maintain:
-— realistic skin texture
-— natural hair strands
-— soft cinematic glow
-— realistic warm highlights
-— physically believable anatomy
-
-BACKGROUND:
-Preserve:
-— ship environment
-— sunset atmosphere
-— blurred cinematic background
-— original framing and perspective
-— warm Titanic aesthetic
+Faces and skin must inherit scene lighting naturally.
 
 INTEGRATION:
-The final image must look like a real photographed movie frame.
+Result must look like a real cinematic photograph.
 No pasted faces.
 No compositing artifacts.
-No traces of the original actors.
-No identity leakage.
-
-FINAL REQUIREMENT:
-The scene must look like a fully recast Titanic shot using the uploaded identities while preserving the cinematic romance and emotional atmosphere.
-
-PRIORITY ORDER:
-1. uploaded male identity
-2. uploaded female identity
-3. full replacement of original actors
-4. romantic pose and composition
-5. cinematic Titanic atmosphere.`;
+No traces of original actors.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
