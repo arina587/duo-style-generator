@@ -182,47 +182,82 @@ No cartoon animal anatomy.
 OUTPUT:
 The exact same scene and composition, but with the uploaded people replacing the original animated characters naturally and recognizably.`;
 
-const TANGLED_2 = `Use the reference image as a scene template only. Replace both original characters completely — ignore their faces, proportions, and identity entirely.
+const TANGLED_2 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-REPLACEMENT:
-— man from uploaded male photo → left position
-— woman from uploaded female photo → right position
+Treat the reference image as a scene template ONLY.
 
-IDENTITY: Facial structure, features, proportions, hair, skin tone — clearly recognizable from uploaded photos.
+CRITICAL RULE:
+The original characters must be completely ignored.
 
-POSE:
+Do NOT use:
+— their faces
+— their head shapes
+— their proportions
+— any identity information
+
+---
+
+FULL CHARACTER REPLACEMENT:
+
+Insert entirely new people:
+
+— man from uploaded male photo → left  
+— woman from uploaded female photo → right  
+
+Rebuild them from scratch.
+
+---
+
+STRICT IDENTITY PRESERVATION:
+
+Faces must clearly match uploaded photos:
+— facial structure
+— features
+— proportions
+— hair
+— skin tone
+
+---
+
+CRITICAL POSE LOCK:
+
 — man sitting relaxed, slightly turned toward the woman
-— woman leaning forward, chin resting on both hands
+— woman leaning forward with chin resting on both hands
 — strong eye contact between them
+
 Do NOT change posture or positioning.
 
-LIGHTING: Dark environment with warm fire light. Strong shadows — but keep faces visible (reduce shadow on faces only to keep identity readable).
+---
 
-STYLE: Pixar/Disney 3D CGI, fully reconstructed characters.
+CRITICAL LIGHTING:
 
-HANDS: Exactly five fingers, correct anatomy, natural chin-support position.`;
+— dark environment with warm fire light
+— strong shadows present
 
-const TANGLED_3 = `Use the reference image as a composition and pose template only. Replace both original characters completely — ignore their faces, body shapes, and identity entirely.
+IMPORTANT:
+Faces must remain visible:
+— slightly reduce shadow on faces only
+— keep identity readable
 
-REPLACEMENT:
-— man → left position
-— woman → right position
-Using only uploaded identity photos.
+---
 
-IDENTITY: Facial structure, proportions, features, skin tone, hair.
+CRITICAL STYLE:
 
-POSE:
-— man leading the movement, slightly leaning forward, holding the woman's hand
-— woman extending arm toward him, natural dance spacing
-Do NOT change interaction or gesture.
+Pixar/Disney 3D CGI characters, fully reconstructed.
 
-SCENE: Keep crowd, architecture, perspective, and framing unchanged.
+---
 
-LIGHTING: Natural daylight, soft shadows, consistent color temperature. Faces match scene lighting.
+CRITICAL HANDS:
 
-STYLE: Pixar/Disney CGI, fully reconstructed characters.
+— exactly five fingers
+— correct anatomy
+— proper chin support position
 
-HANDS: Exactly five fingers, correct anatomy, natural hand interaction.`;
+---
+
+FINAL:
+
+Same intimate night scene, but original characters completely replaced with new identities.`;
 
 const CINDERELLA_PROMPT = `Replace the characters using the uploaded photos. Perform identity replacement only — do NOT alter scene composition, pose, camera, or environment.
 
