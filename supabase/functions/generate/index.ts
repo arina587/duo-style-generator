@@ -682,80 +682,52 @@ Only identities are replaced.
 
 Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
-const EUPHORIA_1 = `Use the uploaded movie frame only as an environment, lighting, and composition reference.
+const EUPHORIA_1 = `Recreate this exact cinematic movie frame as if the uploaded people were the real actors originally filmed in the scene.
 
-The original foreground man and woman must be completely removed from the scene before generation.
+The uploaded female identity is the woman sitting on the left.
+The uploaded male identity is the man sitting on the right.
 
-They are NOT the final subjects.
-They are temporary placeholders only.
-
-Do NOT preserve, reuse, inherit, or transform any part of the original people:
-
-— no original faces  
-— no facial geometry  
-— no skull shape  
-— no anatomy  
-— no body structure  
-— no skin texture  
-— no jawline  
-— no eyes  
-— no nose  
-— no mouth  
-— no hair  
-— no proportions  
-
-Do NOT perform face swap.
-Do NOT morph the original actors.
-Do NOT place new faces onto existing bodies.
-
-Instead, generate TWO ENTIRELY NEW HUMANS from scratch using only the uploaded identity photos.
-
-LEFT SIDE:
-generate the uploaded female identity
-
-RIGHT SIDE:
-generate the uploaded male identity
-
-The uploaded identity photos are the ONLY valid source of human appearance and anatomy.
-
-Generate completely new:
-— heads
-— faces
-— bodies
-— proportions
-— silhouettes
-— skin
-— hair
-— anatomy
-
-The new people must look as if they were originally filmed in this scene.
-
-Preserve only:
-— seating positions
+Preserve:
+— exact auditorium environment
 — camera framing
+— seating positions
 — body orientation
 — perspective
-— scene composition
-— auditorium environment
+— cinematic composition
+— warm low-light atmosphere
+— depth of field
+— film grain
+— cinematic color grading
 
-Accurately adapt the generated people to the movie scene:
+Generate entirely new realistic humans from the uploaded identity photos.
 
-— match warm cinematic lighting
-— match low-light shadows
-— match realistic skin shading
-— match depth of field
-— match film grain
-— match lens softness
-— match cinematic color grading
+The uploaded identities are the ONLY valid source of:
+— face
+— head shape
+— anatomy
+— skin
+— hair
+— proportions
+— human appearance
 
-The generated people must feel naturally embedded into the environment with fully realistic integration.
+Do NOT preserve or reuse any part of the original actors.
 
-No pasted faces.
-No actor resemblance.
-No identity blending.
-No face replacement artifacts.
+Do NOT perform face swap.
+Do NOT morph existing faces.
+Do NOT blend identities.
+Do NOT place new faces onto original bodies.
 
-Photorealistic cinematic live-action movie frame.`;
+Generate completely new people naturally sitting in the scene as if they were physically present during filming.
+
+Accurately match:
+— warm cinematic lighting
+— realistic facial shadows
+— low-light skin shading
+— ambient darkness
+— lens softness
+— realistic integration into the environment
+
+The final image must look like a real live-action movie still with the uploaded people naturally filmed in the scene.`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
