@@ -6,8 +6,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
-const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
-const MODEL_NAME = "zsxkib/flux-pulid";
+const MODEL_NAME = "google/nano-banana-pro";
 
 const UNIVERSAL_PROMPT = `Use the reference image as a composition and scene template.
 
@@ -1576,8 +1575,11 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          version: MODEL_VERSION,
-          input: { prompt: finalPrompt, image_input: images },
+          model: MODEL_NAME,
+          input: {
+            prompt: finalPrompt,
+            image_input: images,
+          },
         }),
       });
 
