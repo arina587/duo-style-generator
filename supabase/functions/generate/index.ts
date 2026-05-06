@@ -487,24 +487,120 @@ PRIORITY ORDER:
 4. emotional pose and composition
 5. cinematic Titanic atmosphere.`;
 
-const TITANIC_3 = `Use the reference image as a cinematic scene template. Erase the original couple completely — they are nonexistent.
+const TITANIC_3 = `Use the reference image ONLY as a cinematic composition, romantic pose, lighting, and environment template.
 
-REPLACEMENT:
-— woman in the scene → woman from uploaded female photo
-— man in the scene → man from uploaded male photo
-Do NOT swap roles.
+Completely remove the original man and woman from the scene.
+Treat the original actors as empty placeholders only.
 
-PLACEMENT: Place each new person into the exact spatial position of the original — same location, scale, depth, perspective.
+FULL CHARACTER REPLACEMENT:
+— female character → uploaded female reference
+— male character behind her → uploaded male reference
 
-RECONSTRUCTION: Rebuild each person fully — face, body, proportions, silhouette. Do NOT face-swap or blend with original characters.
+Do NOT swap genders or roles.
 
-IDENTITY: Preserve from uploaded photos — facial structure, features, skin tone, hair, proportions. Clearly recognizable.
+STRICT IDENTITY LOCK:
+The generated people must clearly match the uploaded reference photos and must NOT resemble the original Titanic actors in any way.
 
-CLOTHING: Adapt naturally to the cinematic scene atmosphere.
+Preserve from uploaded references:
+— facial anatomy
+— eye shape
+— nose
+— lips
+— jawline
+— hairstyle and hair texture
+— skin tone
+— body proportions
+— recognizable identity
 
-POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, framing.
+IMPORTANT — MALE CHARACTER:
+The male character is viewed from a partially angled perspective and close side angle.
 
-LIGHTING: Match cinematic lighting, shadows, color grading, depth of field, film grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
+Even with partial visibility:
+— fully reconstruct the uploaded male identity
+— preserve recognizable side-profile anatomy
+— preserve jawline, brow structure, nose shape, cheek structure, and hairline
+— maintain identity consistency from angled cinematic perspective
+
+Treat the uploaded male reference as a full 3D identity source, not only a frontal face reference.
+
+The uploaded male identity is MORE IMPORTANT than preserving exact similarity to the original movie frame.
+
+DO NOT preserve:
+— Leonardo DiCaprio resemblance
+— original male facial structure
+— original male hairstyle
+— original male profile
+— blended identities
+— generic male face
+
+This is a complete cinematic recast, NOT a face swap.
+
+FEMALE CHARACTER:
+Fully replace the woman using the uploaded female reference while preserving:
+— recognizable identity
+— facial structure
+— romantic cinematic realism
+— natural expression
+
+POSE & COMPOSITION:
+Preserve:
+— intimate Titanic-style embrace
+— exact body positioning
+— hand placement around the waist
+— close face proximity
+— romantic leaning posture
+— same framing and camera angle
+— same cinematic intimacy
+
+CLOTHING:
+Adapt clothing naturally into elegant Titanic-era fashion:
+— realistic flowing dress for the woman
+— period-appropriate shirt and coat for the man
+
+Clothing should feel cinematic, luxurious, realistic, and naturally integrated.
+
+LIGHTING:
+Match:
+— warm golden sunset lighting
+— soft cinematic shadows
+— warm skin highlights
+— romantic amber glow
+— filmic color grading
+— shallow depth of field
+— subtle cinematic grain
+
+SKIN & HAIR:
+Maintain:
+— realistic skin texture
+— natural hair strands
+— soft cinematic glow
+— realistic warm highlights
+— physically believable anatomy
+
+BACKGROUND:
+Preserve:
+— ship environment
+— sunset atmosphere
+— blurred cinematic background
+— original framing and perspective
+— warm Titanic aesthetic
+
+INTEGRATION:
+The final image must look like a real photographed movie frame.
+No pasted faces.
+No compositing artifacts.
+No traces of the original actors.
+No identity leakage.
+
+FINAL REQUIREMENT:
+The scene must look like a fully recast Titanic shot using the uploaded identities while preserving the cinematic romance and emotional atmosphere.
+
+PRIORITY ORDER:
+1. uploaded male identity
+2. uploaded female identity
+3. full replacement of original actors
+4. romantic pose and composition
+5. cinematic Titanic atmosphere.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
