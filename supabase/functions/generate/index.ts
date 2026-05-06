@@ -692,6 +692,7 @@ Forget the original actors completely.
 
 Do NOT preserve, reuse, transform, edit, blend, or inherit ANY part of the original people:
 — faces
+— heads
 — bodies
 — anatomy
 — facial structure
@@ -701,13 +702,15 @@ Do NOT preserve, reuse, transform, edit, blend, or inherit ANY part of the origi
 — identity
 — facial geometry
 
+Absolutely nothing from the original actors may remain visible in the final image.
+
 Treat their positions as EMPTY SLOTS that must be filled with completely new people from the uploaded photos.
 
 ---
 
 CHARACTER GENERATION (STRICT):
 
-Generate new people using ONLY the uploaded identity photos:
+Generate completely new realistic people using ONLY the uploaded identity photos:
 
 — the woman in the scene → generate from uploaded female photo  
 — the man in the scene → generate from uploaded male photo  
@@ -715,11 +718,23 @@ Generate new people using ONLY the uploaded identity photos:
 The uploaded photos are the ONLY source of identity and appearance information.
 
 Do NOT perform face swap.
+Do NOT place new faces onto original bodies.
 Do NOT morph existing actors.
 Do NOT blend identities.
-Do NOT place new faces onto original bodies.
 
-Generate completely new realistic people naturally sitting in the scene.
+Do NOT transfer ONLY the faces.
+
+Instead, fully recreate the ENTIRE people from the uploaded photos:
+— full face
+— full head
+— full body
+— anatomy
+— proportions
+— silhouette
+— skin
+— hair
+
+The final people must look like they were naturally photographed in the scene from the beginning.
 
 ---
 
@@ -761,7 +776,7 @@ Identity must remain clearly recognizable.
 
 LIGHTING & INTEGRATION:
 
-Fully integrate the generated people into the cinematic scene:
+Fully and realistically adapt the generated people to the cinematic environment:
 
 — match lighting direction  
 — match realistic shadows  
@@ -771,9 +786,9 @@ Fully integrate the generated people into the cinematic scene:
 — match low-light skin shading  
 — match lens softness  
 
-The generated people must look naturally filmed inside the environment.
+The generated people must look physically present in the environment.
 
-The result must NOT look pasted, composited, or AI-generated.
+The result must NOT look pasted, composited, face-swapped, or AI-generated.
 
 ---
 
