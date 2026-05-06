@@ -1034,258 +1034,157 @@ FINAL:
 
 A fully reconstructed scene where original people are completely removed and replaced by new individuals from uploaded photos, naturally integrated into the environment, with correct pose, lighting, and composition.`;
 
-const TITANIC_1 = `Use the provided Titanic-style cinematic reference image together with the separately uploaded photos of the man and the woman.
+const TITANIC_1 = `Use the reference image as a composition and cinematic scene template.
 
-Completely remove the original couple from the reference image and replace them with the uploaded identities.
+Completely remove the original man and woman from the scene.
+Treat them as EMPTY SLOTS only.
 
-The uploaded male and female photos are the ONLY source of identity and appearance information.
+The original characters must be considered fully nonexistent.
 
-Do NOT preserve, reuse, blend, morph, transform, or inherit any part of the original actors:
-— no faces
-— no facial structure
-— no anatomy
-— no body proportions
-— no skin
-— no hair
-— no identity traits
+Do NOT preserve, reuse, transform, blend, or inherit any part of the original people:
+— faces
+— bodies
+— anatomy
+— facial structure
+— skin
+— proportions
+— silhouettes
+— hair
+— identity traits
 
-The original characters must be treated as nonexistent placeholders only.
-
-Generate completely new realistic cinematic people naturally integrated into the scene.
-
----
-
-PRIORITY ORDER (STRICT):
-
-1) Identity from uploaded photos  
-2) Original pose and cinematic composition  
-3) Lighting, atmosphere, and realism  
+Do NOT perform face swap.
 
 ---
 
-SCENE & COMPOSITION (STRICT):
+CHARACTER REPLACEMENT (STRICT):
 
-Preserve the exact iconic cinematic composition of the scene:
+Generate completely new realistic people using ONLY the uploaded identity photos:
 
-— woman standing in front with arms fully extended outward  
-— man standing directly behind her  
-— romantic pose on the ship deck  
-— sunset cinematic atmosphere  
-— ocean background  
-— ship railing placement  
-— framing and crop  
-— camera angle  
-— perspective  
-— depth and spacing between people  
+— the woman in the scene → generate from uploaded female photo  
+— the man in the scene → generate from uploaded male photo  
 
-Do NOT:
-— change the pose structure  
-— change perspective  
-— change camera framing  
-— move the characters to different positions  
+The uploaded photos are the ONLY source of identity and appearance information.
 
-The uploaded woman must occupy the exact position of the original woman.
-The uploaded man must occupy the exact position of the original man.
+Do NOT mix identities.
+Do NOT morph existing actors.
+Do NOT place new faces onto original bodies.
+
+Rebuild both people completely from scratch:
+— full body
+— face
+— head
+— arms
+— hands
+— proportions
+— silhouette
+
+---
+
+EMPTY SLOT PLACEMENT (CRITICAL):
+
+Place the new people into the exact same positions where the original characters were:
+
+Woman:
+— standing at the front of the ship
+— arms fully extended outward
+— body leaning slightly forward
+— same perspective and framing
+
+Man:
+— standing directly behind the woman
+— body close behind her
+— same relative position and spacing
+
+Preserve:
+— camera angle
+— composition
+— perspective
+— framing
+— cinematic spacing
+— ship environment
+
+Do NOT alter composition or perspective.
+
+---
+
+BODY & PROPORTIONS (CRITICAL):
+
+The woman must have full realistic adult human proportions.
+
+She must NOT be:
+— tiny
+— shortened
+— compressed
+— scaled down compared to the man
+
+The couple must have natural proportional adult human scale relative to each other.
+
+The woman’s arms must remain fully human and anatomically correct while extended outward.
+
+The man must have two fully human arms and two fully human hands with exactly five fingers on each hand.
+
+No:
+— extra fingers
+— missing fingers
+— distorted anatomy
+— broken arms
+— unrealistic proportions
 
 ---
 
 IDENTITY (CRITICAL):
 
-Preserve the uploaded identities with high accuracy:
+Preserve the real appearance from uploaded photos:
 
-Woman:
-— facial proportions
+— facial structure
 — eyes
 — nose
 — lips
 — jawline
-— skin tone adapted to sunset lighting
-— hairstyle and hair texture
-
-Man:
+— skin tone
+— hair
 — facial proportions
-— eyes
-— nose
-— lips
-— jawline
-— skin tone adapted to sunset lighting
-— hairstyle and hair texture
 
-Identity must remain clearly recognizable and realistic.
-
-Do NOT:
-— genericize faces
-— beautify excessively
-— alter ethnicity
-— average facial features
-— mix identities with original actors
+Identity must remain clearly recognizable.
 
 ---
 
-FULL HUMAN RECONSTRUCTION:
+CLOTHING ADAPTATION:
 
-Generate fully reconstructed realistic human bodies from the uploaded photos.
+Adapt clothing naturally to the cinematic Titanic-style scene.
 
-Do NOT perform face swap.
+Preserve:
+— elegant romantic aesthetic
+— flowing fabric feeling
+— cinematic realism
 
-Do NOT place new faces onto original bodies.
-
-Completely recreate:
-— heads
-— faces
-— necks
-— shoulders
-— arms
-— hands
-— torsos
-— body proportions
-— silhouettes
-
-The generated people must look like they were originally filmed in this scene.
+Allow natural clothing adaptation to fit the uploaded identities.
 
 ---
 
-BODY PROPORTIONS (CRITICAL):
+LIGHTING & INTEGRATION (CRITICAL):
 
-The woman must have full realistic adult female proportions.
+Fully integrate the generated people into the scene.
 
-She must NOT be:
-— unnaturally tiny
-— compressed
-— shortened
-— scaled down compared to the man
-
-The couple must have natural proportional adult human scale relative to each other.
-
-Woman:
-— standing naturally with fully extended arms
-— realistic feminine anatomy
-— natural posture
-— realistic shoulder width
-— realistic arm length
-
-Man:
-— standing naturally behind the woman
-— realistic masculine anatomy
-— proportional body size
-
-No distorted anatomy.
-No unnatural scaling.
-
----
-
-HANDS & ARMS (STRICT):
-
-All arms and hands must be fully human.
-
-Every hand must have:
-— exactly five fingers
-— realistic anatomy
-— natural proportions
-— correct perspective
-
-The woman’s extended arms must remain fully human and anatomically correct.
-
-No:
-— extra fingers
-— missing fingers
-— fused fingers
-— distorted hands
-— broken anatomy
-
----
-
-CLOTHING & FABRIC:
-
-Preserve the elegant cinematic Titanic-inspired wardrobe style.
-
-Woman:
-— flowing elegant dress
-— soft fabric movement from wind
-— realistic folds and cloth physics
-
-Man:
-— elegant dark coat
-— cinematic romantic styling
-
-Clothing may adapt naturally to the uploaded identities while preserving the cinematic style of the scene.
-
----
-
-EXPRESSION & EMOTION:
-
-Woman:
-— peaceful emotional expression
-— relaxed face
-— eyes softly closed or relaxed
-— feeling freedom and romance
-
-Man:
-— soft romantic attention toward the woman
-— subtle emotional expression
-
-Preserve the emotional tone of the original cinematic moment.
-
----
-
-LIGHTING & COLOR (CRITICAL):
-
-Accurately match the original cinematic sunset lighting:
-
-— golden hour lighting
-— warm orange sunset glow
-— soft cinematic highlights
-— realistic shadow gradients
-— sunset reflections on skin
-— warm atmospheric haze
-— cinematic contrast
+Accurately match:
+— warm sunset lighting
+— golden-hour skin tones
+— cinematic shadows
+— atmospheric haze
+— depth of field
+— film grain
+— cinematic color grading
+— realistic light direction
 
 Faces and bodies must fully inherit scene lighting.
 
-Preserve:
-— sunset direction
-— color grading
-— atmosphere
-— depth of field
-— cinematic softness
-— film-like texture
-
-No flat lighting.
-No studio lighting.
-No pasted appearance.
-
----
-
-SCENE LOCK:
-
-Do NOT change:
-— ship environment
-— sunset background
-— ocean atmosphere
-— railing placement
-— lighting setup
-— cinematic framing
-
-Only replace the people.
-
----
-
-INTEGRATION:
-
-Seamlessly integrate the uploaded couple into the scene with correct perspective, depth, scale, lighting, and cinematic realism.
-
-The generated people must look physically present in the environment.
-
-No compositing artifacts.
-No pasted faces.
-No identity blending.
-No AI-looking skin.
+The result must NOT look pasted, composited, or AI-generated.
 
 ---
 
 FINAL:
 
-A highly realistic cinematic Titanic-style movie frame featuring the uploaded couple naturally recreated in the iconic romantic ship scene, with accurate identity, realistic human anatomy, correct proportions, fully human hands and arms, cinematic sunset lighting, emotional realism, and seamless integration.`;
+A fully reconstructed cinematic Titanic-style scene where the original couple is completely removed and replaced by new realistic people from the uploaded photos, naturally integrated into the environment with accurate identity, realistic anatomy, cinematic lighting, and stable composition.`;
 
 const TITANIC_2 = ``;
 
