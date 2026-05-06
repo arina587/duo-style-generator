@@ -100,26 +100,87 @@ SCENE: Do NOT change environment, background characters, or composition. Only re
 
 HANDS: Exactly five fingers, correct anatomy, natural placement. Man holds smartphone in proper selfie grip.`;
 
-const TANGLED_1 = `Use the reference image as a scene template only. Replace both original characters completely — ignore their faces, proportions, and identity entirely.
+const TANGLED_1 = `Use the reference image as a composition, pose, and lighting template only.
+
+Replace both original characters completely.
+Do NOT preserve the original identities, faces, anatomy, or proportions.
 
 REPLACEMENT:
-— man from uploaded male photo → left position
-— woman from uploaded female photo → right position
-Rebuild them from scratch using only the uploaded photos.
+— uploaded male reference → left character
+— uploaded female reference → right character
 
-IDENTITY: Facial proportions, bone structure, eye shape, nose, lips, jawline, skin tone, hairstyle, hair color and length.
+Rebuild both characters entirely from scratch using only the uploaded reference photos.
 
-POSE (ABSOLUTE):
-— man (left) holding the woman closely
-— woman (right) leaning into the man, faces very close, strong eye contact
-— woman looking up, man looking down, bodies chest-to-chest
-Do NOT change angle, framing, or positioning.
+IDENTITY:
+Preserve:
+— facial proportions
+— bone structure
+— eye shape
+— nose
+— lips
+— jawline
+— skin tone
+— hairstyle
+— hair color
+— hair length
+— recognizable appearance
 
-STYLE: Pixar/Disney 3D CGI, fully reconstructed characters.
+POSE (STRICT):
+Preserve the exact original pose and composition:
+— man on the left holding the woman closely
+— woman on the right leaning toward him
+— faces very close together
+— strong eye contact between them
+— woman looking upward
+— man looking downward
+— bodies close together
+— same framing and camera angle
 
-LIGHTING: Warm golden lantern light, soft glow from multiple sources, visible lantern reflections. Faces inherit scene lighting.
+Do NOT alter:
+— positioning
+— composition
+— body orientation
+— facial direction
+— intimacy of the scene
 
-HANDS: Human, exactly five fingers, correct anatomy, natural grip.`;
+STYLE:
+Stylized animated fantasy movie aesthetic.
+High-end 3D animated film look.
+Soft cinematic character rendering.
+Natural expressive eyes and facial animation quality.
+
+LIGHTING:
+Warm floating lantern lighting.
+Soft golden glow from multiple light sources.
+Warm cinematic reflections on skin and hair.
+Lantern reflections visible in the environment.
+
+Faces and bodies must inherit scene lighting naturally.
+
+CLOTHING:
+Adapt clothing naturally into fantasy fairytale-style outfits matching the scene aesthetic.
+
+HANDS:
+Natural human hand anatomy.
+Exactly five fingers per hand.
+Correct proportions.
+Natural grip and positioning.
+
+BACKGROUND:
+Preserve:
+— floating lanterns
+— castle environment
+— water reflections
+— warm nighttime atmosphere
+— cinematic depth of field
+— original framing
+
+INTEGRATION:
+Result must look like a professionally animated movie frame with the uploaded identities naturally cast into the scene.
+
+No face swap artifacts.
+No compositing artifacts.
+No traces of the original characters.`;
 
 const TANGLED_2 = `Use the reference image as a scene template only. Replace both original characters completely — ignore their faces, proportions, and identity entirely.
 
