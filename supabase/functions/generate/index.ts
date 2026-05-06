@@ -189,22 +189,61 @@ OUTPUT: Identical scene, only identities replaced. Faces seamlessly integrated w
 
 const EUPHORIA_1 = `Use the reference image as a composition and scene template.
 
-Erase the two original people completely. They are nonexistent — do NOT preserve, reuse, blend, or inherit anything from them: not their faces, bodies, anatomy, proportions, or silhouettes.
+Remove all original people from the scene completely. Keep the hallway, lockers, lighting, framing, perspective, and background intact.
 
-Their positions are empty slots. Fill them with the people from the uploaded photos.
+REPLACEMENT:
+— left female position → woman from uploaded female reference photo
+— right male position → man from uploaded male reference photo
+Do NOT swap roles or genders.
 
-GENERATION:
-— woman slot → generate from uploaded female photo
-— man slot → generate from uploaded male photo
-Uploaded photos are the only source of identity and appearance.
+RECONSTRUCTION:
+Rebuild both characters from scratch using the uploaded references.
+Do NOT perform face-swap, morphing, or partial blending with the original people.
+Generate entirely new full-body subjects matching the reference identities.
 
-Do NOT face-swap. Do NOT place new faces onto original bodies. Fully recreate each person — face, body, head, anatomy, proportions, silhouette, skin, hair.
+IDENTITY:
+Preserve:
+— facial structure
+— eyes, nose, lips, jawline
+— hairstyle and hair texture
+— skin tone
+— body proportions and silhouette
 
-PLACEMENT: Same location, scale, depth, and perspective as the originals. Preserve environment, composition, camera angle, spacing, and cinematic atmosphere.
+Both people must remain clearly recognizable as the uploaded individuals.
 
-IDENTITY: Preserve from uploaded photos — facial structure, eyes, nose, lips, skin tone, hair, proportions. Must remain clearly recognizable.
+POSE & COMPOSITION:
+Preserve:
+— exact camera angle
+— body orientation
+— relative distance between characters
+— framing and perspective
+— eye-line interaction
+— hallway positioning
 
-LIGHTING: Match lighting direction, shadows, color grading, depth of field, film grain, low-light skin shading, lens softness. People must look physically present. Result must NOT look pasted, composited, or face-swapped.`;
+Match the scene composition precisely, but use the anatomy and proportions of the uploaded people.
+
+CLOTHING:
+Adapt outfits naturally to the environment and cinematic tone of the scene.
+Clothing should feel realistic for a modern high-school hallway scene.
+Avoid copying the original outfits exactly unless requested.
+
+LIGHTING & INTEGRATION:
+Match:
+— indoor fluorescent lighting
+— shadow direction and softness
+— cinematic color grading
+— shallow depth of field
+— lens characteristics
+— image grain/noise
+
+Faces and bodies must inherit the scene lighting naturally.
+The final image must look like a real photograph captured in-camera, not composited or pasted.
+
+BACKGROUND:
+Preserve lockers, hallway depth, students in the background, blur intensity, and environmental realism.
+
+STYLE:
+Cinematic, realistic, emotionally tense school hallway scene, natural skin texture, high realism, subtle film look.`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
