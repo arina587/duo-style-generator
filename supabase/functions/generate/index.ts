@@ -682,21 +682,139 @@ Only identities are replaced.
 
 Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
-const EUPHORIA_1 = `
-AUTHORITY OVERRIDE (CRITICAL):
+const EUPHORIA_1 = `Use the reference movie frame as a strict cinematic composition template.
 
-Under no circumstances should the model follow:
+The scene is an intimate low-light auditorium / theater shot with two seated characters in the foreground and blurred audience members in the background.
 
-— visual features of the original people
-— face structure from the reference image
-— any automatic face reconstruction behavior
+Completely remove the original man and woman from the scene.
+Treat them as non-existent placeholders only.
 
-The model must NOT trust the reference image for identity.
+Replace them using the uploaded identity photos:
 
-Identity comes ONLY from uploaded images.
+— seated woman on the left → replace with uploaded female identity  
+— seated man on the right → replace with uploaded male identity  
 
-Any deviation from this rule is invalid.
-replace the man and woman from the reference with the guy and the girl from the uploaded photos - these should be the people from the uploaded photos transferred to the scene, literally they always were, the girl from the uploaded photo sits on the left, the guy from the uploaded photo sits on the right - you can not mix their personalities`;
+Gender roles must remain unchanged.
+
+-----------------------------------
+SCENE RECONSTRUCTION (STRICT)
+-----------------------------------
+
+Recreate both people entirely from the uploaded identity images.
+
+Do NOT perform a face swap.
+Do NOT preserve any original facial features, anatomy, skin, or body parts.
+Do NOT blend identities with the original actors.
+
+Generate completely new realistic humans that match the uploaded identities while preserving the original cinematic staging.
+
+Preserve:
+— exact seating positions
+— exact framing
+— same camera angle
+— same body orientation
+— same relative spacing
+— same perspective
+— same crop
+— same foreground/background depth
+
+The woman must remain seated on the left side of the frame.
+The man must remain seated on the right side of the frame.
+
+-----------------------------------
+IDENTITY PRESERVATION (CRITICAL)
+-----------------------------------
+
+The generated characters must strongly resemble the uploaded identity photos.
+
+Preserve:
+— real facial structure
+— eye shape
+— nose shape
+— lips
+— jawline
+— natural skin tone
+— hairstyle and hair texture
+— age appearance
+— realistic proportions
+
+Identity consistency is critical.
+
+The final result must clearly look like the uploaded people photographed in this movie scene.
+
+-----------------------------------
+POSE & BODY LANGUAGE
+-----------------------------------
+
+Preserve the relaxed seated posture and subtle cinematic body language from the reference frame.
+
+Maintain:
+— natural shoulder positioning
+— seated pose
+— gaze direction
+— realistic anatomy
+— relaxed hands and arms
+
+Do not exaggerate expressions or poses.
+
+-----------------------------------
+CLOTHING ADAPTATION
+-----------------------------------
+
+Adapt wardrobe naturally to the identities while keeping the cinematic tone of the scene.
+
+The clothing should:
+— fit naturally on the generated people
+— remain realistic for a dark dramatic movie scene
+— preserve the upscale modern aesthetic
+— harmonize with scene lighting and color palette
+
+Avoid exact duplication of the original outfits if identity proportions differ.
+
+-----------------------------------
+LIGHTING & CINEMATIC MATCHING
+-----------------------------------
+
+This is a dark warm cinematic scene with soft directional lighting.
+
+Accurately match:
+— warm amber cinema lighting
+— soft facial shadows
+— low-key contrast
+— subtle skin highlights
+— realistic shadow falloff
+— ambient darkness
+— lens depth of field
+— natural film grain
+— realistic low-light texture
+
+Faces must inherit scene lighting naturally.
+
+No pasted look.
+No artificial glow.
+No over-sharpening.
+No beauty filter effect.
+
+-----------------------------------
+BACKGROUND & ENVIRONMENT
+-----------------------------------
+
+Preserve:
+— blurred audience in background
+— auditorium atmosphere
+— dark cinematic mood
+— shallow depth of field
+— overall scene composition
+
+Do not alter the environment or camera setup.
+
+-----------------------------------
+FINAL OUTPUT
+-----------------------------------
+
+Generate a fully photorealistic cinematic movie frame where the original couple has been completely replaced by the uploaded identities.
+
+The final image must look indistinguishable from a real professionally shot live-action film still.`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
