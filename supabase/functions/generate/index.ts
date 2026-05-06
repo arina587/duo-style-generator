@@ -682,50 +682,104 @@ Only identities are replaced.
 
 Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
-const EUPHORIA_1 = `Generate a beautiful high-quality cinematic photo of the uploaded man and uploaded woman together.
+const EUPHORIA_1 = `Use the reference image as a composition and scene template.
 
-Use the reference image ONLY as a background, scene, lighting, and composition template.
+Completely remove the two original main characters from the scene before generation.
 
-ONLY the background and environment must be taken from the reference image.
+The original people must be treated as fully nonexistent and permanently discarded.
 
-The people from the reference image must be completely removed and fully ignored.
+Forget the original actors completely.
 
-Do NOT use or preserve any part of the original people:
-— no faces
-— no bodies
-— no anatomy
-— no identity
-— no facial structure
-— no skin
-— no proportions
+Do NOT preserve, reuse, transform, edit, blend, or inherit ANY part of the original people:
+— faces
+— bodies
+— anatomy
+— facial structure
+— skin
+— proportions
+— silhouettes
+— identity
+— facial geometry
 
-Use ONLY the uploaded male and female photos for the people in the final image.
+Treat their positions as EMPTY SLOTS that must be filled with completely new people from the uploaded photos.
 
-Create a realistic cinematic couple naturally sitting together in the same positions in the scene:
+---
 
-— uploaded woman on the left  
-— uploaded man on the right  
+CHARACTER GENERATION (STRICT):
 
-Preserve from the reference image ONLY:
-— background
-— auditorium environment
-— seating layout
+Generate new people using ONLY the uploaded identity photos:
+
+— the woman in the scene → generate from uploaded female photo  
+— the man in the scene → generate from uploaded male photo  
+
+The uploaded photos are the ONLY source of identity and appearance information.
+
+Do NOT perform face swap.
+Do NOT morph existing actors.
+Do NOT blend identities.
+Do NOT place new faces onto original bodies.
+
+Generate completely new realistic people naturally sitting in the scene.
+
+---
+
+EMPTY SLOT PLACEMENT:
+
+Place the generated people into the same positions where the original people were:
+
+— same location in frame  
+— same scale  
+— same depth  
+— same perspective  
+
+Preserve only:
+— environment
+— composition
 — camera angle
-— perspective
 — framing
+— body positioning
+— spacing between people
 — cinematic atmosphere
-— warm low-light mood
 
-Accurately match:
-— cinematic lighting
-— realistic shadows
-— skin shading
-— depth of field
-— film grain
-— lens softness
-— cinematic color grading
+---
 
-The final image must look like a real professionally filmed cinematic photo of the uploaded couple naturally photographed in this environment.`;
+IDENTITY (CRITICAL):
+
+Preserve the real appearance from uploaded photos:
+
+— facial structure  
+— eyes  
+— nose  
+— lips  
+— skin tone  
+— hair  
+— proportions  
+
+Identity must remain clearly recognizable.
+
+---
+
+LIGHTING & INTEGRATION:
+
+Fully integrate the generated people into the cinematic scene:
+
+— match lighting direction  
+— match realistic shadows  
+— match color grading  
+— match depth of field  
+— match film grain  
+— match low-light skin shading  
+— match lens softness  
+
+The generated people must look naturally filmed inside the environment.
+
+The result must NOT look pasted, composited, or AI-generated.
+
+---
+
+FINAL:
+
+A fully reconstructed cinematic image where the original actors are completely erased and forgotten, and entirely new people from the uploaded photos are naturally generated into the same scene.`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
