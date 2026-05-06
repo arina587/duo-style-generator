@@ -100,93 +100,82 @@ SCENE: Do NOT change environment, background characters, or composition. Only re
 
 HANDS: Exactly five fingers, correct anatomy, natural placement. Man holds smartphone in proper selfie grip.`;
 
-const TANGLED_1 = `Use the provided reference image and separately uploaded photos of the man and the woman.
+const TANGLED_1 = `Use the provided reference image and the uploaded photos of the man and woman.
 
-Treat the reference image as a scene template ONLY (composition, pose, lighting).
+Use the reference image only as a template for:
+— composition
+— pose
+— lighting
+— framing
+— environment
 
-CRITICAL RULE:
-The original characters must NOT be used as identity source in any way.
+Replace both original characters with the uploaded people.
 
-Do NOT use:
-— their faces
-— their head shapes
-— their facial proportions
-— their skin tones
-— any part of their identity
+REPLACEMENT:
+— uploaded male photo → left character
+— uploaded female photo → right character
 
-They must be completely ignored.
+Reconstruct both characters entirely using the uploaded identities.
 
----
+Do NOT preserve the original character identities or facial features.
 
-FULL CHARACTER REPLACEMENT (ABSOLUTE):
+IDENTITY:
+Preserve:
+— facial proportions
+— eye shape
+— eyebrows
+— nose
+— lips
+— jawline
+— skin tone adapted to scene lighting
+— hairstyle
+— hair color
+— hair length
+— recognizable appearance
 
-Replace both characters completely:
+POSE:
+Preserve the original romantic pose exactly:
+— man holding the woman closely
+— woman leaning toward the man
+— strong eye contact
+— woman looking upward
+— man looking downward
+— close chest-to-chest positioning
 
-— man from uploaded male photo → left position  
-— woman from uploaded female photo → right position  
+Do NOT change:
+— camera angle
+— framing
+— body positioning
+— perspective
+— composition
 
-Rebuild them as entirely new people based ONLY on uploaded identity images.
+STYLE:
+High-end stylized animated fantasy CGI aesthetic.
+Characters should feel naturally integrated into the animated scene.
 
-Do NOT reuse or preserve any original character features.
+LIGHTING:
+Warm floating lantern lighting.
+Soft golden glow.
+Lantern reflections on skin and hair.
+Cinematic shadows and atmospheric depth.
 
----
+Faces and bodies must inherit the scene lighting naturally.
 
-STRICT IDENTITY PRESERVATION (ENHANCED):
+HANDS:
+Natural human anatomy.
+Exactly five fingers per hand.
+Correct proportions and natural placement.
 
-Faces must remain highly recognizable:
-— exact facial proportions and bone structure
-— eye shape, spacing, eyelids, eyebrows
-— nose shape and bridge
-— lip shape and mouth width
-— jawline and chin
-— natural skin tone adapted to scene lighting
-— hairstyle, hair color, and hair length
+BACKGROUND:
+Preserve:
+— floating lanterns
+— water reflections
+— fantasy castle environment
+— warm nighttime atmosphere
+— original composition
 
----
-
-CRITICAL POSE LOCK (ABSOLUTE):
-
-— man (left) holding the woman closely
-— woman (right) leaning into the man
-— faces very close with strong eye contact
-— woman looking up toward the man
-— man looking down toward the woman
-— bodies positioned chest-to-chest
-
-Do NOT change angle, framing, or positioning.
-
----
-
-CRITICAL STYLE:
-
-Recreate characters in Pixar/Disney 3D CGI style.
-NOT as pasted faces — fully reconstructed characters.
-
----
-
-CRITICAL LIGHTING:
-
-— warm golden lantern lighting
-— soft glow from multiple sources
-— visible reflections from lanterns
-
-Faces must inherit scene lighting, not neutral.
-
----
-
-CRITICAL HANDS:
-
-All hands must be human:
-— exactly five fingers
-— correct anatomy
-— natural grip
-— no deformation
-
----
-
-FINAL:
-
-Same romantic lantern scene, but original characters fully removed and replaced with new identities from uploaded photos.`;
+OUTPUT:
+The same romantic lantern scene with the uploaded people naturally replacing the original characters while preserving recognizability, pose, and cinematic atmosphere.`;
 
 const TANGLED_2 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
