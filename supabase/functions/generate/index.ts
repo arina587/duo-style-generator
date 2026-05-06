@@ -518,6 +518,9 @@ Do NOT change posture, body position, composition, or interaction.
 
 The goal is identity replacement only.
 
+Both characters must be looking directly at each other exactly like in the original scene.
+Preserve the intimate eye-line interaction and facial orientation.
+
 RECONSTRUCTION:
 Rebuild both people using the uploaded identities while preserving the original scene structure.
 
@@ -525,7 +528,6 @@ Do NOT:
 — face swap
 — blend identities
 — redesign the shot
-— change composition
 — generate new poses
 — alter framing
 
