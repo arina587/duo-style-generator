@@ -102,38 +102,66 @@ HANDS: Exactly five fingers, correct anatomy, natural placement. Man holds smart
 
 const TANGLED_1 = `Use the provided reference image and the uploaded photos of the man and woman.
 
-Use the reference image only as a template for:
+Use the reference image ONLY as a template for:
 — composition
 — pose
-— lighting
 — framing
+— lighting
 — environment
+— camera angle
 
-Replace both original characters with the uploaded people.
+The original characters are placeholders only.
+
+FULL HUMAN REPLACEMENT (ABSOLUTE):
+Completely replace both original characters with the uploaded people.
+
+Do NOT preserve:
+— original faces
+— original head shapes
+— original body proportions
+— original silhouettes
+— original skin tones
+— original hairstyles
+— original anatomy
+— original character identity
 
 REPLACEMENT:
 — uploaded male photo → left character
 — uploaded female photo → right character
 
-Reconstruct both characters entirely using the uploaded identities.
+Rebuild both people completely from the uploaded references:
+— full body
+— face
+— proportions
+— silhouette
+— anatomy
+— facial structure
+— hair
+— body shape
 
-Do NOT preserve the original character identities or facial features.
+This is NOT a face swap.
+This is full character replacement.
 
-IDENTITY:
-Preserve:
+IDENTITY (HIGH PRIORITY):
+Preserve accurately:
 — facial proportions
-— eye shape
+— bone structure
+— eye shape and spacing
 — eyebrows
-— nose
-— lips
-— jawline
-— skin tone adapted to scene lighting
+— nose shape
+— lips and mouth width
+— jawline and chin
+— cheek structure
+— skin tone
 — hairstyle
 — hair color
 — hair length
-— recognizable appearance
+— body proportions
+— recognizable overall appearance
 
-POSE:
+Uploaded photos are the ONLY identity source.
+
+POSE & COMPOSITION (LOCKED):
 Preserve the original romantic pose exactly:
 — man holding the woman closely
 — woman leaning toward the man
@@ -142,40 +170,47 @@ Preserve the original romantic pose exactly:
 — man looking downward
 — close chest-to-chest positioning
 
-Do NOT change:
-— camera angle
-— framing
-— body positioning
-— perspective
-— composition
+Keep:
+— exact framing
+— exact camera angle
+— exact body positioning
+— exact perspective
+— exact composition
+
+Do NOT reinterpret the scene.
 
 STYLE:
-High-end stylized animated fantasy CGI aesthetic.
-Characters should feel naturally integrated into the animated scene.
+High-end stylized fantasy animated CGI.
+Natural cinematic animated rendering.
+Characters must feel fully integrated into the scene.
 
 LIGHTING:
-Warm floating lantern lighting.
-Soft golden glow.
-Lantern reflections on skin and hair.
-Cinematic shadows and atmospheric depth.
+Warm lantern lighting.
+Golden glow from floating lanterns.
+Soft cinematic shadows.
+Warm reflections on skin and hair.
+Faces and bodies inherit scene lighting naturally.
 
-Faces and bodies must inherit the scene lighting naturally.
+CLOTHING:
+Adapt clothing naturally to the fantasy lantern scene while preserving believable fit to the uploaded body proportions and silhouettes.
 
 HANDS:
 Natural human anatomy.
 Exactly five fingers per hand.
-Correct proportions and natural placement.
+Correct proportions.
+Natural grip and positioning.
 
 BACKGROUND:
 Preserve:
 — floating lanterns
+— castle environment
 — water reflections
-— fantasy castle environment
-— warm nighttime atmosphere
-— original composition
+— nighttime atmosphere
+— cinematic depth
+— original framing
 
 OUTPUT:
-The same romantic lantern scene with the uploaded people naturally replacing the original characters while preserving recognizability, pose, and cinematic atmosphere.`;
+The exact same lantern scene, but with the uploaded people fully reconstructed and naturally replacing the original characters in every aspect — identity, anatomy, proportions, silhouette, and presence.`;
 
 const TANGLED_2 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
