@@ -203,14 +203,19 @@ const ZOOTOPIA_3 = `Use the provided reference image and separately uploaded pho
 
 Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman.
 
-Recreate them as stylized 3D human characters in Pixar/Disney 3D CGI style — match the exact visual style of the reference image. NOT as pasted faces, but as fully reconstructed human characters integrated into the scene.
+Recreate them as stylized Pixar-style 3D CGI humans matching the exact cinematic visual style of the reference image.
+
+NOT as pasted faces, and NOT as humanized animals.
+
+Generate fully reconstructed human characters naturally integrated into the scene.
 
 ---
 
 PRIORITY ORDER (STRICT):
-1) Identity from uploaded photos
-2) Original pose and composition
-3) Lighting and style
+
+1) Identity from uploaded photos  
+2) Original pose and composition  
+3) Lighting and visual style  
 
 ---
 
@@ -218,59 +223,94 @@ IDENTITY (CRITICAL):
 
 Preserve identity with high accuracy:
 
-— facial structure and proportions
-— eye shape, spacing, eyelids, eyebrows
-— nose shape and bridge
-— lips, mouth width, jawline, chin
-— recognizable skin tone (adapted to scene lighting)
-— hairstyle, hair color, and length
+— facial structure and proportions  
+— eye shape, spacing, eyelids, eyebrows  
+— nose shape and bridge  
+— lips, mouth width, jawline, chin  
+— recognizable skin tone adapted to scene lighting  
+— hairstyle, hair color, and hair length  
 
 Do NOT:
-— stylize away identity
-— average or genericize faces
-— mix identities
+— stylize away identity  
+— average or genericize faces  
+— mix identities  
 
 ---
 
-BODY & PROPORTIONS:
+BODY & PROPORTIONS (CRITICAL):
 
-Convert animal characters into realistic human anatomy:
+The fox and rabbit are ONLY pose and composition references.
 
-— man follows the fox pose (including raised arm with phone)
-— woman replaces the rabbit with natural human proportions
-— do NOT compress or scale the woman unnaturally
+Treat them as temporary placeholders, NOT anatomy references.
 
-Maintain spatial relationship while keeping realistic human anatomy.
+Completely transform both characters into fully human anatomy.
+
+Remove all:
+— animal ears  
+— paws  
+— fur  
+— whiskers  
+— snouts  
+— muzzles  
+— tails  
+— claws  
+— animal legs  
+— animal hands  
+— animal shoulders  
+— animal body structure  
+— animal proportions  
+— anthropomorphic animal traits  
+
+Both characters must have:
+— realistic human skeletal structure  
+— human heads  
+— human faces  
+— human shoulders  
+— human arms  
+— human hands  
+— human fingers  
+— human legs  
+— natural human body proportions  
+
+No animal anatomy may remain visible anywhere in the final image.
+
+Man:
+— follows the fox pose including raised arm with phone  
+— natural confident posture  
+
+Woman:
+— follows the rabbit pose with fully realistic human anatomy  
+— natural feminine body proportions  
+— natural stance leaning slightly toward the man  
 
 ---
 
 POSE & COMPOSITION (STRICT):
 
-Man (left):
-— arm raised holding a phone (selfie position)
-— slight head tilt toward the woman
-— relaxed, confident posture
-
-Woman (right):
-— very close to the man
-— slight lean toward him
-— upright natural stance
-
 Preserve:
-— selfie composition
-— camera angle (slightly above, angled down)
-— framing and crop
+— selfie composition  
+— camera angle  
+— framing and crop  
+— relative positioning  
+— perspective  
+— depth  
 
-Do NOT reframe or change perspective.
+Do NOT:
+— reframe  
+— alter perspective  
+— change composition  
 
 ---
 
 EXPRESSION:
 
-— man: confident, playful smirk
-— woman: cheerful, slightly mischievous smile
+Man:
+— confident playful smirk  
 
-Match emotional tone from the reference.
+Woman:
+— cheerful slightly mischievous smile  
+
+Match the emotional tone from the reference image.
 
 ---
 
@@ -278,43 +318,55 @@ LIGHTING & COLOR:
 
 Match the original scene lighting:
 
-— colorful nightclub lighting (magenta, purple, blue tones)
-— mixed ambient light sources
-— soft but vivid highlights
-— visible color reflections on skin
+— colorful nightclub lighting  
+— magenta, purple, and blue tones  
+— mixed ambient lighting  
+— vivid soft highlights  
+— realistic colored reflections on skin  
 
 Preserve:
-— light direction
-— color spill
-— contrast and atmosphere
+— light direction  
+— color spill  
+— atmosphere  
+— cinematic contrast  
 
-Faces must fully inherit scene lighting (no neutral or flat lighting).
+Faces and bodies must fully inherit scene lighting.
+
+No flat lighting.
+No studio lighting.
+No pasted appearance.
 
 ---
 
-HANDS:
+HANDS (STRICT):
 
-All hands must be human:
+All hands must be fully human.
 
-— exactly five fingers per hand
-— correct anatomy and proportions
-— natural finger placement
+Every hand must have:
+— exactly five fingers  
+— realistic anatomy  
+— correct proportions  
+— natural finger placement  
 
 Man:
-— holding a smartphone in selfie position
-— correct grip and perspective
+— naturally holding a smartphone in selfie position  
+— realistic grip and perspective  
 
-No deformation, no extra or missing fingers.
+No animal paws.
+No deformed fingers.
+No extra fingers.
+No missing fingers.
 
 ---
 
 SCENE LOCK:
 
 Do NOT change:
-— environment
-— background characters
-— lighting setup
-— composition
+— environment  
+— background characters  
+— lighting setup  
+— composition  
+— nightclub atmosphere  
 
 Only replace the characters.
 
@@ -322,17 +374,20 @@ Only replace the characters.
 
 INTEGRATION:
 
-Rebuild characters inside the original positions with correct perspective and depth.
+Rebuild the characters naturally inside the original positions with correct perspective and depth.
 
-Ensure seamless integration with the environment.
+Ensure seamless cinematic integration into the environment.
 
-No face cutouts. No mismatched lighting.
+No face cutouts.
+No morphing.
+No furry anatomy.
+No mismatched lighting.
 
 ---
 
 FINAL:
 
-A Pixar/Disney 3D CGI human version of the same cinematic moment, with accurate identity, correct lighting, and stable composition.`;
+A high-quality Pixar-style 3D CGI cinematic image of two fully human characters based on the uploaded photos, naturally recreated in the same selfie moment with realistic human anatomy, accurate identity, cinematic lighting, and stable composition.`;
 
 const TANGLED_1 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
