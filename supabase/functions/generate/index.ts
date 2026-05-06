@@ -100,87 +100,93 @@ SCENE: Do NOT change environment, background characters, or composition. Only re
 
 HANDS: Exactly five fingers, correct anatomy, natural placement. Man holds smartphone in proper selfie grip.`;
 
-const TANGLED_1 = `Replace the original animated characters with the uploaded people.
+const TANGLED_1 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
-Perform identity replacement only.
-Do NOT alter scene composition, pose, camera, environment, framing, lighting, or character positioning.
+Treat the reference image as a scene template ONLY (composition, pose, lighting).
 
-PRIORITY:
-1) Identity from uploaded photos
-2) Original pose and composition
-3) Original animated style and lighting
+CRITICAL RULE:
+The original characters must NOT be used as identity source in any way.
 
-IDENTITY (HARD CONSTRAINT):
-— left male character → uploaded male photo
-— right female character → uploaded female photo
+Do NOT use:
+— their faces
+— their head shapes
+— their facial proportions
+— their skin tones
+— any part of their identity
 
-Preserve exactly:
-— facial structure
-— proportions
-— eye shape
-— nose
-— lips
-— jawline
-— skin tone
-— hairstyle
-— hair color
-— hair length
-— recognizable appearance
+They must be completely ignored.
 
-Uploaded photos are the ONLY identity source.
+---
 
-Do NOT:
-— preserve original animated faces
-— generate lookalikes of the original characters
-— blend identities
-— genericize faces
-— beautify or redesign faces
+FULL CHARACTER REPLACEMENT (ABSOLUTE):
 
-SCENE LOCK:
-Keep the exact:
-— pose
-— embrace
-— eye contact
-— facial direction
-— camera angle
-— framing
-— lantern composition
-— background
-— body positioning
+Replace both characters completely:
 
-Do NOT reinterpret the scene.
+— man from uploaded male photo → left position  
+— woman from uploaded female photo → right position  
 
-FACE INTEGRATION:
-Reconstruct identities naturally inside the original head positions.
-Do NOT paste faces.
-Match:
-— head angle
-— perspective
-— lighting direction
-— shadow falloff
-— focus
-— depth
-— stylized rendering
+Rebuild them as entirely new people based ONLY on uploaded identity images.
 
-STYLE:
-Preserve the original high-end animated fantasy CGI style.
-Adapt uploaded identities into the same cinematic animated rendering style.
+Do NOT reuse or preserve any original character features.
 
-LIGHTING:
-Warm lantern lighting.
-Golden glow.
-Soft cinematic shadows.
-Lantern reflections on skin and hair.
-Faces fully inherit scene lighting.
+---
 
-ANATOMY:
-Natural human anatomy.
-Exactly five fingers per hand.
-No deformation.
-No cartoon animal anatomy.
+STRICT IDENTITY PRESERVATION (ENHANCED):
 
-OUTPUT:
-The exact same scene and composition, but with the uploaded people replacing the original animated characters naturally and recognizably.`;
+Faces must remain highly recognizable:
+— exact facial proportions and bone structure
+— eye shape, spacing, eyelids, eyebrows
+— nose shape and bridge
+— lip shape and mouth width
+— jawline and chin
+— natural skin tone adapted to scene lighting
+— hairstyle, hair color, and hair length
+
+---
+
+CRITICAL POSE LOCK (ABSOLUTE):
+
+— man (left) holding the woman closely
+— woman (right) leaning into the man
+— faces very close with strong eye contact
+— woman looking up toward the man
+— man looking down toward the woman
+— bodies positioned chest-to-chest
+
+Do NOT change angle, framing, or positioning.
+
+---
+
+CRITICAL STYLE:
+
+Recreate characters in Pixar/Disney 3D CGI style.
+NOT as pasted faces — fully reconstructed characters.
+
+---
+
+CRITICAL LIGHTING:
+
+— warm golden lantern lighting
+— soft glow from multiple sources
+— visible reflections from lanterns
+
+Faces must inherit scene lighting, not neutral.
+
+---
+
+CRITICAL HANDS:
+
+All hands must be human:
+— exactly five fingers
+— correct anatomy
+— natural grip
+— no deformation
+
+---
+
+FINAL:
+
+Same romantic lantern scene, but original characters fully removed and replaced with new identities from uploaded photos.`;
 
 const TANGLED_2 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
@@ -258,6 +264,94 @@ CRITICAL HANDS:
 FINAL:
 
 Same intimate night scene, but original characters completely replaced with new identities.`;
+
+const TANGLED_3 = `Use the provided reference image and separately uploaded photos of the man and the woman.
+
+Treat the reference image as a composition and pose template ONLY.
+
+CRITICAL RULE:
+The original characters must NOT be used in any way.
+
+Do NOT use:
+— faces
+— body shapes
+— proportions
+— identity elements
+
+They must be treated as non-existent.
+
+---
+
+FULL CHARACTER REPLACEMENT:
+
+Create new people:
+
+— man → left  
+— woman → right  
+
+Using ONLY uploaded identity photos.
+
+---
+
+STRICT IDENTITY PRESERVATION:
+
+Preserve:
+— facial structure
+— proportions
+— features
+— skin tone
+— hair
+
+---
+
+CRITICAL POSE LOCK:
+
+— man leading the movement, slightly leaning forward
+— holding the woman's hand
+— woman extending arm toward him
+— maintaining natural dance spacing
+
+Do NOT change interaction or gesture.
+
+---
+
+CRITICAL SCENE LOCK:
+
+Keep:
+— crowd
+— architecture
+— perspective
+— framing
+
+---
+
+CRITICAL LIGHTING:
+
+— natural daylight
+— soft shadows
+— consistent color temperature
+
+Faces must match scene lighting.
+
+---
+
+CRITICAL STYLE:
+
+Pixar/Disney CGI, fully reconstructed characters.
+
+---
+
+CRITICAL HANDS:
+
+— exactly five fingers
+— correct anatomy
+— natural interaction
+
+---
+
+FINAL:
+
+Same dance scene, but with completely new characters replacing the originals.`
 
 const CINDERELLA_PROMPT = `Replace the characters using the uploaded photos. Perform identity replacement only — do NOT alter scene composition, pose, camera, or environment.
 
