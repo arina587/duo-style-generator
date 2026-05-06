@@ -682,52 +682,33 @@ Only identities are replaced.
 
 Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
 
-const EUPHORIA_1 = `Recreate this exact cinematic movie frame as if the uploaded people were the real actors originally filmed in the scene.
+const EUPHORIA_1 = `Use the first image only as a cinematic background and scene reference.
 
-The uploaded female identity is the woman sitting on the left.
-The uploaded male identity is the man sitting on the right.
+Ignore the original people completely.
 
-Preserve:
-— exact auditorium environment
-— camera framing
-— seating positions
-— body orientation
+Create a realistic cinematic photo of the uploaded man and uploaded woman naturally sitting together in this environment.
+
+The uploaded photos are the ONLY source of identity and appearance information.
+
+Do NOT preserve or blend any part of the original actors.
+
+Preserve only:
+— environment
+— camera angle
+— composition
+— lighting
 — perspective
-— cinematic composition
-— warm low-light atmosphere
+— atmosphere
+
+Match:
+— cinematic lighting
+— shadows
+— skin tones
 — depth of field
 — film grain
-— cinematic color grading
+— color grading
 
-Generate entirely new realistic humans from the uploaded identity photos.
-
-The uploaded identities are the ONLY valid source of:
-— face
-— head shape
-— anatomy
-— skin
-— hair
-— proportions
-— human appearance
-
-Do NOT preserve or reuse any part of the original actors.
-
-Do NOT perform face swap.
-Do NOT morph existing faces.
-Do NOT blend identities.
-Do NOT place new faces onto original bodies.
-
-Generate completely new people naturally sitting in the scene as if they were physically present during filming.
-
-Accurately match:
-— warm cinematic lighting
-— realistic facial shadows
-— low-light skin shading
-— ambient darkness
-— lens softness
-— realistic integration into the environment
-
-The final image must look like a real live-action movie still with the uploaded people naturally filmed in the scene.`;
+The final image must look like the uploaded couple was originally photographed in this movie scene.`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
