@@ -6,7 +6,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
-const MODEL_NAME = "google/nano-banana-pro";
+const MODEL_VERSION = "google/nano-banana-pro";
 
 // ── Universal prompt (used for styles with locked: false) ──
 const UNIVERSAL_PROMPT = `Use the reference image as a composition and scene template.
@@ -662,7 +662,8 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
       }));
 
       // ── Debug logging ──
-      console.log("[MODEL]", MODEL_NAME);
+      console.log("[MODEL_VERSION]", MODEL_VERSION);
+      console.log("[REQUEST_MODE]", "legacy-version-dispatch");
       console.log("[REFERENCE_ID]", referenceId);
       console.log("[INPUT_IMAGES]", images.length);
       console.log("[PROMPT_SOURCE]", config.locked ? "locked" : "universal");
@@ -670,7 +671,7 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
       console.log("[IMAGE_SUMMARY]", JSON.stringify(imageSummary));
       console.log("[TOTAL_MB]", (imageSummary.reduce((s, x) => s + x.bytes, 0) / 1024 / 1024).toFixed(2));
       console.log("[REQUEST_BODY_SHAPE]", JSON.stringify({
-        model: MODEL_NAME,
+        version: MODEL_VERSION,
         input: {
           image_input: `[${images.length} base64 data URLs]`,
           prompt: `[${finalPrompt.length} chars]`,
@@ -685,7 +686,7 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: MODEL_NAME,
+          version: MODEL_VERSION,
           input: {
             prompt: finalPrompt,
             image_input: images,
