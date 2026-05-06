@@ -1034,7 +1034,169 @@ FINAL:
 
 A fully reconstructed scene where original people are completely removed and replaced by new individuals from uploaded photos, naturally integrated into the environment, with correct pose, lighting, and composition.`;
 
-const TITANIC_1 = `replace the man from the reference with the man from the uploaded photo, replace the girl from the reference with the girl from the uploaded photo.`;
+const TITANIC_1 = `Use the reference image as a composition and cinematic scene template.
+
+Completely remove all original people from the scene.
+Treat their positions as EMPTY SLOTS that must be filled with new characters.
+
+---
+
+CHARACTER REPLACEMENT (STRICT):
+
+Replace characters using the uploaded identity photos:
+
+— the woman at the front of the ship → replace with the woman from the uploaded female photo  
+— the man standing behind her → replace with the man from the uploaded male photo  
+
+Gender must match exactly.
+Do NOT swap roles.
+
+---
+
+EMPTY SLOT PLACEMENT (CRITICAL):
+
+The original characters must be considered fully non-existent.
+
+Place the new people into the exact same spatial positions where the original people were:
+
+Woman:
+— standing at the front railing
+— arms fully extended outward
+— body leaning slightly forward
+— same location in frame
+— same scale
+— same depth
+— same perspective
+
+Man:
+— standing directly behind the woman
+— body positioned closely behind her
+— same location in frame
+— same scale
+— same depth
+— same perspective
+
+Do NOT reuse any part of the original bodies.
+
+---
+
+FULL RECONSTRUCTION:
+
+Rebuild each person completely from the uploaded identity images:
+
+— full body
+— face
+— head
+— arms
+— hands
+— proportions
+— silhouette
+
+Do NOT perform face swap.
+Do NOT mix identities.
+Do NOT blend with original characters.
+Do NOT place new faces onto original bodies.
+
+Generate completely new realistic people naturally occupying the scene.
+
+---
+
+IDENTITY (CRITICAL):
+
+Preserve the real appearance from uploaded photos:
+
+— facial structure
+— eyes
+— nose
+— lips
+— jawline
+— proportions
+— skin tone
+— hair
+
+Identity must remain clearly recognizable.
+
+---
+
+BODY & PROPORTIONS (CRITICAL):
+
+The woman must have full realistic adult human proportions.
+
+She must NOT be:
+— tiny
+— shortened
+— compressed
+— scaled down compared to the man
+
+The couple must have natural proportional adult human scale relative to each other.
+
+The woman’s extended arms must remain fully human and anatomically correct.
+
+The man must have:
+— two fully human arms
+— two fully human hands
+— exactly five fingers on each hand
+
+No:
+— extra fingers
+— missing fingers
+— distorted anatomy
+— broken arms
+— unrealistic body proportions
+
+---
+
+CLOTHING ADAPTATION (IMPORTANT):
+
+Clothing should be adapted naturally to fit the cinematic Titanic-style scene:
+
+— elegant romantic aesthetic
+— flowing fabric movement
+— realistic cloth folds
+— cinematic realism
+
+Allow natural clothing adaptation while preserving the atmosphere of the scene.
+
+---
+
+POSE & COMPOSITION (STRICT):
+
+Preserve:
+— iconic Titanic pose
+— woman with arms fully extended
+— man standing closely behind her
+— camera angle
+— body orientation
+— spacing between people
+— framing and crop
+— ship railing perspective
+
+Important:
+Match pose and placement, NOT original anatomy or identity.
+
+---
+
+LIGHTING & INTEGRATION (CRITICAL):
+
+Fully integrate the new people into the cinematic environment:
+
+— match warm sunset lighting
+— match golden-hour shadows
+— match atmospheric haze
+— match cinematic color grading
+— match depth of field
+— match film grain
+— match realistic sunset skin shading
+
+Faces and bodies must fully inherit scene lighting.
+
+The result must NOT look pasted, composited, or AI-generated.
+
+---
+
+FINAL:
+
+A fully reconstructed cinematic Titanic-style scene where the original couple is completely removed and replaced by new realistic people from uploaded photos, naturally integrated into the environment with correct pose, accurate identity, realistic anatomy, sunset lighting, and cinematic composition.`;
 
 const TITANIC_2 = ``;
 
