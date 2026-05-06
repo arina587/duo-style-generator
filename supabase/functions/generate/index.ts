@@ -362,24 +362,101 @@ cinematic style
 
 The uploaded reference identities are the highest priority.`;
 
-const TITANIC_2 = `Use the reference image as a cinematic scene template. Erase the original couple completely — they are nonexistent.
+const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
-REPLACEMENT:
-— woman in the scene → woman from uploaded female photo
-— man in the scene → man from uploaded male photo
-Do NOT swap roles.
+Completely remove the original man and woman from the scene.
+Treat them as empty placeholders only.
 
-PLACEMENT: Place each new person into the exact spatial position of the original — same location, scale, depth, perspective.
+IMPORTANT:
+The male character MUST be fully replaced even though his face is partially turned away and partially obscured.
+Do NOT preserve any part of the original male actor’s face, profile, hair, silhouette, or anatomy.
 
-RECONSTRUCTION: Rebuild each person fully — face, body, proportions, silhouette. Do NOT face-swap or blend with original characters.
+FULL CHARACTER REPLACEMENT:
+— woman on floating debris → uploaded female reference
+— man in water → uploaded male reference
 
-IDENTITY: Preserve from uploaded photos — facial structure, features, skin tone, hair, proportions. Clearly recognizable.
+Do NOT swap genders or roles.
 
-CLOTHING: Adapt naturally to the cinematic scene atmosphere.
+STRICT IDENTITY LOCK:
+The generated people must clearly match the uploaded reference photos and must NOT resemble the original Titanic actors in any way.
 
-POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, framing.
+Preserve from uploaded references:
+— facial anatomy
+— eye shape
+— nose
+— lips
+— jawline
+— skin tone
+— hairstyle and texture
+— body proportions
+— recognizable identity
 
-LIGHTING: Match cinematic lighting, shadows, color grading, depth of field, film grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
+CRITICAL MALE RECONSTRUCTION:
+The male character is viewed at an angle and partially turned away.
+Even with the side profile and difficult visibility:
+— fully reconstruct his identity from the uploaded male reference
+— preserve his recognizable side profile
+— generate correct facial structure from partial angle
+— do NOT fallback to the original actor’s face
+
+ABSOLUTE RESTRICTIONS:
+— no face swap
+— no morphing
+— no blending with original actors
+— no partial preservation
+— no Leonardo DiCaprio resemblance
+— no Kate Winslet resemblance
+— original actors must disappear completely
+
+POSE & COMPOSITION:
+Preserve:
+— exact emotional positioning
+— woman leaning on floating debris
+— man in freezing water beside her
+— same framing and camera angle
+— same distance between characters
+— same cinematic intimacy
+
+ENVIRONMENT & PHYSICAL STATE:
+Both people are freezing and exhausted from icy ocean water.
+
+Add realistic cold exposure details:
+— wet skin
+— soaked hair
+— pale cold skin tones
+— slight shivering tension in muscles
+— subtle blue/red coldness in fingers and lips
+— damp clothing texture
+— realistic water reflections
+
+Keep the expressions emotionally intense and physically exhausted.
+
+LIGHTING:
+Match:
+— cold night cinematic lighting
+— wet reflective skin highlights
+— dim warm/cool mixed tones
+— shallow depth of field
+— filmic grain
+— realistic moisture and water shading
+
+CLOTHING:
+Adapt clothing naturally into realistic wet Titanic-era clothing appropriate to the scene.
+
+INTEGRATION:
+The final image must look like a real cinematic frame captured on set.
+No pasted faces.
+No identity leakage from original actors.
+No compositing artifacts.
+
+PRIORITY ORDER:
+
+uploaded identities
+full replacement of BOTH original actors
+emotional pose and composition
+cinematic Titanic atmosphere
+
+The uploaded identities are the highest priority.`;
 
 const TITANIC_3 = `Use the reference image as a cinematic scene template. Erase the original couple completely — they are nonexistent.
 
