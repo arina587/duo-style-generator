@@ -274,14 +274,54 @@ Both characters must have:
 
 No animal anatomy may remain visible anywhere in the final image.
 
+The woman must remain FULL HEIGHT with natural realistic adult human proportions.
+
+Do NOT:
+— shrink the woman  
+— shorten her body  
+— compress her proportions  
+— make her unusually small compared to the man  
+
+The man and woman must have realistic proportional adult human scale relative to each other.
+
+Woman:
+— full-height realistic human proportions  
+— natural feminine anatomy  
+— standing naturally next to the man  
+— leaning slightly toward him  
+
 Man:
 — follows the fox pose including raised arm with phone  
 — natural confident posture  
 
-Woman:
-— follows the rabbit pose with fully realistic human anatomy  
-— natural feminine body proportions  
-— natural stance leaning slightly toward the man  
+---
+
+HANDS & ARMS (STRICT):
+
+Both characters must have exactly TWO fully human arms and TWO fully human hands.
+
+Hands must be completely human.
+
+Every hand must have:
+— exactly five fingers  
+— realistic anatomy  
+— correct proportions  
+— natural finger placement  
+
+No:
+— paws  
+— claws  
+— furry limbs  
+— extra arms  
+— missing arms  
+— extra fingers  
+— missing fingers  
+— distorted hands  
+— animal limbs  
+
+Man:
+— naturally holding a smartphone in selfie position  
+— realistic grip and perspective  
 
 ---
 
@@ -338,27 +378,6 @@ No pasted appearance.
 
 ---
 
-HANDS (STRICT):
-
-All hands must be fully human.
-
-Every hand must have:
-— exactly five fingers  
-— realistic anatomy  
-— correct proportions  
-— natural finger placement  
-
-Man:
-— naturally holding a smartphone in selfie position  
-— realistic grip and perspective  
-
-No animal paws.
-No deformed fingers.
-No extra fingers.
-No missing fingers.
-
----
-
 SCENE LOCK:
 
 Do NOT change:
@@ -387,7 +406,7 @@ No mismatched lighting.
 
 FINAL:
 
-A high-quality Pixar-style 3D CGI cinematic image of two fully human characters based on the uploaded photos, naturally recreated in the same selfie moment with realistic human anatomy, accurate identity, cinematic lighting, and stable composition.`;
+A high-quality Pixar-style 3D CGI cinematic image of two fully human characters based on the uploaded photos, naturally recreated in the same selfie moment with realistic human anatomy, correct human proportions, fully human hands and arms, accurate identity, cinematic lighting, and stable composition.`;
 
 const TANGLED_1 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
