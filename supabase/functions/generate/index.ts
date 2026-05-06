@@ -100,117 +100,100 @@ SCENE: Do NOT change environment, background characters, or composition. Only re
 
 HANDS: Exactly five fingers, correct anatomy, natural placement. Man holds smartphone in proper selfie grip.`;
 
-const TANGLED_1 = `Use the provided reference image and the uploaded photos of the man and woman.
+const TANGLED_1 = `Use the reference image as a composition and scene template.
 
-Use the reference image ONLY as a template for:
-— composition
-— pose
-— framing
-— lighting
-— environment
-— camera angle
-
-The original characters are placeholders only.
-
-FULL HUMAN REPLACEMENT (ABSOLUTE):
-Completely replace both original characters with the uploaded people.
-
-Do NOT preserve:
-— original faces
-— original head shapes
-— original body proportions
-— original silhouettes
-— original skin tones
-— original hairstyles
-— original anatomy
-— original character identity
+Erase all original characters completely. Their positions are empty slots — fill them with the people from the uploaded photos.
 
 REPLACEMENT:
-— uploaded male photo → left character
-— uploaded female photo → right character
+— woman slot → woman from uploaded female photo
+— man slot → man from uploaded male photo
 
-Rebuild both people completely from the uploaded references:
+Do NOT swap genders or roles.
+
+STYLE:
+Disney/Pixar-style high-end 3D CGI animated movie aesthetic.
+Stylized cinematic animated rendering with realistic facial identity preservation.
+
+RECONSTRUCTION:
+Rebuild each person fully:
 — full body
 — face
 — proportions
 — silhouette
 — anatomy
+
+Do NOT face-swap.
+Do NOT blend with original characters.
+Do NOT preserve original character anatomy or facial features.
+
+Generate entirely new Disney/Pixar-style characters based ONLY on the uploaded people.
+
+IDENTITY:
+Preserve:
 — facial structure
-— hair
-— body shape
-
-This is NOT a face swap.
-This is full character replacement.
-
-IDENTITY (HIGH PRIORITY):
-Preserve accurately:
 — facial proportions
-— bone structure
-— eye shape and spacing
-— eyebrows
-— nose shape
-— lips and mouth width
-— jawline and chin
-— cheek structure
+— eye shape
+— nose
+— lips
+— jawline
 — skin tone
 — hairstyle
 — hair color
 — hair length
 — body proportions
-— recognizable overall appearance
+— recognizable appearance
 
-Uploaded photos are the ONLY identity source.
+Both people must remain clearly recognizable as the uploaded identities even in stylized animated form.
 
-POSE & COMPOSITION (LOCKED):
-Preserve the original romantic pose exactly:
-— man holding the woman closely
-— woman leaning toward the man
+CLOTHING:
+Adapt naturally to the fantasy lantern scene.
+Disney/Pixar-style fantasy clothing matching the environment and cinematic mood.
+
+POSE & COMPOSITION:
+Preserve:
+— exact camera angle
+— exact pose
+— body orientation
+— spacing
+— framing
+— romantic interaction
 — strong eye contact
 — woman looking upward
 — man looking downward
-— close chest-to-chest positioning
 
-Keep:
-— exact framing
-— exact camera angle
-— exact body positioning
-— exact perspective
-— exact composition
-
-Do NOT reinterpret the scene.
-
-STYLE:
-High-end stylized fantasy animated CGI.
-Natural cinematic animated rendering.
-Characters must feel fully integrated into the scene.
+Match placement and composition only.
+Do NOT preserve original anatomy.
 
 LIGHTING:
-Warm lantern lighting.
-Golden glow from floating lanterns.
-Soft cinematic shadows.
-Warm reflections on skin and hair.
-Faces and bodies inherit scene lighting naturally.
+Match:
+— warm golden lantern lighting
+— soft cinematic glow
+— warm reflections on skin and hair
+— atmospheric shadows
+— cinematic depth of field
+— subtle filmic rendering
 
-CLOTHING:
-Adapt clothing naturally to the fantasy lantern scene while preserving believable fit to the uploaded body proportions and silhouettes.
+Faces and bodies inherit scene lighting naturally.
 
 HANDS:
 Natural human anatomy.
 Exactly five fingers per hand.
-Correct proportions.
-Natural grip and positioning.
+Correct proportions and natural positioning.
 
 BACKGROUND:
 Preserve:
 — floating lanterns
-— castle environment
 — water reflections
+— fantasy castle environment
 — nighttime atmosphere
-— cinematic depth
-— original framing
+— original framing and perspective
 
-OUTPUT:
-The exact same lantern scene, but with the uploaded people fully reconstructed and naturally replacing the original characters in every aspect — identity, anatomy, proportions, silhouette, and presence.`;
+INTEGRATION:
+Result must look like a real Disney/Pixar-style animated movie frame with the uploaded people fully replacing the original characters naturally and recognizably.
+
+No pasted faces.
+No compositing artifacts.
+No traces of the original characters.`;
 
 const TANGLED_2 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
