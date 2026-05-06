@@ -6,1201 +6,305 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
-const MODEL_VERSION = "fdf4cb96614227f3021c42f35bc92d4fd2e3e1ae9f50ca4004ffa8da64bf8dca";
-const MODEL_NAME = "zsxkib/flux-pulid";
+const MODEL_NAME = "google/nano-banana-pro";
 
+// ── Universal prompt (used for styles with locked: false) ──
 const UNIVERSAL_PROMPT = `Use the reference image as a composition and scene template.
 
-Completely remove all original people from the scene.
-Treat their positions as EMPTY SLOTS that must be filled with new characters.
+Erase all original people from the scene. Their positions are empty slots — fill them with the people from the uploaded identity photos.
 
----
-
-CHARACTER REPLACEMENT (STRICT):
-
-Replace characters using the uploaded identity photos:
-
-— the woman in the scene → replace with the woman from the uploaded female photo  
-— the man in the scene → replace with the man from the uploaded male photo  
-
+CHARACTER REPLACEMENT:
+— woman in the scene → woman from the uploaded female photo
+— man in the scene → man from the uploaded male photo
 Gender must match exactly. Do NOT swap roles.
 
----
-
-EMPTY SLOT PLACEMENT (CRITICAL):
-
-The original characters must be considered non-existent.
-
-Place the new people into the exact same spatial positions where the original people were:
-
-— same location in frame  
-— same scale  
-— same depth  
-— same perspective  
-
-Do NOT reuse any part of the original bodies.
-
----
+PLACEMENT:
+Place each new person into the exact spatial position of the original:
+— same location, scale, depth, and perspective.
 
 FULL RECONSTRUCTION:
+Rebuild each person entirely from their identity image — face, body, proportions, silhouette.
+Do NOT face-swap. Do NOT blend with original characters.
 
-Rebuild each person completely from the identity images:
-
-— full body  
-— face  
-— proportions  
-— silhouette  
-
-Do NOT perform face swap.
-Do NOT mix identities.
-Do NOT blend with original characters.
-
----
-
-IDENTITY (CRITICAL):
-
-Preserve the real appearance from uploaded photos:
-
-— facial structure  
-— features (eyes, nose, lips)  
-— proportions  
-— skin tone  
-— hair  
-
+IDENTITY:
+Preserve from uploaded photos: facial structure, features, skin tone, hair, proportions.
 Identity must remain clearly recognizable.
 
----
+CLOTHING:
+Adapt clothing naturally to the scene — match the style and environment, avoid mismatched outfits.
 
-CLOTHING ADAPTATION (IMPORTANT):
+POSE & COMPOSITION:
+Preserve camera angle, pose structure, body orientation, spacing, framing.
+Match pose and placement, NOT original anatomy.
 
-Clothing should be adapted to fit the scene naturally:
-
-— keep general style consistent with the scene  
-— allow changes in clothing details if needed  
-— avoid exact copying of the original outfit  
-— avoid mismatch with environment or lighting  
-
-The result must feel like the person belongs in this scene.
-
----
-
-POSE & COMPOSITION (STRICT):
-
-Preserve:
-— camera angle  
-— pose structure  
-— body orientation  
-— spacing between people  
-— framing and crop  
-
-Important:
-Match pose and placement, NOT original anatomy or identity.
-
----
-
-LIGHTING & INTEGRATION (CRITICAL):
-
-Fully integrate the new people into the scene:
-
-— match lighting direction  
-— match shadows  
-— match color grading  
-— match depth of field  
-— match noise / grain  
-
-Faces and bodies must inherit scene lighting.
-
-The result must NOT look pasted or composited.
-
----
-
-FINAL:
-
-A fully reconstructed scene where original people are completely removed and replaced by new individuals from uploaded photos, naturally integrated into the environment, with correct pose, lighting, and composition.`;
+LIGHTING & INTEGRATION:
+Fully integrate into the scene — match lighting direction, shadows, color grading, depth of field, grain.
+Faces and bodies must inherit scene lighting. Result must not look pasted or composited.`;
 
 // ── Per-style prompt constants ──
 
-const ZOOTOPIA_1 = `Use the provided reference image and separately uploaded photos of the man and the woman.
+const ZOOTOPIA_1 = `Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized Pixar/Disney 3D CGI human characters — fully reconstructed, not face-swapped.
 
-Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney-quality CGI style, not as pasted faces.
+IDENTITY:
+Faces must be highly recognizable: facial proportions, bone structure, eye shape, nose, lips, jawline, skin tone, hairstyle and color.
 
-STRICT IDENTITY PRESERVATION (ENHANCED):
-Faces must remain highly recognizable:
-— exact facial proportions and bone structure
-— eye shape, spacing, eyelids, eyebrows
-— nose shape and bridge
-— lip shape and mouth width
-— jawline and chin
-— natural skin tone adapted to scene lighting
-— hairstyle, hair color, and hair length must match the uploaded photos
+POSE (ABSOLUTE):
+— both characters cheek-to-cheek, heads slightly tilted inward
+— woman (right) holds camera at arm's length
+— tight selfie framing, both looking directly into the camera
+Do NOT change angle, framing, or head tilt.
 
-CRITICAL POSE LOCK (ABSOLUTE):
-— both characters extremely close, cheek-to-cheek
-— heads slightly tilted inward toward each other
-— camera held at arm's length by the woman on the right
-— tight selfie framing, cropped like a phone photo
-— both looking directly into the camera
+EXPRESSION: man — relaxed half-smile. Woman — soft friendly smile.
 
-Do NOT change angle, framing, distance, or head tilt.
+STYLE: Full Pixar/Disney 3D — soft shading, clean skin, expressive eyes. Plain neutral background, unchanged.
 
-CRITICAL EXPRESSION LOCK:
-— man: relaxed, slightly smug half-smile
-— woman: soft friendly smile
+HANDS: Human, anatomically correct, exactly five fingers, correct selfie grip perspective.`;
 
-CRITICAL STYLE:
-Full Pixar/Disney 3D look — soft shading, clean stylized skin, expressive eyes.
+const ZOOTOPIA_2 = `Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman as stylized Pixar/Disney 3D CGI humans.
 
-CRITICAL SCENE LOCK:
-Keep plain neutral background, framing, and lighting EXACTLY the same.
+IDENTITY: Faces fully recognizable — facial structure, features, proportions, hair.
 
-CRITICAL HANDS (VERY IMPORTANT):
-All hands must be human — anatomically correct, realistic proportions, clearly defined fingers.
-Each hand must have exactly five fingers.
-Correct perspective for a selfie grip, no deformation, no fusion, no missing fingers.
-
-FINAL:
-Identical selfie composition with stylized human characters, strong identity match, no pose drift.`;
-
-const ZOOTOPIA_2 = `Use the provided reference image and separately uploaded photos of the man and the woman.
-
-Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate them as stylized 3D animated human characters in the same Pixar/Disney CGI style.
-
-STRICT IDENTITY PRESERVATION:
-Faces must remain fully recognizable and consistent with uploaded photos (facial structure, features, proportions, hair).
-
-CRITICAL POSE LOCK (ABSOLUTE):
-— characters pressed tightly together
-— woman (right) leans strongly into the man's face
-— her cheek pushes into his cheek
-— man's head slightly turned away due to pressure
-— camera held by woman at arm's length
-— very tight selfie framing
-
+POSE (ABSOLUTE):
+— woman (right) leans hard into the man's face, cheek pressing into his cheek
+— man's head tilts slightly away from the pressure
+— woman holds camera at arm's length, very tight selfie framing
 Do NOT loosen contact. Do NOT reposition heads.
 
-CRITICAL EXPRESSION LOCK:
-— woman: playful, energetic, wide smile
-— man: slightly uncomfortable, compressed expression
+EXPRESSION: woman — playful, wide smile. Man — slightly uncomfortable, compressed expression.
+CONTACT: Visible cheek compression and skin contact must be maintained.
 
-CRITICAL CONTACT PHYSICS:
-Maintain visible cheek compression and skin contact.
+STYLE: High-end Pixar/Disney 3D rendering. Background and lighting identical to reference.
 
-CRITICAL STYLE:
-Same high-end Pixar/Disney 3D rendering.
+HANDS: Human, exactly five fingers, no distortion, correct selfie perspective.`;
 
-CRITICAL SCENE LOCK:
-Keep background and lighting identical.
+const ZOOTOPIA_3 = `Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman as fully human Pixar-style 3D CGI characters integrated into the scene.
 
-CRITICAL HANDS (VERY IMPORTANT):
-All visible hands must be human — anatomically correct, natural proportions.
-Exactly five fingers per hand.
-No distortion, no merging fingers, correct perspective for selfie position.
+PRIORITY: 1) Identity from uploaded photos  2) Original pose and composition  3) Lighting and style
 
-FINAL:
-Same tight, compressed selfie moment, exact pose preserved, stylized human version.`;
+IDENTITY:
+Preserve with high accuracy: facial structure, eye shape, nose, lips, jawline, skin tone, hairstyle, hair color and length. Do NOT genericize or mix identities.
 
-const ZOOTOPIA_3 = `Use the provided reference image and separately uploaded photos of the man and the woman.
+BODY:
+Both characters must be fully human with realistic adult anatomy. The fox and rabbit are pose references only — remove all animal features (paws, fur, tails, ears, claws). Woman must have full realistic adult proportions, not shortened or compressed. Man must have two fully human arms and hands with exactly five fingers each. No animal anatomy anywhere.
 
-Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman.
+POSE:
+Man — raised arm holding phone in selfie position, slight head tilt, relaxed confident posture.
+Woman — naturally close to the man, slight lean toward him.
+Preserve selfie composition, camera angle, framing, depth. Do NOT change perspective.
 
-Recreate them as stylized Pixar-style 3D CGI humans matching the exact cinematic visual style of the reference image.
+EXPRESSION: Man — confident playful smirk. Woman — cheerful, slightly mischievous smile.
 
-Generate fully reconstructed human characters naturally integrated into the scene.
+LIGHTING: Colorful nightclub lighting — magenta, purple, blue tones, mixed ambient sources, color reflections on skin. Match light direction, atmosphere, cinematic contrast, depth of field, film grain. Faces fully inherit scene lighting.
 
----
+SCENE: Do NOT change environment, background characters, or composition. Only replace characters.
 
-PRIORITY ORDER (STRICT):
+HANDS: Exactly five fingers, correct anatomy, natural placement. Man holds smartphone in proper selfie grip.`;
 
-1) Identity from uploaded photos  
-2) Original pose and composition  
-3) Lighting and visual style  
+const TANGLED_1 = `Use the reference image as a scene template only. Replace both original characters completely — ignore their faces, proportions, and identity entirely.
 
----
+REPLACEMENT:
+— man from uploaded male photo → left position
+— woman from uploaded female photo → right position
+Rebuild them from scratch using only the uploaded photos.
 
-IDENTITY (CRITICAL):
+IDENTITY: Facial proportions, bone structure, eye shape, nose, lips, jawline, skin tone, hairstyle, hair color and length.
 
-Preserve identity with high accuracy:
+POSE (ABSOLUTE):
+— man (left) holding the woman closely
+— woman (right) leaning into the man, faces very close, strong eye contact
+— woman looking up, man looking down, bodies chest-to-chest
+Do NOT change angle, framing, or positioning.
 
-— facial structure and proportions  
-— eye shape, eyebrows, eyelids  
-— nose shape  
-— lips and jawline  
-— skin tone adapted to scene lighting  
-— hairstyle, hair color, and hair length  
+STYLE: Pixar/Disney 3D CGI, fully reconstructed characters.
 
-Do NOT:
-— genericize faces  
-— mix identities  
-— stylize away identity  
+LIGHTING: Warm golden lantern light, soft glow from multiple sources, visible lantern reflections. Faces inherit scene lighting.
 
----
+HANDS: Human, exactly five fingers, correct anatomy, natural grip.`;
 
-BODY & PROPORTIONS (CRITICAL):
+const TANGLED_2 = `Use the reference image as a scene template only. Replace both original characters completely — ignore their faces, proportions, and identity entirely.
 
-The fox and rabbit are ONLY pose references.
-
-Both characters must be fully human with realistic human anatomy.
-
-Remove all animal features:
-— paws
-— fur
-— tails
-— whiskers
-— animal ears
-— animal limbs
-
-The woman must have full realistic adult human proportions.
-
-She must NOT be:
-— tiny
-— shortened
-— compressed
-— scaled down compared to the man
-
-The man and woman must have natural proportional adult human height relative to each other.
-
-The woman must be standing naturally with fully human legs and realistic feminine body proportions.
-
-The man must have two fully human arms and two fully human hands with exactly five fingers on each hand.
-
-The left arm wrapped around the woman must also be fully human with realistic anatomy and a realistic human hand.
-
-No paws.
-No claws.
-No extra fingers.
-No missing fingers.
-No animal anatomy.
-
----
-
-POSE & COMPOSITION (STRICT):
-
-Man:
-— raised arm holding a phone in selfie position  
-— slight head tilt toward the woman  
-— relaxed confident posture  
-
-Woman:
-— standing naturally close to the man  
-— slight lean toward him  
-
-Preserve:
-— selfie composition  
-— camera angle  
-— framing and crop  
-— perspective  
-— depth  
-
-Do NOT change composition or camera perspective.
-
----
-
-EXPRESSION:
-
-Man:
-— confident playful smirk  
-
-Woman:
-— cheerful slightly mischievous smile  
-
----
-
-LIGHTING & COLOR:
-
-Match the original scene lighting:
-
-— colorful nightclub lighting  
-— magenta, purple, and blue tones  
-— mixed ambient lighting  
-— realistic color reflections on skin  
-
-Preserve:
-— light direction  
-— atmosphere  
-— cinematic contrast  
-— depth of field  
-— film grain  
-
-Faces and bodies must fully inherit scene lighting.
-
----
-
-SCENE LOCK:
-
-Do NOT change:
-— environment  
-— background characters  
-— lighting setup  
-— composition  
-
-Only replace the characters.
-
----
-
-INTEGRATION:
-
-Rebuild the characters naturally inside the original positions with correct perspective and depth.
-
-Ensure seamless cinematic integration.
-
-No pasted faces.
-No furry anatomy.
-No animal limbs.
-No face swap artifacts.
-
----
-
-FINAL:
-
-A high-quality Pixar-style 3D CGI cinematic image of two fully human characters based on the uploaded photos, with realistic human anatomy, proportional body sizes, correct human hands and legs, accurate identity, cinematic lighting, and stable composition.`;
-
-const TANGLED_1 = `Use the provided reference image and separately uploaded photos of the man and the woman.
-
-Treat the reference image as a scene template ONLY (composition, pose, lighting).
-
-CRITICAL RULE:
-The original characters must NOT be used as identity source in any way.
-
-Do NOT use:
-— their faces
-— their head shapes
-— their facial proportions
-— their skin tones
-— any part of their identity
-
-They must be completely ignored.
-
----
-
-FULL CHARACTER REPLACEMENT (ABSOLUTE):
-
-Replace both characters completely:
-
+REPLACEMENT:
 — man from uploaded male photo → left position
 — woman from uploaded female photo → right position
 
-Rebuild them as entirely new people based ONLY on uploaded identity images.
+IDENTITY: Facial structure, features, proportions, hair, skin tone — clearly recognizable from uploaded photos.
 
-Do NOT reuse or preserve any original character features.
-
----
-
-STRICT IDENTITY PRESERVATION (ENHANCED):
-
-Faces must remain highly recognizable:
-— exact facial proportions and bone structure
-— eye shape, spacing, eyelids, eyebrows
-— nose shape and bridge
-— lip shape and mouth width
-— jawline and chin
-— natural skin tone adapted to scene lighting
-— hairstyle, hair color, and hair length
-
----
-
-CRITICAL POSE LOCK (ABSOLUTE):
-
-— man (left) holding the woman closely
-— woman (right) leaning into the man
-— faces very close with strong eye contact
-— woman looking up toward the man
-— man looking down toward the woman
-— bodies positioned chest-to-chest
-
-Do NOT change angle, framing, or positioning.
-
----
-
-CRITICAL STYLE:
-
-Recreate characters in Pixar/Disney 3D CGI style.
-NOT as pasted faces — fully reconstructed characters.
-
----
-
-CRITICAL LIGHTING:
-
-— warm golden lantern lighting
-— soft glow from multiple sources
-— visible reflections from lanterns
-
-Faces must inherit scene lighting, not neutral.
-
----
-
-CRITICAL HANDS:
-
-All hands must be human:
-— exactly five fingers
-— correct anatomy
-— natural grip
-— no deformation
-
----
-
-FINAL:
-
-Same romantic lantern scene, but original characters fully removed and replaced with new identities from uploaded photos.`;
-
-const TANGLED_2 = `Use the provided reference image and separately uploaded photos of the man and the woman.
-
-Treat the reference image as a scene template ONLY.
-
-CRITICAL RULE:
-The original characters must be completely ignored.
-
-Do NOT use:
-— their faces
-— their head shapes
-— their proportions
-— any identity information
-
----
-
-FULL CHARACTER REPLACEMENT:
-
-Insert entirely new people:
-
-— man from uploaded male photo → left
-— woman from uploaded female photo → right
-
-Rebuild them from scratch.
-
----
-
-STRICT IDENTITY PRESERVATION:
-
-Faces must clearly match uploaded photos:
-— facial structure
-— features
-— proportions
-— hair
-— skin tone
-
----
-
-CRITICAL POSE LOCK:
-
+POSE:
 — man sitting relaxed, slightly turned toward the woman
-— woman leaning forward with chin resting on both hands
+— woman leaning forward, chin resting on both hands
 — strong eye contact between them
-
 Do NOT change posture or positioning.
 
----
+LIGHTING: Dark environment with warm fire light. Strong shadows — but keep faces visible (reduce shadow on faces only to keep identity readable).
 
-CRITICAL LIGHTING:
+STYLE: Pixar/Disney 3D CGI, fully reconstructed characters.
 
-— dark environment with warm fire light
-— strong shadows present
+HANDS: Exactly five fingers, correct anatomy, natural chin-support position.`;
 
-IMPORTANT:
-Faces must remain visible:
-— slightly reduce shadow on faces only
-— keep identity readable
+const TANGLED_3 = `Use the reference image as a composition and pose template only. Replace both original characters completely — ignore their faces, body shapes, and identity entirely.
 
----
+REPLACEMENT:
+— man → left position
+— woman → right position
+Using only uploaded identity photos.
 
-CRITICAL STYLE:
+IDENTITY: Facial structure, proportions, features, skin tone, hair.
 
-Pixar/Disney 3D CGI characters, fully reconstructed.
-
----
-
-CRITICAL HANDS:
-
-— exactly five fingers
-— correct anatomy
-— proper chin support position
-
----
-
-FINAL:
-
-Same intimate night scene, but original characters completely replaced with new identities.`;
-
-const TANGLED_3 = `Use the provided reference image and separately uploaded photos of the man and the woman.
-
-Treat the reference image as a composition and pose template ONLY.
-
-CRITICAL RULE:
-The original characters must NOT be used in any way.
-
-Do NOT use:
-— faces
-— body shapes
-— proportions
-— identity elements
-
-They must be treated as non-existent.
-
----
-
-FULL CHARACTER REPLACEMENT:
-
-Create new people:
-
-— man → left
-— woman → right
-
-Using ONLY uploaded identity photos.
-
----
-
-STRICT IDENTITY PRESERVATION:
-
-Preserve:
-— facial structure
-— proportions
-— features
-— skin tone
-— hair
-
----
-
-CRITICAL POSE LOCK:
-
-— man leading the movement, slightly leaning forward
-— holding the woman's hand
-— woman extending arm toward him
-— maintaining natural dance spacing
-
+POSE:
+— man leading the movement, slightly leaning forward, holding the woman's hand
+— woman extending arm toward him, natural dance spacing
 Do NOT change interaction or gesture.
 
----
+SCENE: Keep crowd, architecture, perspective, and framing unchanged.
 
-CRITICAL SCENE LOCK:
+LIGHTING: Natural daylight, soft shadows, consistent color temperature. Faces match scene lighting.
 
-Keep:
-— crowd
-— architecture
-— perspective
-— framing
+STYLE: Pixar/Disney CGI, fully reconstructed characters.
 
----
+HANDS: Exactly five fingers, correct anatomy, natural hand interaction.`;
 
-CRITICAL LIGHTING:
+const CINDERELLA_PROMPT = `Replace the characters using the uploaded photos. Perform identity replacement only — do NOT alter scene composition, pose, camera, or environment.
 
-— natural daylight
-— soft shadows
-— consistent color temperature
+PRIORITY: 1) Identity from uploaded photos  2) Original scene geometry  3) Style adaptation
 
-Faces must match scene lighting.
+IDENTITY (HARD CONSTRAINT):
+— female character → woman from uploaded female photo
+— male character → man from uploaded male photo
+Preserve exactly: facial structure, proportions, age, skin tone, eyes, nose, lips, bone structure, hairline, hair color, length, and shape.
+Do NOT beautify, stylize, or generate new faces. Uploaded photos are the only identity source.
 
----
+SCENE LOCK: Do NOT change composition, pose, camera, outfits, or background. Allow minimal lighting and shadow adaptation on faces only for natural integration.
 
-CRITICAL STYLE:
+FACE INTEGRATION:
+Reconstruct faces naturally within the original head geometry — do NOT paste or overlay.
+Match exact head orientation, perspective, depth, lighting direction, shadow falloff, focus, and motion blur from the reference.
 
-Pixar/Disney CGI, fully reconstructed characters.
+OCCLUSION: Respect original occlusion (hair, objects, blur). Reconstruct only visible parts based on identity images.
 
----
+STYLE: Match the reference style automatically. Adapt identity into that style while preserving recognizability.
 
-CRITICAL HANDS:
+ANATOMY: Keep original body anatomy. Hands natural, 5 fingers, no deformation.
 
-— exactly five fingers
-— correct anatomy
-— natural interaction
-
----
-
-FINAL:
-
-Same dance scene, but with completely new characters replacing the originals.`;
-
-const CINDERELLA_PROMPT = `Use the reference scene image as the absolute base. Perform ONLY character identity replacement.
-
-PRIORITY ORDER (STRICT):
-1) Identity from uploaded photos
-2) Original scene geometry and composition
-3) Style adaptation
-
-IDENTITY TRANSFER (HARD CONSTRAINT):
-Replace characters using uploaded photos only:
-- female character → woman from female photo
-- male character → man from male photo
-
-Preserve identity EXACTLY 1:1:
-- facial structure, proportions, age
-- skin tone and texture
-- eyes, nose, lips, bone structure
-- hairline, hair color, length, and shape
-
-Do NOT:
-- beautify or enhance faces
-- stylize or reinterpret identity
-- mix identities
-- generate new faces
-
-Uploaded photos are the single source of truth.
-
----
-
-SCENE LOCK (CONTROLLED):
-
-Do NOT change scene composition, pose, camera, or environment.
-
-HOWEVER:
-Allow minimal local adjustments to lighting, shadows, skin tone, and color on the face ONLY, to match the scene lighting and ensure natural integration.
-
----
-
-NO MODIFICATIONS:
-- no pose changes
-- no camera changes
-- no composition changes
-- no added or removed elements
-- no outfit or styling changes
-- no background alterations
-
----
-
-FACE INTEGRATION (CRITICAL):
-
-Do NOT paste or overlay faces.
-
-Reconstruct faces naturally within the original head geometry.
-
-Faces must match:
-- exact head orientation from the reference
-- original perspective and depth
-- original lighting direction and shadow falloff
-- original focus and motion blur
-
-The face must be fully integrated into the scene lighting, not appear flat or separately lit.
-
----
-
-VISIBILITY & OCCLUSION:
-
-Respect occlusion from the original scene (hair, objects, motion blur).
-
-Reconstruct the visible parts of the face based on the identity images.
-
-Do NOT leave original facial features even if partially occluded.
-
----
-
-STYLE MATCH:
-
-Match the original reference style automatically (photorealistic or animated).
-Adapt identity into that style while preserving recognizability.
-
----
-
-ANATOMY CONSISTENCY:
-
-Keep original body anatomy unchanged.
-Hands must be natural, 5 fingers, no deformation.
-
----
-
-OUTPUT:
-
-Identical scene in composition and structure.
-
-Only identities are replaced.
-
-Faces must be seamlessly integrated with correct lighting, shadows, depth, and texture — no flat or pasted appearance.`;
+OUTPUT: Identical scene, only identities replaced. Faces seamlessly integrated with correct lighting, shadows, depth, and texture.`;
 
 const EUPHORIA_1 = `Use the reference image as a composition and scene template.
 
-Completely remove the two original main characters from the scene before generation.
+Erase the two original people completely. They are nonexistent — do NOT preserve, reuse, blend, or inherit anything from them: not their faces, bodies, anatomy, proportions, or silhouettes.
 
-The original people must be treated as fully nonexistent and permanently discarded.
+Their positions are empty slots. Fill them with the people from the uploaded photos.
 
-Forget the original actors completely.
+GENERATION:
+— woman slot → generate from uploaded female photo
+— man slot → generate from uploaded male photo
+Uploaded photos are the only source of identity and appearance.
 
-Do NOT preserve, reuse, transform, edit, blend, or inherit ANY part of the original people:
-— faces
-— heads
-— bodies
-— anatomy
-— facial structure
-— skin
-— proportions
-— silhouettes
-— identity
-— facial geometry
+Do NOT face-swap. Do NOT place new faces onto original bodies. Fully recreate each person — face, body, head, anatomy, proportions, silhouette, skin, hair.
 
-Absolutely nothing from the original actors may remain visible in the final image.
+PLACEMENT: Same location, scale, depth, and perspective as the originals. Preserve environment, composition, camera angle, spacing, and cinematic atmosphere.
 
-Treat their positions as EMPTY SLOTS that must be filled with completely new people from the uploaded photos.
+IDENTITY: Preserve from uploaded photos — facial structure, eyes, nose, lips, skin tone, hair, proportions. Must remain clearly recognizable.
 
----
-
-CHARACTER GENERATION (STRICT):
-
-Generate completely new realistic people using ONLY the uploaded identity photos:
-
-— the woman in the scene → generate from uploaded female photo  
-— the man in the scene → generate from uploaded male photo  
-
-The uploaded photos are the ONLY source of identity and appearance information.
-
-Do NOT perform face swap.
-Do NOT place new faces onto original bodies.
-Do NOT morph existing actors.
-Do NOT blend identities.
-
-Do NOT transfer ONLY the faces.
-
-Instead, fully recreate the ENTIRE people from the uploaded photos:
-— full face
-— full head
-— full body
-— anatomy
-— proportions
-— silhouette
-— skin
-— hair
-
-The final people must look like they were naturally photographed in the scene from the beginning.
-
----
-
-EMPTY SLOT PLACEMENT:
-
-Place the generated people into the same positions where the original people were:
-
-— same location in frame  
-— same scale  
-— same depth  
-— same perspective  
-
-Preserve only:
-— environment
-— composition
-— camera angle
-— framing
-— body positioning
-— spacing between people
-— cinematic atmosphere
-
----
-
-IDENTITY (CRITICAL):
-
-Preserve the real appearance from uploaded photos:
-
-— facial structure  
-— eyes  
-— nose  
-— lips  
-— skin tone  
-— hair  
-— proportions  
-
-Identity must remain clearly recognizable.
-
----
-
-LIGHTING & INTEGRATION:
-
-Fully and realistically adapt the generated people to the cinematic environment:
-
-— match lighting direction  
-— match realistic shadows  
-— match color grading  
-— match depth of field  
-— match film grain  
-— match low-light skin shading  
-— match lens softness  
-
-The generated people must look physically present in the environment.
-
-The result must NOT look pasted, composited, face-swapped, or AI-generated.
-
----
-
-FINAL:
-
-A fully reconstructed cinematic image where the original actors are completely erased and forgotten, and entirely new people from the uploaded photos are naturally generated into the same scene.`;
+LIGHTING: Match lighting direction, shadows, color grading, depth of field, film grain, low-light skin shading, lens softness. People must look physically present. Result must NOT look pasted, composited, or face-swapped.`;
 
 const EUPHORIA_2 = `Use the reference image as a composition and scene template.
 
-Completely remove all original people from the scene.
-Treat their positions as EMPTY SLOTS that must be filled with new characters.
+Erase all original people. Their positions are empty slots — fill them with the people from the uploaded photos.
 
----
+REPLACEMENT:
+— woman slot → woman from uploaded female photo
+— man slot → man from uploaded male photo
+Do NOT swap genders or roles.
 
-CHARACTER REPLACEMENT (STRICT):
+RECONSTRUCTION: Rebuild each person fully — full body, face, proportions, silhouette. Do NOT face-swap or blend with original characters.
 
-Replace characters using the uploaded identity photos:
+IDENTITY: Preserve facial structure, features, skin tone, hair, proportions. Must remain recognizable.
 
-— the woman in the scene → replace with the woman from the uploaded female photo  
-— the man in the scene → replace with the man from the uploaded male photo  
+CLOTHING: Adapt naturally to the scene — match style and environment.
 
-Gender must match exactly. Do NOT swap roles.
+POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, framing. Match placement, not original anatomy.
 
----
-
-EMPTY SLOT PLACEMENT (CRITICAL):
-
-The original characters must be considered non-existent.
-
-Place the new people into the exact same spatial positions where the original people were:
-
-— same location in frame  
-— same scale  
-— same depth  
-— same perspective  
-
-Do NOT reuse any part of the original bodies.
-
----
-
-FULL RECONSTRUCTION:
-
-Rebuild each person completely from the identity images:
-
-— full body  
-— face  
-— proportions  
-— silhouette  
-
-Do NOT perform face swap.
-Do NOT mix identities.
-Do NOT blend with original characters.
-
----
-
-IDENTITY (CRITICAL):
-
-Preserve the real appearance from uploaded photos:
-
-— facial structure  
-— features (eyes, nose, lips)  
-— proportions  
-— skin tone  
-— hair  
-
-Identity must remain clearly recognizable.
-
----
-
-CLOTHING ADAPTATION (IMPORTANT):
-
-Clothing should be adapted to fit the scene naturally:
-
-— keep general style consistent with the scene  
-— allow changes in clothing details if needed  
-— avoid exact copying of the original outfit  
-— avoid mismatch with environment or lighting  
-
-The result must feel like the person belongs in this scene.
-
----
-
-POSE & COMPOSITION (STRICT):
-
-Preserve:
-— camera angle  
-— pose structure  
-— body orientation  
-— spacing between people  
-— framing and crop  
-
-Important:
-Match pose and placement, NOT original anatomy or identity.
-
----
-
-LIGHTING & INTEGRATION (CRITICAL):
-
-Fully integrate the new people into the scene:
-
-— match lighting direction  
-— match shadows  
-— match color grading  
-— match depth of field  
-— match noise / grain  
-
-Faces and bodies must inherit scene lighting.
-
-The result must NOT look pasted or composited.
-
----
-
-FINAL:
-
-A fully reconstructed scene where original people are completely removed and replaced by new individuals from uploaded photos, naturally integrated into the environment, with correct pose, lighting, and composition.`;
+LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
 const EUPHORIA_3 = `Use the reference image as a composition and scene template.
 
-Completely remove all original people from the scene.
-Treat their positions as EMPTY SLOTS that must be filled with new characters.
+Erase all original people. Their positions are empty slots — fill them with the people from the uploaded photos.
 
----
+REPLACEMENT:
+— woman slot → woman from uploaded female photo
+— man slot → man from uploaded male photo
+Do NOT swap genders or roles.
 
-CHARACTER REPLACEMENT (STRICT):
+RECONSTRUCTION: Rebuild each person fully — full body, face, proportions, silhouette. Do NOT face-swap or blend with original characters.
 
-Replace characters using the uploaded identity photos:
+IDENTITY: Preserve facial structure, features, skin tone, hair, proportions. Must remain recognizable.
 
-— the woman in the scene → replace with the woman from the uploaded female photo  
-— the man in the scene → replace with the man from the uploaded male photo  
+CLOTHING: Adapt naturally to the scene — match style and environment.
 
-Gender must match exactly. Do NOT swap roles.
+POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, framing. Match placement, not original anatomy.
 
----
+LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-EMPTY SLOT PLACEMENT (CRITICAL):
+const TITANIC_1 = `Use the reference image as a cinematic scene template. Erase the original couple completely — they are nonexistent.
 
-The original characters must be considered non-existent.
-
-Place the new people into the exact same spatial positions where the original people were:
-
-— same location in frame  
-— same scale  
-— same depth  
-— same perspective  
-
-Do NOT reuse any part of the original bodies.
-
----
-
-FULL RECONSTRUCTION:
-
-Rebuild each person completely from the identity images:
-
-— full body  
-— face  
-— proportions  
-— silhouette  
-
-Do NOT perform face swap.
-Do NOT mix identities.
-Do NOT blend with original characters.
-
----
-
-IDENTITY (CRITICAL):
-
-Preserve the real appearance from uploaded photos:
-
-— facial structure  
-— features (eyes, nose, lips)  
-— proportions  
-— skin tone  
-— hair  
-
-Identity must remain clearly recognizable.
-
----
-
-CLOTHING ADAPTATION (IMPORTANT):
-
-Clothing should be adapted to fit the scene naturally:
-
-— keep general style consistent with the scene  
-— allow changes in clothing details if needed  
-— avoid exact copying of the original outfit  
-— avoid mismatch with environment or lighting  
-
-The result must feel like the person belongs in this scene.
-
----
-
-POSE & COMPOSITION (STRICT):
-
-Preserve:
-— camera angle  
-— pose structure  
-— body orientation  
-— spacing between people  
-— framing and crop  
-
-Important:
-Match pose and placement, NOT original anatomy or identity.
-
----
-
-LIGHTING & INTEGRATION (CRITICAL):
-
-Fully integrate the new people into the scene:
-
-— match lighting direction  
-— match shadows  
-— match color grading  
-— match depth of field  
-— match noise / grain  
-
-Faces and bodies must inherit scene lighting.
-
-The result must NOT look pasted or composited.
-
----
-
-FINAL:
-
-A fully reconstructed scene where original people are completely removed and replaced by new individuals from uploaded photos, naturally integrated into the environment, with correct pose, lighting, and composition.`;
-
-const TITANIC_1 = `Use the reference image as a composition and cinematic scene template.
-
-Completely remove all original people from the scene.
-Treat their positions as EMPTY SLOTS that must be filled with new characters.
-
----
-
-CHARACTER REPLACEMENT (STRICT):
-
-Replace characters using the uploaded identity photos:
-
-— the woman at the front of the ship → replace with the woman from the uploaded female photo  
-— the man standing behind her → replace with the man from the uploaded male photo  
-
-Gender must match exactly.
+REPLACEMENT:
+— woman at the ship's bow (arms extended) → woman from uploaded female photo
+— man standing behind her → man from uploaded male photo
 Do NOT swap roles.
 
----
-
-EMPTY SLOT PLACEMENT (CRITICAL):
-
-The original characters must be considered fully non-existent.
-
-Place the new people into the exact same spatial positions where the original people were:
-
-Woman:
-— standing at the front railing
-— arms fully extended outward
-— body leaning slightly forward
-— same location in frame
-— same scale
-— same depth
-— same perspective
-
-Man:
-— standing directly behind the woman
-— body positioned closely behind her
-— same location in frame
-— same scale
-— same depth
-— same perspective
-
+PLACEMENT:
+Woman: standing at front railing, arms fully extended outward, body slightly forward, same frame position, scale, depth, perspective.
+Man: standing directly and closely behind the woman, same frame position, scale, depth.
 Do NOT reuse any part of the original bodies.
 
----
+RECONSTRUCTION: Rebuild each person fully — face, head, body, arms, hands, proportions, silhouette. Do NOT face-swap or mix identities.
 
-FULL RECONSTRUCTION:
+IDENTITY: Preserve from uploaded photos — facial structure, eyes, nose, lips, jawline, skin tone, hair. Clearly recognizable.
 
-Rebuild each person completely from the uploaded identity images:
+BODY: Realistic adult human proportions. Woman must NOT be shortened or compressed. Woman's extended arms must be anatomically correct. Man must have two fully human arms and hands with exactly five fingers each. No distorted anatomy.
 
-— full body
-— face
-— head
-— arms
-— hands
-— proportions
-— silhouette
+CLOTHING: Elegant romantic aesthetic, flowing fabric, realistic cloth folds, cinematic realism. Adapt naturally to the Titanic atmosphere.
 
-Do NOT perform face swap.
-Do NOT mix identities.
-Do NOT blend with original characters.
-Do NOT place new faces onto original bodies.
+POSE: Preserve iconic Titanic pose — woman arms extended, man closely behind, camera angle, body orientation, spacing, framing, ship railing perspective.
 
-Generate completely new realistic people naturally occupying the scene.
+LIGHTING: Warm sunset lighting, golden-hour shadows, atmospheric haze, cinematic color grading, depth of field, film grain, realistic sunset skin shading. Faces fully inherit scene lighting. Result must NOT look pasted or AI-generated.`;
 
----
+const TITANIC_2 = `Use the reference image as a cinematic scene template. Erase the original couple completely — they are nonexistent.
 
-IDENTITY (CRITICAL):
+REPLACEMENT:
+— woman in the scene → woman from uploaded female photo
+— man in the scene → man from uploaded male photo
+Do NOT swap roles.
 
-Preserve the real appearance from uploaded photos:
+PLACEMENT: Place each new person into the exact spatial position of the original — same location, scale, depth, perspective.
 
-— facial structure
-— eyes
-— nose
-— lips
-— jawline
-— proportions
-— skin tone
-— hair
+RECONSTRUCTION: Rebuild each person fully — face, body, proportions, silhouette. Do NOT face-swap or blend with original characters.
 
-Identity must remain clearly recognizable.
+IDENTITY: Preserve from uploaded photos — facial structure, features, skin tone, hair, proportions. Clearly recognizable.
 
----
+CLOTHING: Adapt naturally to the cinematic scene atmosphere.
 
-BODY & PROPORTIONS (CRITICAL):
+POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, framing.
 
-The woman must have full realistic adult human proportions.
+LIGHTING: Match cinematic lighting, shadows, color grading, depth of field, film grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-She must NOT be:
-— tiny
-— shortened
-— compressed
-— scaled down compared to the man
+const TITANIC_3 = `Use the reference image as a cinematic scene template. Erase the original couple completely — they are nonexistent.
 
-The couple must have natural proportional adult human scale relative to each other.
+REPLACEMENT:
+— woman in the scene → woman from uploaded female photo
+— man in the scene → man from uploaded male photo
+Do NOT swap roles.
 
-The woman’s extended arms must remain fully human and anatomically correct.
+PLACEMENT: Place each new person into the exact spatial position of the original — same location, scale, depth, perspective.
 
-The man must have:
-— two fully human arms
-— two fully human hands
-— exactly five fingers on each hand
+RECONSTRUCTION: Rebuild each person fully — face, body, proportions, silhouette. Do NOT face-swap or blend with original characters.
 
-No:
-— extra fingers
-— missing fingers
-— distorted anatomy
-— broken arms
-— unrealistic body proportions
+IDENTITY: Preserve from uploaded photos — facial structure, features, skin tone, hair, proportions. Clearly recognizable.
 
----
+CLOTHING: Adapt naturally to the cinematic scene atmosphere.
 
-CLOTHING ADAPTATION (IMPORTANT):
+POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, framing.
 
-Clothing should be adapted naturally to fit the cinematic Titanic-style scene:
-
-— elegant romantic aesthetic
-— flowing fabric movement
-— realistic cloth folds
-— cinematic realism
-
-Allow natural clothing adaptation while preserving the atmosphere of the scene.
-
----
-
-POSE & COMPOSITION (STRICT):
-
-Preserve:
-— iconic Titanic pose
-— woman with arms fully extended
-— man standing closely behind her
-— camera angle
-— body orientation
-— spacing between people
-— framing and crop
-— ship railing perspective
-
-Important:
-Match pose and placement, NOT original anatomy or identity.
-
----
-
-LIGHTING & INTEGRATION (CRITICAL):
-
-Fully integrate the new people into the cinematic environment:
-
-— match warm sunset lighting
-— match golden-hour shadows
-— match atmospheric haze
-— match cinematic color grading
-— match depth of field
-— match film grain
-— match realistic sunset skin shading
-
-Faces and bodies must fully inherit scene lighting.
-
-The result must NOT look pasted, composited, or AI-generated.
-
----
-
-FINAL:
-
-A fully reconstructed cinematic Titanic-style scene where the original couple is completely removed and replaced by new realistic people from uploaded photos, naturally integrated into the environment with correct pose, accurate identity, realistic anatomy, sunset lighting, and cinematic composition.`;
-
-const TITANIC_2 = ``;
-
-const TITANIC_3 = ``;
+LIGHTING: Match cinematic lighting, shadows, color grading, depth of field, film grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
@@ -1216,13 +320,15 @@ const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
   "cinderella-1": { locked: true, prompt: CINDERELLA_PROMPT },
   "cinderella-2": { locked: true, prompt: CINDERELLA_PROMPT },
   "cinderella-3": { locked: true, prompt: CINDERELLA_PROMPT },
-  // ── Default styles ──
+  // ── Euphoria ──
   "euphoria-1": { locked: true, prompt: EUPHORIA_1 },
   "euphoria-2": { locked: true, prompt: EUPHORIA_2 },
   "euphoria-3": { locked: true, prompt: EUPHORIA_3 },
+  // ── Titanic ──
   "titanic-1": { locked: true, prompt: TITANIC_1 },
   "titanic-2": { locked: true, prompt: TITANIC_2 },
   "titanic-3": { locked: true, prompt: TITANIC_3 },
+  // ── Universal styles ──
   "spiderman-1": { locked: false },
   "spiderman-2": { locked: false },
   "spiderman-3": { locked: false },
@@ -1264,7 +370,7 @@ async function fileToDataUrl(file: File): Promise<string> {
   return `data:${mime};base64,${b64}`;
 }
 
-const IMAGE_SIZE_LIMIT_BYTES = 6 * 1024 * 1024; // 6MB hard limit (model max is 7MB)
+const IMAGE_SIZE_LIMIT_BYTES = 6 * 1024 * 1024; // 6MB hard limit
 
 function base64ByteSize(dataUrl: string): number {
   const commaIdx = dataUrl.indexOf(",");
@@ -1490,7 +596,6 @@ Deno.serve(async (req: Request) => {
       const replicateApiKey = Deno.env.get("REPLICATE_API_KEY");
       if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
 
-
       // ── IMAGE ROLE MAPPING ──
       const manCount = hasMan2 ? 2 : 1;
       const womanCount = hasWoman2 ? 2 : 1;
@@ -1527,8 +632,6 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
         ? roleMappingBlock + "\n\n" + config.prompt
         : roleMappingBlock + "\n\n" + UNIVERSAL_PROMPT;
 
-      console.log("[PROMPT] locked=" + config.locked + " ref=" + referenceId + " final_len=" + finalPrompt.length);
-
       // ── Build image array ──
       const personDataUrls = await Promise.all([
         fileToDataUrl(person1),
@@ -1557,15 +660,21 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
         mime: img.startsWith("data:") ? img.substring(5, img.indexOf(";")) : "unknown",
         bytes: base64ByteSize(img),
       }));
-      console.log("[MODEL INPUT]", JSON.stringify({
+
+      // ── Debug logging ──
+      console.log("[MODEL]", MODEL_NAME);
+      console.log("[REFERENCE_ID]", referenceId);
+      console.log("[INPUT_IMAGES]", images.length);
+      console.log("[PROMPT_SOURCE]", config.locked ? "locked" : "universal");
+      console.log("[PROMPT_LENGTH]", finalPrompt.length);
+      console.log("[IMAGE_SUMMARY]", JSON.stringify(imageSummary));
+      console.log("[TOTAL_MB]", (imageSummary.reduce((s, x) => s + x.bytes, 0) / 1024 / 1024).toFixed(2));
+      console.log("[REQUEST_BODY_SHAPE]", JSON.stringify({
         model: MODEL_NAME,
-        version: MODEL_VERSION,
-        referenceId,
-        promptSource: config.locked ? "locked" : "universal",
-        promptLength: finalPrompt.length,
-        imageCount: images.length,
-        images: imageSummary,
-        totalMB: (imageSummary.reduce((s, x) => s + x.bytes, 0) / 1024 / 1024).toFixed(2),
+        input: {
+          image_input: `[${images.length} base64 data URLs]`,
+          prompt: `[${finalPrompt.length} chars]`,
+        },
       }));
 
       // ── Create prediction WITHOUT waiting for it to complete ──
@@ -1576,8 +685,11 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          version: MODEL_VERSION,
-          input: { prompt: finalPrompt, image_input: images },
+          model: MODEL_NAME,
+          input: {
+            prompt: finalPrompt,
+            image_input: images,
+          },
         }),
       });
 
