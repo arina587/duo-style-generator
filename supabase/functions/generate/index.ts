@@ -358,7 +358,7 @@ CRITICAL HANDS:
 
 FINAL:
 
-Same dance scene, but with completely new characters replacing the original`
+Same dance scene, but with completely new characters replacing the originals.`
 
 const CINDERELLA_PROMPT = `Use the original scene image as the base.
 
@@ -525,37 +525,27 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Replace the original characters in this Titanic movie scene with the provided reference people.
-
-Preserve:
-- exact body pose and interaction
-- original camera angle and framing
-- cinematic Titanic sunset lighting
-- ship deck environment and background
-- movie-style color grading
-- realistic wet hair and natural fabric folds
-- emotional facial expression and eye direction
-
-Keep the scene looking like a real frame from the 1997 Titanic film.
-Ultra photorealistic skin texture, natural anatomy, realistic proportions,
-35mm cinematic film look, soft cinematic contrast, highly detailed faces.
-
-Do not alter:
-- background
-- ship structure
-- composition
-- perspective
-- lighting direction
-
-Blend the new people naturally into the original movie scene.
-Make the result indistinguishable from an authentic film still.
-
+const TITANIC_1 = `Use the reference image only as a cinematic scene and composition template.
+Remove all original characters completely and replace them with the people from the uploaded reference photos.
+— female character → woman from uploaded female photo
+— male character → man from uploaded male photo
+Rebuild both people entirely from scratch using the uploaded references:
+full body, face, proportions, silhouette, skin tone, hair, facial structure.
+Do not preserve or inherit any features from the original movie characters or actors.
+Do not blend identities.
+The final people must remain fully recognizable as the uploaded individuals.
+Preserve the original:
+— pose
+— body orientation
+— camera angle
+— framing
+— spacing between characters
+— cinematic composition
+Adapt clothing naturally to the Titanic-style cinematic scene while fitting the uploaded people realistically.
+Match the original scene lighting, sunset atmosphere, shadows, depth of field, film grain, and cinematic color grading.
+The result must look like a real photo captured in-camera, not a face swap or AI composite.
 Negative prompt:
-
-low quality, blurry face, distorted anatomy, deformed hands,
-extra fingers, bad eyes, duplicated limbs, cartoon, CGI,
-oversharpen, plastic skin, fake lighting, incorrect proportions,
-warped body, artifacts, bad hair, unrealistic shadows.`;
+No face swap, no identity blending, no resemblance to original actors, no hybrid faces, no deepfake artifacts, no pasted faces, no anatomy distortion, no extra fingers, no warped hands, no incorrect proportions, no lighting mismatch, no low quality faces, no blurry eyes, no CGI look, no AI artifacts, no pose changes, no composition changes, no gender swap, no background distortion.`;
 
 const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
