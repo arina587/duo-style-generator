@@ -1059,7 +1059,7 @@ const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
   "terabithia-3": { locked: false },
   "stranger-things-1": { locked: false },
   "stranger-things-2": { locked: true, prompt: STRANGER_2 },
-  "stranger-things-3": { locked: false },
+  "stranger-things-3": { locked: true, prompt: STRANGER_3 },
   "end-of-the-fucking-world-1": { locked: true, prompt: WORLD_1 },
   "end-of-the-fucking-world-2": { locked: false },
   "end-of-the-fucking-world-3": { locked: false },
