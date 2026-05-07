@@ -480,84 +480,37 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference image ONLY for:
-— composition
-— camera angle
-— pose
-— framing
-— lighting
-— environment
+const TITANIC_1 = `Replace the original characters in this Titanic movie scene with the provided reference people.
 
-DO NOT preserve the original people in any way.
+Preserve:
+- exact body pose and interaction
+- original camera angle and framing
+- cinematic Titanic sunset lighting
+- ship deck environment and background
+- movie-style color grading
+- realistic wet hair and natural fabric folds
+- emotional facial expression and eye direction
 
-FULL CHARACTER REPLACEMENT:
-Delete the original man and woman completely.
-Their bodies, faces, skin, hair, silhouettes, and clothing must NOT remain visible.
+Keep the scene looking like a real frame from the 1997 Titanic film.
+Ultra photorealistic skin texture, natural anatomy, realistic proportions,
+35mm cinematic film look, soft cinematic contrast, highly detailed faces.
 
-Insert entirely new people using ONLY the uploaded reference photos.
+Do not alter:
+- background
+- ship structure
+- composition
+- perspective
+- lighting direction
 
-CASTING:
-— front female character = uploaded female reference
-— rear male character = uploaded male reference
+Blend the new people naturally into the original movie scene.
+Make the result indistinguishable from an authentic film still.
 
-STRICT IDENTITY LOCK:
-The generated people must match the uploaded references, NOT the original Titanic actors.
+Negative prompt:
 
-Preserve from uploaded references:
-— facial anatomy
-— eye shape
-— nose
-— lips
-— jawline
-— hairstyle
-— skin tone
-— body proportions
-— overall recognizable appearance
-
-ABSOLUTE RESTRICTIONS:
-— no face swap
-— no morphing with original actors
-— no blending identities
-— no partial preservation of original faces
-— no traces of Leonardo DiCaprio or Kate Winslet
-— do not resemble the original movie characters
-
-RECONSTRUCTION:
-Generate completely new full bodies and faces from scratch based on uploaded identities.
-
-POSE:
-Keep the exact iconic pose:
-— woman in front with arms extended
-— man behind her
-— same body positioning
-— same camera framing
-— same cinematic perspective
-
-CLOTHING:
-Create realistic Titanic-era clothing adapted to the uploaded people.
-
-LIGHTING:
-Match:
-— golden sunset lighting
-— warm cinematic tones
-— atmospheric haze
-— soft filmic shadows
-— shallow depth of field
-— realistic skin shading
-
-INTEGRATION:
-The result must look like a real photographed movie scene.
-No pasted faces.
-No compositing artifacts.
-No identity leakage from the original actors.
-
-PRIORITY ORDER:
-
-uploaded identities
-pose/composition
-cinematic style
-
-The uploaded reference identities are the highest priority.`;
+low quality, blurry face, distorted anatomy, deformed hands,
+extra fingers, bad eyes, duplicated limbs, cartoon, CGI,
+oversharpen, plastic skin, fake lighting, incorrect proportions,
+warped body, artifacts, bad hair, unrealistic shadows.`;
 
 const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
