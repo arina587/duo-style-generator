@@ -812,35 +812,70 @@ original actors, Leonardo DiCaprio, Kate Winslet, movie characters, face swap, p
 
 const TERABITHIA_1 = `Use the reference image as a composition and scene template.
 
-Erase all original people from the scene. Their positions are empty slots — fill them with the people from the uploaded identity photos.
+Erase all original children from the scene. Their positions are empty slots — fill them with the people from the uploaded identity photos.
 
 CHARACTER REPLACEMENT:
-— woman in the scene → woman from the uploaded female photo
-— man in the scene → man from the uploaded male photo
+— girl on the left holding the dog → woman from the uploaded female identity photo
+— boy on the right → man from the uploaded male identity photo
+
 Gender must match exactly. Do NOT swap roles.
 
 PLACEMENT:
 Place each new person into the exact spatial position of the original:
-— same location, scale, depth, and perspective.
+— same location, body angle, scale, depth, framing, and perspective.
+— preserve the interaction with the dog and the natural overlap between characters.
 
 FULL RECONSTRUCTION:
-Rebuild each person entirely from their identity image — face, body, proportions, silhouette.
-Do NOT face-swap. Do NOT blend with original characters.
+Rebuild each person entirely from their identity image — face, hairstyle, body shape, proportions, silhouette, skin texture.
+Do NOT perform a face swap.
+Do NOT blend facial features with the original children.
 
 IDENTITY:
-Preserve from uploaded photos: facial structure, features, skin tone, hair, proportions.
-Identity must remain clearly recognizable.
+Preserve from uploaded identity photos:
+— facial structure
+— eyes, nose, lips, jawline
+— skin tone
+— hair color and hairstyle
+— recognizable proportions and overall likeness
+
+The final result must clearly resemble the uploaded people.
 
 CLOTHING:
-Adapt clothing naturally to the scene — match the style and environment, avoid mismatched outfits.
+Keep the casual forest/outdoor aesthetic of the original scene.
+Adapt clothing naturally to the environment:
+— lightweight outdoor jackets
+— relaxed casual layers
+— natural fabric folds and realistic fit
+
+Avoid exact replication of original outfits, but preserve similar color balance and visual harmony.
+
+DOG & SCENE:
+Preserve the white fluffy dog exactly as in the original scene.
+Maintain the forest background, trees, depth of field, framing, and natural environment unchanged.
 
 POSE & COMPOSITION:
-Preserve camera angle, pose structure, body orientation, spacing, framing.
-Match pose and placement, NOT original anatomy.
+Preserve:
+— camera angle
+— body orientation
+— hand placement
+— pose structure
+— spacing between subjects
+— overall cinematic composition
+
+Match pose and composition only — not the anatomy of the original children.
 
 LIGHTING & INTEGRATION:
-Fully integrate into the scene — match lighting direction, shadows, color grading, depth of field, grain.
-Faces and bodies must inherit scene lighting. Result must not look pasted or composited.`
+Fully integrate the new people into the scene:
+— match forest daylight lighting
+— soft natural shadows
+— realistic skin shading
+— depth of field
+— lens softness
+— cinematic color grading
+— film-like texture and grain
+
+Faces and bodies must inherit the exact scene lighting and environmental reflections.
+The final image must look like a real photograph captured in-camera, not a pasted composite or AI face swap.`
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
