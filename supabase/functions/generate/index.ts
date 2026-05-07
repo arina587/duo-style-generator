@@ -358,7 +358,7 @@ CRITICAL HANDS:
 
 FINAL:
 
-Same dance scene, but with completely new characters replacing the originals.`
+Same dance scene, but with completely new characters replacing the original`
 
 const CINDERELLA_PROMPT = `Use the original scene image as the base.
 
