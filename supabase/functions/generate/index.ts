@@ -105,41 +105,62 @@ const TANGLED_1 = `Use the reference image as a composition, pose, and stylized 
 Remove the original characters completely and recreate them using the uploaded reference people.
 
 CHARACTERS:
-— left character → person from uploaded male photo
-— right character → person from uploaded female photo
+— left character → exact appearance of the man from the uploaded male photo
+— right character → exact appearance of the woman from the uploaded female photo
 
-Keep the same positions and interaction.
+Preserve their real appearance as accurately as possible:
+— facial structure
+— hairstyle
+— hair color
+— skin tone
+— clothing style
+— recognizable proportions
+— overall likeness
 
 IMPORTANT:
-Recreate both characters entirely as new stylized animated characters.
+Do NOT create generic animated characters.
+
+The reconstructed characters must clearly and immediately resemble the uploaded people while being converted into stylized cinematic 3D animated characters.
 
 Do NOT:
 — paste faces onto existing characters
 — keep original heads or anatomy
 — blend original characters with the new people
-— create face-swap results
+— create face-swap artifacts
+— generate random hairstyles or clothing
 
-Both people must be fully reconstructed:
+FULL CHARACTER RECONSTRUCTION:
+Rebuild each person entirely:
 — full body
 — face
 — head shape
 — hairstyle
-— proportions
+— clothing
 — silhouette
 — posture
-— hands and body anatomy
+— body anatomy
+— hands and proportions
 
-The final characters should clearly resemble the uploaded people while remaining fully stylized animated characters.
+The original characters must be completely removed.
+
+CLOTHING:
+Transfer and adapt the uploaded people’s clothing into the fantasy animated world while preserving:
+— recognizable outfit colors
+— clothing shapes
+— layered clothing details
+— overall fashion identity
+
+Clothing should feel naturally stylized for a cinematic fantasy animation but still clearly belong to the uploaded people.
 
 STYLE:
 High-quality stylized 3D animated movie aesthetic:
 — cinematic rendering
-— expressive eyes
-— stylized skin shading
-— soft global illumination
-— animated hair rendering
-— warm fantasy lighting
-— polished family-film look
+— expressive stylized eyes
+— soft skin shading
+— realistic animated hair
+— stylized but believable anatomy
+— polished animated-film quality
+— warm fantasy atmosphere
 
 INTERACTION:
 Preserve:
@@ -149,6 +170,8 @@ Preserve:
 — body orientation
 — hand placement
 
+The two reconstructed characters must naturally look at each other and feel emotionally connected.
+
 POSE & COMPOSITION:
 Keep:
 — camera angle
@@ -157,23 +180,27 @@ Keep:
 — composition
 — pose structure
 
+Match pose placement only — not original anatomy.
+
 SCENE:
 Preserve:
 — floating lanterns
 — fantasy castle background
 — water reflections
-— warm nighttime atmosphere
-— cinematic lighting
+— nighttime magical atmosphere
+— warm cinematic lighting
 
 LIGHTING:
 Match:
-— glowing lantern light
-— soft shadows
+— glowing lantern illumination
+— soft cinematic shadows
 — atmospheric depth
-— cinematic color grading
 — warm reflections
+— cinematic color grading
 
-The final result should look like a natural stylized animated movie frame with fully recreated characters integrated into the environment.`;
+Faces, hair, skin, and clothing must inherit the exact lighting and mood of the environment.
+
+The final result should look like a genuine stylized animated movie frame featuring recognizable animated versions of the uploaded people fully integrated into the fantasy scene — not a face swap or edited original image.`;
 
 const TANGLED_2 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
