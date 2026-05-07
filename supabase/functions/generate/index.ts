@@ -360,29 +360,74 @@ FINAL:
 
 Same dance scene, but with completely new characters replacing the originals.`
 
-const CINDERELLA_PROMPT = `Replace the characters using the uploaded photos. Perform identity replacement only — do NOT alter scene composition, pose, camera, or environment.
+const CINDERELLA_PROMPT = `Use the original scene image as the base.
 
-PRIORITY: 1) Identity from uploaded photos  2) Original scene geometry  3) Style adaptation
+PRIMARY TASK:
+Replace both character identities using the reference photos.
 
-IDENTITY (HARD CONSTRAINT):
-— female character → woman from uploaded female photo
-— male character → man from uploaded male photo
-Preserve exactly: facial structure, proportions, age, skin tone, eyes, nose, lips, bone structure, hairline, hair color, length, and shape.
-Do NOT beautify, stylize, or generate new faces. Uploaded photos are the only identity source.
+CHARACTER MAPPING:
+- female → woman from female reference
+- male → man from male reference
 
-SCENE LOCK: Do NOT change composition, pose, camera, outfits, or background. Allow minimal lighting and shadow adaptation on faces only for natural integration.
+PRIORITY ORDER:
+1. Identity replacement (highest priority)
+2. Pose, body position, head angle, visibility, interaction
+3. Scene, lighting, camera, background, clothing, style
 
-FACE INTEGRATION:
-Reconstruct faces naturally within the original head geometry — do NOT paste or overlay.
-Match exact head orientation, perspective, depth, lighting direction, shadow falloff, focus, and motion blur from the reference.
+IDENTITY RULES:
+Completely remove the original identities.
+Use only the reference identities.
+Do NOT mix original and new identity.
+Do NOT keep any original facial features, hair identity, or recognizable traits.
 
-OCCLUSION: Respect original occlusion (hair, objects, blur). Reconstruct only visible parts based on identity images.
+Perform full character replacement, not face swapping.
 
-STYLE: Match the reference style automatically. Adapt identity into that style while preserving recognizability.
+SCENE PRESERVATION:
+Keep unchanged:
+- pose and body alignment
+- head angle and face direction
+- camera, framing, perspective
+- lighting, shadows, color grading
+- background and all objects
+- clothing and accessories
 
-ANATOMY: Keep original body anatomy. Hands natural, 5 fingers, no deformation.
+Recreate each person naturally in the same position, adapting identity to fit perspective, lighting, and body.
 
-OUTPUT: Identical scene, only identities replaced. Faces seamlessly integrated with correct lighting, shadows, depth, and texture.`;
+IDENTITY ACCURACY:
+Preserve:
+- facial structure and proportions
+- skin tone and texture
+- eyes, nose, lips, bone structure
+- hair shape, color, length
+Keep the person clearly recognizable.
+
+Do not paste or overlay faces.
+Ensure seamless head–body integration.
+
+STYLE ADAPTATION:
+Match the original style:
+- animated → same stylized/cartoon form
+- realistic → photorealistic detail
+Do not over-stylize.
+
+HEAD ANGLE & VISIBILITY:
+Keep original head angle, direction, and visibility.
+No rotation, no frontalization.
+Do not reveal hidden faces.
+Respect gaze direction and perspective.
+
+ANATOMY:
+Preserve body anatomy.
+Hands: 5 fingers, correct proportions, no distortion.
+
+Respect occlusions (hair, objects, motion blur).
+Do not generate hidden parts.
+
+QUALITY:
+High-resolution, sharp, natural skin texture, correct lighting.
+
+OUTPUT:
+Same scene, same composition — only identities replaced.`;
 
 const EUPHORIA_1 = `Use the reference image as a composition and scene template.
 
