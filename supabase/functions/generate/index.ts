@@ -844,91 +844,41 @@ Faces and bodies must inherit scene lighting. Result must not look pasted or com
 
 const WORLD_1 = `Use the reference image as a composition and scene template.
 
-Erase the original couple from the scene completely. Their positions become empty placeholders to be filled with the people from the uploaded identity photos.
+Erase all original people from the scene. Their positions are empty slots — fill them with the people from the uploaded identity photos.
 
 CHARACTER REPLACEMENT:
-— woman leaning across the chair → woman from the uploaded female identity photo
-— man sitting in the chair → man from the uploaded male identity photo
+— woman reclining across the chair → woman from the uploaded female photo
+— man sitting in the chair → man from the uploaded male photo
 
 Gender must match exactly. Do NOT swap roles.
 
 PLACEMENT:
-Place each new person into the exact spatial position of the originals:
-— same body placement
-— same scale
-— same perspective
-— same depth relative to camera
-— same interaction and physical contact
-
-Preserve the intimate pose:
-— woman’s arm around the man
-— relaxed seated posture
-— head angles and body orientation
+Place each new person into the exact spatial position of the original:
+— same location, scale, depth, body angle, and perspective.
 
 FULL RECONSTRUCTION:
-Rebuild both characters entirely from the uploaded identity photos:
-— face
-— hair
-— body proportions
-— silhouette
-— skin texture
+Rebuild each person entirely from their identity image — face, body, proportions, silhouette.
+Do NOT face-swap. Do NOT blend with original characters.
 
-Do NOT perform face swapping.
-Do NOT blend original facial anatomy with the new identities.
-
-IDENTITY PRESERVATION:
-Maintain:
-— recognizable facial structure
-— eye shape
-— jawline
-— nose and lips
-— skin tone
-— hairstyle and hair color
-— realistic proportions
-
-The result must clearly resemble the uploaded people.
+IDENTITY:
+Preserve from uploaded photos: facial structure, facial features, skin tone, hair, proportions.
+Identity must remain clearly recognizable.
 
 CLOTHING:
-Keep the elegant casual aesthetic of the original image:
-— woman in a soft light-colored dress
-— man in a dark formal jacket/suit style
-
-Adapt clothing naturally to the new bodies while preserving the cinematic mood and realism.
-
-SCENE PRESERVATION:
-Keep unchanged:
-— coffee shop / café interior
-— espresso machines
-— background people
-— wooden textures
-— table objects
-— framing and environment
-
-Maintain the candid documentary-style atmosphere.
+Adapt clothing naturally to the scene — elegant casual / cinematic café styling.
+Match the indoor atmosphere and avoid mismatched outfits.
 
 POSE & COMPOSITION:
-Preserve:
-— camera angle
-— tilted framing
-— composition balance
-— subject spacing
-— body positioning
-— close physical interaction
+Preserve camera angle, tilted framing, pose structure, body orientation, spacing, physical interaction, and composition.
+Match pose and placement, NOT original anatomy.
 
-Match pose and composition only — not the anatomy of the original people.
+SCENE PRESERVATION:
+Keep the café interior, espresso machines, background people, furniture, reflections, and environment unchanged.
 
 LIGHTING & INTEGRATION:
-Fully integrate the new people into the environment:
-— match warm indoor lighting
-— flash photography look
-— realistic shadows
-— skin reflections
-— cinematic depth of field
-— subtle film grain
-— natural color grading
-
-Faces and clothing must inherit the exact lighting conditions of the café scene.
-The final image must look like an authentic candid photograph, not an AI composite or face swap.`;
+Fully integrate into the scene — match warm indoor flash lighting, shadows, reflections, color grading, depth of field, and film grain.
+Faces and bodies must inherit scene lighting.
+Result must not look pasted, composited, or like a face swap.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
