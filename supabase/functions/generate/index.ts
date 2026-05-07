@@ -810,102 +810,37 @@ The final result must look like a real cinematic photograph of the uploaded peop
 Negative prompt:
 original actors, Leonardo DiCaprio, Kate Winslet, movie characters, face swap, pasted face, floating head, disconnected neck, weak likeness, generic cinematic face, beautified face, identity blending, hybrid face, morphing, inherited features, preserved body, preserved anatomy, preserved silhouette, incorrect gaze direction, looking away, changed pose, altered hand placement, incorrect intimacy posture, flat lighting, mismatched shadows, disconnected subjects, wrong perspective, wrong scale, distorted anatomy, extra fingers, blurry face, CGI look, compositing artifacts, deepfake artifacts.`;
 
-const TERABITHIA_1 = `Use the reference image as a locked composition and cinematic scene template only.
+const TERABITHIA_1 = `Use the reference image as a composition and scene template.
 
-Completely erase both original people before generation.
-Treat them as empty placeholders with no remaining identity, anatomy, face, hairstyle, body, or silhouette.
+Erase all original people from the scene. Their positions are empty slots — fill them with the people from the uploaded identity photos.
 
-IMPORTANT CHARACTER POSITIONS:
+CHARACTER REPLACEMENT:
+— woman in the scene → woman from the uploaded female photo
+— man in the scene → man from the uploaded male photo
+Gender must match exactly. Do NOT swap roles.
 
-LEFT SIDE OF FRAME:
-— smiling blonde girl wearing a dark cap
-— facing slightly right
-— positioned closer to camera left
-— visible from chest and shoulders upward
-— holding the white fluffy object/pet
-— looking toward the person on the right
-
-Replace this entire left-side character ONLY with the woman from the uploaded female reference photo.
-
-RIGHT SIDE OF FRAME:
-— dark-haired person in yellow shirt
-— facing slightly downward and toward the left
-— positioned closer to camera right
-— leaning toward the left-side character
-
-Replace this entire right-side character ONLY with the man/person from the uploaded male reference photo.
-
-Do NOT keep any part of the original blonde girl.
-Do NOT preserve her face, hairstyle, smile, proportions, eyes, jawline, skin tone, or silhouette.
+PLACEMENT:
+Place each new person into the exact spatial position of the original:
+— same location, scale, depth, and perspective.
 
 FULL RECONSTRUCTION:
-Rebuild both inserted people completely from the uploaded references:
-— full face
-— full head
-— hair
-— jawline
-— eyes
-— nose
-— lips
-— skin tone
-— body proportions
-— shoulders
-— neck
-— arms
-— hands
-— silhouette
+Rebuild each person entirely from their identity image — face, body, proportions, silhouette.
+Do NOT face-swap. Do NOT blend with original characters.
 
-Transfer the uploaded people fully into the scene, not only their faces.
+IDENTITY:
+Preserve from uploaded photos: facial structure, features, skin tone, hair, proportions.
+Identity must remain clearly recognizable.
 
-Do NOT face-swap.
-Do NOT blend identities.
-Do NOT inherit anatomy or features from the original characters.
+CLOTHING:
+Adapt clothing naturally to the scene — match the style and environment, avoid mismatched outfits.
 
-IDENTITY LOCK:
-The woman on the LEFT must clearly and unmistakably look like the uploaded female reference photo.
-The person on the RIGHT must clearly and unmistakably look like the uploaded male reference photo.
+POSE & COMPOSITION:
+Preserve camera angle, pose structure, body orientation, spacing, framing.
+Match pose and placement, NOT original anatomy.
 
-Identity accuracy is more important than cinematic stylization.
-
-STRICT SCENE & POSE LOCK:
-Preserve exactly:
-— camera angle
-— framing
-— close-up crop
-— head tilt
-— shoulder positions
-— arm placement
-— body orientation
-— spacing between characters
-— eye direction
-— interaction with the white fluffy object/pet
-— outdoor background blur
-— composition
-
-Do NOT redesign or reinterpret the scene.
-
-INTERACTION:
-The two people must naturally look toward each other exactly like in the original image.
-Their body language and emotional interaction must remain soft, intimate, and natural.
-
-SCENE ADAPTATION:
-The uploaded people must physically belong inside the scene:
-— realistic outdoor lighting
-— matching skin reflections
-— realistic shadows
-— natural clothing folds
-— proper depth of field integration
-— realistic neck-to-face transitions
-— matching color temperature
-
-Faces must feel naturally attached to the bodies:
-— no pasted-on appearance
-— no floating heads
-— no mismatched perspective
-— no disconnected skin tones
-
-Negative prompt:
-original blonde girl, preserved blonde face, preserved female anatomy, original actors, face swap, pasted face, weak likeness, generic face, identity blending, hybrid face, inherited features, floating head, mismatched lighting, wrong body proportions, changed pose, wrong character placement, blurry face, CGI look, compositing artifacts, deepfake artifacts.`
+LIGHTING & INTEGRATION:
+Fully integrate into the scene — match lighting direction, shadows, color grading, depth of field, grain.
+Faces and bodies must inherit scene lighting. Result must not look pasted or composited.`
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
