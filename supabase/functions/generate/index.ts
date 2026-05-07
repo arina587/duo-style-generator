@@ -844,7 +844,7 @@ Faces and bodies must inherit scene lighting. Result must not look pasted or com
 
 const WORLD_1 = `Use the reference image as a composition and scene template.
 
-Erase all original people from the scene. Their positions are empty slots — fill them with the people from the uploaded identity photos.
+Erase all original people from the scene completely. Treat them as temporary placeholders only. Their positions become empty slots that must be fully rebuilt using the uploaded identity photos.
 
 CHARACTER REPLACEMENT:
 — woman reclining across the chair → woman from the uploaded female photo
@@ -854,31 +854,81 @@ Gender must match exactly. Do NOT swap roles.
 
 PLACEMENT:
 Place each new person into the exact spatial position of the original:
-— same location, scale, depth, body angle, and perspective.
+— same location
+— same scale
+— same depth
+— same perspective
+— same body positioning relative to camera and environment
 
-FULL RECONSTRUCTION:
-Rebuild each person entirely from their identity image — face, body, proportions, silhouette.
-Do NOT face-swap. Do NOT blend with original characters.
+FULL HUMAN RECONSTRUCTION:
+Completely replace the original people with entirely new reconstructed humans based only on the uploaded identity photos.
+
+Rebuild:
+— full body
+— face
+— head shape
+— body proportions
+— silhouette
+— shoulders
+— neck
+— arms
+— posture
+— physical presence
+
+The original people must not remain underneath the result in any way.
+
+Do NOT:
+— face-swap
+— preserve original anatomy
+— blend identities
+— overlay new faces onto old bodies
+— reuse original facial structure or body structure
+
+The final people must be entirely new reconstructed subjects derived from the uploaded identity photos only.
 
 IDENTITY:
-Preserve from uploaded photos: facial structure, facial features, skin tone, hair, proportions.
-Identity must remain clearly recognizable.
+Preserve from uploaded photos:
+— facial structure
+— eye shape
+— nose
+— lips
+— jawline
+— skin tone
+— hair color and hairstyle
+— realistic body proportions
+
+Identity must remain clearly recognizable and consistent across the entire body, not only the face.
 
 CLOTHING:
-Adapt clothing naturally to the scene — elegant casual / cinematic café styling.
-Match the indoor atmosphere and avoid mismatched outfits.
+Adapt clothing naturally to the café environment.
+Match the cinematic elegant-casual style of the original scene while fitting the reconstructed bodies naturally.
 
 POSE & COMPOSITION:
-Preserve camera angle, tilted framing, pose structure, body orientation, spacing, physical interaction, and composition.
-Match pose and placement, NOT original anatomy.
+Preserve:
+— camera angle
+— tilted framing
+— pose structure
+— body orientation
+— spacing
+— physical interaction
+— framing and composition
 
-SCENE PRESERVATION:
-Keep the café interior, espresso machines, background people, furniture, reflections, and environment unchanged.
+Match pose placement only — NOT original anatomy or body geometry.
 
 LIGHTING & INTEGRATION:
-Fully integrate into the scene — match warm indoor flash lighting, shadows, reflections, color grading, depth of field, and film grain.
-Faces and bodies must inherit scene lighting.
-Result must not look pasted, composited, or like a face swap.`;
+Fully integrate the reconstructed people into the scene:
+— match warm indoor flash lighting
+— realistic shadows
+— reflections
+— color grading
+— skin shading
+— depth of field
+— lens softness
+— film grain
+
+Faces and bodies must inherit the exact scene lighting and environmental reflections.
+
+The final image must look like a real photograph with completely replaced people, not a face swap, overlay, morph, pasted composite, or edited original.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
