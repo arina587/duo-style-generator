@@ -930,7 +930,9 @@ Faces and bodies must inherit the exact scene lighting and environmental reflect
 
 The final image must look like a real photograph with completely replaced people, not a face swap, overlay, morph, pasted composite, or edited original.`;
 
-const STRANGER_2 = `Use the reference image as a composition and scene template.
+const STRANGER_2 = ``;
+
+const STRANGER_3 = `Use the reference image as a composition and scene template.
 
 Erase all original people from the scene completely. Treat them only as temporary placeholders. Their positions become empty slots that must be fully rebuilt using the uploaded identity photos.
 
