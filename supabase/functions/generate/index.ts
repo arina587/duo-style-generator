@@ -930,32 +930,33 @@ Faces and bodies must inherit the exact scene lighting and environmental reflect
 
 The final image must look like a real photograph with completely replaced people, not a face swap, overlay, morph, pasted composite, or edited original.`;
 
-const STRANGER_2 = `Use the reference image as a composition and scene template.
+const STRANGER_2 = `Use the reference image as a composition and interaction template.
 
-Erase all original people from the scene completely. Treat them only as temporary placeholders. Their positions become empty slots that must be fully rebuilt using the uploaded identity photos.
+Erase all original people from the scene completely. Treat them only as placeholders. Replace them entirely with the people from the uploaded identity photos.
 
 CHARACTER REPLACEMENT:
-— man sitting on the left side of the couch → man from the uploaded male photo
-— woman sitting on the right side of the couch → woman from the uploaded female photo
+— man sitting on the left side of the couch → man from the uploaded male identity photo
+— woman sitting on the right side of the couch → woman from the uploaded female identity photo
 
-Gender must match exactly. Do NOT swap roles.
+Gender and roles must match exactly. Do NOT swap positions.
 
-PLACEMENT:
-Place each reconstructed person into the exact spatial position of the original:
-— same location
-— same scale
-— same sitting posture
-— same perspective
-— same depth relative to camera
-— same interaction and hand placement during the handshake
+IMPORTANT:
+The people must be fully transferred into the scene as complete reconstructed humans — not just faces or heads.
+
+Do NOT:
+— face-swap
+— paste faces onto original bodies
+— preserve original anatomy underneath
+— blend identities with original characters
+— morph faces with the originals
+
+The original people must be completely removed and replaced.
 
 FULL HUMAN RECONSTRUCTION:
-Completely replace the original people with entirely new reconstructed humans based only on the uploaded identity photos.
-
-Rebuild:
+Rebuild each person entirely from their uploaded identity image:
 — full body
-— face
 — head shape
+— face
 — neck
 — shoulders
 — arms
@@ -965,17 +966,38 @@ Rebuild:
 — silhouette
 — natural anatomy
 
-The original people must not remain visible or influence the final anatomy in any way.
+Identity must come only from the uploaded photos.
 
-Do NOT:
-— face-swap
-— overlay faces
-— reuse original body structure
-— preserve original anatomy
-— blend identities
-— morph with original characters
+INTERACTION & EYE CONTACT:
+Preserve the natural interaction between the characters:
+— both people are looking directly at each other
+— maintain realistic eye-lines
+— preserve the handshake interaction
+— preserve natural body language and emotional connection
 
-The final people must be entirely regenerated subjects derived only from the uploaded identity photos.
+Both reconstructed people must feel naturally present together in the same real environment.
+
+PLACEMENT:
+Place each reconstructed person into the exact spatial position of the original:
+— same sitting position
+— same scale
+— same perspective
+— same camera distance
+— same depth
+— same hand placement
+— same body orientation
+
+POSE & COMPOSITION:
+Preserve:
+— camera angle
+— couch positioning
+— framing
+— spacing between characters
+— handshake pose
+— eye contact direction
+— cinematic composition
+
+Match pose placement only — NOT original anatomy.
 
 IDENTITY:
 Preserve from uploaded identity photos:
@@ -988,46 +1010,34 @@ Preserve from uploaded identity photos:
 — hairstyle and hair color
 — realistic body proportions
 
-Identity must remain clearly recognizable across the entire reconstructed body, not only the face.
+Identity must remain clearly recognizable across the entire reconstructed body.
 
 CLOTHING:
 Adapt clothing naturally to the cozy indoor environment.
-Keep the casual cinematic aesthetic and realistic layered clothing style matching the scene mood.
-
-POSE & COMPOSITION:
-Preserve:
-— camera angle
-— framing
-— body orientation
-— sitting positions
-— handshake interaction
-— spacing between subjects
-— composition balance
-
-Match pose placement only — NOT original anatomy or body geometry.
+Outfits must fit naturally on the reconstructed bodies and match the casual cinematic aesthetic of the scene.
 
 SCENE PRESERVATION:
 Keep unchanged:
 — couch
 — curtains
 — interior environment
-— background details
 — lighting atmosphere
-— composition and framing
+— props and background
+— framing and composition
 
 LIGHTING & INTEGRATION:
 Fully integrate the reconstructed people into the environment:
-— match soft indoor natural lighting
+— match soft indoor lighting
 — realistic shadows
-— warm color grading
 — skin shading
 — environmental reflections
+— color grading
 — depth of field
-— subtle cinematic grain
+— subtle film grain
 
-Faces, clothing, and hands must inherit the exact scene lighting and environmental tones.
+Faces, hands, clothing, and bodies must inherit the exact lighting and color atmosphere of the scene.
 
-The final image must look like a real photograph with completely replaced people, not a face swap, overlay, morph, pasted composite, or edited original image.`;
+The final image must look like a real photograph with fully replaced people naturally interacting together — not a face swap, pasted composite, overlay, or edited original image.`;
 
 const STRANGER_3 = `Use the reference image as a composition and scene template.
 
