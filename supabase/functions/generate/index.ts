@@ -556,6 +556,19 @@ Do NOT blend identities or inherit anatomy from the original characters.
 IDENTITY:
 Preserve exact facial structure, proportions, ethnicity, skin tone, hairline, and recognizable appearance from the uploaded photos.
 
+SCENE ADAPTATION:
+The uploaded people must physically belong inside the scene naturally:
+— realistic cinematic posture
+— natural interaction with wind and environment
+— proper body perspective
+— correct scale relative to the ship
+— realistic clothing folds
+— natural skin response to sunset lighting
+— scene-consistent shadows and reflections
+— atmospheric integration with haze and depth of field
+
+Their bodies, skin, clothes, and hair must fully inherit the environment and cinematic mood of the scene.
+
 POSE & COMPOSITION:
 Preserve:
 — camera angle
@@ -568,15 +581,15 @@ Preserve:
 Match placement only, not original anatomy or body shape.
 
 CLOTHING:
-Adapt naturally to the cinematic Titanic-style environment while fitting the uploaded people realistically.
+Adapt naturally to the Titanic-style cinematic environment while fitting the uploaded people realistically. Clothing must look physically worn by them and react naturally to wind, lighting, and movement.
 
 LIGHTING:
 Match lighting direction, sunset atmosphere, shadows, color grading, depth of field, haze, and film grain consistently across the entire image.
 
-The final result must look like the uploaded people were originally photographed in the scene from the beginning, with zero traces of the original movie characters remaining.
+The final result must look like a real cinematic photograph of the uploaded people shot on location, not a face replacement or edited movie still.
 
 Negative prompt:
-original actors, Leonardo DiCaprio, Kate Winslet, movie characters, face swap, partial replacement, preserved body, preserved anatomy, preserved silhouette, identity blending, hybrid face, morphing, inherited features, deepfake artifacts, pasted face, wrong proportions, distorted anatomy, extra fingers, blurry face, CGI look, compositing artifacts.`;
+original actors, Leonardo DiCaprio, Kate Winslet, movie characters, face swap, partial replacement, preserved body, preserved anatomy, preserved silhouette, identity blending, hybrid face, morphing, inherited features, deepfake artifacts, pasted face, flat lighting, incorrect shadows, disconnected subjects, wrong perspective, wrong scale, distorted anatomy, extra fingers, blurry face, CGI look, compositing artifacts.`;
 
 const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
