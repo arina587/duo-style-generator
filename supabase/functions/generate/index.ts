@@ -100,109 +100,80 @@ SCENE: Do NOT change environment, background characters, or composition. Only re
 
 HANDS: Exactly five fingers, correct anatomy, natural placement. Man holds smartphone in proper selfie grip.`;
 
-const TANGLED_1 = `Use the reference image as a composition, interaction, and visual style template.
+const TANGLED_1 = `Use the reference image as a composition, pose, and stylized 3D animation template.
 
-Preserve the cinematic fantasy atmosphere and the stylized 3D animated aesthetic inspired by modern Disney/Pixar-style films.
+Remove the original characters completely and recreate them using the uploaded reference people.
 
-Remove the original characters completely and replace them with fully reconstructed stylized versions of the people from the uploaded identity photos.
+CHARACTERS:
+— left character → person from uploaded male photo
+— right character → person from uploaded female photo
 
-CHARACTER REPLACEMENT:
-— male character → man from uploaded male identity photo
-— female character → woman from uploaded female identity photo
-
-Roles and positioning must remain the same.
+Keep the same positions and interaction.
 
 IMPORTANT:
-Do NOT perform a face swap or simple head replacement.
+Recreate both characters entirely as new stylized animated characters.
 
-The new characters must be fully recreated from the uploaded identity photos as complete stylized 3D animated characters.
+Do NOT:
+— paste faces onto existing characters
+— keep original heads or anatomy
+— blend original characters with the new people
+— create face-swap results
 
-FULL CHARACTER REBUILD:
-Reconstruct each person entirely:
+Both people must be fully reconstructed:
+— full body
 — face
 — head shape
 — hairstyle
-— body proportions
+— proportions
 — silhouette
 — posture
-— hands
-— full anatomy
+— hands and body anatomy
 
-Do not reuse original character anatomy or facial structure.
+The final characters should clearly resemble the uploaded people while remaining fully stylized animated characters.
 
-Avoid:
-— pasted faces
-— blended identities
-— morphing over original characters
-— artificial “attached face” appearance
-
-IDENTITY:
-Preserve recognizable traits from uploaded identity photos:
-— facial structure
-— eyes
-— nose
-— lips
-— jawline
-— hairstyle and hair color
-— skin tone
-— overall proportions
-
-The stylized characters should still clearly resemble the uploaded people.
-
-STYLIZATION:
-Render the reconstructed people as high-quality stylized cinematic 3D animated characters:
-— expressive stylized eyes
-— soft animated skin shading
-— cinematic hair rendering
-— stylized but believable anatomy
-— polished animated-film rendering quality
-
-The result should feel like a frame from a modern animated fantasy movie.
+STYLE:
+High-quality stylized 3D animated movie aesthetic:
+— cinematic rendering
+— expressive eyes
+— stylized skin shading
+— soft global illumination
+— animated hair rendering
+— warm fantasy lighting
+— polished family-film look
 
 INTERACTION:
 Preserve:
-— romantic embrace
-— hand placement
 — eye contact
+— embrace
 — emotional connection
 — body orientation
-
-The characters should naturally look at each other with believable expressions and interaction.
+— hand placement
 
 POSE & COMPOSITION:
-Preserve:
+Keep:
 — camera angle
 — framing
 — spacing
 — composition
-— close embrace pose
+— pose structure
 
-Match pose and positioning, not original anatomy.
-
-CLOTHING:
-Adapt fantasy-inspired stylized clothing naturally to the reconstructed characters while maintaining the magical fairytale aesthetic.
-
-SCENE PRESERVATION:
-Keep unchanged:
+SCENE:
+Preserve:
 — floating lanterns
-— castle background
+— fantasy castle background
 — water reflections
-— nighttime fantasy atmosphere
-— warm glowing lighting
-— cinematic environment
+— warm nighttime atmosphere
+— cinematic lighting
 
-LIGHTING & INTEGRATION:
-Fully integrate the reconstructed animated characters into the environment:
-— warm lantern illumination
-— soft cinematic shadows
-— glowing reflections
+LIGHTING:
+Match:
+— glowing lantern light
+— soft shadows
 — atmospheric depth
-— volumetric lighting
 — cinematic color grading
+— warm reflections
 
-Characters must inherit the exact lighting and mood of the scene.
-
-The final result should look like a naturally rendered stylized animated movie scene with fully reconstructed characters, not a face swap or edited original image.`;
+The final result should look like a natural stylized animated movie frame with fully recreated characters integrated into the environment.`;
 
 const TANGLED_2 = `Use the provided reference image and separately uploaded photos of the man and the woman.
 
