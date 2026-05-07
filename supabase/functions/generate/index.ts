@@ -317,93 +317,120 @@ Faces, hair, skin, and clothing must inherit the exact lighting and atmosphere o
 
 The final result should look like a genuine stylized animated movie frame featuring recognizable animated versions of the uploaded people naturally integrated into the fantasy scene — not a face swap, pasted composite, or edited original image.`;
 
-const TANGLED_3 = `Use the provided reference image and separately uploaded photos of the man and the woman.
+const TANGLED_3 = `Use the reference image as a composition, interaction, and stylized 3D animation template.
 
-Treat the reference image as a composition and pose template ONLY.
+Preserve the cinematic fantasy atmosphere and the stylized animated movie aesthetic of the original scene.
 
-CRITICAL RULE:
-The original characters must NOT be used in any way.
+Remove the original characters completely and recreate them using the uploaded reference people.
 
-Do NOT use:
-— faces
-— body shapes
-— proportions
-— identity elements
+CHARACTERS:
+— male character on the left bowing and holding the crown → exact appearance of the man from the uploaded male photo
+— female character on the right in the dress → exact appearance of the woman from the uploaded female photo
 
-They must be treated as non-existent.
-
----
-
-FULL CHARACTER REPLACEMENT:
-
-Create new people:
-
-— man → left  
-— woman → right  
-
-Using ONLY uploaded identity photos.
-
----
-
-STRICT IDENTITY PRESERVATION:
-
-Preserve:
+Preserve their recognizable real appearance as accurately as possible:
 — facial structure
-— proportions
-— features
+— hairstyle
+— hair color
 — skin tone
-— hair
+— body proportions
+— overall likeness
+— recognizable clothing identity
 
----
+IMPORTANT:
+Do NOT create generic animated characters.
 
-CRITICAL POSE LOCK:
+The reconstructed characters must clearly resemble the uploaded people while being transformed into stylized cinematic 3D animated characters.
 
-— man leading the movement, slightly leaning forward
-— holding the woman's hand
-— woman extending arm toward him
-— maintaining natural dance spacing
+Do NOT:
+— paste faces onto existing characters
+— keep original heads or anatomy
+— blend original characters with the uploaded people
+— create face-swap artifacts
+— morph faces onto existing bodies
+— generate random hairstyles or clothing
 
-Do NOT change interaction or gesture.
+FULL CHARACTER RECONSTRUCTION:
+Rebuild each person completely:
+— full body
+— face
+— head shape
+— hairstyle
+— hands
+— posture
+— body anatomy
+— silhouette
+— clothing adaptation
+— realistic stylized proportions
 
----
+The original characters must be fully removed and replaced.
 
-CRITICAL SCENE LOCK:
+INTERACTION & BODY LANGUAGE:
+Preserve:
+— eye contact
+— playful interaction
+— elegant body language
+— hand positioning
+— crown exchange interaction
+— emotional connection
+— natural pose dynamics
 
-Keep:
-— crowd
-— architecture
-— perspective
+The two reconstructed characters must feel naturally present together in the same animated world.
+
+POSE & COMPOSITION:
+Preserve:
+— body orientation
+— dancing/bowing pose
+— camera angle
 — framing
+— spacing between characters
+— composition balance
+— gesture positioning
 
----
+Match pose placement only — not original anatomy.
 
-CRITICAL LIGHTING:
+CLOTHING:
+Adapt the uploaded people’s clothing and appearance into the fantasy royal animated setting while preserving:
+— recognizable outfit colors
+— hairstyle identity
+— fashion silhouette
+— overall visual identity
 
-— natural daylight
+Transform the clothing naturally into elegant fantasy/royal animated outfits that still clearly resemble the uploaded people’s style and identity.
+
+STYLE:
+High-quality stylized cinematic 3D animated movie aesthetic:
+— expressive stylized eyes
+— soft cinematic skin shading
+— realistic animated hair
+— stylized but believable anatomy
+— polished animated-film rendering
+— warm fantasy atmosphere
+— cinematic character rendering
+
+The result should look like a frame from a modern fantasy animated movie.
+
+SCENE PRESERVATION:
+Keep unchanged:
+— palace courtyard
+— crowd in the background
+— royal architecture
+— decorations
+— soft fantasy lighting
+— cinematic environment
+— festive atmosphere
+
+LIGHTING & INTEGRATION:
+Fully integrate the reconstructed animated characters into the environment:
+— warm cinematic lighting
 — soft shadows
-— consistent color temperature
+— realistic stylized skin reflections
+— atmospheric depth
+— animated rendering consistency
+— soft fantasy color grading
 
-Faces must match scene lighting.
+Faces, hair, clothing, and skin must inherit the exact lighting and atmosphere of the environment.
 
----
-
-CRITICAL STYLE:
-
-Pixar/Disney CGI, fully reconstructed characters.
-
----
-
-CRITICAL HANDS:
-
-— exactly five fingers
-— correct anatomy
-— natural interaction
-
----
-
-FINAL:
-
-Same dance scene, but with completely new characters replacing the originals.`
+The final result should look like a genuine stylized animated movie frame featuring recognizable animated versions of the uploaded people naturally integrated into the fantasy royal scene — not a face swap, pasted composite, or edited original image.`
 
 const CINDERELLA_PROMPT = `Use the original scene image as the base.
 
