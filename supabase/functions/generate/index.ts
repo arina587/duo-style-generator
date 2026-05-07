@@ -810,6 +810,110 @@ The final result must look like a real cinematic photograph of the uploaded peop
 Negative prompt:
 original actors, Leonardo DiCaprio, Kate Winslet, movie characters, face swap, pasted face, floating head, disconnected neck, weak likeness, generic cinematic face, beautified face, identity blending, hybrid face, morphing, inherited features, preserved body, preserved anatomy, preserved silhouette, incorrect gaze direction, looking away, changed pose, altered hand placement, incorrect intimacy posture, flat lighting, mismatched shadows, disconnected subjects, wrong perspective, wrong scale, distorted anatomy, extra fingers, blurry face, CGI look, compositing artifacts, deepfake artifacts.`;
 
+const TERABITHIA_1 = `Use the reference image as a locked composition and cinematic scene template only.
+
+Erase all original people completely.
+Treat their positions as empty slots with no remaining identity, anatomy, face, body, silhouette, or facial features.
+
+Insert the people from the uploaded photos into those exact slots.
+
+REPLACEMENT:
+— left character slot → person from uploaded reference photo
+— right character slot → person from uploaded reference photo
+
+Do NOT swap roles or positions.
+
+FULL RECONSTRUCTION:
+Rebuild each inserted person entirely from the uploaded references:
+— full body
+— full face
+— exact head shape
+— exact body proportions
+— exact silhouette
+— exact skin tone
+— exact hair
+— exact facial structure
+— exact eyes
+— exact jawline
+— exact nose
+— exact lips
+— exact facial proportions
+— neck
+— shoulders
+— arms
+— hands
+
+Transfer the uploaded people fully into the scene, not just the faces.
+
+Do NOT face-swap.
+Do NOT edit the original characters.
+Do NOT blend identities.
+Do NOT inherit anatomy, expressions, proportions, or facial features from the original people.
+
+IDENTITY:
+Preserve exact facial structure, proportions, ethnicity, skin tone, hairline, eye shape, jawline, and recognizable appearance from the uploaded photos.
+
+Identity accuracy is the highest priority.
+The uploaded people must remain instantly recognizable under natural outdoor lighting.
+
+Do NOT beautify, stylize, reinterpret, or replace facial geometry with generic cinematic faces.
+
+STRICT POSE & INTERACTION LOCK:
+Preserve exactly:
+— camera angle
+— framing
+— pose
+— body orientation
+— hand placement
+— shoulder angles
+— head tilt
+— face distance
+— eye contact direction
+— perspective
+— spacing between characters
+— interaction with the white object/pet
+— emotional atmosphere
+
+The people must naturally look at each other exactly like in the original image.
+
+Do NOT regenerate or reinterpret the pose or interaction.
+
+SCENE ADAPTATION:
+The uploaded people must physically belong inside the environment naturally:
+— realistic outdoor lighting on skin and hair
+— natural soft shadows
+— proper body perspective
+— realistic skin texture
+— realistic clothing folds and tension
+— natural interaction between bodies and clothing
+— atmospheric depth of field integration
+— realistic neck and shoulder transitions
+
+Faces must feel physically attached to the bodies:
+— no pasted-on appearance
+— no floating heads
+— no disconnected necks
+— no mismatched lighting
+— no incorrect skin tone transitions
+— no mismatched perspective
+
+BACKGROUND & COMPOSITION:
+Preserve the original outdoor environment, blur, framing, perspective, and composition almost identically.
+
+Only replace the people.
+Do NOT redesign the scene.
+
+CLOTHING:
+Adapt naturally to the casual outdoor environment while fitting the uploaded people realistically. Clothing must react naturally to body movement and lighting.
+
+LIGHTING:
+Match natural daylight direction, soft shadows, skin reflections, depth of field, color temperature, and realistic outdoor atmosphere consistently across the entire image.
+
+The final result must look like a real photograph of the uploaded people naturally captured in this exact moment, not a face replacement or AI composite.
+
+Negative prompt:
+face swap, pasted face, floating head, disconnected neck, weak likeness, generic face, beautified face, identity blending, hybrid face, inherited anatomy, preserved original face, preserved silhouette, incorrect gaze direction, changed pose, altered hand placement, wrong body proportions, mismatched lighting, wrong perspective, distorted anatomy, blurry face, CGI look, compositing artifacts, deepfake artifacts, unnatural interaction.`
+
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
   // ── Zootopia ──
@@ -836,7 +940,7 @@ const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
   "spiderman-1": { locked: false },
   "spiderman-2": { locked: false },
   "spiderman-3": { locked: false },
-  "terabithia-1": { locked: false },
+  "terabithia-1": { locked: true, prompt: TERABITHIA_1 },
   "terabithia-2": { locked: false },
   "terabithia-3": { locked: false },
   "stranger-things-1": { locked: false },
