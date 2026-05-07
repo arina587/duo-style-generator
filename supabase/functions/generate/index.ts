@@ -716,115 +716,99 @@ PRIORITY ORDER:
 4. emotional pose and composition
 5. cinematic Titanic atmosphere.`;
 
-const TITANIC_3 = `Use the reference image only as a locked cinematic scene template for composition, pose, framing, lighting, atmosphere, and camera angle.
+const TITANIC_3 = `Use the reference image as a locked composition and cinematic scene template only.
 
-Completely erase all original people.
-Forget them entirely.
-Treat their positions as empty placeholders with no face, no anatomy, no body, and no identity remaining.
+Erase all original people completely.
+Treat their positions as empty slots with no remaining identity, anatomy, face, body, silhouette, or facial features.
 
-Insert the uploaded people into those exact placeholders.
+Insert the people from the uploaded photos into those exact slots.
 
 REPLACEMENT:
-— female slot → woman from uploaded female photo
-— male slot → man from uploaded male photo
-
+— woman slot → woman from uploaded female photo
+— man slot → man from uploaded male photo
 Do NOT swap genders or roles.
 
 FULL RECONSTRUCTION:
-Rebuild both people completely and exclusively from the uploaded photos:
+Rebuild each inserted person entirely from the uploaded references:
 — full body
 — full face
 — exact head shape
-— exact proportions
+— exact body proportions
 — exact silhouette
 — exact skin tone
 — exact hair
 — exact facial structure
 — exact eyes
+— exact jawline
 — exact nose
 — exact lips
-— exact jawline
-— exact cheekbones
-— exact hairline
-— exact ethnicity
-— exact age appearance
+— exact facial proportions
 
-Transfer the uploaded people entirely into the scene, not only their faces.
+Transfer the uploaded people fully into the scene, not just the face.
 
 Do NOT face-swap.
-Do NOT preserve any anatomy, proportions, expressions, or features from the original actors.
+Do NOT edit the original actors.
 Do NOT blend identities.
+Do NOT inherit anatomy, proportions, expressions, or facial features from the original characters.
 
-STRICT IDENTITY LOCK:
-Identity accuracy is higher priority than cinematic stylization.
+IDENTITY:
+Preserve exact facial structure, proportions, ethnicity, skin tone, hairline, eye shape, jawline, and recognizable appearance from the uploaded photos.
 
-The uploaded people must remain instantly recognizable:
-— same facial geometry
-— same proportions
-— same facial spacing
-— same eye shape
-— same mouth shape
-— same nose bridge
-— same jaw structure
-— same forehead
-— same natural asymmetry
+Identity accuracy is the highest priority.
+The uploaded people must remain instantly recognizable under cinematic lighting.
 
-Do NOT beautify, stylize, average, reinterpret, or “cinematize” their faces.
-Do NOT replace their features with generic cinematic faces.
+Do NOT stylize, beautify, reinterpret, or replace their facial geometry with generic cinematic faces.
 
-Faces must look like the uploaded people under cinematic lighting, not like actors inspired by them.
+SCENE ADAPTATION:
+The uploaded people must physically belong inside the scene naturally:
+— realistic cinematic posture
+— natural interaction between bodies
+— direct eye contact with each other
+— proper body perspective
+— correct scale relative to the scene
+— realistic clothing folds and tension
+— natural skin response to sunset lighting
+— scene-consistent shadows and reflections
+— atmospheric integration with haze and depth of field
+— realistic neck and shoulder transitions
+— realistic skin texture continuity between face and body
 
-STRICT POSE LOCK:
-Keep the original pose nearly identical:
-— same head tilt
-— same shoulder angle
-— same torso rotation
-— same hand placement
-— same arm positions
-— same body contact
-— same distance between faces
-— same leaning direction
-— same intimacy posture
+Faces must feel physically attached to the bodies:
+— no pasted-on appearance
+— no disconnected skin tone
+— no floating heads
+— no mismatched lighting
+— no incorrect perspective
 
-INTERACTION & GAZE:
-The two people must naturally look directly into each other’s eyes exactly like in the original image.
+Their bodies, skin, clothes, and hair must fully inherit the environment and cinematic mood of the scene.
 
-Faces must physically belong to the bodies:
-— natural neck transition
-— matching skin texture
-— correct perspective
-— realistic facial integration
-— matching scene lighting
-— realistic shadow transitions
-
-No pasted-on appearance.
-
-STRICT SCENE LOCK:
+STRICT POSE & COMPOSITION LOCK:
 Preserve exactly:
 — camera angle
 — framing
+— pose
+— head tilt
+— hand placement
+— body orientation
+— body contact
+— spacing between characters
 — perspective
-— composition
-— background
-— ship structure
-— cinematic layout
+— intimacy positioning
+— background composition
 
-Do NOT regenerate or redesign the scene.
+Match placement and pose exactly.
+Do NOT regenerate or reinterpret the pose or scene layout.
 
-SCENE ADAPTATION:
-Adapt the uploaded people naturally into the environment:
-— realistic sunset lighting
-— cinematic shadows
-— proper warm color grading
-— realistic depth of field
-— atmospheric haze
-— natural skin response to light
-— realistic clothing folds and compression
+CLOTHING:
+Adapt naturally to the Titanic-style cinematic environment while fitting the uploaded people realistically. Clothing must look physically worn by them and react naturally to body movement, lighting, and wind.
 
-The final image must look like a real film photograph of the uploaded people physically present during filming.
+LIGHTING:
+Match lighting direction, sunset atmosphere, shadows, color grading, depth of field, haze, soft cinematic contrast, and film grain consistently across the entire image.
+
+The final result must look like a real cinematic photograph of the uploaded people physically present during filming, not a face replacement, edited movie still, or AI composite.
 
 Negative prompt:
-generic face, actor face, cinematic face replacement, identity loss, weak likeness, beautified face, altered facial geometry, changed jawline, changed eye shape, changed nose, changed proportions, face swap, pasted face, floating head, disconnected neck, Leonardo DiCaprio, Kate Winslet, original actors, hybrid face, identity blending, inherited anatomy, deepfake artifacts, wrong gaze direction, incorrect pose, warped anatomy, blurry face, CGI look, compositing artifacts.`;
+original actors, Leonardo DiCaprio, Kate Winslet, movie characters, face swap, pasted face, floating head, disconnected neck, weak likeness, generic cinematic face, beautified face, identity blending, hybrid face, morphing, inherited features, preserved body, preserved anatomy, preserved silhouette, incorrect gaze direction, looking away, changed pose, altered hand placement, incorrect intimacy posture, flat lighting, mismatched shadows, disconnected subjects, wrong perspective, wrong scale, distorted anatomy, extra fingers, blurry face, CGI look, compositing artifacts, deepfake artifacts.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
