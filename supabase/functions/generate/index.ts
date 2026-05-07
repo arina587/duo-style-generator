@@ -930,7 +930,104 @@ Faces and bodies must inherit the exact scene lighting and environmental reflect
 
 The final image must look like a real photograph with completely replaced people, not a face swap, overlay, morph, pasted composite, or edited original.`;
 
-const STRANGER_2 = ``;
+const STRANGER_2 = `Use the reference image as a composition and scene template.
+
+Erase all original people from the scene completely. Treat them only as temporary placeholders. Their positions become empty slots that must be fully rebuilt using the uploaded identity photos.
+
+CHARACTER REPLACEMENT:
+— man sitting on the left side of the couch → man from the uploaded male photo
+— woman sitting on the right side of the couch → woman from the uploaded female photo
+
+Gender must match exactly. Do NOT swap roles.
+
+PLACEMENT:
+Place each reconstructed person into the exact spatial position of the original:
+— same location
+— same scale
+— same sitting posture
+— same perspective
+— same depth relative to camera
+— same interaction and hand placement during the handshake
+
+FULL HUMAN RECONSTRUCTION:
+Completely replace the original people with entirely new reconstructed humans based only on the uploaded identity photos.
+
+Rebuild:
+— full body
+— face
+— head shape
+— neck
+— shoulders
+— arms
+— hands
+— posture
+— body proportions
+— silhouette
+— natural anatomy
+
+The original people must not remain visible or influence the final anatomy in any way.
+
+Do NOT:
+— face-swap
+— overlay faces
+— reuse original body structure
+— preserve original anatomy
+— blend identities
+— morph with original characters
+
+The final people must be entirely regenerated subjects derived only from the uploaded identity photos.
+
+IDENTITY:
+Preserve from uploaded identity photos:
+— facial structure
+— eye shape
+— nose
+— lips
+— jawline
+— skin tone
+— hairstyle and hair color
+— realistic body proportions
+
+Identity must remain clearly recognizable across the entire reconstructed body, not only the face.
+
+CLOTHING:
+Adapt clothing naturally to the cozy indoor environment.
+Keep the casual cinematic aesthetic and realistic layered clothing style matching the scene mood.
+
+POSE & COMPOSITION:
+Preserve:
+— camera angle
+— framing
+— body orientation
+— sitting positions
+— handshake interaction
+— spacing between subjects
+— composition balance
+
+Match pose placement only — NOT original anatomy or body geometry.
+
+SCENE PRESERVATION:
+Keep unchanged:
+— couch
+— curtains
+— interior environment
+— background details
+— lighting atmosphere
+— composition and framing
+
+LIGHTING & INTEGRATION:
+Fully integrate the reconstructed people into the environment:
+— match soft indoor natural lighting
+— realistic shadows
+— warm color grading
+— skin shading
+— environmental reflections
+— depth of field
+— subtle cinematic grain
+
+Faces, clothing, and hands must inherit the exact scene lighting and environmental tones.
+
+The final image must look like a real photograph with completely replaced people, not a face swap, overlay, morph, pasted composite, or edited original image.`;
 
 const STRANGER_3 = `Use the reference image as a composition and scene template.
 
