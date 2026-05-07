@@ -525,54 +525,65 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference image ONLY for background, camera angle, composition, pose, framing, and lighting.
+const TITANIC_1 = `Use the reference image ONLY as an empty cinematic template for composition, lighting, camera angle, pose, and environment.
 
-Delete all original people completely before generation.
-Do not edit existing faces.
-Do not transform original actors.
-Do not preserve any part of the original characters.
+Before generating, completely erase every original person from the scene.
+Treat the original characters as if they never existed.
+Do NOT edit, transform, preserve, reinterpret, or modify the actors.
+Fully replace them.
 
-Generate entirely new people using ONLY the uploaded reference photos as identity source.
+Generate entirely new characters using ONLY the uploaded reference photos.
 
-Character mapping:
-— female position = woman from uploaded female photo
-— male position = man from uploaded male photo
+The uploaded people are the ONLY allowed identity source.
 
-Both characters must be fully regenerated from scratch:
-— new face
-— new head
-— new body
-— new proportions
-— new skin
-— new hair
-— new silhouette
+Hard identity lock:
+— exact facial structure
+— exact eye shape
+— exact nose
+— exact lips
+— exact jawline
+— exact skin tone
+— exact hairline
+— exact hairstyle texture
+— exact proportions
+— exact ethnicity
+— exact age appearance
 
-The uploaded people must remain fully recognizable.
-Use their exact facial structure, eye shape, jawline, nose, lips, skin tone, hairline, and proportions.
+The final people must instantly and clearly look like the uploaded individuals, even under cinematic lighting.
+
+Absolute rule:
+ZERO resemblance to the original movie actors.
+No inherited anatomy.
+No inherited silhouette.
+No inherited facial expressions.
+No inherited proportions.
+No remnants of the original characters anywhere in the image.
+
+Rebuild both characters completely from scratch:
+— full new head
+— full new face
+— full new body
+— full new skin
+— full new silhouette
 
 Preserve ONLY:
 — pose
-— body placement
-— camera perspective
-— composition
+— body positioning
 — framing
+— perspective
+— camera angle
 — distance between characters
 
-Do NOT preserve:
-— original facial anatomy
-— original expressions
-— original actor features
-— original body proportions
-— original silhouettes
+Everything else must come exclusively from the uploaded people.
 
-Clothing should naturally fit the uploaded people while matching the cinematic Titanic-style atmosphere.
+Clothing should adapt naturally to the Titanic-style cinematic scene while fitting the uploaded people realistically.
 
-Match sunset lighting, shadows, warm cinematic grading, depth of field, and film grain naturally across the entire image.
+Match cinematic sunset lighting, warm color grading, shadows, atmospheric haze, depth of field, and film grain consistently across the entire image.
 
-The final image must look like a newly photographed scene with the uploaded people, not an edited movie still.
+The final result must look like an authentic photograph of the uploaded people acting in the scene, not a movie still edit, deepfake, or face replacement.
 
 Negative prompt:
-original actors, Leonardo DiCaprio, Kate Winslet, face swap, actor resemblance, identity blending, hybrid face, deepfake, partial replacement, unchanged face, preserved original anatomy, morphing, bad anatomy, extra fingers, distorted hands, blurry face, low detail skin, AI artifacts, pasted face, mismatched lighting, warped proportions, cropped body, duplicate features, CGI look, uncanny valley.`;
+Leonardo DiCaprio, Kate Winslet, Titanic actors, original characters, actor resemblance, face swap, identity blending, hybrid face, morphing, preserved original face, preserved anatomy, inherited features, unchanged silhouette, partial replacement, deepfake artifacts, pasted face, AI face mixing, wrong ethnicity, wrong age, distorted anatomy, extra fingers, warped hands, bad proportions, blurry face, low detail skin, CGI look, uncanny valley, compositing artifacts, background distortion.`;
 
 const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
