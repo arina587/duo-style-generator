@@ -716,89 +716,75 @@ PRIORITY ORDER:
 4. emotional pose and composition
 5. cinematic Titanic atmosphere.`;
 
-const TITANIC_3 = `Use the reference image as a strict composition and pose template.
+const TITANIC_3 = `Use the reference image as a composition and cinematic intimacy scene template only.
 
-Preserve the original:
-— camera angle
-— framing
-— body positions
-— pose
-— hand placement
-— spacing
-— facial direction
-— crop
-— lighting
-— background
-— cinematic mood
+Erase all original people completely.
+Treat their positions as empty slots with no remaining identity, anatomy, face, body, or silhouette.
 
-Do NOT alter or reinterpret the scene composition.
-
-Remove only the original identities.
+Insert the people from the uploaded photos into those empty slots.
 
 REPLACEMENT:
-— woman → uploaded female reference
-— man → uploaded male reference
-
+— woman slot → woman from uploaded female photo
+— man slot → man from uploaded male photo
 Do NOT swap genders or roles.
 
-IMPORTANT:
-Keep the exact original pose and anatomy layout.
-Do NOT change posture, body position, composition, or interaction.
+FULL RECONSTRUCTION:
+Rebuild each inserted person entirely from the uploaded references:
+— full body
+— full face
+— head shape
+— body proportions
+— silhouette
+— skin tone
+— hair
+— facial structure
+— neck and shoulders
+— hands and arms
 
-The goal is identity replacement only.
-
-Both characters must be looking directly at each other exactly like in the original scene.
-Preserve the intimate eye-line interaction and facial orientation.
-
-RECONSTRUCTION:
-Rebuild both people using the uploaded identities while preserving the original scene structure.
-
-Do NOT:
-— face swap
-— blend identities
-— redesign the shot
-— generate new poses
-— alter framing
+Transfer the uploaded people fully into the scene, not just the face.
+Do NOT face-swap.
+Do NOT edit the original actors.
+Do NOT blend identities or inherit anatomy from the original characters.
 
 IDENTITY:
+Preserve exact facial structure, proportions, ethnicity, skin tone, hairline, eye shape, jawline, and recognizable appearance from the uploaded photos.
+
+SCENE ADAPTATION:
+The uploaded people must physically belong inside the scene naturally:
+— realistic intimate posture
+— natural body contact and interaction
+— realistic hand placement
+— proper body perspective
+— natural shoulder and neck alignment
+— realistic skin response to warm sunset lighting
+— scene-consistent shadows and reflections
+— atmospheric integration with cinematic depth of field
+— natural clothing tension and folds caused by body positioning
+
+Their skin, clothes, hair, and body proportions must fully inherit the environment and cinematic mood of the scene.
+
+POSE & COMPOSITION:
 Preserve:
-— facial structure
-— jawline
-— nose
-— eyes
-— lips
-— hairstyle
-— skin tone
-— recognizable appearance
+— camera angle
+— close-up framing
+— pose
+— body orientation
+— spacing between characters
+— perspective
+— cinematic intimacy composition
 
-IMPORTANT — MALE CHARACTER:
-The male character is partially turned and viewed at an angle.
-
-Keep the exact original head angle and positioning,
-but replace his identity completely with the uploaded male reference.
-
-Preserve recognizable male identity even in side-profile view.
-
-Do NOT preserve any resemblance to the original actor.
+Match placement only, not original anatomy or body shape.
 
 CLOTHING:
-Keep clothing style close to the original Titanic-era scene.
-Do not redesign wardrobe aggressively.
+Adapt naturally to the Titanic-style cinematic environment while fitting the uploaded people realistically. Clothing must look physically worn by them and naturally compressed or folded by pose and movement.
 
 LIGHTING:
-Preserve the exact original cinematic lighting:
-— warm sunset tones
-— soft shadows
-— golden highlights
-— shallow depth of field
-— filmic atmosphere
+Match warm sunset lighting, shadows, cinematic orange glow, soft contrast, shallow depth of field, haze, and film grain consistently across the entire image.
 
-INTEGRATION:
-Result must look like the original shot with different actors cast into it.
+The final result must look like a real cinematic photograph of the uploaded people captured naturally on set, not a face replacement, edited movie still, or AI composite.
 
-Minimal scene deviation.
-Maximum composition preservation.
-Maximum identity preservation.`;
+Negative prompt:
+original actors, Leonardo DiCaprio, Kate Winslet, movie characters, face swap, partial replacement, preserved body, preserved anatomy, preserved silhouette, identity blending, hybrid face, morphing, inherited features, deepfake artifacts, pasted face, disconnected hands, stiff pose, flat lighting, incorrect shadows, wrong perspective, wrong scale, distorted anatomy, extra fingers, blurry face, CGI look, compositing artifacts, unnatural intimacy pose, broken arms, warped shoulders.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
