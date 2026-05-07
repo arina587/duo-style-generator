@@ -840,7 +840,95 @@ Match pose and placement, NOT original anatomy.
 
 LIGHTING & INTEGRATION:
 Fully integrate into the scene — match lighting direction, shadows, color grading, depth of field, grain.
-Faces and bodies must inherit scene lighting. Result must not look pasted or composited.`
+Faces and bodies must inherit scene lighting. Result must not look pasted or composited.`;
+
+const WORLD_1 = `Use the reference image as a composition and scene template.
+
+Erase the original couple from the scene completely. Their positions become empty placeholders to be filled with the people from the uploaded identity photos.
+
+CHARACTER REPLACEMENT:
+— woman leaning across the chair → woman from the uploaded female identity photo
+— man sitting in the chair → man from the uploaded male identity photo
+
+Gender must match exactly. Do NOT swap roles.
+
+PLACEMENT:
+Place each new person into the exact spatial position of the originals:
+— same body placement
+— same scale
+— same perspective
+— same depth relative to camera
+— same interaction and physical contact
+
+Preserve the intimate pose:
+— woman’s arm around the man
+— relaxed seated posture
+— head angles and body orientation
+
+FULL RECONSTRUCTION:
+Rebuild both characters entirely from the uploaded identity photos:
+— face
+— hair
+— body proportions
+— silhouette
+— skin texture
+
+Do NOT perform face swapping.
+Do NOT blend original facial anatomy with the new identities.
+
+IDENTITY PRESERVATION:
+Maintain:
+— recognizable facial structure
+— eye shape
+— jawline
+— nose and lips
+— skin tone
+— hairstyle and hair color
+— realistic proportions
+
+The result must clearly resemble the uploaded people.
+
+CLOTHING:
+Keep the elegant casual aesthetic of the original image:
+— woman in a soft light-colored dress
+— man in a dark formal jacket/suit style
+
+Adapt clothing naturally to the new bodies while preserving the cinematic mood and realism.
+
+SCENE PRESERVATION:
+Keep unchanged:
+— coffee shop / café interior
+— espresso machines
+— background people
+— wooden textures
+— table objects
+— framing and environment
+
+Maintain the candid documentary-style atmosphere.
+
+POSE & COMPOSITION:
+Preserve:
+— camera angle
+— tilted framing
+— composition balance
+— subject spacing
+— body positioning
+— close physical interaction
+
+Match pose and composition only — not the anatomy of the original people.
+
+LIGHTING & INTEGRATION:
+Fully integrate the new people into the environment:
+— match warm indoor lighting
+— flash photography look
+— realistic shadows
+— skin reflections
+— cinematic depth of field
+— subtle film grain
+— natural color grading
+
+Faces and clothing must inherit the exact lighting conditions of the café scene.
+The final image must look like an authentic candid photograph, not an AI composite or face swap.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
@@ -874,7 +962,7 @@ const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
   "stranger-things-1": { locked: false },
   "stranger-things-2": { locked: false },
   "stranger-things-3": { locked: false },
-  "end-of-the-fucking-world-1": { locked: false },
+  "end-of-the-fucking-world-1": { locked: true, prompt: WORLD_1 },
   "end-of-the-fucking-world-2": { locked: false },
   "end-of-the-fucking-world-3": { locked: false },
 };
