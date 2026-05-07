@@ -717,14 +717,19 @@ PRIORITY ORDER:
 5. cinematic Titanic atmosphere.`;
 
 const TITANIC_3 = `Use the reference image only as a locked cinematic scene template for composition, pose, lighting, framing, atmosphere, and camera angle.
+
 Completely erase all original people.
 Forget them entirely.
 Treat their positions as empty placeholders with no face, no anatomy, no body, and no identity remaining.
+
 Insert the uploaded people into those exact placeholders.
+
 REPLACEMENT:
 — female slot → woman from uploaded female photo
 — male slot → man from uploaded male photo
+
 Do NOT swap genders or roles.
+
 FULL RECONSTRUCTION:
 Rebuild both people completely from the uploaded photos:
 — full body
@@ -739,15 +744,38 @@ Rebuild both people completely from the uploaded photos:
 — shoulders
 — arms
 — hands
+
 Transfer the uploaded people entirely into the scene, not only their faces.
+
 Do NOT face-swap.
 Do NOT preserve any anatomy, proportions, expressions, or features from the original actors.
 Do NOT blend identities.
+
 IDENTITY:
 Preserve exact facial structure, eye shape, jawline, nose, lips, skin tone, hairline, ethnicity, proportions, and recognizable appearance from the uploaded photos.
+
+STRICT POSE LOCK:
+The original pose must remain nearly identical:
+— same head tilt
+— same shoulder angles
+— same torso rotation
+— same hand placement
+— same arm positions
+— same body contact
+— same distance between faces
+— same intimacy posture
+— same leaning direction
+— same body tension
+— same character alignment
+
+Do NOT reinterpret or regenerate the pose.
+Do NOT create a new interaction.
+Only replace the people while keeping the exact original body choreography.
+
 INTERACTION & GAZE:
 The two people must naturally look directly at each other exactly like in the original scene.
-Their eye direction, head angle, facial proximity, intimacy, body tension, and physical interaction must feel natural and emotionally connected.
+Their eye direction, head angle, facial proximity, and emotional interaction must match the original reference image.
+
 Faces must physically belong to the bodies:
 — natural neck transition
 — correct jaw alignment
@@ -757,6 +785,7 @@ Faces must physically belong to the bodies:
 — no floating heads
 — no disconnected skin tones
 — no mismatched perspective
+
 STRICT SCENE LOCK:
 Preserve exactly:
 — camera angle
@@ -769,7 +798,9 @@ Preserve exactly:
 — background
 — ship structure
 — cinematic composition
+
 Do NOT redesign or regenerate the scene itself.
+
 SCENE ADAPTATION:
 The uploaded people must fully inherit the environment:
 — realistic sunset lighting on skin and hair
@@ -779,9 +810,11 @@ The uploaded people must fully inherit the environment:
 — atmospheric haze integration
 — natural clothing folds and compression from pose
 — realistic interaction between bodies and clothing
+
 The final image must look like a real cinematic photograph captured with the uploaded people physically present in the scene during filming.
+
 Negative prompt:
-face swap, pasted face, floating head, disconnected neck, wrong gaze direction, looking away, incorrect eye contact, actor resemblance, Leonardo DiCaprio, Kate Winslet, original actors, identity blending, hybrid face, inherited anatomy, preserved silhouette, deepfake artifacts, incorrect perspective, mismatched lighting, warped anatomy, blurry face, CGI look, compositing artifacts, stiff pose, unnatural intimacy, disconnected subjects.`;
+changed pose, altered body posture, wrong hand placement, wrong head angle, different intimacy pose, incorrect body alignment, looking away, face swap, pasted face, floating head, disconnected neck, actor resemblance, Leonardo DiCaprio, Kate Winslet, identity blending, hybrid face, inherited anatomy, preserved silhouette, deepfake artifacts, incorrect perspective, mismatched lighting, warped anatomy, blurry face, CGI look, compositing artifacts, stiff pose, unnatural interaction.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
