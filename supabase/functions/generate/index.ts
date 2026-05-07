@@ -930,6 +930,104 @@ Faces and bodies must inherit the exact scene lighting and environmental reflect
 
 The final image must look like a real photograph with completely replaced people, not a face swap, overlay, morph, pasted composite, or edited original.`;
 
+const STRANGER_2 = `Use the reference image as a composition and scene template.
+
+Erase all original people from the scene completely. Treat them only as temporary placeholders. Their positions become empty slots that must be fully rebuilt using the uploaded identity photos.
+
+CHARACTER REPLACEMENT:
+— man on the left → man from the uploaded male photo
+— woman on the right → woman from the uploaded female photo
+
+Gender must match exactly. Do NOT swap roles.
+
+PLACEMENT:
+Place each reconstructed person into the exact spatial position of the original:
+— same location
+— same scale
+— same perspective
+— same camera distance
+— same depth and framing
+— same relative spacing between characters
+
+FULL HUMAN RECONSTRUCTION:
+Completely replace the original people with entirely new reconstructed humans based only on the uploaded identity photos.
+
+Rebuild:
+— full body
+— face
+— head shape
+— neck
+— shoulders
+— posture
+— silhouette
+— body proportions
+— natural anatomy
+
+The original people must not remain visible or influence the final anatomy.
+
+Do NOT:
+— face-swap
+— overlay faces
+— preserve original body structure
+— blend identities
+— morph with original characters
+
+The final subjects must be fully regenerated humans derived from the uploaded identities only.
+
+IDENTITY:
+Preserve from uploaded identity photos:
+— facial structure
+— eyes
+— nose
+— lips
+— jawline
+— skin tone
+— hairstyle and hair color
+— realistic body proportions
+
+Identity must remain clearly recognizable across the entire reconstructed body, not only the face.
+
+CLOTHING:
+Adapt clothing naturally to the cinematic outdoor sunset environment.
+Keep a grounded casual aesthetic matching the mood and realism of the original scene.
+
+POSE & COMPOSITION:
+Preserve:
+— camera angle
+— cinematic framing
+— body orientation
+— pose structure
+— eye-line direction
+— spacing
+— emotional interaction
+— composition balance
+
+Match pose placement only — NOT original anatomy or body geometry.
+
+SCENE PRESERVATION:
+Keep unchanged:
+— sunset sky
+— clouds
+— concrete wall
+— lighting atmosphere
+— environmental composition
+— depth and framing
+
+LIGHTING & INTEGRATION:
+Fully integrate the reconstructed people into the environment:
+— match sunset lighting direction
+— warm sky reflections
+— soft natural shadows
+— cinematic color grading
+— atmospheric haze
+— depth of field
+— realistic skin shading
+— subtle film grain
+
+Faces, skin, hair, and clothing must inherit the exact environmental lighting and sunset color tones.
+
+The final image must look like a real cinematic photograph with completely replaced people, not a face swap, pasted composite, overlay, or edited original image.`;
+
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
   // ── Zootopia ──
@@ -960,7 +1058,7 @@ const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
   "terabithia-2": { locked: false },
   "terabithia-3": { locked: false },
   "stranger-things-1": { locked: false },
-  "stranger-things-2": { locked: false },
+  "stranger-things-2": { locked: true, prompt: STRANGER_2 },
   "stranger-things-3": { locked: false },
   "end-of-the-fucking-world-1": { locked: true, prompt: WORLD_1 },
   "end-of-the-fucking-world-2": { locked: false },
