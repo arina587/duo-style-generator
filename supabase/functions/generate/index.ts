@@ -317,118 +317,125 @@ Faces, hair, skin, and clothing must inherit the exact lighting and atmosphere o
 
 The final result should look like a genuine stylized animated movie frame featuring recognizable animated versions of the uploaded people naturally integrated into the fantasy scene — not a face swap, pasted composite, or edited original image.`;
 
-const TANGLED_3 = `Use the reference image only for composition, pose, camera angle, interaction, and environment.
+const TANGLED_3 = `Use the reference image as a composition, interaction, and stylized 3D animation template.
 
-The priority of the generation must be the uploaded people’s exact appearance and recognizability.
+Preserve the cinematic fantasy atmosphere and the stylized animated movie aesthetic of the original scene.
 
-Completely remove the original animated characters and recreate new stylized animated characters based entirely on the uploaded people.
+Remove the original characters completely and recreate them using the uploaded reference people.
 
 CHARACTERS:
-— male character on the left → exact animated version of the uploaded man
-— female character on the right → exact animated version of the uploaded woman
+— male character on the left holding the crown → exact appearance of the man from the uploaded male photo
+— female character on the right receiving the crown → exact appearance of the woman from the uploaded female photo
 
-IDENTITY PRIORITY — VERY IMPORTANT:
-The uploaded people’s appearance must dominate the result.
-
-Strongly preserve:
-— exact facial structure
-— eye shape and spacing
-— eyebrows
-— nose shape
-— lips and smile shape
-— jawline
-— cheek structure
+Preserve their recognizable real appearance as accurately as possible:
+— facial structure
 — hairstyle
-— hairline
-— hair texture
-— hair length
 — hair color
 — skin tone
+— clothing identity
 — body proportions
-— recognizable silhouette
+— overall likeness
 
-The final animated characters must instantly and clearly resemble the uploaded people at first glance.
+IMPORTANT:
+Do NOT create generic animated characters.
 
-Do NOT generate generic fantasy characters.
+The reconstructed characters must clearly resemble the uploaded people while being transformed into stylized cinematic 3D animated characters.
 
 Do NOT:
-— use the original characters’ facial features
-— preserve original anatomy
-— blend the uploaded people with the original characters
-— create “inspired by” faces
-— create approximate likenesses
-— create pasted or attached faces
-
-The uploaded people must fully replace the original characters.
+— paste faces onto existing characters
+— keep original heads or anatomy
+— blend original characters with the uploaded people
+— create face-swap artifacts
+— morph faces onto existing bodies
+— generate random hairstyles or clothing
 
 FULL CHARACTER RECONSTRUCTION:
-Rebuild each character completely from the uploaded people:
-— full face
-— head shape
+Rebuild each person completely:
 — full body
-— shoulders
-— arms
+— face
+— head shape
+— hairstyle
 — hands
 — posture
-— anatomy
+— body anatomy
 — proportions
 — silhouette
+— clothing adaptation
 
-The original characters should contribute only pose and scene placement — NOT identity.
+The original characters must be fully removed and replaced.
 
-STYLE:
-Convert the uploaded people into highly recognizable stylized cinematic 3D animated characters.
+INTERACTION & EXPRESSIONS:
+Preserve:
+— eye contact
+— playful emotional connection
+— subtle smiling expressions
+— elegant body language
+— crown exchange interaction
+— natural attention toward each other
+— hand positioning
+— romantic fantasy interaction
 
-Maintain:
-— realistic likeness
-— recognizable facial identity
-— recognizable hair identity
-— recognizable proportions
+The two reconstructed characters must feel naturally present together in the same animated world.
 
-while applying:
-— cinematic animated rendering
-— stylized skin shading
-— expressive animated eyes
-— polished fantasy animation quality
-— realistic animated hair rendering
-
-The result should feel like “the uploaded people transformed into animated movie characters,” not “animated characters loosely inspired by them.”
-
-EXACT POSE & INTERACTION:
+POSE & COMPOSITION:
 Preserve:
 — male bowing posture
-— crown gesture
-— female hand position
-— eye contact
-— romantic playful interaction
+— female receiving gesture
 — body orientation
+— camera angle
+— framing
 — spacing between characters
+— composition balance
+— crown positioning
+— gaze direction
+— arm and hand placement
 
-Match pose precisely while keeping the uploaded people’s anatomy and proportions.
+Match pose placement only — not original anatomy.
 
 CLOTHING:
-Adapt the uploaded people’s recognizable clothing identity and color palette into elegant fantasy royal outfits while preserving their visual personality.
+Adapt the uploaded people’s clothing into the fantasy royal animated world while preserving:
+— recognizable outfit colors
+— clothing style
+— layered outfit details
+— overall fashion identity
 
-SCENE:
+Clothing should feel naturally stylized for a cinematic fantasy animation while still clearly belonging to the uploaded people.
+
+STYLE:
+High-quality stylized cinematic 3D animated movie aesthetic:
+— expressive stylized eyes
+— soft cinematic skin shading
+— realistic animated hair
+— stylized but believable anatomy
+— cinematic rendering
+— polished animated-film quality
+— warm fantasy atmosphere
+
+The result should look like a frame from a modern animated fantasy movie.
+
+SCENE PRESERVATION:
 Keep unchanged:
-— palace courtyard
-— crowd
-— architecture
-— decorations
-— fantasy atmosphere
-— cinematic environment
+— royal courtyard
+— palace architecture
+— crowd in the background
+— festive decorations
+— fantasy environment
+— overall composition
+— cinematic atmosphere
 
-LIGHTING:
-Match:
-— warm cinematic lighting
+LIGHTING & INTEGRATION:
+Fully integrate the reconstructed animated characters into the environment:
+— warm cinematic daylight lighting
 — soft shadows
-— atmospheric depth
-— fantasy color grading
-— realistic stylized reflections
+— glowing skin reflections
+— cinematic depth
+— atmospheric shading
+— warm fantasy color grading
+— stylized animated rendering
 
-Faces, skin, hair, and clothing must inherit the exact scene lighting.
+Faces, hair, skin, and clothing must inherit the exact lighting and atmosphere of the environment.
 
-The final result must look like a professional animated movie frame featuring highly recognizable animated versions of the uploaded people naturally integrated into the fantasy scene.`
+The final result should look like a genuine stylized animated movie frame featuring recognizable animated versions of the uploaded people naturally integrated into the fantasy royal scene — not a face swap, pasted composite, or edited original image.`
 
 const CINDERELLA_PROMPT = `Use the original scene image as the base.
 
