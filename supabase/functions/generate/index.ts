@@ -6,7 +6,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
-const MODEL_VERSION = "google/nano-banana-pro";
+const REPLICATE_DEFAULT_MODEL = "google/nano-banana-pro";
 
 // ── Universal prompt (used for styles with locked: false) ──
 const UNIVERSAL_PROMPT = `Use the reference image as a composition and scene template.
@@ -1215,37 +1215,41 @@ Faces, skin, hair, and clothing must inherit the exact environmental lighting an
 The final image must look like a real cinematic photograph with completely replaced people, not a face swap, pasted composite, overlay, or edited original image.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
-const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
+// provider: "replicate" | "openai"  — controls which API is called for this reference.
+// model: the version/model string passed to the chosen provider.
+const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: string; locked: boolean; prompt?: string }> = {
   // ── Zootopia ──
-  "zootopia-1": { locked: true, prompt: ZOOTOPIA_1 },
-  "zootopia-2": { locked: true, prompt: ZOOTOPIA_2 },
-  "zootopia-3": { locked: true, prompt: ZOOTOPIA_3 },
+  "zootopia-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: ZOOTOPIA_1 },
+  "zootopia-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: ZOOTOPIA_2 },
+  "zootopia-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: ZOOTOPIA_3 },
   // ── Tangled ──
-  "tangled-1": { locked: true, prompt: TANGLED_1 },
-  "tangled-2": { locked: true, prompt: TANGLED_2 },
-  "tangled-3": { locked: true, prompt: TANGLED_3 },
+  "tangled-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TANGLED_1 },
+  "tangled-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TANGLED_2 },
+  "tangled-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TANGLED_3 },
   // ── Cinderella ──
-  "cinderella-1": { locked: true, prompt: CINDERELLA_PROMPT },
-  "cinderella-2": { locked: true, prompt: CINDERELLA_PROMPT },
-  "cinderella-3": { locked: true, prompt: CINDERELLA_PROMPT },
+  "cinderella-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: CINDERELLA_PROMPT },
+  "cinderella-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: CINDERELLA_PROMPT },
+  "cinderella-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: CINDERELLA_PROMPT },
   // ── Euphoria ──
-  "euphoria-1": { locked: true, prompt: EUPHORIA_1 },
-  "euphoria-2": { locked: true, prompt: EUPHORIA_2 },
-  "euphoria-3": { locked: true, prompt: EUPHORIA_3 },
+  "euphoria-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: EUPHORIA_1 },
+  "euphoria-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: EUPHORIA_2 },
+  "euphoria-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: EUPHORIA_3 },
   // ── Titanic ──
-  "titanic-1": { locked: true, prompt: TITANIC_1 },
-  "titanic-2": { locked: true, prompt: TITANIC_2 },
-  "titanic-3": { locked: true, prompt: TITANIC_3 },
-  // ── Universal styles ──
-  "terabithia-1": { locked: true, prompt: TERABITHIA_1 },
-  "terabithia-2": { locked: false },
-  "terabithia-3": { locked: false },
-  "stranger-things-1": { locked: false },
-  "stranger-things-2": { locked: true, prompt: STRANGER_2 },
-  "stranger-things-3": { locked: true, prompt: STRANGER_3 },
-  "end-of-the-fucking-world-1": { locked: true, prompt: WORLD_1 },
-  "end-of-the-fucking-world-2": { locked: false },
-  "end-of-the-fucking-world-3": { locked: false },
+  "titanic-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TITANIC_1 },
+  "titanic-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TITANIC_2 },
+  "titanic-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TITANIC_3 },
+  // ── Terabithia ──
+  "terabithia-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TERABITHIA_1 },
+  "terabithia-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
+  "terabithia-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
+  // ── Stranger Things ──
+  "stranger-things-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
+  "stranger-things-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_2 },
+  "stranger-things-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_3 },
+  // ── The End of the F***ing World ──
+  "end-of-the-fucking-world-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: WORLD_1 },
+  "end-of-the-fucking-world-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
+  "end-of-the-fucking-world-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
 };
 
 async function fileToDataUrl(file: File): Promise<string> {
@@ -1499,7 +1503,6 @@ Deno.serve(async (req: Request) => {
       const hasWoman2 = !!person2b && person2b.size > 0;
 
       const replicateApiKey = Deno.env.get("REPLICATE_API_KEY");
-      if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
 
       // ── IMAGE ROLE MAPPING ──
       const manCount = hasMan2 ? 2 : 1;
@@ -1567,63 +1570,130 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
       }));
 
       // ── Debug logging ──
-      console.log("[MODEL_VERSION]", MODEL_VERSION);
-      console.log("[REQUEST_MODE]", "legacy-version-dispatch");
+      console.log("[PROVIDER]", config.provider);
+      console.log("[MODEL]", config.model);
       console.log("[REFERENCE_ID]", referenceId);
       console.log("[INPUT_IMAGES]", images.length);
       console.log("[PROMPT_SOURCE]", config.locked ? "locked" : "universal");
       console.log("[PROMPT_LENGTH]", finalPrompt.length);
       console.log("[IMAGE_SUMMARY]", JSON.stringify(imageSummary));
       console.log("[TOTAL_MB]", (imageSummary.reduce((s, x) => s + x.bytes, 0) / 1024 / 1024).toFixed(2));
-      console.log("[REQUEST_BODY_SHAPE]", JSON.stringify({
-        version: MODEL_VERSION,
-        input: {
-          image_input: `[${images.length} base64 data URLs]`,
-          prompt: `[${finalPrompt.length} chars]`,
-        },
-      }));
 
-      // ── Create prediction WITHOUT waiting for it to complete ──
-      const createRes = await fetch("https://api.replicate.com/v1/predictions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${replicateApiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          version: MODEL_VERSION,
+      // ── Provider routing ──
+      if (config.provider === "replicate") {
+        if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
+
+        console.log("[REQUEST_BODY_SHAPE]", JSON.stringify({
+          version: config.model,
           input: {
-            prompt: finalPrompt,
-            image_input: images,
+            image_input: `[${images.length} base64 data URLs]`,
+            prompt: `[${finalPrompt.length} chars]`,
           },
-        }),
-      });
+        }));
 
-      const createText = await createRes.text();
-      console.log("[CREATE] status:", createRes.status, "body:", createText.substring(0, 500));
+        const createRes = await fetch("https://api.replicate.com/v1/predictions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${replicateApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            version: config.model,
+            input: {
+              prompt: finalPrompt,
+              image_input: images,
+            },
+          }),
+        });
 
-      if (!createRes.ok) {
-        throw new Error(`Replicate prediction creation failed (${createRes.status}): ${createText.substring(0, 400)}`);
+        const createText = await createRes.text();
+        console.log("[CREATE] status:", createRes.status, "body:", createText.substring(0, 500));
+
+        if (!createRes.ok) {
+          throw new Error(`Replicate prediction creation failed (${createRes.status}): ${createText.substring(0, 400)}`);
+        }
+
+        let prediction: Record<string, unknown>;
+        try {
+          prediction = JSON.parse(createText);
+        } catch {
+          throw new Error(`Replicate create response non-JSON: ${createText.substring(0, 300)}`);
+        }
+
+        const predictionId = prediction.id as string | undefined;
+        if (!predictionId) {
+          throw new Error(`Replicate prediction has no ID: ${JSON.stringify(prediction).substring(0, 300)}`);
+        }
+
+        console.log("[CREATE] prediction started id=" + predictionId + " status=" + prediction.status);
+
+        return new Response(JSON.stringify({ id: predictionId, status: prediction.status }), {
+          status: 201,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
       }
 
-      let prediction: Record<string, unknown>;
-      try {
-        prediction = JSON.parse(createText);
-      } catch {
-        throw new Error(`Replicate create response non-JSON: ${createText.substring(0, 300)}`);
+      if (config.provider === "openai") {
+        const openaiApiKey = Deno.env.get("OPENAI_API_KEY");
+        if (!openaiApiKey) throw new Error("OPENAI_API_KEY not configured");
+
+        console.log("[OPENAI] building multipart request, images:", images.length);
+
+        const openaiForm = new FormData();
+        openaiForm.append("model", config.model);
+        openaiForm.append("prompt", finalPrompt);
+        openaiForm.append("n", "1");
+        openaiForm.append("size", "1024x1024");
+
+        // Attach each image as a separate file entry
+        for (let i = 0; i < images.length; i++) {
+          const dataUrl = images[i];
+          const commaIdx = dataUrl.indexOf(",");
+          const meta = dataUrl.substring(5, dataUrl.indexOf(";"));
+          const b64 = dataUrl.substring(commaIdx + 1);
+          const binaryStr = atob(b64);
+          const bytes = new Uint8Array(binaryStr.length);
+          for (let j = 0; j < binaryStr.length; j++) bytes[j] = binaryStr.charCodeAt(j);
+          const ext = meta.split("/")[1] ?? "jpg";
+          openaiForm.append("image[]", new Blob([bytes], { type: meta }), `image_${i}.${ext}`);
+        }
+
+        const openaiRes = await fetch("https://api.openai.com/v1/images/edits", {
+          method: "POST",
+          headers: { "Authorization": `Bearer ${openaiApiKey}` },
+          body: openaiForm,
+        });
+
+        const openaiText = await openaiRes.text();
+        console.log("[OPENAI] status:", openaiRes.status, "body:", openaiText.substring(0, 500));
+
+        if (!openaiRes.ok) {
+          throw new Error(`OpenAI image generation failed (${openaiRes.status}): ${openaiText.substring(0, 400)}`);
+        }
+
+        let openaiData: Record<string, unknown>;
+        try {
+          openaiData = JSON.parse(openaiText);
+        } catch {
+          throw new Error(`OpenAI response non-JSON: ${openaiText.substring(0, 300)}`);
+        }
+
+        const dataArr = openaiData.data as Array<Record<string, unknown>> | undefined;
+        const outputUrl = dataArr?.[0]?.url as string | undefined;
+        if (!outputUrl) {
+          throw new Error(`OpenAI response missing output URL: ${JSON.stringify(openaiData).substring(0, 300)}`);
+        }
+
+        console.log("[OPENAI] generation complete, url length:", outputUrl.length);
+
+        // Return in the same shape the frontend expects from a completed prediction
+        return new Response(JSON.stringify({ status: "succeeded", output: outputUrl }), {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
       }
 
-      const predictionId = prediction.id as string | undefined;
-      if (!predictionId) {
-        throw new Error(`Replicate prediction has no ID: ${JSON.stringify(prediction).substring(0, 300)}`);
-      }
-
-      console.log("[CREATE] prediction started id=" + predictionId + " status=" + prediction.status);
-
-      return new Response(JSON.stringify({ id: predictionId, status: prediction.status }), {
-        status: 201,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      throw new Error(`Unknown provider: ${(config as { provider: string }).provider}`);
 
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Unknown error";
