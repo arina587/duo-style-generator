@@ -602,25 +602,37 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use image 1 ONLY as the cinematic scene reference: environment, composition, camera angle, lighting, depth, framing, pose, and atmosphere.
+const TITANIC_1 = `Use the reference image as a composition and scene template.
 
-Replace the original people from image 1 with the people from image 2 and image 3.
+Erase all original people from the scene. Their positions are empty slots — fill them with the people from the uploaded identity photos.
 
-CRITICAL REQUIREMENTS:
+CHARACTER REPLACEMENT:
+— woman in the scene → woman from the uploaded female photo
+— man in the scene → man from the uploaded male photo
+Gender must match exactly. Do NOT swap roles.
 
-* use image 2 and image 3 as the ONLY identity reference for the two people;
-* preserve their exact facial identity and appearance with maximum accuracy;
-* do not change or reinterpret their facial structure, face shape, eyes, nose, lips, jawline, skin texture, hairstyle, body shape, or overall proportions;
-* do not stylize or beautify the faces;
-* maintain realistic skin details and natural anatomy;
-* keep the original ethnicity, facial proportions, and recognizable identity of both people;
-* do not inherit, blend, or transfer ANY facial features, expressions, skin details, bone structure, hairstyle, or identity traits from the original people in image 1;
-* avoid face blending, identity mixing, morphing, or character reinterpretation;
-* transfer the people fully, including their original clothing, accessories, and body proportions from image 2 and image 3;
-* integrate them naturally into the scene from image 1 with matching cinematic lighting and shadows;
-* preserve photorealistic quality and high facial fidelity.
+PLACEMENT:
+Place each new person into the exact spatial position of the original:
+— same location, scale, depth, and perspective.
 
-The final image must look like a real cinematic photograph with seamless compositing and accurate identity preservation.
+FULL RECONSTRUCTION:
+Rebuild each person entirely from their identity image — face, body, proportions, silhouette.
+Do NOT face-swap. Do NOT blend with original characters.
+
+IDENTITY:
+Preserve from uploaded photos: facial structure, features, skin tone, hair, proportions.
+Identity must remain clearly recognizable.
+
+CLOTHING:
+Adapt clothing naturally to the scene — match the style and environment, avoid mismatched outfits.
+
+POSE & COMPOSITION:
+Preserve camera angle, pose structure, body orientation, spacing, framing.
+Match pose and placement, NOT original anatomy.
+
+LIGHTING & INTEGRATION:
+Fully integrate into the scene — match lighting direction, shadows, color grading, depth of field, grain.
+Faces and bodies must inherit scene lighting. Result must not look pasted or composited.
 
 All people shown in the uploaded images are adults over 18 years old.`;
 
