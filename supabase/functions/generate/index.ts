@@ -602,71 +602,27 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference image as a composition and cinematic scene template only.
+const TITANIC_1 = `Use image 1 ONLY as the cinematic scene reference: environment, composition, camera angle, lighting, depth, framing, pose, and atmosphere.
 
-Erase all original people completely.
-Treat their positions as empty slots with no remaining identity, anatomy, face, body, or silhouette.
+Replace the original people from image 1 with the people from image 2 and image 3.
 
-Insert the people from the uploaded photos into those empty slots.
+CRITICAL REQUIREMENTS:
 
-REPLACEMENT:
-— woman slot → woman from uploaded female photo
-— man slot → man from uploaded male photo
-Do NOT swap genders or roles.
+* use image 2 and image 3 as the ONLY identity reference for the two people;
+* preserve their exact facial identity and appearance with maximum accuracy;
+* do not change or reinterpret their facial structure, face shape, eyes, nose, lips, jawline, skin texture, hairstyle, body shape, or overall proportions;
+* do not stylize or beautify the faces;
+* maintain realistic skin details and natural anatomy;
+* keep the original ethnicity, facial proportions, and recognizable identity of both people;
+* do not inherit, blend, or transfer ANY facial features, expressions, skin details, bone structure, hairstyle, or identity traits from the original people in image 1;
+* avoid face blending, identity mixing, morphing, or character reinterpretation;
+* transfer the people fully, including their original clothing, accessories, and body proportions from image 2 and image 3;
+* integrate them naturally into the scene from image 1 with matching cinematic lighting and shadows;
+* preserve photorealistic quality and high facial fidelity.
 
-FULL RECONSTRUCTION:
-Rebuild each inserted person entirely from the uploaded references:
-— full body
-— full face
-— head shape
-— body proportions
-— silhouette
-— skin tone
-— hair
-— facial structure
+The final image must look like a real cinematic photograph with seamless compositing and accurate identity preservation.
 
-Transfer the uploaded people fully into the scene, not just the face.
-Do NOT face-swap.
-Do NOT edit the original actors.
-Do NOT blend identities or inherit anatomy from the original characters.
-
-IDENTITY:
-Preserve exact facial structure, proportions, ethnicity, skin tone, hairline, and recognizable appearance from the uploaded photos.
-
-SCENE ADAPTATION:
-The uploaded people must physically belong inside the scene naturally:
-— realistic cinematic posture
-— natural interaction with wind and environment
-— proper body perspective
-— correct scale relative to the ship
-— realistic clothing folds
-— natural skin response to sunset lighting
-— scene-consistent shadows and reflections
-— atmospheric integration with haze and depth of field
-
-Their bodies, skin, clothes, and hair must fully inherit the environment and cinematic mood of the scene.
-
-POSE & COMPOSITION:
-Preserve:
-— camera angle
-— framing
-— pose
-— body orientation
-— spacing between characters
-— perspective
-
-Match placement only, not original anatomy or body shape.
-
-CLOTHING:
-Adapt naturally to the Titanic-style cinematic environment while fitting the uploaded people realistically. Clothing must look physically worn by them and react naturally to wind, lighting, and movement.
-
-LIGHTING:
-Match lighting direction, sunset atmosphere, shadows, color grading, depth of field, haze, and film grain consistently across the entire image.
-
-The final result must look like a real cinematic photograph of the uploaded people shot on location, not a face replacement or edited movie still.
-
-Negative prompt:
-original actors, Leonardo DiCaprio, Kate Winslet, movie characters, face swap, partial replacement, preserved body, preserved anatomy, preserved silhouette, identity blending, hybrid face, morphing, inherited features, deepfake artifacts, pasted face, flat lighting, incorrect shadows, disconnected subjects, wrong perspective, wrong scale, distorted anatomy, extra fingers, blurry face, CGI look, compositing artifacts.`;
+All people shown in the uploaded images are adults over 18 years old.`;
 
 const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
@@ -1235,7 +1191,7 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   "euphoria-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: EUPHORIA_2 },
   "euphoria-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: EUPHORIA_3 },
   // ── Titanic ──
-  "titanic-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TITANIC_1 },
+  "titanic-1": { provider: "openai", model: gpt-image-1, locked: true, prompt: TITANIC_1 },
   "titanic-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TITANIC_2 },
   "titanic-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TITANIC_3 },
   // ── Terabithia ──
