@@ -435,7 +435,7 @@ Fully integrate the reconstructed animated characters into the environment:
 
 Faces, hair, skin, and clothing must inherit the exact lighting and atmosphere of the environment.
 
-The final result should look like a genuine stylized animated movie frame featuring recognizable animated versions of the uploaded people naturally integrated into the fantasy royal scene — not a face swap, pasted composite, or edited original image.`
+The final result should look like a genuine stylized animated movie frame featuring recognizable animated versions of the uploaded people naturally integrated into the fantasy royal scene — not a face swap, pasted composite, or edited original image.`;
 
 const CINDERELLA_PROMPT = `Use the original scene image as the base.
 
