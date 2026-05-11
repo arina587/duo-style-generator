@@ -1652,7 +1652,7 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
           const bytes = new Uint8Array(binaryStr.length);
           for (let j = 0; j < binaryStr.length; j++) bytes[j] = binaryStr.charCodeAt(j);
           const ext = meta.split("/")[1] ?? "jpg";
-          openaiForm.append("image", new Blob([bytes], { type: meta }), `image_${i}.${ext}`);
+          openaiForm.append("image[]", new Blob([bytes], { type: meta }), `image_${i}.${ext}`);
         }
 
         const openaiRes = await fetch("https://api.openai.com/v1/images/edits", {
