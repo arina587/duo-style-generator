@@ -602,39 +602,50 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference image as a composition and scene template.
+const TITANIC_1 = `Use the reference image only as a composition, framing, pose, and cinematic scene template.
 
-Erase all original people from the scene. Their positions are empty slots — fill them with the people from the uploaded identity photos.
+Remove all original people completely and replace them with the people from the uploaded identity photos.
 
-CHARACTER REPLACEMENT:
-— woman in the scene → woman from the uploaded female photo
-— man in the scene → man from the uploaded male photo
-Gender must match exactly. Do NOT swap roles.
+ROLE MAPPING:
+— female character → woman from uploaded female reference
+— male character → man from uploaded male reference
 
-PLACEMENT:
-Place each new person into the exact spatial position of the original:
-— same location, scale, depth, and perspective.
+Gender and role mapping must remain exact. Do not swap positions.
 
-FULL RECONSTRUCTION:
-Rebuild each person entirely from their identity image — face, body, proportions, silhouette.
-Do NOT face-swap. Do NOT blend with original characters.
+REPLACEMENT RULES:
+Reconstruct both people entirely from the uploaded identity references.
+Do NOT perform a face swap.
+Do NOT blend original actors with the new people.
+The final characters must be fully new individuals based on the uploaded references.
 
-IDENTITY:
-Preserve from uploaded photos: facial structure, features, skin tone, hair, proportions.
-Identity must remain clearly recognizable.
+IDENTITY PRESERVATION:
+Preserve accurate facial structure, skin tone, hairstyle, body proportions, age appearance, and recognizable identity details from the uploaded photos.
+
+POSITION & COMPOSITION:
+Keep the exact original:
+— pose
+— body orientation
+— hand placement
+— camera angle
+— framing
+— scale
+— distance between characters
+— perspective and depth
 
 CLOTHING:
-Adapt clothing naturally to the scene — match the style and environment, avoid mismatched outfits.
+Adapt wardrobe naturally to the cinematic scene style while preserving believable fit and proportions. Clothing should match the elegant romantic ship atmosphere and period-inspired aesthetic.
 
-POSE & COMPOSITION:
-Preserve camera angle, pose structure, body orientation, spacing, framing.
-Match pose and placement, NOT original anatomy.
+LIGHTING & CINEMATIC INTEGRATION:
+Match the original scene’s warm sunset cinematic lighting, shadows, highlights, depth of field, film grain, color grading, and atmosphere.
+Characters must look naturally photographed in the scene, not pasted or composited.
 
-LIGHTING & INTEGRATION:
-Fully integrate into the scene — match lighting direction, shadows, color grading, depth of field, grain.
-Faces and bodies must inherit scene lighting. Result must not look pasted or composited.
+IMPORTANT:
+Maintain realistic anatomy and natural facial proportions.
+Avoid uncanny or over-smoothed skin.
+Avoid morphing artifacts.
+Avoid preserving any facial features from the original actors.
 
-All people shown in the uploaded images are adults over 18 years old.`;
+All people shown in uploaded identity photos are adults over 18 years old.`;
 
 const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
