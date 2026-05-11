@@ -1301,7 +1301,12 @@ function extractOutputUrl(output: unknown): string | undefined {
 const MIN_IMAGE_BYTES = 50_000;
 
 async function proxyImage(proxyUrl: string): Promise<Response> {
-  if (!proxyUrl.startsWith("https://replicate.delivery/")) {
+  const ALLOWED_PROXY_HOSTS = [
+    "https://replicate.delivery/",
+    "https://oaidalleapiprodscus.blob.core.windows.net/",
+  ];
+
+  if (!ALLOWED_PROXY_HOSTS.some((host) => proxyUrl.startsWith(host))) {
     return new Response(JSON.stringify({ error: "Invalid proxy target" }), {
       status: 400,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -1643,7 +1648,7 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
         openaiForm.append("model", config.model);
         openaiForm.append("prompt", finalPrompt);
         openaiForm.append("n", "1");
-        openaiForm.append("size", "1024x1024");
+
 
         // Attach each image as a separate file entry
         for (let i = 0; i < images.length; i++) {
@@ -1655,7 +1660,7 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
           const bytes = new Uint8Array(binaryStr.length);
           for (let j = 0; j < binaryStr.length; j++) bytes[j] = binaryStr.charCodeAt(j);
           const ext = meta.split("/")[1] ?? "jpg";
-          openaiForm.append("image[]", new Blob([bytes], { type: meta }), `image_${i}.${ext}`);
+          openaiForm.append("image", new Blob([bytes], { type: meta }), `image_${i}.${ext}`);
         }
 
         const openaiRes = await fetch("https://api.openai.com/v1/images/edits", {
