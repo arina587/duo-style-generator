@@ -17,7 +17,6 @@ export const categories: Category[] = [
   { id: 'euphoria',                  name: 'Euphoria',                       tag: 'TV Series',  cover: '/styles/euphoria/euphoria1.jpg' },
   { id: 'titanic',                   name: 'Titanic',                        tag: 'Film',       cover: '/styles/titanic/titanic1.jpg' },
   { id: 'tangled',                   name: 'Tangled',                        tag: 'Animated',   cover: '/styles/tangled/tangled1.jpg' },
-  { id: 'spiderman',                 name: 'Spider-Man',                     tag: 'Film',       cover: '/styles/spiderman/spiderman1.jpg' },
   { id: 'terabithia',                name: 'Bridge to Terabithia',           tag: 'Film',       cover: '/styles/terabithia/terabithia1.jpg' },
   { id: 'cinderella',                name: 'Cinderella',                     tag: 'Animated',   cover: '/styles/cinderella/cinderella1.jpg' },
   { id: 'stranger-things',           name: 'Stranger Things',                tag: 'TV Series',  cover: '/styles/stranger-things/stranger-things1.jpg' },
@@ -48,11 +47,6 @@ export const references: ReferenceItem[] = [
   { id: 'tangled-1', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled1.jpg' },
   { id: 'tangled-2', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled2.jpg' },
   { id: 'tangled-3', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled3.jpg' },
-
-  // ── Spider-Man ──
-  { id: 'spiderman-1', style: 'spiderman', label: 'Spider-Man', image: '/styles/spiderman/spiderman1.jpg' },
-  { id: 'spiderman-2', style: 'spiderman', label: 'Spider-Man', image: '/styles/spiderman/spiderman2.jpg' },
-  { id: 'spiderman-3', style: 'spiderman', label: 'Spider-Man', image: '/styles/spiderman/spiderman3.jpg' },
 
   // ── Terabithia ──
   { id: 'terabithia-1', style: 'terabithia', label: 'Terabithia', image: '/styles/terabithia/terabithia1.jpg' },

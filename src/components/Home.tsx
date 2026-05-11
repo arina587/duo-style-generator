@@ -35,7 +35,7 @@ const pricingPlans = [
 const faqItems = [
   { q: 'How does DuoStyle work?', a: 'Upload two photos (man + woman), select a cinematic style and reference scene, then our AI places both faces into the iconic frame.' },
   { q: 'Are my photos private?', a: 'Your photos are processed securely and never used for AI training. All uploads are deleted after generation.' },
-  { q: 'What styles are available?', a: 'Titanic, Euphoria, Zootopia, Tangled, Spider-Man, Bridge to Terabithia, Cinderella, Stranger Things, and The End of the F***ing World -- with more coming soon.' },
+  { q: 'What styles are available?', a: 'Titanic, Euphoria, Zootopia, Tangled, Bridge to Terabithia, Cinderella, Stranger Things, and The End of the F***ing World -- with more coming soon.' },
   { q: 'How long does generation take?', a: 'Most fusions complete in 60–80 seconds. Usually under a minute.' },
   { q: 'Can I download my result?', a: 'Yes -- once generated you can download the full resolution image directly.' },
 ];
@@ -227,7 +227,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
 
           <div className="flex justify-center items-center gap-12 pt-6 animate-fade-up" style={{ animationDelay: '0.14s', borderTop: '1px dashed #ddd5ee' }}>
             {[
-              { value: '9', label: 'Cinematic styles' },
+              { value: '8', label: 'Cinematic styles' },
               { value: '~60s', label: 'Generation time' },
               { value: 'HD', label: 'Output quality' },
             ].map(({ value, label }) => (
@@ -271,7 +271,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
               { icon: Upload, step: '01', title: 'Upload Photos', desc: 'Upload one photo of the man and one of the woman. Clear face shots work best.', delay: '0s', iconBg: 'linear-gradient(135deg, #c4a8e8, #d4bef0)', accentColor: '#d4bef0' },
-              { icon: Film, step: '02', title: 'Choose a Scene', desc: 'Pick from Titanic, Euphoria, Zootopia, Tangled, Spider-Man, and more.', delay: '0.08s', iconBg: 'linear-gradient(135deg, #e2b8d8, #f0c8e4)', accentColor: '#f0c8e4' },
+              { icon: Film, step: '02', title: 'Choose a Scene', desc: 'Pick from Titanic, Euphoria, Zootopia, Tangled, Stranger Things, and more.', delay: '0.08s', iconBg: 'linear-gradient(135deg, #e2b8d8, #f0c8e4)', accentColor: '#f0c8e4' },
               { icon: Sparkles, step: '03', title: 'Generate & Download', desc: 'AI places both faces into the scene. Download your HD result in 60–80 seconds.', delay: '0.16s', iconBg: 'linear-gradient(135deg, #b8d8e8, #c8eaf4)', accentColor: '#c8eaf4' },
             ].map(({ icon: Icon, step, title, desc, delay, iconBg, accentColor }) => (
               <div

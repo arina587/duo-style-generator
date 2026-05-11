@@ -1237,9 +1237,6 @@ const STYLE_CONFIG: Record<string, { locked: boolean; prompt?: string }> = {
   "titanic-2": { locked: true, prompt: TITANIC_2 },
   "titanic-3": { locked: true, prompt: TITANIC_3 },
   // ── Universal styles ──
-  "spiderman-1": { locked: false },
-  "spiderman-2": { locked: false },
-  "spiderman-3": { locked: false },
   "terabithia-1": { locked: true, prompt: TERABITHIA_1 },
   "terabithia-2": { locked: false },
   "terabithia-3": { locked: false },
