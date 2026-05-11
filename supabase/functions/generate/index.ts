@@ -1252,22 +1252,24 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   "end-of-the-fucking-world-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
 };
 
+function uint8ToBase64(bytes: Uint8Array): string {
+  let binary = "";
+  const chunkSize = 0x8000;
+
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    binary += String.fromCharCode(
+      ...bytes.subarray(i, i + chunkSize)
+    );
+  }
+
+  return btoa(binary);
+}
+
 async function fileToDataUrl(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
   const bytes = new Uint8Array(arrayBuffer);
 
-  const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-  let b64 = "";
-  const len = bytes.length;
-  for (let i = 0; i < len; i += 3) {
-    const a = bytes[i];
-    const b = i + 1 < len ? bytes[i + 1] : 0;
-    const c = i + 2 < len ? bytes[i + 2] : 0;
-    b64 += CHARS[a >> 2];
-    b64 += CHARS[((a & 3) << 4) | (b >> 4)];
-    b64 += i + 1 < len ? CHARS[((b & 15) << 2) | (c >> 6)] : "=";
-    b64 += i + 2 < len ? CHARS[c & 63] : "=";
-  }
+  const b64 = uint8ToBase64(bytes);
 
   // Normalize MIME type — reject HEIC/HEIF which Replicate does not accept
   let mime = file.type && file.type.startsWith("image/") ? file.type : "image/jpeg";
@@ -1288,17 +1290,51 @@ function base64ByteSize(dataUrl: string): number {
 }
 
 function extractOutputUrl(output: unknown): string | undefined {
-  if (typeof output === "string" && output.length > 0) return output;
-  if (Array.isArray(output) && output.length > 0 && typeof output[0] === "string") return output[0] as string;
-  if (output && typeof output === "object" && !Array.isArray(output)) {
-    const obj = output as Record<string, unknown>;
-    const candidate = obj.url ?? obj.image ?? obj.output ?? obj.uri;
-    if (typeof candidate === "string") return candidate;
+  if (typeof output === "string") {
+    return output;
   }
+
+  if (Array.isArray(output)) {
+    const first = output[0];
+
+    if (typeof first === "string") {
+      return first;
+    }
+  }
+
+  if (output && typeof output === "object") {
+    const obj = output as Record<string, unknown>;
+
+    const direct =
+      obj.url ??
+      obj.image ??
+      obj.output ??
+      obj.uri;
+
+    if (typeof direct === "string") {
+      return direct;
+    }
+
+    const nestedArrays = [
+      obj.images,
+      obj.data,
+      obj.outputs,
+    ];
+
+    for (const arr of nestedArrays) {
+      if (
+        Array.isArray(arr) &&
+        typeof arr[0] === "string"
+      ) {
+        return arr[0];
+      }
+    }
+  }
+
   return undefined;
 }
 
-const MIN_IMAGE_BYTES = 50_000;
+const MIN_IMAGE_BYTES = 5_000;
 
 async function proxyImage(proxyUrl: string): Promise<Response> {
   const ALLOWED_PROXY_HOSTS = [
@@ -1589,7 +1625,7 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
         if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
 
         console.log("[REQUEST_BODY_SHAPE]", JSON.stringify({
-          version: config.model,
+          model: config.model,
           input: {
             image_input: `[${images.length} base64 data URLs]`,
             prompt: `[${finalPrompt.length} chars]`,
@@ -1603,7 +1639,7 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            version: config.model,
+            model: config.model,
             input: {
               prompt: finalPrompt,
               image_input: images,
