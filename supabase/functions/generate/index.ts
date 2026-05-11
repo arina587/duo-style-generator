@@ -1683,16 +1683,31 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
           throw new Error(`OpenAI response non-JSON: ${openaiText.substring(0, 300)}`);
         }
 
-        const dataArr = openaiData.data as Array<Record<string, unknown>> | undefined;
-        const outputUrl = dataArr?.[0]?.url as string | undefined;
-        if (!outputUrl) {
-          throw new Error(`OpenAI response missing output URL: ${JSON.stringify(openaiData).substring(0, 300)}`);
-        }
+       const dataArr = openaiData.data as Array<Record<string, unknown>> | undefined;
+const first = dataArr?.[0];
 
-        console.log("[OPENAI] generation complete, url length:", outputUrl.length);
+const outputUrl = first?.url as string | undefined;
+const b64 = first?.b64_json as string | undefined;
 
-        // Return in the same shape the frontend expects from a completed prediction
-        return new Response(JSON.stringify({ status: "succeeded", output: outputUrl }), {
+let finalOutput: string | undefined;
+
+if (outputUrl) {
+  finalOutput = outputUrl;
+} else if (b64) {
+  finalOutput = `data:image/png;base64,${b64}`;
+}
+
+if (!finalOutput) {
+  throw new Error(`OpenAI response missing output image: ${JSON.stringify(openaiData).substring(0, 300)}`);
+}
+
+console.log("[OPENAI] generation complete");
+
+// Return in the same shape the frontend expects
+return new Response(JSON.stringify({
+  status: "succeeded",
+  output: finalOutput,
+}), {
           status: 200,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
