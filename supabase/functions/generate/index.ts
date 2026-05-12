@@ -1231,7 +1231,7 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   // ── Stranger Things ──
   "stranger-things-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
   "stranger-things-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_2 },
-  "stranger-things-3": { provider: "openai", model: "gpt-image-1", locked: true, prompt: STRANGER_3 },
+  "stranger-things-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_3 },
   // ── The End of the F***ing World ──
   "end-of-the-fucking-world-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: WORLD_1 },
   "end-of-the-fucking-world-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
