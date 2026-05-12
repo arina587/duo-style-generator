@@ -1284,30 +1284,56 @@ ZERO identity mixing allowed.
 
 CRITICAL POSE LOCK:
 
+The uploaded people must preserve the EXACT original pose geometry from the reference image.
+
+Pose accuracy is EXTREMELY IMPORTANT.
+
+Do NOT reinterpret the pose.
+Do NOT rebalance the body.
+Do NOT generate a “more natural” pose.
+Do NOT improve anatomy.
+Do NOT change body mechanics.
+
 Preserve EXACTLY:
-— head angle
+— head tilt
 — neck angle
 — shoulder angle
-— torso orientation
-— arm position
+— torso lean
+— spine curvature
+— hip placement
+— arm placement
 — elbow bend
 — wrist angle
-— finger placement
-— hip position
-— body lean
-— body tension
-— interaction contact points
+— hand placement
+— finger positioning
+— leg position
+— knee angle
+— foot placement
+— body overlap
+— body weight distribution
+— contact points between people
 
-Do NOT alter:
-— pose dynamics
-— body posture
-— body energy
-— body balance
-— interaction geometry
+Maintain the EXACT interaction geometry between characters.
 
-Do NOT “improve” pose anatomy.
+The uploaded people must occupy the SAME physical positions in 3D space as the reference people.
 
-The uploaded people must keep their natural posture and proportions.
+Do NOT:
+— move limbs
+— change posture
+— straighten the body
+— rotate shoulders
+— adjust balance
+— reposition hands
+— change leaning direction
+— alter pose energy
+
+The pose should feel LOCKED to the reference frame.
+
+Think of the uploaded people as physically replacing the original people frame-by-frame while keeping the identical body mechanics and positioning.
+
+Pose preservation is MORE important than anatomical correction.
+
+Even subtle pose changes are NOT allowed.
 
 CRITICAL IDENTITY LOCK:
 
