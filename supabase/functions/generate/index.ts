@@ -586,6 +586,12 @@ Composition is LOCKED.
 
 Keep the scene from the identical viewpoint as the reference frame.
 
+IMPORTANT:
+The woman must remain turned away from the camera exactly like in the reference image.
+Do NOT rotate her toward the viewer.
+Do NOT reveal more of her face.
+Maintain the same head angle, shoulder angle, and back-facing orientation.
+
 Erase all original people. Their positions are empty slots — fill them with the people from the uploaded photos.
 
 REPLACEMENT:
@@ -602,6 +608,11 @@ Do NOT preserve original facial features.
 IDENTITY:
 Preserve facial structure, proportions, skin tone, hair, and recognizability of uploaded people.
 
+SKIN CONSISTENCY:
+Hands, arms, neck, shoulders, and visible body skin must perfectly match the facial skin tone and undertone.
+No mismatched skin color between face and body.
+No different lighting temperature on hands or body.
+
 CLOTHING:
 Adapt naturally to the environment and cinematic style of the scene.
 
@@ -611,7 +622,7 @@ Match the original pose, body direction, posture, eye-line, interaction, and cin
 LIGHTING:
 Match original lighting direction, shadows, color grading, depth of field, film grain, and scene atmosphere.
 
-Faces must inherit the exact scene lighting naturally.
+Faces and bodies must inherit identical scene lighting naturally.
 The result must not look pasted, composited, or AI-generated.
 
 The uploaded people must look like they were originally filmed in this exact shot.`;
