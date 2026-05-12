@@ -1233,424 +1233,114 @@ PRIORITY ORDER:
 4. emotional pose and composition
 5. cinematic Titanic atmosphere.`;
 
-const TITANIC_3 = `Use the reference image ONLY as a cinematography, composition, pose, interaction, and lighting template.
+const TITANIC_3 = `ULTRA STRICT IDENTITY LOCK — HIGHEST PRIORITY IN THE ENTIRE GENERATION.
 
-DO NOT use the original people as appearance references in ANY way.
+The uploaded people must remain 100% visually identical to their source photos.
 
-The original people are ONLY placeholders for:
-— body positioning
+Their appearance MUST survive the transfer unchanged.
+
+The AI is NOT allowed to reinterpret, redesign, beautify, stylize, or approximate the uploaded people.
+
+The uploaded faces and bodies are LOCKED REFERENCES.
+
+Treat the uploaded people as FIXED REAL HUMANS that must be physically inserted into the new scene unchanged.
+
+The reference image MUST influence ONLY:
 — pose
-— interaction
+— composition
 — framing
 — camera angle
 — lighting
-— scene composition
 — environment
-— emotional staging
 
-Completely remove all original identities from the final result.
-
-ABSOLUTELY NO blending between uploaded people and original people.
-
-Do NOT inherit from the reference people:
-— face shape
-— facial proportions
-— jawline
-— eyes
-— eyebrows
-— nose
-— lips
-— hairstyle
-— skin texture
-— skin color
-— body type
-— physique
-— silhouette
-— hand shape
-— arm shape
-— ethnicity
-— age appearance
+The reference image must NOT influence identity in ANY way.
 
 CRITICAL:
-This is NOT a face swap.
+The final people must instantly and unmistakably look like the uploaded people at first glance.
 
-Do NOT paste uploaded faces onto the original bodies.
+NOT:
+— “inspired by”
+— “similar to”
+— “adapted from”
+— “resembling”
 
-Instead:
-fully replace the original people with the uploaded people as COMPLETE REAL HUMANS naturally existing in the scene.
+The result must look EXACTLY like the uploaded people.
 
-CRITICAL PRIORITY ORDER:
+ZERO identity drift allowed.
 
-1. Preserve uploaded people's identity EXACTLY
-2. Preserve uploaded people's body proportions EXACTLY
-3. Preserve uploaded people's pose EXACTLY
-4. Preserve uploaded people's clothing/body consistency EXACTLY
-5. ONLY AFTER THAT adapt to the scene
-
-DO NOT reinterpret the uploaded people.
-
-DO NOT redesign their pose.
-DO NOT modify their anatomy.
-DO NOT stylize their body language.
-
-The uploaded people must remain visually IDENTICAL to their source photos.
-
-IDENTITY LOCK IS MORE IMPORTANT than cinematic adaptation.
-
-POSE LOCK IS MORE IMPORTANT than scene reinterpretation.
-
-BODY LOCK IS MORE IMPORTANT than matching the original people.
-
-CRITICAL FULL HUMAN TRANSFER:
-
-Transfer the uploaded people as COMPLETE FULL HUMANS.
-
-NOT just faces.
-NOT just heads.
-NOT facial identity only.
-
-The ENTIRE PERSON must be transferred together as ONE connected human identity.
-
-This includes:
-— head
-— face
-— hair
-— neck
-— shoulders
-— torso
-— arms
-— hands
-— fingers
-— legs
-— body proportions
-— physique
-— silhouette
-— clothing
-— sleeves
-— posture
-— body language
-
-The uploaded person's FULL BODY must replace the original person's FULL BODY.
-
-Do NOT keep:
-— original hands
-— original arms
-— original body
-— original skin color
-— original physique
-— original clothing fit
-— original body proportions
-
-Do NOT attach the uploaded face onto the original person’s body.
-
-This is NOT a face swap.
-
-This is a COMPLETE PERSON REPLACEMENT.
-
-The uploaded people must remain physically consistent from head to toe.
-
-Face, hands, arms, neck, and body MUST belong to the SAME uploaded person.
-
-If the uploaded person has:
-— light skin → hands and body must also be light
-— slim physique → body must remain slim
-— specific clothing proportions → preserve them naturally
-
-Do NOT create hybrid humans.
-
-Do NOT mix:
-— uploaded face + original body
-— uploaded face + original hands
-— uploaded face + original skin tone
-
-ZERO identity mixing allowed.
-
-ABSOLUTE POSE REPLICATION REQUIRED.
-
-The uploaded people must replicate the EXACT body pose from the reference image with near pixel-level accuracy.
-
-Do NOT reinterpret the pose in ANY way.
-
-Do NOT create a similar pose.
-Do NOT create an approximate pose.
-Do NOT generate a “natural variation”.
-
-The final pose must be a DIRECT PHYSICAL REPLACEMENT of the original people.
-
-Treat the reference pose as LOCKED skeletal geometry.
-
-Preserve EXACTLY:
-— head rotation
-— chin angle
-— neck tilt
-— shoulder rotation
-— torso lean
-— spine curve
-— body compression/stretch
-— hip angle
-— arm placement
-— elbow bend angle
-— wrist rotation
-— hand placement
-— finger positions
-— leg angles
-— knee bend
-— foot direction
-— body overlap
-— body contact points
-— weight distribution
-— leaning direction
-— interaction pressure
-— distance between bodies
-
-The uploaded people must occupy the EXACT SAME coordinates and silhouette positioning as the reference people.
-
-IMPORTANT SCENE STRUCTURE:
-
-— back person remains directly behind embracing the front person
-— preserve exact waist embrace position
-— preserve exact finger placement on the waist and stomach
-— preserve exact overlap of both bodies
-— preserve exact shoulder alignment
-— preserve exact neck angle
-— preserve exact face proximity
-— preserve exact romantic tension and intimacy
-
-The front person must keep the head tilted backward and sideways.
-The back person must keep the head leaned forward close to the face.
-
-Do NOT rotate faces toward the viewer.
-Do NOT separate the bodies.
-Do NOT weaken the embrace.
-
-Do NOT:
-— straighten posture
-— improve anatomy
-— rebalance the body
-— make pose more comfortable
-— move limbs
-— reposition hands
-— alter body energy
-— alter interaction geometry
-— alter body tension
-
-Even tiny pose deviations are NOT allowed.
-
-The scene should look like:
-the original people were physically replaced frame-by-frame by the uploaded people while preserving the exact skeletal positioning and interaction mechanics.
-
-CRITICAL IDENTITY LOCK:
-
-Preserve EXACTLY:
-— facial structure
-— eye spacing
-— nose proportions
-— lips
-— jawline
-— cheeks
-— forehead
-— hairstyle
-— silhouette
-— physique
-— natural asymmetry
-
-Do NOT:
-— beautify
-— glamorize
-— make more cinematic
-— smooth skin
-— sharpen features
-— enlarge eyes
-— slim body
-
-The uploaded people must remain REAL and RAW.
-
-The uploaded people must remain IDENTICAL to their source photos.
+ZERO resemblance to the original actors allowed.
 
 Preserve EXACTLY:
 — facial bone structure
+— face width
+— head shape
 — jawline
+— cheekbones
+— chin
+— forehead
 — eye shape
+— eye size
+— eye spacing
 — eyelids
 — eyebrows
-— nose shape
-— lip shape
-— cheek structure
-— forehead proportions
-— chin structure
+— nose bridge
+— nose width
+— nostrils
+— lips
+— mouth shape
+— smile shape
 — ears
-— natural asymmetry
 — hairstyle
 — hairline
 — hair density
+— hair texture
+— facial asymmetry
 — skin texture
 — skin undertone
+— freckles/moles if present
 — body proportions
 — shoulder width
-— arm proportions
+— arm thickness
 — physique
 — silhouette
 
-SKIN CONSISTENCY IS CRITICAL:
-
-If the uploaded person has light skin on the face:
-— hands must also be light
-— arms must also be light
-— neck must also be light
-— all visible skin must perfectly match
-
-There must be ZERO mismatch between:
-— face and hands
-— face and arms
-— face and neck
-— face and body
-
-Do NOT preserve the original person’s skin tone or body identity.
-
-The uploaded body must FULLY replace the original body.
-
-Do NOT create:
-— face/body color mismatch
-— different undertones
-— disconnected body parts
-— hybrid identities
-— face-swapped appearance
-— pasted faces
-
 Do NOT:
-— beautify faces
-— smooth anatomy unnaturally
-— sharpen jawlines
+— sharpen facial features
 — enlarge eyes
-— slim the body
-— glamorize appearance
-— make them prettier
+— slim the face
+— beautify skin
+— smooth skin
+— change ethnicity
+— change age appearance
+— make them cinematic
 — make them model-like
-— stylize skin
-— alter ethnicity
-— alter age appearance
+— make them resemble the original actors
 
-The uploaded people must look like authentic photographed humans physically present in the environment.
+The uploaded people must remain RAW and REAL.
 
-They must NOT look:
-— pasted
-— composited
-— blended with original people
-— face-swapped
-— AI-generated
-— uncanny
-— plastic
-— over-retouched
+CRITICAL:
+If realism conflicts with identity accuracy:
+IDENTITY ACCURACY MUST WIN.
 
-Keep:
-— exact camera angle
-— exact framing
-— exact crop
-— exact perspective
-— exact ship deck composition
-— exact body spacing
-— exact cinematic staging
+If lighting conflicts with identity accuracy:
+IDENTITY ACCURACY MUST WIN.
 
-Camera position is LOCKED.
-Perspective is LOCKED.
-Composition is LOCKED.
+If cinematic adaptation conflicts with identity accuracy:
+IDENTITY ACCURACY MUST WIN.
 
-NATURAL SCENE ADAPTATION:
+If scene integration conflicts with identity accuracy:
+IDENTITY ACCURACY MUST WIN.
 
-Adapt the uploaded people naturally to the scene WITHOUT changing identity.
+The AI must NEVER sacrifice identity in order to make the image prettier or more cinematic.
 
-Scene adaptation may affect ONLY:
-— lighting integration
-— environmental shadows
-— warm sunset reflections
-— cinematic golden light
-— color grading
-— atmospheric depth
-— depth of field
-— film grain
-— ambient sunset lighting
-
-IMPORTANT:
-The uploaded people should feel physically moved into the scene, not recreated by AI.
-
-Almost like:
-“cutting the real people out of their original photo and naturally filming them inside the new environment.”
+The uploaded people must look like:
+REAL photographs of the uploaded humans placed into the scene.
 
 NOT:
-“re-generating similar people from scratch.”
+AI-generated reinterpretations of them.
 
-Scene adaptation must stay SUBTLE.
-
-Do NOT let:
-— lighting adaptation
-— cinematic grading
-— environment matching
-— AI reconstruction
-
-damage identity accuracy or pose accuracy.
-
-NATURAL INTEGRATION IS CRITICAL:
-
-The uploaded people must look physically present in the scene as if they were originally photographed there in-camera.
-
-They must NOT look:
-— pasted
-— composited
-— overlaid
-— cut out
-— artificially inserted
-— disconnected from the environment
-— too sharp compared to the scene
-— too clean compared to the scene
-— relit separately from the scene
-
-Blend the uploaded people naturally into the cinematography and atmosphere of the shot.
-
-Environmental integration must be realistic:
-— natural shadow interaction
-— natural ambient light bounce
-— realistic warm sunset reflections
-— realistic skin shading
-— realistic atmospheric depth
-— realistic color contamination from the environment
-— realistic scene grain
-— realistic softness matching the camera lens
-
-The uploaded people must inherit:
-— the exact scene contrast
-— the exact scene softness
-— the exact scene dynamic range
-— the exact scene color grading
-— the exact scene noise/grain
-— the exact scene depth of field
-
-Do NOT make the transferred people cleaner, sharper, or higher quality than the original scene.
-
-Match the imperfections of the original frame naturally.
-
-Skin must react naturally to scene lighting:
-— warm sunset light
-— cinematic golden glow
-— environmental reflections
-— realistic shadow softness
-— realistic highlight rolloff
-
-Clothing must integrate naturally into the lighting and environment:
-— realistic fabric shadows
-— realistic folds
-— realistic texture softness
-— realistic contact shadows
-
-Hands and faces must have identical lighting behavior and texture quality.
-
-The final image must feel like a real untouched cinematic movie frame, not an edited composite.
-
-LIGHTING:
-Match the original warm cinematic sunset lighting, soft environmental shadows, realistic skin shading, atmospheric depth, cinematic golden glow, depth of field, cinematic color grading, and film grain.
-
-Faces, bodies, hands, arms, necks, clothes, and hair must inherit identical scene lighting naturally.
-
-Blend the uploaded people seamlessly into the environment so they appear originally photographed in this exact shot without any identity mixing from the original people.`;
+The final result should feel like:
+the uploaded people were directly photographed on set in this exact scene.`;
 
 const TERABITHIA_1 = `Use the reference image ONLY for:
 — composition
