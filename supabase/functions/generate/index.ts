@@ -1326,6 +1326,108 @@ ZERO identity drift allowed.
 
 ZERO resemblance to the original actors allowed.
 
+CRITICAL FULL HUMAN TRANSFER — NOT FACE SWAP.
+
+The uploaded people must be transferred as COMPLETE REAL HUMANS.
+
+NOT only:
+— face
+— head
+— hairstyle
+— facial identity
+
+The AI must replace the ENTIRE original people with the uploaded people completely.
+
+This includes:
+— full body
+— full anatomy
+— full proportions
+— shoulders
+— torso
+— chest
+— waist
+— hips
+— arms
+— elbows
+— wrists
+— hands
+— fingers
+— neck
+— posture
+— silhouette
+— body mass
+— body language
+— clothing fit
+
+The uploaded people must physically occupy the scene with THEIR OWN bodies.
+
+Do NOT keep ANY anatomy from the original actors.
+
+ZERO original body parts may remain.
+
+Do NOT preserve:
+— original hands
+— original arms
+— original torso
+— original shoulders
+— original body proportions
+— original silhouette
+— original skin tone
+
+The uploaded people must remain anatomically unified from head to toe.
+
+NOT:
+uploaded face + original body.
+
+NOT:
+uploaded head + original actor anatomy.
+
+NOT:
+face replacement.
+
+This is FULL BODY HUMAN REPLACEMENT.
+
+Hands, arms, neck, torso, and body MUST belong to the uploaded people.
+
+Skin tone on:
+— face
+— neck
+— hands
+— arms
+— fingers
+— body
+
+must perfectly match.
+
+No body-part mismatch allowed.
+
+CRITICAL FACE PROPORTION LOCK.
+
+Do NOT distort faces to fit the scene.
+
+Preserve EXACT:
+— head size
+— facial proportions
+— jaw width
+— eye spacing
+— forehead size
+— cheek proportions
+— neck proportions
+— natural facial geometry
+
+Faces must remain anatomically proportional and realistic.
+
+Do NOT:
+— stretch faces
+— compress faces
+— slim faces
+— enlarge eyes
+— sharpen features
+— beautify proportions
+— make cinematic model faces
+
+The uploaded people must look exactly like themselves.
+
 Preserve EXACTLY:
 — facial bone structure
 — face width
@@ -1398,96 +1500,6 @@ AI-generated reinterpretations of them.
 The final result should feel like:
 the uploaded people were directly photographed on set in this exact scene.
 
-CRITICAL FULL BODY TRANSFER — HIGHEST PRIORITY.
-
-The uploaded people must be transferred as COMPLETE PHYSICAL HUMANS.
-
-NOT as:
-— face replacements
-— head swaps
-— identity overlays
-— facial masks
-
-The AI must transfer the ENTIRE uploaded person into the scene.
-
-This includes:
-— full head
-— full face
-— neck
-— shoulders
-— chest
-— torso
-— waist
-— hips
-— arms
-— elbows
-— wrists
-— hands
-— fingers
-— body proportions
-— silhouette
-— posture
-— physique
-— body mass
-— clothing fit
-— body language
-
-The uploaded person's ENTIRE BODY must replace the original person's ENTIRE BODY.
-
-Do NOT preserve ANY original anatomy underneath.
-
-ZERO original body parts may remain.
-
-Do NOT keep:
-— original arms
-— original hands
-— original shoulders
-— original torso
-— original neck
-— original body proportions
-— original silhouette
-— original skin tone
-
-The uploaded body must FULLY overwrite the original body.
-
-The uploaded person must remain ONE unified human from head to toe.
-
-No hybrid anatomy allowed.
-
-The body MUST belong to the uploaded person.
-
-NOT:
-uploaded face + original body.
-
-NOT:
-uploaded head + original anatomy.
-
-NOT:
-uploaded identity pasted over original actors.
-
-The AI must understand this as:
-FULL HUMAN REPLACEMENT.
-
-Imagine physically transporting the uploaded people into the scene and filming THEM directly.
-
-NOT recreating bodies around faces.
-
-NOT adapting faces onto existing actors.
-
-Hands, arms, neck, and body MUST perfectly match the uploaded face identity.
-
-The transferred people must look like:
-REAL photographed humans standing in the scene.
-
-NOT:
-— face-swaps
-— deepfakes
-— composites
-— pasted identities
-— recreated approximations
-
-The uploaded people must remain physically coherent and anatomically unified across the entire body.
-
 ABSOLUTE POSE REPLICATION REQUIRED.
 
 The uploaded people must replicate the EXACT body pose from the reference image with near pixel-level accuracy.
@@ -1525,60 +1537,37 @@ Preserve EXACTLY:
 
 The uploaded people must occupy the EXACT SAME coordinates and silhouette positioning as the reference people.
 
-CRITICAL EYE CONTACT AND HEAD POSITION LOCK — HIGHEST POSE PRIORITY.
+CRITICAL EYE CONTACT LOCK.
 
-The exact relationship between both faces MUST remain identical to the reference image.
-
-The two people must be looking directly at EACH OTHER exactly like in the reference.
-
-Do NOT redirect their gaze toward the camera.
-Do NOT make them look forward.
-Do NOT make them look away from each other.
-
-Their eye lines must intersect naturally exactly like the reference frame.
+The two people MUST look directly at EACH OTHER exactly like the reference image.
 
 Preserve EXACTLY:
-— eye direction
-— gaze angle
-— face proximity
+— gaze direction
+— eye angle
+— face orientation
 — head tilt
-— chin angle
 — neck rotation
-— facial distance
-— body intimacy
-— emotional tension
-
-The woman’s head MUST remain tilted backward and sideways toward the man exactly like the reference.
-
-The man’s head MUST remain leaned forward toward the woman exactly like the reference.
-
-Their noses and faces must remain extremely close together.
-
-The romantic interaction geometry is LOCKED.
+— facial proximity
 
 Do NOT:
-— straighten the heads
-— center the faces
-— make them pose for the camera
-— rotate faces outward
-— create symmetrical positioning
-— weaken the intimacy
-— increase distance between faces
+— rotate faces toward camera
+— break eye contact
+— make them stare forward
+— change romantic interaction geometry
 
-The exact cinematic moment between them must remain preserved.
+Their faces must remain naturally close together exactly like the original frame.
 
-Treat the pose like frozen frame-by-frame motion capture.
+The emotional tension and intimacy between them is LOCKED.
 
-Even tiny deviations in:
-— gaze direction
+Treat the pose like frozen motion capture data.
+
+Even small deviations in:
+— eye direction
 — head angle
-— facial orientation
-— neck tilt
 — face distance
+— neck tilt
 
 are NOT allowed.
-
-The uploaded people must inherit the EXACT same romantic eye contact and pose energy from the reference image while keeping their own identities perfectly intact.
 
 IMPORTANT SCENE STRUCTURE:
 
@@ -1614,32 +1603,6 @@ Do NOT:
 — alter body tension
 
 Even tiny pose deviations are NOT allowed.
-
-SKIN CONSISTENCY IS CRITICAL:
-
-If the uploaded person has light skin on the face:
-— hands must also be light
-— arms must also be light
-— neck must also be light
-— all visible skin must perfectly match
-
-There must be ZERO mismatch between:
-— face and hands
-— face and arms
-— face and neck
-— face and body
-
-Do NOT preserve the original person’s skin tone or body identity.
-
-The uploaded body must FULLY replace the original body.
-
-Do NOT create:
-— face/body color mismatch
-— different undertones
-— disconnected body parts
-— hybrid identities
-— face-swapped appearance
-— pasted faces
 
 CRITICAL BACKGROUND PRESERVATION — ABSOLUTE PRIORITY.
 
