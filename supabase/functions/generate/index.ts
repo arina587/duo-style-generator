@@ -1380,13 +1380,13 @@ Faces, bodies, clothes, and hair must inherit identical scene lighting naturally
 
 Blend the uploaded people seamlessly into the environment so they appear originally photographed in this exact shot without any identity mixing from the original actors.`;
 
-const STRANGER_2 = `Use the reference image ONLY as a cinematography, composition, and interaction template.
+const STRANGER_2 = `Use the reference image ONLY as a cinematography, composition, pose, and interaction template.
 
 DO NOT use the original actors as appearance references in ANY way.
 
 The original people are ONLY placeholders for:
-— pose
 — body positioning
+— pose
 — interaction
 — framing
 — camera angle
@@ -1397,7 +1397,7 @@ Completely remove all original identities from the final result.
 
 ABSOLUTELY NO blending between uploaded people and original actors.
 
-Do NOT inherit from the original actors:
+Do NOT inherit from the reference actors:
 — face shape
 — facial proportions
 — jawline
@@ -1407,102 +1407,118 @@ Do NOT inherit from the original actors:
 — lips
 — hairstyle
 — skin texture
+— skin color
 — body type
+— physique
 — silhouette
-— facial expressions
+— hand shape
+— arm shape
 — ethnicity
 — age appearance
 
 CRITICAL:
-Do NOT face-swap onto the original actors.
+This is NOT a face swap.
 
-Fully replace them with the uploaded people as entirely different real humans naturally existing in the scene.
+Do NOT paste uploaded faces onto the original bodies.
 
-The uploaded people must remain IDENTICAL to their source photos.
+Instead:
+fully replace the original actors with the uploaded people as COMPLETE REAL HUMANS naturally existing in the scene.
 
-FULL HUMAN TRANSFER:
+FULL HUMAN TRANSFER IS MANDATORY.
 
-Transfer the uploaded people as COMPLETE REAL HUMANS, not only faces.
-
-Transfer consistently:
+Transfer the uploaded people completely:
 — face
 — skin tone
+— skin undertone
 — body
 — hands
+— fingers
 — arms
 — neck
 — legs
 — physique
-— proportions
+— body proportions
 — silhouette
-— clothing behavior
+— posture
 — natural anatomy
+— clothing behavior
+
+The uploaded person’s ENTIRE BODY identity must remain intact.
 
 Do NOT generate a new body around the transferred face.
 
-The uploaded person's original body identity must remain intact.
+The uploaded people must remain IDENTICAL to their source photos.
 
 Preserve EXACTLY:
-— facial structure
-— bone structure
+— facial bone structure
 — jawline
 — eye shape
 — eyelids
-— eyebrow spacing
+— eyebrows
 — nose shape
-— lips
+— lip shape
 — cheek structure
 — forehead proportions
 — chin structure
 — ears
 — natural asymmetry
-— skin texture
-— skin undertone
 — hairstyle
 — hairline
+— hair density
+— skin texture
+— skin undertone
 — body proportions
 — shoulder width
 — arm proportions
-— silhouette
 — physique
+— silhouette
 
 SKIN CONSISTENCY IS CRITICAL:
 
 If the uploaded person has light skin on the face:
-— hands must match
-— arms must match
-— neck must match
-— visible body skin must match
+— hands must also be light
+— arms must also be light
+— neck must also be light
+— all visible skin must perfectly match
 
-Face and body must belong to the SAME real person.
+There must be ZERO mismatch between:
+— face and hands
+— face and arms
+— face and neck
+— face and body
+
+Do NOT preserve the original actor’s dark hands, arms, or body skin.
+
+The uploaded body must FULLY replace the original body.
 
 Do NOT create:
-— darker hands than face
-— lighter body than face
-— mismatched undertones
-— separate face/body lighting
-— disconnected skin colors
+— face/body color mismatch
+— different undertones
+— disconnected body parts
+— hybrid identities
 — face-swapped appearance
+— pasted faces
 
 Do NOT:
 — beautify faces
-— smooth anatomy
+— smooth anatomy unnaturally
 — sharpen jawlines
 — enlarge eyes
 — slim the body
 — glamorize appearance
-— change ethnicity
-— change age appearance
+— make them prettier
+— make them model-like
 — stylize skin
-— make them cinematic-model attractive
+— alter ethnicity
+— alter age appearance
 
 The uploaded people must look like authentic photographed humans physically present in the room.
 
 They must NOT look:
 — pasted
 — composited
-— face-swapped
 — blended with original actors
+— face-swapped
 — AI-generated
 — uncanny
 — plastic
@@ -1513,14 +1529,14 @@ IMPORTANT SCENE STRUCTURE:
 Maintain the exact interaction and body positioning:
 — left person remains seated on the left side of the couch
 — right person remains seated on the right side
-— preserve the exact handshake position
+— preserve exact handshake position
 — preserve exact hand contact
 — preserve exact eye-lines
 — preserve exact body spacing
 — preserve exact leg positions
 — preserve exact emotional tone and friendliness
 
-Do NOT alter the interaction dynamics.
+Do NOT alter interaction dynamics.
 Do NOT move hands.
 Do NOT rotate bodies differently.
 
@@ -1555,7 +1571,7 @@ Identity and anatomy must remain untouched.
 LIGHTING:
 Match the original warm indoor daylight lighting, soft environmental shadows, realistic skin shading, depth of field, cinematic color grading, and film grain.
 
-Faces, bodies, clothes, hands, arms, necks, and hair must inherit identical scene lighting naturally.
+Faces, bodies, hands, arms, necks, clothes, and hair must inherit identical scene lighting naturally.
 
 Blend the uploaded people seamlessly into the environment so they appear originally photographed in this exact shot without any identity mixing from the original actors.`;
 
