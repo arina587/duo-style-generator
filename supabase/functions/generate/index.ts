@@ -602,48 +602,97 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference image only as a composition, framing, pose, and cinematic scene template.
+const TITANIC_1 = `Use the reference cinematic image ONLY as a strict composition, framing, pose, camera angle, perspective, lighting, and scene template.
 
-Remove all original people completely and replace them with the people from the uploaded identity photos.
+Completely remove all original people from the reference image and fully replace them with the two people from the uploaded identity photos.
 
 ROLE MAPPING:
-— female character → woman from uploaded female reference
-— male character → man from uploaded male reference
+- female role → woman from uploaded female identity photo
+- male role → man from uploaded male identity photo
 
-Gender and role mapping must remain exact. Do not swap positions.
-
-REPLACEMENT RULES:
-Reconstruct both people entirely from the uploaded identity references.
-Do NOT perform a face swap.
-Do NOT blend original actors with the new people.
-The final characters must be fully new individuals based on the uploaded references.
-
-IDENTITY PRESERVATION:
-Preserve accurate facial structure, skin tone, hairstyle, body proportions, age appearance, and recognizable identity details from the uploaded photos.
-
-POSITION & COMPOSITION:
-Keep the exact original:
-— pose
-— body orientation
-— hand placement
-— camera angle
-— framing
-— scale
-— distance between characters
-— perspective and depth
-
-CLOTHING:
-Adapt wardrobe naturally to the cinematic scene style while preserving believable fit and proportions. Clothing should match the elegant romantic ship atmosphere and period-inspired aesthetic.
-
-LIGHTING & CINEMATIC INTEGRATION:
-Match the original scene’s warm sunset cinematic lighting, shadows, highlights, depth of field, film grain, color grading, and atmosphere.
-Characters must look naturally photographed in the scene, not pasted or composited.
+Do not swap roles or positions.
 
 IMPORTANT:
-Maintain realistic anatomy and natural facial proportions.
-Avoid uncanny or over-smoothed skin.
-Avoid morphing artifacts.
-Avoid preserving any facial features from the original actors.
+This is NOT a face swap.
+Do NOT preserve any facial structure, skin texture, proportions, or features from the original actors.
+The final image must depict entirely new individuals reconstructed from the uploaded identity references only.
+
+IDENTITY PRESERVATION:
+Accurately preserve:
+- facial anatomy
+- eye shape
+- nose structure
+- lips
+- jawline
+- hairstyle
+- hair color
+- skin tone
+- body proportions
+- age appearance
+- natural asymmetry
+- recognizable identity characteristics
+
+The generated characters must strongly resemble the uploaded people while remaining fully photorealistic and natural.
+
+COMPOSITION LOCK:
+Keep the exact original:
+- pose
+- body positioning
+- hand placement
+- framing
+- crop
+- camera distance
+- lens perspective
+- relative scale
+- scene depth
+- body orientation
+- cinematic staging
+
+CLOTHING:
+Adapt wardrobe naturally into an elegant romantic late-1910s ship atmosphere inspired by classic cinematic styling.
+Outfits should look historically believable, cinematic, detailed, and naturally fitted to the new individuals.
+
+LIGHTING:
+Match the original cinematic golden sunset lighting exactly:
+- warm amber highlights
+- soft shadows
+- volumetric atmosphere
+- subtle film grain
+- cinematic contrast
+- realistic skin response to light
+- shallow depth of field
+- natural dark-to-light transitions
+
+INTEGRATION:
+The characters must appear naturally photographed inside the scene.
+Avoid:
+- pasted appearance
+- morphing artifacts
+- warped anatomy
+- over-smoothed skin
+- uncanny facial proportions
+- AI distortion
+- asymmetrical eyes
+- plastic texture
+
+STYLE:
+Ultra realistic cinematic photography.
+High-end movie still.
+Natural skin texture.
+Authentic human anatomy.
+Emotionally believable expressions.
+Detailed fabric textures.
+Professional color grading.
+Organic imperfections.
+
+QUALITY:
+Extremely detailed.
+Photorealistic.
+Sharp facial fidelity.
+Natural eyes.
+Natural hands.
+Cinematic realism.
+8k editorial film still quality.
 
 All people shown in uploaded identity photos are adults over 18 years old.`;
 
