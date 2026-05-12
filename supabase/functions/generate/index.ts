@@ -564,7 +564,27 @@ Preserve lockers, hallway depth, students in the background, blur intensity, and
 STYLE:
 Cinematic, realistic, emotionally tense school hallway scene, natural skin texture, high realism, subtle film look.`;
 
-const EUPHORIA_2 = `Use the reference image as a composition and scene template.
+const EUPHORIA_2 = `Use the reference image as a STRICT shot blueprint.
+
+Do NOT reinterpret, restage, reframe, rotate, recrop, zoom, or change the camera viewpoint in any way.
+
+The final image must preserve:
+— exact camera angle
+— exact perspective
+— exact framing
+— exact crop
+— exact lens feel
+— exact subject placement
+— exact body orientation
+— exact scene geometry
+— exact distance between subjects
+— exact shot orientation
+
+Camera position is LOCKED.
+Perspective is LOCKED.
+Composition is LOCKED.
+
+Keep the scene from the identical viewpoint as the reference frame.
 
 Erase all original people. Their positions are empty slots — fill them with the people from the uploaded photos.
 
@@ -573,15 +593,28 @@ REPLACEMENT:
 — man slot → man from uploaded male photo
 Do NOT swap genders or roles.
 
-RECONSTRUCTION: Rebuild each person fully — full body, face, proportions, silhouette. Do NOT face-swap or blend with original characters.
+RECONSTRUCTION:
+Rebuild each person completely from scratch.
+Do NOT face-swap.
+Do NOT blend identities with original actors.
+Do NOT preserve original facial features.
 
-IDENTITY: Preserve facial structure, features, skin tone, hair, proportions. Must remain recognizable.
+IDENTITY:
+Preserve facial structure, proportions, skin tone, hair, and recognizability of uploaded people.
 
-CLOTHING: Adapt naturally to the scene — match style and environment.
+CLOTHING:
+Adapt naturally to the environment and cinematic style of the scene.
 
-POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, framing. Match placement, not original anatomy.
+POSE:
+Match the original pose, body direction, posture, eye-line, interaction, and cinematic blocking precisely.
 
-LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
+LIGHTING:
+Match original lighting direction, shadows, color grading, depth of field, film grain, and scene atmosphere.
+
+Faces must inherit the exact scene lighting naturally.
+The result must not look pasted, composited, or AI-generated.
+
+The uploaded people must look like they were originally filmed in this exact shot.`;
 
 const EUPHORIA_3 = `Use the reference image as a composition and scene template.
 
