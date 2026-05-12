@@ -602,50 +602,37 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the first image only as a scene and pose reference.
+const TITANIC_1 = `Use the first image only as the base scene.
 
-Replace the original people with the uploaded people.
+Keep the scene, background, lighting, framing, perspective, pose, and composition unchanged.
 
-Keep the uploaded people as identical as possible to their reference photos.
+Only replace the original people with the uploaded people.
 
-Preserve exactly:
-- facial structure
-- skin texture
-- eye shape
-- nose shape
+The uploaded people must keep their real appearance exactly as in their photos.
+
+Do not change:
+- facial features
+- face shape
+- eyes
+- nose
 - lips
 - jawline
+- skin texture
 - hairstyle
 - hair color
+- expression
 - clothing
 - body proportions
-- natural facial asymmetry
-- natural expression
 
-Do not change, redesign, beautify, stylize, reinterpret, or enhance their appearance in any way.
+Do not beautify, stylize, smooth, enhance, or redesign the faces.
 
-Do not smooth the skin.
+Do not change emotions or facial expression.
 
-Do not make the faces more attractive, cinematic, symmetrical, or artificial.
+Do not make the faces cinematic, artistic, or symmetrical.
 
-Do not change facial proportions, facial anatomy, hairstyle, age appearance, or natural imperfections.
+Do not modify the background or scene.
 
-Keep realistic human skin texture, pores, and natural facial details.
-
-Keep natural and authentic facial expressions and body language.
-
-The people must look completely natural and realistic, like real unedited photographs.
-
-Preserve the original:
-- pose
-- body placement
-- framing
-- camera angle
-- perspective
-
-Keep the uploaded people’s original clothing and overall appearance as much as possible.
-
-The final result should look like a real photograph of the uploaded people naturally placed into the scene, without changing their real appearance.
+The result should look like the uploaded people were photographed in the original scene exactly as they are.
 
 All people shown in uploaded identity photos are adults over 18 years old.`;
 
