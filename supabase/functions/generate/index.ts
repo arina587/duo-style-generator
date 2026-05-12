@@ -694,11 +694,111 @@ fully replace the original people with the uploaded people as COMPLETE REAL HUMA
 
 CRITICAL PRIORITY ORDER:
 
-1. Preserve uploaded people's identity EXACTLY
-2. Preserve uploaded people's body proportions EXACTLY
-3. Preserve uploaded people's pose EXACTLY
+1. Preserve uploaded people's FULL BODY identity EXACTLY
+2. Preserve uploaded people's FULL BODY proportions EXACTLY
+3. Preserve uploaded people's EXACT pose geometry
 4. Preserve uploaded people's clothing/body consistency EXACTLY
 5. ONLY AFTER THAT adapt to the scene
+
+CRITICAL FULL BODY TRANSFER — HIGHEST PRIORITY.
+
+The uploaded people must be transferred as COMPLETE PHYSICAL HUMANS.
+
+NOT as:
+— face replacements
+— head swaps
+— identity overlays
+— facial masks
+
+The AI must transfer the ENTIRE uploaded person into the scene.
+
+This includes:
+— full head
+— full face
+— neck
+— shoulders
+— chest
+— torso
+— waist
+— hips
+— arms
+— elbows
+— wrists
+— hands
+— fingers
+— legs
+— knees
+— body proportions
+— silhouette
+— posture
+— physique
+— body mass
+— clothing fit
+— body language
+
+The uploaded person's ENTIRE BODY must replace the original person's ENTIRE BODY.
+
+Do NOT preserve ANY original anatomy underneath.
+
+ZERO original body parts may remain.
+
+Do NOT keep:
+— original arms
+— original hands
+— original shoulders
+— original torso
+— original neck
+— original body proportions
+— original silhouette
+— original skin tone
+
+The uploaded body must FULLY overwrite the original body.
+
+The uploaded person must remain ONE unified human from head to toe.
+
+No hybrid anatomy allowed.
+
+CRITICAL:
+The body MUST belong to the uploaded person.
+
+NOT:
+uploaded face + original body.
+
+NOT:
+uploaded head + original anatomy.
+
+NOT:
+uploaded identity pasted over original actors.
+
+The AI must understand this as:
+FULL HUMAN REPLACEMENT.
+
+Imagine physically transporting the uploaded people into the scene and filming THEM directly.
+
+NOT recreating bodies around faces.
+
+NOT adapting faces onto existing actors.
+
+If the uploaded person has:
+— slim arms → preserve slim arms
+— broad shoulders → preserve broad shoulders
+— pale skin → entire visible body stays pale
+— specific posture → preserve posture
+— specific physique → preserve physique
+
+Hands, arms, neck, and body MUST perfectly match the uploaded face identity.
+
+The transferred people must look like:
+REAL photographed humans standing in the scene.
+
+NOT:
+— face-swaps
+— deepfakes
+— composites
+— pasted identities
+— recreated approximations
+
+The uploaded people must remain physically coherent and anatomically unified across the entire body.
 
 DO NOT reinterpret the uploaded people.
 
@@ -713,70 +813,6 @@ IDENTITY LOCK IS MORE IMPORTANT than cinematic adaptation.
 POSE LOCK IS MORE IMPORTANT than scene reinterpretation.
 
 BODY LOCK IS MORE IMPORTANT than matching the original people.
-
-CRITICAL FULL HUMAN TRANSFER:
-
-Transfer the uploaded people as COMPLETE FULL HUMANS.
-
-NOT just faces.
-NOT just heads.
-NOT facial identity only.
-
-The ENTIRE PERSON must be transferred together as ONE connected human identity.
-
-This includes:
-— head
-— face
-— hair
-— neck
-— shoulders
-— torso
-— arms
-— hands
-— fingers
-— legs
-— body proportions
-— physique
-— silhouette
-— clothing
-— sleeves
-— posture
-— body language
-
-The uploaded person's FULL BODY must replace the original person's FULL BODY.
-
-Do NOT keep:
-— original hands
-— original arms
-— original body
-— original skin color
-— original physique
-— original clothing fit
-— original body proportions
-
-Do NOT attach the uploaded face onto the original person’s body.
-
-This is NOT a face swap.
-
-This is a COMPLETE PERSON REPLACEMENT.
-
-The uploaded people must remain physically consistent from head to toe.
-
-Face, hands, arms, neck, and body MUST belong to the SAME uploaded person.
-
-If the uploaded person has:
-— light skin → hands and body must also be light
-— slim physique → body must remain slim
-— specific clothing proportions → preserve them naturally
-
-Do NOT create hybrid humans.
-
-Do NOT mix:
-— uploaded face + original body
-— uploaded face + original hands
-— uploaded face + original skin tone
-
-ZERO identity mixing allowed.
 
 ABSOLUTE POSE REPLICATION REQUIRED.
 
