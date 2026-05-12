@@ -1239,6 +1239,147 @@ Faces and bodies must inherit the exact scene lighting and environmental reflect
 
 The final image must look like a real photograph with completely replaced people, not a face swap, overlay, morph, pasted composite, or edited original.`;
 
+const STRANGER_1 = `Use the reference image ONLY as a cinematography and staging template.
+
+DO NOT use the original actors as appearance references in ANY way.
+
+The original people are ONLY placeholders for:
+— pose
+— framing
+— interaction
+— body placement
+— camera angle
+— lighting
+— scene composition
+
+Completely remove the original identities from the final result.
+
+ABSOLUTELY NO blending between uploaded people and original actors.
+
+Do NOT inherit from the original actors:
+— face shape
+— eyes
+— jawline
+— nose
+— lips
+— skin texture
+— hairstyle
+— body type
+— silhouette
+— facial expressions
+— age appearance
+
+CRITICAL:
+Do NOT perform face-swapping onto the original actors.
+
+Fully replace the original people with the uploaded people as entirely different real humans naturally existing in the scene.
+
+The uploaded people must remain IDENTICAL to their source photos.
+
+Preserve EXACTLY:
+— facial structure
+— bone structure
+— jawline
+— eye shape
+— eyelids
+— eyebrows
+— nose shape
+— lip shape
+— cheek structure
+— forehead proportions
+— chin structure
+— ears
+— natural asymmetry
+— skin texture
+— skin undertone
+— hairstyle
+— hairline
+— body proportions
+— shoulder width
+— silhouette
+— physique
+
+Do NOT:
+— beautify faces
+— stylize anatomy
+— smooth skin unnaturally
+— sharpen jawlines
+— enlarge eyes
+— slim the body
+— make them prettier
+— change ethnicity
+— change age appearance
+— make them cinematic/glamorous
+
+The uploaded people must look like authentic photographed humans physically present in the room.
+
+They must NOT look:
+— pasted
+— composited
+— face-swapped
+— blended with original actors
+— AI-generated
+— plastic
+— uncanny
+— over-retouched
+
+IMPORTANT SCENE STRUCTURE:
+
+Maintain the exact composition and interaction:
+— taller person remains in front on the left
+— second person remains slightly behind on the right
+— right person holds onto the left person's arm
+— preserve exact body closeness
+— preserve exact emotional tension
+— preserve exact head positioning and eye-lines
+
+Do NOT separate the characters.
+Do NOT rotate faces toward camera differently.
+Do NOT alter pose dynamics.
+
+Keep:
+— exact camera angle
+— exact framing
+— exact crop
+— exact perspective
+— exact lens feel
+— exact hand placement
+— exact body spacing
+— exact scene geometry
+
+Camera position is LOCKED.
+Perspective is LOCKED.
+Composition is LOCKED.
+
+NATURAL SCENE ADAPTATION:
+
+Adapt the uploaded people naturally to the scene WITHOUT changing identity.
+
+Scene adaptation may affect ONLY:
+— lighting integration
+— environmental shadows
+— color grading
+— atmospheric depth
+— depth of field
+— film grain
+— ambient warm light response
+
+Identity and anatomy must remain untouched.
+
+SKIN CONSISTENCY:
+Hands, neck, arms, ears, and visible body skin must perfectly match facial skin tone and undertone.
+
+No mismatched skin color.
+No separate face/body lighting.
+No artificial skin smoothing.
+
+LIGHTING:
+Match the original warm indoor cinematic lighting, soft shadows, environmental bounce light, realistic skin shading, atmospheric darkness, depth of field, and film grain.
+
+Faces, bodies, clothes, and hair must inherit identical scene lighting naturally.
+
+Blend the uploaded people seamlessly into the environment so they appear originally photographed in this exact shot without any identity mixing from the original actors.`;
+
 const STRANGER_2 = `Use the reference image as a composition and interaction template.
 
 Erase all original people from the scene completely. Treat them only as placeholders. Replace them entirely with the people from the uploaded identity photos.
