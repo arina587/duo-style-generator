@@ -899,161 +899,110 @@ The final result must look like a real cinematic photograph of the uploaded peop
 Negative prompt:
 original actors, Leonardo DiCaprio, Kate Winslet, movie characters, face swap, pasted face, floating head, disconnected neck, weak likeness, generic cinematic face, beautified face, identity blending, hybrid face, morphing, inherited features, preserved body, preserved anatomy, preserved silhouette, incorrect gaze direction, looking away, changed pose, altered hand placement, incorrect intimacy posture, flat lighting, mismatched shadows, disconnected subjects, wrong perspective, wrong scale, distorted anatomy, extra fingers, blurry face, CGI look, compositing artifacts, deepfake artifacts.`;
 
-const TERABITHIA_1 = `Use the reference image as a STRICT shot blueprint.
+const TERABITHIA_1 = `Use the reference image ONLY for:
+— composition
+— camera angle
+— pose
+— framing
+— lighting
+— environment
+— interaction
 
-Do NOT reinterpret, redesign, beautify, stylize, age-change, de-age, masculinize, feminize, or alter the uploaded people in any way.
+DO NOT use the original people as appearance references in ANY way.
 
-Do NOT generate “similar” people.
-Do NOT create approximations.
-Do NOT create inspired-by versions.
+The original actors must be treated as empty placeholders only.
 
-The final image must preserve:
+Completely remove all original identities, facial traits, bone structure, expressions, skin texture, and anatomy from the final result.
+
+ABSOLUTELY NO blending between the uploaded people and the original actors.
+
+The uploaded people must remain 100% independent identities.
+
+Do NOT inherit from the original actors:
+— face shape
+— jawline
+— eyes
+— eyebrows
+— nose
+— lips
+— smile
+— cheek structure
+— body type
+— silhouette
+— hairstyle
+— skin texture
+— age appearance
+
+CRITICAL:
+Do NOT face-swap onto the original actors.
+
+Instead:
+fully replace the original people with the uploaded people as entirely new humans naturally existing in the same scene.
+
+The uploaded people must preserve EXACTLY:
+— their real facial structure
+— their real proportions
+— their real body shape
+— their real silhouette
+— their real asymmetry
+— their real skin texture
+— their real hairstyle
+— their real age appearance
+
+Do NOT beautify.
+Do NOT stylize.
+Do NOT cinematic-glamorize faces.
+Do NOT make them look AI-generated.
+
+The uploaded people must look naturally photographed in-camera.
+
+They must NOT look:
+— pasted
+— composited
+— blended with original actors
+— face-swapped
+— over-smoothed
+— plastic
+— uncanny
+— synthetic
+
+IMPORTANT:
+Identity preservation is MORE important than similarity to the original actors.
+
+Use the original image ONLY as a staging and cinematography template.
+
+Keep:
 — exact camera angle
-— exact perspective
+— exact pose
 — exact framing
-— exact crop
-— exact lens feel
+— exact interaction
 — exact body placement
-— exact head placement
-— exact subject scale
-— exact pose spacing
-— exact hand placement
-— exact shot orientation
 — exact scene geometry
+— exact eye direction
+— exact crop
 
 Camera position is LOCKED.
 Perspective is LOCKED.
 Composition is LOCKED.
 
-Keep the identical viewpoint and framing from the original reference image.
-
-IMPORTANT:
-Maintain the exact left/right placement of all subjects.
-
-— girl remains on the left side holding the dog
-— boy remains on the right side standing beside her
-— dog remains centered in the foreground
-
-Do NOT swap positions.
-Do NOT rotate bodies differently.
-Do NOT move the dog to another angle or pose.
-
-Maintain:
-— exact dog placement
-— exact dog scale
-— exact dog orientation
-— exact arm interaction with the dog
-— exact body spacing between characters
-
-Erase all original people completely and replace them entirely with the uploaded people.
-
-REPLACEMENT:
-— left slot → woman/girl from uploaded female photo
-— right slot → man/boy from uploaded male photo
-
-Do NOT swap genders, sides, or roles.
-
-CRITICAL IDENTITY LOCK:
-
-The uploaded people must remain IDENTICAL to their source photos.
-
-Preserve EXACTLY:
-— facial bone structure
-— face proportions
-— jawline
-— eye shape
-— eyelid structure
-— eyebrow shape and spacing
-— nose shape
-— lip shape
-— cheek volume
-— forehead proportions
-— chin structure
-— ears
-— skin texture
-— skin undertone
-— hairstyle
-— hairline
-— hair density
-— natural asymmetry
-— body proportions
-— shoulder width
-— torso proportions
-— arm proportions
-— silhouette
-— physique
-
-Do NOT:
-— beautify faces
-— smooth facial structure
-— enlarge eyes
-— sharpen jawlines
-— slim the body
-— change body type
-— alter ethnicity
-— alter age appearance
-— add glamour styling
-— make skin artificial or porcelain
-— stylize anatomy
-
-FULL HUMAN TRANSFER:
-
-Transfer the uploaded people holistically and naturally into the scene:
-— face
-— body
-— physique
-— proportions
-— posture
-— clothing behavior
-— natural imperfections
-
-Do NOT only transfer faces.
-
-The uploaded people must look physically present in the scene as real photographed humans.
-
-They must NOT look:
-— pasted
-— composited
-— face-swapped
-— AI-generated
-— plastic
-— over-retouched
-— disconnected from lighting
-— disconnected from the environment
-
-NATURAL SCENE ADAPTATION:
-
-Adapt the uploaded people naturally to the scene cinematography WITHOUT changing identity.
-
-Scene adaptation must affect ONLY:
-— lighting response
-— environmental shadows
-— color temperature
-— atmospheric grading
+Natural scene adaptation should affect ONLY:
+— lighting integration
+— shadows
+— color grading
 — depth of field
+— atmospheric perspective
 — film grain
 
 Identity and anatomy must remain untouched.
 
 SKIN CONSISTENCY:
-Hands, fingers, neck, ears, arms, and visible body skin must perfectly match facial skin tone and undertone.
+Hands, neck, arms, ears, and body skin must perfectly match the face skin tone and undertone.
 
-No mismatched body color.
-No separate face/body lighting.
+No different body color.
+No separate face lighting.
 No artificial skin smoothing.
 
-EXPRESSION:
-Preserve the same natural smile intensity and eye direction from the reference image.
-
-POSE:
-Match original posture, shoulder angle, neck angle, head tilt, body direction, and interaction precisely.
-
-LIGHTING:
-Match original natural forest lighting, soft daylight shadows, environmental reflections, depth of field, atmospheric depth, cinematic color grading, and film grain.
-
-Faces, bodies, hands, clothes, hair, and dog must inherit identical scene lighting naturally.
-
-Blend the uploaded people seamlessly into the cinematography so they appear originally photographed in this exact shot.`;
+Blend the uploaded people seamlessly into the environment so they appear originally photographed there without any identity mixing from the reference actors.`;
 
 const TERABITHIA_2 = `Use the reference image as a STRICT shot blueprint.
 
