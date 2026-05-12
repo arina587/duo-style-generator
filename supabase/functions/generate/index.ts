@@ -1309,7 +1309,7 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   "titanic-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TITANIC_3 },
   // ── Terabithia ──
   "terabithia-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TERABITHIA_1 },
-  "terabithia-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
+  "terabithia-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TERABITHIA_2 },
   "terabithia-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
   // ── Stranger Things ──
   "stranger-things-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
