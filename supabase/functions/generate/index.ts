@@ -606,11 +606,11 @@ const TITANIC_1 = `Use the first image only as a scene and pose reference.
 
 Replace the original people with the uploaded people.
 
-Keep the uploaded people максимально identical to their reference photos.
+Keep the uploaded people as identical as possible to their reference photos.
 
-Preserve:
+Preserve exactly:
 - facial structure
-- natural skin texture
+- skin texture
 - eye shape
 - nose shape
 - lips
@@ -619,12 +619,22 @@ Preserve:
 - hair color
 - clothing
 - body proportions
+- natural facial asymmetry
+- natural expression
 
-Do not beautify, stylize, or redesign the faces.
+Do not change, redesign, beautify, stylize, reinterpret, or enhance their appearance in any way.
 
-Do not change facial proportions or make the faces look more attractive or cinematic.
+Do not smooth the skin.
 
-Keep natural asymmetry and realistic skin details.
+Do not make the faces more attractive, cinematic, symmetrical, or artificial.
+
+Do not change facial proportions, facial anatomy, hairstyle, age appearance, or natural imperfections.
+
+Keep realistic human skin texture, pores, and natural facial details.
+
+Keep natural and authentic facial expressions and body language.
+
+The people must look completely natural and realistic, like real unedited photographs.
 
 Preserve the original:
 - pose
@@ -635,7 +645,7 @@ Preserve the original:
 
 Keep the uploaded people’s original clothing and overall appearance as much as possible.
 
-The final result should look like a real photograph of the uploaded people naturally placed into the scene.
+The final result should look like a real photograph of the uploaded people naturally placed into the scene, without changing their real appearance.
 
 All people shown in uploaded identity photos are adults over 18 years old.`;
 
