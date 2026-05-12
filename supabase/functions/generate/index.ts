@@ -1207,8 +1207,8 @@ CRITICAL PRIORITY ORDER:
 DO NOT reinterpret the uploaded people.
 
 DO NOT redesign their pose.
-DO NOT modify their anatomy.
-DO NOT stylize their body language.
+Do NOT modify their anatomy.
+Do NOT stylize their body language.
 
 The uploaded people must remain visually IDENTICAL to their source photos.
 
@@ -1282,58 +1282,61 @@ Do NOT mix:
 
 ZERO identity mixing allowed.
 
-CRITICAL POSE LOCK:
+ABSOLUTE POSE REPLICATION REQUIRED.
 
-The uploaded people must preserve the EXACT original pose geometry from the reference image.
+The uploaded people must replicate the EXACT body pose from the reference image with near pixel-level accuracy.
 
-Pose accuracy is EXTREMELY IMPORTANT.
+Do NOT reinterpret the pose in ANY way.
 
-Do NOT reinterpret the pose.
-Do NOT rebalance the body.
-Do NOT generate a “more natural” pose.
-Do NOT improve anatomy.
-Do NOT change body mechanics.
+Do NOT create a similar pose.
+Do NOT create an approximate pose.
+Do NOT generate a “natural variation”.
+
+The final pose must be a DIRECT PHYSICAL REPLACEMENT of the original people.
+
+Treat the reference pose as LOCKED skeletal geometry.
 
 Preserve EXACTLY:
-— head tilt
-— neck angle
-— shoulder angle
+— head rotation
+— chin angle
+— neck tilt
+— shoulder rotation
 — torso lean
-— spine curvature
-— hip placement
+— spine curve
+— body compression/stretch
+— hip angle
 — arm placement
-— elbow bend
-— wrist angle
+— elbow bend angle
+— wrist rotation
 — hand placement
-— finger positioning
-— leg position
-— knee angle
-— foot placement
+— finger positions
+— leg angles
+— knee bend
+— foot direction
 — body overlap
-— body weight distribution
-— contact points between people
+— body contact points
+— weight distribution
+— leaning direction
+— interaction pressure
+— distance between bodies
 
-Maintain the EXACT interaction geometry between characters.
-
-The uploaded people must occupy the SAME physical positions in 3D space as the reference people.
+The uploaded people must occupy the EXACT SAME coordinates and silhouette positioning as the reference people.
 
 Do NOT:
+— straighten posture
+— improve anatomy
+— rebalance the body
+— make pose more comfortable
 — move limbs
-— change posture
-— straighten the body
-— rotate shoulders
-— adjust balance
 — reposition hands
-— change leaning direction
-— alter pose energy
+— alter body energy
+— alter interaction geometry
+— alter body tension
 
-The pose should feel LOCKED to the reference frame.
+Even tiny pose deviations are NOT allowed.
 
-Think of the uploaded people as physically replacing the original people frame-by-frame while keeping the identical body mechanics and positioning.
-
-Pose preservation is MORE important than anatomical correction.
-
-Even subtle pose changes are NOT allowed.
+The scene should look like:
+the original people were physically replaced frame-by-frame by the uploaded people while preserving the exact skeletal positioning and interaction mechanics.
 
 CRITICAL IDENTITY LOCK:
 
