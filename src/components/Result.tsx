@@ -160,7 +160,7 @@ export default function Result({
 
         {/* Result card */}
         <div className="card-premium overflow-hidden mb-6">
-          <div className="aspect-square flex items-center justify-center relative" style={{ background: 'linear-gradient(145deg, #f3eefa, #ede6f6)' }}>
+          <div className="flex items-center justify-center relative w-full" style={{ background: 'linear-gradient(145deg, #f3eefa, #ede6f6)', minHeight: '280px', maxHeight: '72vh' }}>
 
             {/* 1 — Generating */}
             {isGenerating && (
@@ -192,7 +192,8 @@ export default function Result({
                 key={retryKey}
                 src={generatedImageUrl}
                 alt="Generated fusion result"
-                className="w-full h-full object-contain animate-scale-in"
+                className="block animate-scale-in"
+                style={{ maxWidth: '100%', maxHeight: '72vh', width: 'auto', height: 'auto', objectFit: 'contain' }}
                 onLoad={(e) => {
                   console.log('[IMG LOADED]', (e.target as HTMLImageElement).src);
                   onImgLoad();
