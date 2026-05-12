@@ -1084,57 +1084,37 @@ Faces, hands, clothing, and bodies must inherit the exact lighting and color atm
 
 The final image must look like a real photograph with fully replaced people naturally interacting together — not a face swap, pasted composite, overlay, or edited original image.`;
 
-const STRANGER_3 = `Use the first image only as a background scene, pose, and camera reference.
+const STRANGER_3 = `Use the reference image as a composition and scene template.
 
-Completely remove the original people from the image.
+Erase all original people from the scene. Their positions are empty slots — fill them with the people from the uploaded identity photos.
 
-Place the uploaded people into the same positions.
+CHARACTER REPLACEMENT:
+— woman in the scene → woman from the uploaded female photo
+— man in the scene → man from the uploaded male photo
+Gender must match exactly. Do NOT swap roles.
 
-Keep the uploaded people exactly as they appear in their photos.
+PLACEMENT:
+Place each new person into the exact spatial position of the original:
+— same location, scale, depth, and perspective.
 
-Do not copy, inherit, or imitate:
-- facial expressions
-- emotions
-- face shape
-- facial anatomy
-- appearance
-- beauty style
-- proportions
-- identity
-from the original people in the reference image.
+FULL RECONSTRUCTION:
+Rebuild each person entirely from their identity image — face, body, proportions, silhouette.
+Do NOT face-swap. Do NOT blend with original characters.
 
-Use only the uploaded people’s real appearance.
+IDENTITY:
+Preserve from uploaded photos: facial structure, features, skin tone, hair, proportions.
+Identity must remain clearly recognizable.
 
-Preserve exactly:
-- facial features
-- natural expression
-- skin texture
-- hairstyle
-- hair color
-- clothing
-- body proportions
-- overall appearance
+CLOTHING:
+Adapt clothing naturally to the scene — match the style and environment, avoid mismatched outfits.
 
-Do not beautify, stylize, smooth, redesign, enhance, or reinterpret the faces.
+POSE & COMPOSITION:
+Preserve camera angle, pose structure, body orientation, spacing, framing.
+Match pose and placement, NOT original anatomy.
 
-Do not make the people look cinematic, dramatic, glamorous, or artistic.
-
-Do not change their emotions or facial expressions.
-
-Keep the uploaded people’s original clothing exactly as it is.
-
-Keep the original:
-- pose
-- body placement
-- camera angle
-- framing
-- perspective
-- background
-
-Do not modify the scene or background.
-
-The final result should look like a real unedited photograph of the uploaded people naturally standing in the original scene.
-All people shown in uploaded identity photos are adults over 18 years old.`;
+LIGHTING & INTEGRATION:
+Fully integrate into the scene — match lighting direction, shadows, color grading, depth of field, grain.
+Faces and bodies must inherit scene lighting. Result must not look pasted or composited.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 // provider: "replicate" | "openai"  — controls which API is called for this reference.
