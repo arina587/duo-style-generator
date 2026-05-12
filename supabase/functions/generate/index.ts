@@ -694,11 +694,94 @@ fully replace the original people with the uploaded people as COMPLETE REAL HUMA
 
 CRITICAL PRIORITY ORDER:
 
-1. Preserve uploaded people's FULL BODY identity EXACTLY
-2. Preserve uploaded people's FULL BODY proportions EXACTLY
-3. Preserve uploaded people's EXACT pose geometry
-4. Preserve uploaded people's clothing/body consistency EXACTLY
-5. ONLY AFTER THAT adapt to the scene
+1. Preserve uploaded people's EXACT facial identity
+2. Preserve uploaded people's FULL BODY identity
+3. Preserve uploaded people's FULL BODY proportions
+4. Preserve uploaded people's EXACT pose geometry
+5. Preserve uploaded people's clothing/body consistency
+6. ONLY AFTER THAT adapt to the scene
+
+CRITICAL IDENTITY PRESERVATION — MAXIMUM PRIORITY.
+
+The uploaded people's appearance MUST dominate the final image completely.
+
+The reference image MUST NOT influence:
+— facial structure
+— attractiveness
+— facial proportions
+— eyes
+— nose
+— lips
+— jawline
+— hairstyle
+— skin tone
+— age appearance
+— ethnicity
+— body type
+— silhouette
+
+The uploaded people must remain IDENTICAL to their source photos.
+
+IDENTITY ACCURACY is MORE IMPORTANT than:
+— cinematic quality
+— scene adaptation
+— lighting accuracy
+— realism
+— matching the original actors
+
+The AI must NOT reinterpret the uploaded faces.
+
+Do NOT:
+— beautify them
+— stylize them
+— make them look like the original actors
+— improve symmetry
+— sharpen jawlines
+— enlarge eyes
+— change nose shape
+— alter facial proportions
+— soften skin
+— change ethnicity
+— change age appearance
+
+The uploaded people's EXACT facial identity must remain untouched.
+
+Preserve EXACTLY:
+— eye shape
+— eye spacing
+— eyelids
+— eyebrow shape
+— nose bridge
+— nose tip
+— nostrils
+— lips
+— mouth width
+— cheek structure
+— chin shape
+— jawline
+— forehead proportions
+— face width
+— facial asymmetry
+— hairstyle
+— hairline
+— hair texture
+— skin undertone
+— skin texture
+
+The uploaded people must NOT inherit ANY facial traits from the reference actors.
+
+ZERO facial blending allowed.
+
+If identity accuracy conflicts with cinematic adaptation:
+IDENTITY ACCURACY MUST WIN.
+
+The final people should instantly look like the uploaded people and NOT like modified versions of the original actors.
+
+The result should feel like:
+the uploaded real people were photographed in this scene.
+
+NOT:
+AI-generated approximations inspired by the uploaded photos.
 
 CRITICAL FULL BODY TRANSFER — HIGHEST PRIORITY.
 
@@ -806,14 +889,6 @@ DO NOT redesign their pose.
 DO NOT modify their anatomy.
 DO NOT stylize their body language.
 
-The uploaded people must remain visually IDENTICAL to their source photos.
-
-IDENTITY LOCK IS MORE IMPORTANT than cinematic adaptation.
-
-POSE LOCK IS MORE IMPORTANT than scene reinterpretation.
-
-BODY LOCK IS MORE IMPORTANT than matching the original people.
-
 ABSOLUTE POSE REPLICATION REQUIRED.
 
 The uploaded people must replicate the EXACT body pose from the reference image with near pixel-level accuracy.
@@ -885,58 +960,6 @@ Even tiny pose deviations are NOT allowed.
 The scene should look like:
 the original people were physically replaced frame-by-frame by the uploaded people while preserving the exact skeletal positioning and interaction mechanics.
 
-CRITICAL IDENTITY LOCK:
-
-Preserve EXACTLY:
-— facial structure
-— eye spacing
-— nose proportions
-— lips
-— jawline
-— cheeks
-— forehead
-— hairstyle
-— silhouette
-— physique
-— natural asymmetry
-
-Do NOT:
-— beautify
-— glamorize
-— make more cinematic
-— smooth skin
-— sharpen features
-— enlarge eyes
-— slim body
-
-The uploaded people must remain REAL and RAW.
-
-The uploaded people must remain IDENTICAL to their source photos.
-
-Preserve EXACTLY:
-— facial bone structure
-— jawline
-— eye shape
-— eyelids
-— eyebrows
-— nose shape
-— lip shape
-— cheek structure
-— forehead proportions
-— chin structure
-— ears
-— natural asymmetry
-— hairstyle
-— hairline
-— hair density
-— skin texture
-— skin undertone
-— body proportions
-— shoulder width
-— arm proportions
-— physique
-— silhouette
-
 SKIN CONSISTENCY IS CRITICAL:
 
 If the uploaded person has light skin on the face:
@@ -962,19 +985,6 @@ Do NOT create:
 — hybrid identities
 — face-swapped appearance
 — pasted faces
-
-Do NOT:
-— beautify faces
-— smooth anatomy unnaturally
-— sharpen jawlines
-— enlarge eyes
-— slim the body
-— glamorize appearance
-— make them prettier
-— make them model-like
-— stylize skin
-— alter ethnicity
-— alter age appearance
 
 The uploaded people must look like authentic photographed humans physically present in the environment.
 
