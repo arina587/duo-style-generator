@@ -1128,37 +1128,77 @@ Faces, hands, clothing, and bodies must inherit the exact lighting and color atm
 
 The final image must look like a real photograph with fully replaced people naturally interacting together — not a face swap, pasted composite, overlay, or edited original image.`;
 
-const STRANGER_3 = `Use the reference image as a composition and scene template.
+const STRANGER_3 = `Use the reference image as a STRICT shot blueprint.
 
-Erase all original people from the scene. Their positions are empty slots — fill them with the people from the uploaded identity photos.
+Do NOT reinterpret, restage, reframe, rotate, recrop, zoom, tilt, mirror, or change the camera viewpoint in any way.
 
-CHARACTER REPLACEMENT:
-— woman in the scene → woman from the uploaded female photo
-— man in the scene → man from the uploaded male photo
-Gender must match exactly. Do NOT swap roles.
+The final image must preserve:
+— exact camera angle
+— exact horizon level
+— exact perspective
+— exact framing
+— exact crop
+— exact lens feel
+— exact head spacing
+— exact body placement
+— exact body orientation
+— exact eye-lines
+— exact scene geometry
+— exact distance between subjects
+— exact shot orientation
 
-PLACEMENT:
-Place each new person into the exact spatial position of the original:
-— same location, scale, depth, and perspective.
+Camera position is LOCKED.
+Perspective is LOCKED.
+Composition is LOCKED.
 
-FULL RECONSTRUCTION:
-Rebuild each person entirely from their identity image — face, body, proportions, silhouette.
-Do NOT face-swap. Do NOT blend with original characters.
+Keep the scene from the identical viewpoint as the reference frame.
+
+IMPORTANT:
+Both characters must remain turned toward each other exactly like in the reference image.
+
+— left character keeps the same left-side position and looks right
+— right character keeps the same right-side position and looks left
+
+Do NOT rotate faces toward the viewer.
+Do NOT change the side profile angles.
+Do NOT change the head tilt or eye-line direction.
+
+Maintain the same emotional distance and cinematic blocking.
+
+Erase all original people. Their positions are empty slots — fill them with the people from the uploaded photos.
+
+REPLACEMENT:
+— left slot → man from uploaded male photo
+— right slot → woman from uploaded female photo
+
+Do NOT swap genders, sides, or roles.
+
+RECONSTRUCTION:
+Rebuild each person completely from scratch.
+Do NOT face-swap.
+Do NOT blend identities with original actors.
+Do NOT preserve original facial features.
 
 IDENTITY:
-Preserve from uploaded photos: facial structure, features, skin tone, hair, proportions.
-Identity must remain clearly recognizable.
+Preserve facial structure, proportions, skin tone, hair, and recognizability of uploaded people.
+
+SKIN CONSISTENCY:
+Hands, neck, ears, arms, and visible body skin must perfectly match facial skin tone and undertone.
+No mismatched body color.
+No separate face/body lighting.
+
+POSE:
+Match original posture, shoulder angle, neck angle, body direction, and interaction precisely.
 
 CLOTHING:
-Adapt clothing naturally to the scene — match the style and environment, avoid mismatched outfits.
+Adapt naturally to the environment and cinematic style of the scene.
 
-POSE & COMPOSITION:
-Preserve camera angle, pose structure, body orientation, spacing, framing.
-Match pose and placement, NOT original anatomy.
+LIGHTING:
+Match the original sunset lighting, pink sky bounce light, shadows, atmospheric haze, color grading, depth of field, and film grain.
 
-LIGHTING & INTEGRATION:
-Fully integrate into the scene — match lighting direction, shadows, color grading, depth of field, grain.
-Faces and bodies must inherit scene lighting. Result must not look pasted or composited.`;
+Faces and bodies must inherit identical sunset lighting naturally.
+
+The result must look like the uploaded people were originally filmed in this exact shot.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 // provider: "replicate" | "openai"  — controls which API is called for this reference.
