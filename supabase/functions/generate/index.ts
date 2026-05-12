@@ -646,15 +646,37 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference image only as a template for composition, pose, camera angle, lighting, environment, and atmosphere.
+const TITANIC_1 = `Use the reference image ONLY for:
+— pose
+— composition
+— camera angle
+— lighting
+— environment
+— atmosphere
+— framing
 
-Completely replace the original people with the uploaded people.
+DO NOT use the original people as appearance references in ANY way.
 
-IMPORTANT:
-Transfer the uploaded people as FULL REAL HUMANS — not only faces or heads.
+CRITICAL:
+The uploaded people must FULLY REPLACE the original people.
 
-The uploaded people must replace:
+ABSOLUTELY NO blending between:
+— uploaded people
+— original actors
+
+ZERO identity mixing allowed.
+
+The final people must look ONLY like the uploaded people.
+
+This is NOT:
+— a face swap
+— a deepfake
+— an identity blend
+— a recreation of the original actors
+
+The uploaded people must replace the original people completely:
 — face
+— head
 — hair
 — neck
 — shoulders
@@ -664,77 +686,84 @@ The uploaded people must replace:
 — fingers
 — body proportions
 — silhouette
+— posture
 — clothing
 — skin tone
-— posture
 
-Do NOT keep any body parts from the original actors.
+Do NOT preserve ANY original anatomy underneath.
 
-This is NOT a face swap.
+The uploaded people must appear as complete real humans naturally existing in the scene.
 
-Do NOT use:
-— original hands
-— original arms
-— original body
-— original proportions
-— original skin tone
-
-The uploaded people must appear as complete natural humans physically present in the scene.
-
-Preserve the uploaded people’s exact:
-— facial features
-— face proportions
-— hairstyle
-— body proportions
+The uploaded people must keep their exact:
+— facial structure
+— head shape
+— proportions
+— body type
 — physique
 — skin tone
-— clothing identity
+— hairstyle
+— facial details
+— asymmetry
+— natural imperfections
 
-Do NOT beautify or alter their appearance.
+Do NOT beautify, stylize, or reinterpret them.
 
-Keep the exact pose and interaction from the reference image:
-— woman standing in front with arms extended
-— man standing behind holding her waist
-— exact hand placement
-— exact body positioning
-— exact head tilt
-— exact distance between faces
-— exact romantic interaction
+IMPORTANT:
+The uploaded people must NOT look pasted into the image.
 
-The two people must look naturally in the same direction as the reference image.
+Natural scene integration is critical.
 
-Do NOT change pose geometry.
-
-Keep the background almost identical to the original frame:
-— ship deck
-— sunset atmosphere
-— warm lighting
-— framing
-— perspective
-— ropes and ship structure
-— cinematic composition
-
-Do NOT redesign or regenerate the environment.
-
-The final image should look like:
-the exact original movie frame with only the people naturally replaced by the uploaded people.
-
-The uploaded people must look naturally integrated into the scene:
+Adapt them naturally to the environment using:
+— realistic lighting interaction
 — realistic shadows
-— matching lighting
-— matching film grain
+— ambient light bounce
+— scene color grading
+— atmospheric depth
+— realistic film grain
+— realistic softness
+— realistic skin shading
+— realistic contact shadows
+— realistic clothing folds
 — matching depth of field
-— realistic skin tones
-— realistic clothing texture
 
-They must NOT look:
-— pasted
-— composited
-— face-swapped
-— blended with the original actors
-— AI-generated
+Their lighting and texture quality must perfectly match the original frame.
 
-The final result must feel like a real photograph taken on set with the uploaded people physically present in the scene.`;
+Do NOT make them:
+— sharper than the scene
+— cleaner than the scene
+— higher quality than the background
+— over-detailed
+— over-lit
+— artificially separated from the environment
+
+The uploaded people must feel physically photographed inside the scene.
+
+The result should look like:
+a real untouched movie frame filmed with the uploaded people on set.
+
+NOT:
+people pasted over a movie screenshot.
+
+Preserve the exact pose and interaction from the reference:
+— exact body positions
+— exact head angles
+— exact hand placement
+— exact distance between bodies
+— exact gaze direction
+— exact emotional interaction
+
+Do NOT reinterpret the pose.
+
+Keep the original background almost identical:
+— environment
+— objects
+— perspective
+— framing
+— atmosphere
+— lighting
+— composition
+
+Only replace the people naturally and realistically.`;
 
 const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
