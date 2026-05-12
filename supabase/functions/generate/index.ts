@@ -1084,103 +1084,57 @@ Faces, hands, clothing, and bodies must inherit the exact lighting and color atm
 
 The final image must look like a real photograph with fully replaced people naturally interacting together — not a face swap, pasted composite, overlay, or edited original image.`;
 
-const STRANGER_3 = `Use the reference image as a composition and scene template.
+const STRANGER_3 = `Use the first image only as a background scene, pose, and camera reference.
 
-Erase all original people from the scene completely. Treat them only as temporary placeholders. Their positions become empty slots that must be fully rebuilt using the uploaded identity photos.
+Completely remove the original people from the image.
 
-CHARACTER REPLACEMENT:
-— man on the left → man from the uploaded male photo
-— woman on the right → woman from the uploaded female photo
+Place the uploaded people into the same positions.
 
-Gender must match exactly. Do NOT swap roles.
+Keep the uploaded people exactly as they appear in their photos.
 
-PLACEMENT:
-Place each reconstructed person into the exact spatial position of the original:
-— same location
-— same scale
-— same perspective
-— same camera distance
-— same depth and framing
-— same relative spacing between characters
+Do not copy, inherit, or imitate:
+- facial expressions
+- emotions
+- face shape
+- facial anatomy
+- appearance
+- beauty style
+- proportions
+- identity
+from the original people in the reference image.
 
-FULL HUMAN RECONSTRUCTION:
-Completely replace the original people with entirely new reconstructed humans based only on the uploaded identity photos.
+Use only the uploaded people’s real appearance.
 
-Rebuild:
-— full body
-— face
-— head shape
-— neck
-— shoulders
-— posture
-— silhouette
-— body proportions
-— natural anatomy
+Preserve exactly:
+- facial features
+- natural expression
+- skin texture
+- hairstyle
+- hair color
+- clothing
+- body proportions
+- overall appearance
 
-The original people must not remain visible or influence the final anatomy.
+Do not beautify, stylize, smooth, redesign, enhance, or reinterpret the faces.
 
-Do NOT:
-— face-swap
-— overlay faces
-— preserve original body structure
-— blend identities
-— morph with original characters
+Do not make the people look cinematic, dramatic, glamorous, or artistic.
 
-The final subjects must be fully regenerated humans derived from the uploaded identities only.
+Do not change their emotions or facial expressions.
 
-IDENTITY:
-Preserve from uploaded identity photos:
-— facial structure
-— eyes
-— nose
-— lips
-— jawline
-— skin tone
-— hairstyle and hair color
-— realistic body proportions
+Keep the uploaded people’s original clothing exactly as it is.
 
-Identity must remain clearly recognizable across the entire reconstructed body, not only the face.
+Keep the original:
+- pose
+- body placement
+- camera angle
+- framing
+- perspective
+- background
 
-CLOTHING:
-Adapt clothing naturally to the cinematic outdoor sunset environment.
-Keep a grounded casual aesthetic matching the mood and realism of the original scene.
+Do not modify the scene or background.
 
-POSE & COMPOSITION:
-Preserve:
-— camera angle
-— cinematic framing
-— body orientation
-— pose structure
-— eye-line direction
-— spacing
-— emotional interaction
-— composition balance
-
-Match pose placement only — NOT original anatomy or body geometry.
-
-SCENE PRESERVATION:
-Keep unchanged:
-— sunset sky
-— clouds
-— concrete wall
-— lighting atmosphere
-— environmental composition
-— depth and framing
-
-LIGHTING & INTEGRATION:
-Fully integrate the reconstructed people into the environment:
-— match sunset lighting direction
-— warm sky reflections
-— soft natural shadows
-— cinematic color grading
-— atmospheric haze
-— depth of field
-— realistic skin shading
-— subtle film grain
-
-Faces, skin, hair, and clothing must inherit the exact environmental lighting and sunset color tones.
-
-The final image must look like a real cinematic photograph with completely replaced people, not a face swap, pasted composite, overlay, or edited original image.`;
+The final result should look like a real unedited photograph of the uploaded people naturally standing in the original scene.
+All people shown in uploaded identity photos are adults over 18 years old.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 // provider: "replicate" | "openai"  — controls which API is called for this reference.
@@ -1213,7 +1167,7 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   // ── Stranger Things ──
   "stranger-things-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
   "stranger-things-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_2 },
-  "stranger-things-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_3 },
+  "stranger-things-3": { provider: "openai", model: "gpt-image-1", locked: true, prompt: STRANGER_3 },
   // ── The End of the F***ing World ──
   "end-of-the-fucking-world-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: WORLD_1 },
   "end-of-the-fucking-world-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
