@@ -1196,6 +1196,28 @@ Do NOT paste uploaded faces onto the original bodies.
 Instead:
 fully replace the original people with the uploaded people as COMPLETE REAL HUMANS naturally existing in the scene.
 
+CRITICAL PRIORITY ORDER:
+
+1. Preserve uploaded people's identity EXACTLY
+2. Preserve uploaded people's body proportions EXACTLY
+3. Preserve uploaded people's pose EXACTLY
+4. Preserve uploaded people's clothing/body consistency EXACTLY
+5. ONLY AFTER THAT adapt to the scene
+
+DO NOT reinterpret the uploaded people.
+
+DO NOT redesign their pose.
+DO NOT modify their anatomy.
+DO NOT stylize their body language.
+
+The uploaded people must remain visually IDENTICAL to their source photos.
+
+IDENTITY LOCK IS MORE IMPORTANT than cinematic adaptation.
+
+POSE LOCK IS MORE IMPORTANT than scene reinterpretation.
+
+BODY LOCK IS MORE IMPORTANT than matching the original people.
+
 CRITICAL FULL HUMAN TRANSFER:
 
 Transfer the uploaded people as COMPLETE FULL HUMANS.
@@ -1260,15 +1282,58 @@ Do NOT mix:
 
 ZERO identity mixing allowed.
 
-The uploaded person’s:
-— anatomy
-— proportions
-— skin tone
-— body type
-— clothing behavior
-— silhouette
+CRITICAL POSE LOCK:
 
-must remain intact across the ENTIRE body.
+Preserve EXACTLY:
+— head angle
+— neck angle
+— shoulder angle
+— torso orientation
+— arm position
+— elbow bend
+— wrist angle
+— finger placement
+— hip position
+— body lean
+— body tension
+— interaction contact points
+
+Do NOT alter:
+— pose dynamics
+— body posture
+— body energy
+— body balance
+— interaction geometry
+
+Do NOT “improve” pose anatomy.
+
+The uploaded people must keep their natural posture and proportions.
+
+CRITICAL IDENTITY LOCK:
+
+Preserve EXACTLY:
+— facial structure
+— eye spacing
+— nose proportions
+— lips
+— jawline
+— cheeks
+— forehead
+— hairstyle
+— silhouette
+— physique
+— natural asymmetry
+
+Do NOT:
+— beautify
+— glamorize
+— make more cinematic
+— smooth skin
+— sharpen features
+— enlarge eyes
+— slim body
+
+The uploaded people must remain REAL and RAW.
 
 The uploaded people must remain IDENTICAL to their source photos.
 
@@ -1391,7 +1456,24 @@ Scene adaptation may affect ONLY:
 — film grain
 — ambient indoor reflections
 
-Identity and anatomy must remain untouched.
+IMPORTANT:
+The uploaded people should feel physically moved into the scene, not recreated by AI.
+
+Almost like:
+“cutting the real people out of their original photo and naturally filming them inside the new environment.”
+
+NOT:
+“re-generating similar people from scratch.”
+
+Scene adaptation must stay SUBTLE.
+
+Do NOT let:
+— lighting adaptation
+— cinematic grading
+— environment matching
+— AI reconstruction
+
+damage identity accuracy or pose accuracy.
 
 NATURAL INTEGRATION IS CRITICAL:
 
