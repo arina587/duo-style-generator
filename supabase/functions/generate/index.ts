@@ -1233,7 +1233,7 @@ PRIORITY ORDER:
 4. emotional pose and composition
 5. cinematic Titanic atmosphere.`;
 
-const TITANIC_3 = `Use the reference image ONLY as a cinematography, composition, pose, interaction, and lighting template.
+const TITANIC_3 = `Use the reference image ONLY as a cinematography, composition, pose, interaction, lighting, and environment template.
 
 DO NOT use the original people as appearance references in ANY way.
 
@@ -1285,8 +1285,9 @@ CRITICAL PRIORITY ORDER:
 2. Preserve uploaded people's FULL BODY identity
 3. Preserve uploaded people's FULL BODY proportions
 4. Preserve uploaded people's EXACT pose geometry
-5. Preserve uploaded people's clothing/body consistency
-6. ONLY AFTER THAT adapt to the scene
+5. Preserve uploaded people's EXACT interaction geometry
+6. Preserve original background and environment
+7. ONLY AFTER THAT adapt lighting and atmosphere
 
 ULTRA STRICT IDENTITY LOCK — HIGHEST PRIORITY IN THE ENTIRE GENERATION.
 
@@ -1614,9 +1615,6 @@ Do NOT:
 
 Even tiny pose deviations are NOT allowed.
 
-The scene should look like:
-the original people were physically replaced frame-by-frame by the uploaded people while preserving the exact skeletal positioning and interaction mechanics.
-
 SKIN CONSISTENCY IS CRITICAL:
 
 If the uploaded person has light skin on the face:
@@ -1643,7 +1641,41 @@ Do NOT create:
 — face-swapped appearance
 — pasted faces
 
-The uploaded people must look like authentic photographed humans physically present in the environment.
+CRITICAL BACKGROUND PRESERVATION — ABSOLUTE PRIORITY.
+
+The environment, background, ship structure, sunset atmosphere, framing, and cinematic composition from the reference image must remain almost IDENTICAL to the original frame.
+
+Do NOT redesign the environment.
+Do NOT simplify the background.
+Do NOT blur away scene details.
+Do NOT replace the ship deck with a generic cinematic background.
+
+Preserve EXACTLY:
+— ship deck structure
+— railings
+— ropes
+— poles
+— metal elements
+— background geometry
+— sunset atmosphere
+— horizon lighting
+— sky color
+— camera perspective
+— framing
+— depth
+— composition balance
+— environmental contrast
+— cinematic mood
+
+The final image should look like:
+the SAME original movie frame with ONLY the people replaced.
+
+NOT:
+a newly generated Titanic-inspired scene.
+
+The background must remain highly accurate to the reference image.
+
+The uploaded people must look authentic and naturally photographed inside the environment.
 
 They must NOT look:
 — pasted
