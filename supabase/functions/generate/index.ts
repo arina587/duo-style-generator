@@ -646,7 +646,7 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference image ONLY as a cinematography, composition, pose, and interaction template.
+const TITANIC_1 = `Use the reference image ONLY as a cinematography, composition, pose, interaction, lighting, and environment template.
 
 DO NOT use the original actors as appearance references in ANY way.
 
@@ -658,6 +658,7 @@ The original people are ONLY placeholders for:
 — camera angle
 — lighting
 — scene composition
+— atmosphere
 
 Completely remove all original identities from the final result.
 
@@ -671,47 +672,72 @@ Do NOT paste uploaded faces onto the original bodies.
 Instead:
 fully replace the original actors with the uploaded people as COMPLETE REAL HUMANS naturally existing in the scene.
 
-CRITICAL FULL HUMAN TRANSFER:
+MOST IMPORTANT RULE — FULL HUMAN TRANSFER ONLY.
 
-Transfer the uploaded people as COMPLETE FULL HUMANS.
+The uploaded people must be transferred into the scene as COMPLETE REAL HUMANS.
 
-NOT just faces.
-NOT just heads.
-NOT facial identity only.
+NOT only:
+— faces
+— heads
+— hairstyles
+— facial identity
 
-The ENTIRE PERSON must be transferred together as ONE connected human identity.
+The AI must replace the ENTIRE original people with the uploaded people completely.
 
-This includes:
+The uploaded people must replace:
 — head
 — face
 — hair
 — neck
 — shoulders
+— chest
 — torso
+— waist
+— hips
 — arms
+— elbows
+— wrists
 — hands
 — fingers
 — body proportions
 — physique
 — silhouette
-— clothing
 — posture
+— clothing
+— clothing fit
 — body language
 
-The uploaded person's FULL BODY must replace the original actor's FULL BODY.
+ZERO original anatomy may remain.
 
 Do NOT keep:
 — original hands
 — original arms
-— original body
-— original skin color
+— original torso
+— original shoulders
 — original physique
-— original clothing fit
+— original silhouette
+— original skin tone
 — original body proportions
 
-ZERO identity mixing allowed.
+The uploaded people must occupy the scene with THEIR OWN complete bodies.
 
-The uploaded people must remain IDENTICAL to their source photos.
+The final humans must remain physically unified from head to toe.
+
+NOT:
+uploaded face + original body.
+
+NOT:
+uploaded head + original anatomy.
+
+NOT:
+identity overlay.
+
+NOT:
+deepfake blend.
+
+This is COMPLETE FULL BODY HUMAN REPLACEMENT.
+
+The uploaded people must look exactly like themselves across the ENTIRE body.
 
 Preserve EXACTLY:
 — facial structure
