@@ -602,97 +602,41 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference cinematic image ONLY as a strict composition, framing, pose, camera angle, perspective, lighting, and scene template.
+const TITANIC_1 = `Use the first image only as a composition and cinematic scene reference.
 
-Completely remove all original people from the reference image and fully replace them with the two people from the uploaded identity photos.
+Replace the original man and woman completely with the people from the uploaded identity photos.
 
-ROLE MAPPING:
-- female role → woman from uploaded female identity photo
-- male role → man from uploaded male identity photo
+Female role:
+- use the uploaded woman exactly as the female character
 
-Do not swap roles or positions.
+Male role:
+- use the uploaded man exactly as the male character
 
-IMPORTANT:
-This is NOT a face swap.
-Do NOT preserve any facial structure, skin texture, proportions, or features from the original actors.
-The final image must depict entirely new individuals reconstructed from the uploaded identity references only.
+Keep:
+- same pose
+- same framing
+- same camera angle
+- same hand placement
+- same body positions
+- same cinematic sunset atmosphere
+- same warm lighting
+- same scene composition
 
-IDENTITY PRESERVATION:
-Accurately preserve:
-- facial anatomy
-- eye shape
-- nose structure
-- lips
-- jawline
-- hairstyle
-- hair color
-- skin tone
-- body proportions
-- age appearance
-- natural asymmetry
-- recognizable identity characteristics
+Do not preserve any facial features from the original actors.
 
-The generated characters must strongly resemble the uploaded people while remaining fully photorealistic and natural.
+The new characters should closely resemble the uploaded people with natural facial structure, realistic skin texture, and authentic proportions.
 
-COMPOSITION LOCK:
-Keep the exact original:
-- pose
-- body positioning
-- hand placement
-- framing
-- crop
-- camera distance
-- lens perspective
-- relative scale
-- scene depth
-- body orientation
-- cinematic staging
-
-CLOTHING:
-Adapt wardrobe naturally into an elegant romantic late-1910s ship atmosphere inspired by classic cinematic styling.
-Outfits should look historically believable, cinematic, detailed, and naturally fitted to the new individuals.
-
-LIGHTING:
-Match the original cinematic golden sunset lighting exactly:
-- warm amber highlights
-- soft shadows
-- volumetric atmosphere
-- subtle film grain
-- cinematic contrast
-- realistic skin response to light
-- shallow depth of field
-- natural dark-to-light transitions
-
-INTEGRATION:
-The characters must appear naturally photographed inside the scene.
 Avoid:
-- pasted appearance
-- morphing artifacts
-- warped anatomy
-- over-smoothed skin
-- uncanny facial proportions
-- AI distortion
-- asymmetrical eyes
-- plastic texture
+- beauty filter look
+- exaggerated eyes
+- over-symmetrical faces
+- plastic skin
+- AI glamour styling
+- cartoon appearance
+- face morphing
+- uncanny expressions
 
-STYLE:
-Ultra realistic cinematic photography.
-High-end movie still.
-Natural skin texture.
-Authentic human anatomy.
-Emotionally believable expressions.
-Detailed fabric textures.
-Professional color grading.
-Organic imperfections.
-
-QUALITY:
-Extremely detailed.
-Photorealistic.
-Sharp facial fidelity.
-Natural eyes.
-Natural hands.
-Cinematic realism.
-8k editorial film still quality.
+Keep the image natural, cinematic, and photorealistic.
 
 All people shown in uploaded identity photos are adults over 18 years old.`;
 
