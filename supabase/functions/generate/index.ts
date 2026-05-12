@@ -924,7 +924,38 @@ Composition is LOCKED.
 Keep the identical viewpoint and framing from the original reference image.
 
 IMPORTANT:
-Maintain the exact left/right placement of all subjects.
+Transfer the uploaded people as COMPLETE real humans naturally existing inside the scene.
+
+Do NOT generate new body types.
+Do NOT reinterpret their physique.
+Do NOT stylize or beautify them.
+Do NOT partially recreate them.
+
+Preserve:
+— exact body proportions
+— exact body shape
+— exact height ratio
+— exact shoulder width
+— exact face proportions
+— exact silhouette
+— exact hairstyle
+— exact natural asymmetry
+— exact clothing fit and folds
+
+The uploaded people must look physically present in the scene, not recreated from scratch.
+
+They must NOT look:
+— pasted
+— composited
+— face-swapped
+— AI-generated
+— over-smoothed
+— over-lit
+— disconnected from the environment
+
+The people must blend naturally into the cinematography of the shot.
+
+Maintain the exact left/right placement of all subjects:
 
 — girl remains on the left side holding the dog
 — boy remains on the right side standing beside her
@@ -941,7 +972,7 @@ The dog must preserve:
 — exact placement in arms
 — exact camera angle
 
-Erase all original people. Their positions are empty slots — fill them with the people from the uploaded photos.
+Erase all original people completely and replace them entirely with the uploaded people.
 
 REPLACEMENT:
 — left slot → woman/girl from uploaded female photo
@@ -949,14 +980,21 @@ REPLACEMENT:
 
 Do NOT swap genders, sides, or roles.
 
-RECONSTRUCTION:
-Rebuild each person completely from scratch.
-Do NOT face-swap.
-Do NOT blend identities with original actors.
-Do NOT preserve original facial features.
+FULL PERSON TRANSFER:
+Transfer the uploaded people holistically:
+— face
+— body
+— physique
+— proportions
+— skin
+— hair
+— clothing behavior
+— natural posture
+
+Do NOT only transfer the face.
 
 IDENTITY:
-Preserve facial structure, proportions, skin tone, hair, and recognizability of uploaded people.
+Preserve recognizability with realistic anatomy and natural skin texture.
 
 SKIN CONSISTENCY:
 Hands, fingers, neck, ears, arms, and visible body skin must perfectly match facial skin tone and undertone.
@@ -969,15 +1007,12 @@ Preserve the same friendly natural smile intensity and eye direction from the re
 POSE:
 Match original posture, arm position, shoulder angle, head tilt, body direction, and interaction precisely.
 
-CLOTHING:
-Adapt naturally to the outdoor forest environment and cinematic style of the scene.
-
 LIGHTING:
-Match original natural forest lighting, soft daylight shadows, color grading, background blur, atmospheric depth, and film grain.
+Match original natural forest lighting, soft daylight shadows, environmental reflections, atmospheric depth, depth of field, cinematic color grading, and film grain.
 
-Faces, hands, bodies, and dog must inherit identical scene lighting naturally.
+Faces, bodies, clothes, and dog must inherit identical scene lighting naturally.
 
-The result must look like the uploaded people were originally photographed in this exact shot.`;
+Integrate the uploaded people seamlessly into the scene so they appear originally photographed there in-camera.`;
 
 const WORLD_1 = `Use the reference image as a composition and scene template.
 
