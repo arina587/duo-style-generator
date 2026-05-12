@@ -1527,7 +1527,7 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
         if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
 
         console.log("[REQUEST_BODY_SHAPE]", JSON.stringify({
-          model: config.model,
+          version: config.model,
           input: {
             image_input: `[${images.length} base64 data URLs]`,
             prompt: `[${finalPrompt.length} chars]`,
@@ -1541,7 +1541,7 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: config.model,
+            version: config.model,
             input: {
               prompt: finalPrompt,
               image_input: images,
