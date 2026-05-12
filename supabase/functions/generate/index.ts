@@ -1420,6 +1420,28 @@ Fully replace them with the uploaded people as entirely different real humans na
 
 The uploaded people must remain IDENTICAL to their source photos.
 
+FULL HUMAN TRANSFER:
+
+Transfer the uploaded people as COMPLETE REAL HUMANS, not only faces.
+
+Transfer consistently:
+— face
+— skin tone
+— body
+— hands
+— arms
+— neck
+— legs
+— physique
+— proportions
+— silhouette
+— clothing behavior
+— natural anatomy
+
+Do NOT generate a new body around the transferred face.
+
+The uploaded person's original body identity must remain intact.
+
 Preserve EXACTLY:
 — facial structure
 — bone structure
@@ -1443,6 +1465,24 @@ Preserve EXACTLY:
 — arm proportions
 — silhouette
 — physique
+
+SKIN CONSISTENCY IS CRITICAL:
+
+If the uploaded person has light skin on the face:
+— hands must match
+— arms must match
+— neck must match
+— visible body skin must match
+
+Face and body must belong to the SAME real person.
+
+Do NOT create:
+— darker hands than face
+— lighter body than face
+— mismatched undertones
+— separate face/body lighting
+— disconnected skin colors
+— face-swapped appearance
 
 Do NOT:
 — beautify faces
@@ -1512,17 +1552,10 @@ Scene adaptation may affect ONLY:
 
 Identity and anatomy must remain untouched.
 
-SKIN CONSISTENCY:
-Hands, fingers, neck, arms, ears, and visible body skin must perfectly match facial skin tone and undertone.
-
-No mismatched body color.
-No separate face/body lighting.
-No artificial skin smoothing.
-
 LIGHTING:
 Match the original warm indoor daylight lighting, soft environmental shadows, realistic skin shading, depth of field, cinematic color grading, and film grain.
 
-Faces, bodies, clothes, hands, and hair must inherit identical scene lighting naturally.
+Faces, bodies, clothes, hands, arms, necks, and hair must inherit identical scene lighting naturally.
 
 Blend the uploaded people seamlessly into the environment so they appear originally photographed in this exact shot without any identity mixing from the original actors.`;
 
