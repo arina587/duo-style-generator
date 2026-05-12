@@ -1865,6 +1865,61 @@ Scene adaptation may affect ONLY:
 
 Identity and anatomy must remain untouched.
 
+NATURAL INTEGRATION IS CRITICAL:
+
+The uploaded people must look physically present in the scene as if they were originally filmed there in-camera.
+
+They must NOT look:
+— pasted
+— composited
+— overlaid
+— cut out
+— artificially inserted
+— disconnected from the environment
+— too sharp compared to the scene
+— too clean compared to the scene
+— relit separately from the scene
+
+Blend the uploaded people naturally into the cinematography and atmosphere of the shot.
+
+Environmental integration must be realistic:
+— natural shadow interaction
+— natural ambient light bounce
+— realistic skin shading
+— realistic atmospheric depth
+— realistic color contamination from the environment
+— realistic scene grain
+— realistic softness matching the camera lens
+
+The uploaded people must inherit:
+— the exact scene contrast
+— the exact scene softness
+— the exact scene dynamic range
+— the exact scene color grading
+— the exact scene noise/grain
+— the exact scene depth of field
+
+Do NOT make the transferred people cleaner, sharper, or higher quality than the original scene.
+
+Match the imperfections of the original footage naturally.
+
+Skin must react naturally to scene lighting:
+— sunset light
+— ambient bounce light
+— environmental reflections
+— shadow softness
+— atmospheric haze
+
+Clothing must integrate naturally into the lighting and environment:
+— realistic fabric shadows
+— realistic folds
+— realistic texture softness
+— realistic contact shadows
+
+Hands and faces must have identical lighting behavior and texture quality.
+
+The final image must feel like a real untouched movie frame, not an edited composite.
+
 LIGHTING:
 Match the original sunset cinematic lighting, soft warm shadows, realistic skin shading, atmospheric depth, pink sky reflections, depth of field, cinematic color grading, and film grain.
 
