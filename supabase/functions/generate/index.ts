@@ -1159,7 +1159,7 @@ Match the original warm indoor cinematic lighting, soft shadows, environmental b
 
 Faces, bodies, hands, clothes, and hair must inherit identical scene lighting naturally.
 
-Blend the uploaded people seamlessly into the cinematography so they appear originally photographed in this exact moment.`
+Blend the uploaded people seamlessly into the cinematography so they appear originally photographed in this exact moment.`;
 
 const WORLD_1 = `Use the reference image as a composition and scene template.
 
