@@ -1961,8 +1961,8 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   "stranger-things-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_3 },
   // ── The End of the F***ing World ──
   "end-of-the-fucking-world-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: WORLD_1 },
-  "end-of-the-fucking-world-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
-  "end-of-the-fucking-world-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
+  "end-of-the-fucking-world-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: WORLD_2 },
+  "end-of-the-fucking-world-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: WORLD_3 },
 };
 
 function uint8ToBase64(bytes: Uint8Array): string {
