@@ -655,50 +655,71 @@ const TITANIC_1 = `Use the reference image only for:
 
 Replace BOTH original people completely with the uploaded people.
 
-IMPORTANT:
-Transfer the uploaded people as FULL REAL HUMANS.
+CRITICAL:
+Do NOT transfer only faces or heads.
 
-NOT only faces.
-NOT only heads.
+The uploaded people must replace the ORIGINAL FULL BODIES.
 
-Replace the entire people including:
+This includes:
+— head
 — face
 — hair
 — neck
+— shoulders
 — torso
+— chest
+— waist
 — arms
 — hands
 — fingers
 — body proportions
-— skin tone
-— clothing
 — silhouette
+— clothing
+— posture
 
-Do NOT keep any body parts from the original actors.
+The uploaded people must occupy the scene with THEIR OWN bodies.
 
-This is FULL BODY REPLACEMENT, not a face swap.
+Do NOT keep:
+— original arms
+— original hands
+— original torso
+— original shoulders
+— original skin tone
+— original body shape
+— original clothing fit
+
+ZERO original anatomy may remain.
+
+This is NOT a face swap.
+
+This is COMPLETE FULL BODY HUMAN REPLACEMENT.
 
 The uploaded people must remain fully recognizable and identical to their source photos.
 
-Keep their:
+Keep:
 — exact facial features
 — exact proportions
 — exact body type
 — exact skin tone
 — exact hairstyle
 
-Maintain the exact Titanic pose:
-— woman in front with arms extended
-— man behind holding her waist
-— same body positioning
-— same hand placement
-— same camera framing
+IMPORTANT:
+The woman must keep the exact Titanic pose with both arms extended outward.
 
-Preserve the original background and sunset atmosphere exactly.
+The man must remain directly behind her holding her waist.
 
-The uploaded people must look naturally photographed in the scene, not pasted.
+Preserve:
+— exact hand placement
+— exact body overlap
+— exact body positioning
+— exact pose geometry
+— exact camera framing
 
-Use realistic lighting, shadows, depth of field, and film grain so the people blend naturally into the environment.`;
+Keep the original sunset lighting and background almost identical.
+
+The uploaded people must look naturally photographed in the scene, not pasted or blended with the original actors.
+
+Use realistic lighting, shadows, depth of field, and film grain so the people integrate naturally into the environment.`;
 
 const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
