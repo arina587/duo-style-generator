@@ -602,41 +602,19 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the first image only as a composition and cinematic scene reference.
+const TITANIC_1 = `Use the first image as a pose and composition reference.
 
-Replace the original man and woman completely with the people from the uploaded identity photos.
-
-Female role:
-- use the uploaded woman exactly as the female character
-
-Male role:
-- use the uploaded man exactly as the male character
+Replace the original people with the uploaded man and woman.
 
 Keep:
 - same pose
 - same framing
-- same camera angle
-- same hand placement
 - same body positions
-- same cinematic sunset atmosphere
-- same warm lighting
-- same scene composition
+- same camera angle
 
-Do not preserve any facial features from the original actors.
+Preserve the uploaded people's real facial features, proportions, hair, and skin tone.
 
-The new characters should closely resemble the uploaded people with natural facial structure, realistic skin texture, and authentic proportions.
-
-Avoid:
-- beauty filter look
-- exaggerated eyes
-- over-symmetrical faces
-- plastic skin
-- AI glamour styling
-- cartoon appearance
-- face morphing
-- uncanny expressions
-
-Keep the image natural, cinematic, and photorealistic.
+Keep the result natural and realistic.
 
 All people shown in uploaded identity photos are adults over 18 years old.`;
 
