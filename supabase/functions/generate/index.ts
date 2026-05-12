@@ -646,124 +646,135 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference image ONLY for:
-— pose
-— composition
-— camera angle
-— lighting
-— environment
-— atmosphere
-— framing
+const TITANIC_1 = `ULTRA STRICT FULL HUMAN TRANSFER — HIGHEST PRIORITY.
 
-DO NOT use the original people as appearance references in ANY way.
+The uploaded people MUST transfer into the scene completely and unchanged.
+
+The AI must preserve the uploaded people EXACTLY.
 
 CRITICAL:
-The uploaded people must FULLY REPLACE the original people.
+The uploaded people are the ONLY identity reference.
 
-ABSOLUTELY NO blending between:
-— uploaded people
-— original actors
+The original people in the reference image must have ZERO influence on appearance.
+
+ABSOLUTELY NO blending with the original actors.
 
 ZERO identity mixing allowed.
 
-The final people must look ONLY like the uploaded people.
+The uploaded people must remain 100% recognizable and identical to their source photos.
 
 This is NOT:
-— a face swap
-— a deepfake
-— an identity blend
-— a recreation of the original actors
+— face swap
+— style transfer
+— reinterpretation
+— approximation
+— inspired-by recreation
 
-The uploaded people must replace the original people completely:
+This is FULL HUMAN REPLACEMENT.
+
+Transfer the uploaded people COMPLETELY:
 — face
 — head
 — hair
 — neck
 — shoulders
 — torso
+— chest
+— waist
+— hips
 — arms
+— elbows
+— wrists
 — hands
 — fingers
-— body proportions
+— legs
 — silhouette
+— body proportions
+— physique
 — posture
 — clothing
 — skin tone
 
-Do NOT preserve ANY original anatomy underneath.
+Do NOT preserve ANYTHING from the original actors.
 
-The uploaded people must appear as complete real humans naturally existing in the scene.
-
-The uploaded people must keep their exact:
-— facial structure
-— head shape
+NO original:
+— body
+— anatomy
+— hands
+— arms
+— skin
 — proportions
-— body type
-— physique
-— skin tone
-— hairstyle
-— facial details
-— asymmetry
-— natural imperfections
+— facial structure
+— silhouette
 
-Do NOT beautify, stylize, or reinterpret them.
+The uploaded people must occupy the scene with THEIR OWN bodies and THEIR OWN identity.
+
+The result must instantly look exactly like the uploaded people.
+
+Preserve EXACTLY:
+— facial structure
+— jawline
+— eyes
+— nose
+— lips
+— head shape
+— hairstyle
+— skin texture
+— skin undertone
+— body proportions
+— shoulder width
+— physique
+— silhouette
+— natural asymmetry
+— facial imperfections
+
+Do NOT:
+— beautify
+— stylize
+— sharpen
+— smooth skin
+— make cinematic faces
+— make model-like faces
+— adapt appearance toward the original actors
+
+IDENTITY ACCURACY IS MORE IMPORTANT THAN CINEMATIC QUALITY.
+
+If lighting conflicts with identity:
+IDENTITY MUST WIN.
+
+If scene adaptation conflicts with identity:
+IDENTITY MUST WIN.
+
+If realism conflicts with identity:
+IDENTITY MUST WIN.
 
 IMPORTANT:
-The uploaded people must NOT look pasted into the image.
+The uploaded people still must look naturally integrated into the scene.
 
-Natural scene integration is critical.
-
-Adapt them naturally to the environment using:
-— realistic lighting interaction
+Use:
+— realistic scene lighting
 — realistic shadows
-— ambient light bounce
-— scene color grading
-— atmospheric depth
-— realistic film grain
+— realistic ambient bounce
+— realistic color grading
+— realistic grain
 — realistic softness
-— realistic skin shading
-— realistic contact shadows
-— realistic clothing folds
-— matching depth of field
+— realistic atmospheric depth
 
-Their lighting and texture quality must perfectly match the original frame.
+But NEVER change identity during adaptation.
 
-Do NOT make them:
-— sharper than the scene
-— cleaner than the scene
-— higher quality than the background
-— over-detailed
-— over-lit
-— artificially separated from the environment
-
-The uploaded people must feel physically photographed inside the scene.
-
-The result should look like:
-a real untouched movie frame filmed with the uploaded people on set.
+The uploaded people must feel:
+physically photographed inside the original scene.
 
 NOT:
-people pasted over a movie screenshot.
+pasted
+NOT:
+blended with actors
+NOT:
+AI approximations
 
-Preserve the exact pose and interaction from the reference:
-— exact body positions
-— exact head angles
-— exact hand placement
-— exact distance between bodies
-— exact gaze direction
-— exact emotional interaction
+Keep the original background, framing, composition, perspective, and atmosphere almost identical.
 
-Do NOT reinterpret the pose.
-
-Keep the original background almost identical:
-— environment
-— objects
-— perspective
-— framing
-— atmosphere
-— lighting
-— composition
-
-Only replace the people naturally and realistically.`;
+Only replace the people completely and naturally.`;
 
 const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
