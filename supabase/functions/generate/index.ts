@@ -1207,8 +1207,8 @@ CRITICAL PRIORITY ORDER:
 DO NOT reinterpret the uploaded people.
 
 DO NOT redesign their pose.
-Do NOT modify their anatomy.
-Do NOT stylize their body language.
+DO NOT modify their anatomy.
+DO NOT stylize their body language.
 
 The uploaded people must remain visually IDENTICAL to their source photos.
 
@@ -1321,6 +1321,21 @@ Preserve EXACTLY:
 — distance between bodies
 
 The uploaded people must occupy the EXACT SAME coordinates and silhouette positioning as the reference people.
+
+IMPORTANT SCENE STRUCTURE:
+
+— left person remains standing on the left side facing right
+— right person remains standing on the right side facing left
+— preserve exact side-profile orientation
+— preserve exact eye-lines
+— preserve exact distance between faces
+— preserve exact shoulder height relationship
+— preserve exact body spacing
+— preserve exact emotional tension and stillness
+
+Do NOT rotate faces toward the viewer.
+Do NOT change body orientation.
+Do NOT move the characters closer or farther apart.
 
 Do NOT:
 — straighten posture
@@ -1441,31 +1456,14 @@ They must NOT look:
 — plastic
 — over-retouched
 
-IMPORTANT SCENE STRUCTURE:
-
-Maintain the exact interaction and body positioning:
-— preserve the exact leaning pose
-— preserve the exact body overlap
-— preserve the exact arm placement around the shoulders
-— preserve the exact relaxed body language
-— preserve exact eye-lines
-— preserve exact head angles
-— preserve exact body spacing
-— preserve exact emotional tone
-
-Do NOT separate the characters.
-Do NOT rotate bodies differently.
-Do NOT alter pose dynamics.
-
 Keep:
 — exact camera angle
 — exact framing
 — exact crop
 — exact perspective
-— exact lens distortion
-— exact flash-photo feeling
-— exact scene geometry
+— exact room geometry
 — exact subject spacing
+— exact side-profile framing
 
 Camera position is LOCKED.
 Perspective is LOCKED.
@@ -1478,12 +1476,13 @@ Adapt the uploaded people naturally to the scene WITHOUT changing identity.
 Scene adaptation may affect ONLY:
 — lighting integration
 — environmental shadows
-— flash reflections
+— warm lamp reflections
+— window reflections
 — color grading
 — atmospheric depth
 — depth of field
 — film grain
-— ambient indoor reflections
+— ambient room lighting
 
 IMPORTANT:
 The uploaded people should feel physically moved into the scene, not recreated by AI.
@@ -1524,7 +1523,7 @@ Blend the uploaded people naturally into the cinematography and atmosphere of th
 Environmental integration must be realistic:
 — natural shadow interaction
 — natural ambient light bounce
-— realistic flash spill
+— realistic warm lamp reflections
 — realistic skin shading
 — realistic atmospheric depth
 — realistic color contamination from the environment
@@ -1541,13 +1540,13 @@ The uploaded people must inherit:
 
 Do NOT make the transferred people cleaner, sharper, or higher quality than the original scene.
 
-Match the imperfections of the original photo naturally.
+Match the imperfections of the original frame naturally.
 
 Skin must react naturally to scene lighting:
-— direct flash
-— ambient indoor light
+— warm indoor lamp light
+— window ambient light
 — environmental reflections
-— shadow softness
+— realistic shadow softness
 — realistic highlight rolloff
 
 Clothing must integrate naturally into the lighting and environment:
@@ -1558,10 +1557,10 @@ Clothing must integrate naturally into the lighting and environment:
 
 Hands and faces must have identical lighting behavior and texture quality.
 
-The final image must feel like a real untouched candid movie photo, not an edited composite.
+The final image must feel like a real untouched cinematic movie frame, not an edited composite.
 
 LIGHTING:
-Match the original direct flash lighting, indoor ambient shadows, realistic skin shading, flash reflections, atmospheric darkness, depth of field, cinematic color grading, and film grain.
+Match the original warm indoor cinematic lighting, soft environmental shadows, realistic skin shading, atmospheric depth, window reflections, depth of field, cinematic color grading, and film grain.
 
 Faces, bodies, hands, arms, necks, clothes, and hair must inherit identical scene lighting naturally.
 
