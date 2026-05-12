@@ -1424,28 +1424,79 @@ Do NOT paste uploaded faces onto the original bodies.
 Instead:
 fully replace the original actors with the uploaded people as COMPLETE REAL HUMANS naturally existing in the scene.
 
-FULL HUMAN TRANSFER IS MANDATORY.
+CRITICAL FULL HUMAN TRANSFER:
 
-Transfer the uploaded people completely:
+Transfer the uploaded people as COMPLETE FULL HUMANS.
+
+NOT just faces.
+NOT just heads.
+NOT facial identity only.
+
+The ENTIRE PERSON must be transferred together as ONE connected human identity.
+
+This includes:
+— head
 — face
-— skin tone
-— skin undertone
-— body
+— hair
+— neck
+— shoulders
+— torso
+— arms
 — hands
 — fingers
-— arms
-— neck
 — legs
-— physique
 — body proportions
+— physique
 — silhouette
+— clothing
+— sleeves
 — posture
-— natural anatomy
+— body language
+
+The uploaded person's FULL BODY must replace the original actor's FULL BODY.
+
+Do NOT keep:
+— original hands
+— original arms
+— original body
+— original skin color
+— original physique
+— original clothing fit
+— original body proportions
+
+Do NOT attach the uploaded face onto the original actor’s body.
+
+This is NOT a face swap.
+
+This is a COMPLETE PERSON REPLACEMENT.
+
+The uploaded people must remain physically consistent from head to toe.
+
+Face, hands, arms, neck, and body MUST belong to the SAME uploaded person.
+
+If the uploaded person has:
+— light skin → hands and body must also be light
+— slim physique → body must remain slim
+— specific clothing proportions → preserve them naturally
+
+Do NOT create hybrid humans.
+
+Do NOT mix:
+— uploaded face + original body
+— uploaded face + original hands
+— uploaded face + original skin tone
+
+ZERO identity mixing allowed.
+
+The uploaded person’s:
+— anatomy
+— proportions
+— skin tone
+— body type
 — clothing behavior
+— silhouette
 
-The uploaded person’s ENTIRE BODY identity must remain intact.
-
-Do NOT generate a new body around the transferred face.
+must remain intact across the ENTIRE body.
 
 The uploaded people must remain IDENTICAL to their source photos.
 
