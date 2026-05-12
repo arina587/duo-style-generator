@@ -646,253 +646,59 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference image ONLY as a cinematography, composition, pose, interaction, lighting, and environment template.
-
-DO NOT use the original actors as appearance references in ANY way.
-
-The original people are ONLY placeholders for:
-— body positioning
+const TITANIC_1 = `Use the reference image only for:
 — pose
-— interaction
-— framing
+— composition
 — camera angle
 — lighting
-— scene composition
-— atmosphere
+— background
 
-Completely remove all original identities from the final result.
+Replace BOTH original people completely with the uploaded people.
 
-ABSOLUTELY NO blending between uploaded people and original actors.
+IMPORTANT:
+Transfer the uploaded people as FULL REAL HUMANS.
 
-CRITICAL:
-This is NOT a face swap.
+NOT only faces.
+NOT only heads.
 
-Do NOT paste uploaded faces onto the original bodies.
-
-Instead:
-fully replace the original actors with the uploaded people as COMPLETE REAL HUMANS naturally existing in the scene.
-
-MOST IMPORTANT RULE — FULL HUMAN TRANSFER ONLY.
-
-The uploaded people must be transferred into the scene as COMPLETE REAL HUMANS.
-
-NOT only:
-— faces
-— heads
-— hairstyles
-— facial identity
-
-The AI must replace the ENTIRE original people with the uploaded people completely.
-
-The uploaded people must replace:
-— head
+Replace the entire people including:
 — face
 — hair
 — neck
-— shoulders
-— chest
 — torso
-— waist
-— hips
 — arms
-— elbows
-— wrists
 — hands
 — fingers
 — body proportions
-— physique
-— silhouette
-— posture
+— skin tone
 — clothing
-— clothing fit
-— body language
-
-ZERO original anatomy may remain.
-
-Do NOT keep:
-— original hands
-— original arms
-— original torso
-— original shoulders
-— original physique
-— original silhouette
-— original skin tone
-— original body proportions
-
-The uploaded people must occupy the scene with THEIR OWN complete bodies.
-
-The final humans must remain physically unified from head to toe.
-
-NOT:
-uploaded face + original body.
-
-NOT:
-uploaded head + original anatomy.
-
-NOT:
-identity overlay.
-
-NOT:
-deepfake blend.
-
-This is COMPLETE FULL BODY HUMAN REPLACEMENT.
-
-The uploaded people must look exactly like themselves across the ENTIRE body.
-
-Preserve EXACTLY:
-— facial structure
-— jawline
-— eye shape
-— eyebrows
-— nose shape
-— lip shape
-— hairstyle
-— skin texture
-— skin undertone
-— body proportions
-— shoulder width
-— physique
 — silhouette
-— natural asymmetry
 
-SKIN CONSISTENCY IS CRITICAL:
+Do NOT keep any body parts from the original actors.
 
-If the uploaded person has light skin on the face:
-— hands must also be light
-— arms must also be light
-— neck must also be light
-— all visible skin must perfectly match
+This is FULL BODY REPLACEMENT, not a face swap.
 
-Do NOT create:
-— face/body mismatch
-— hybrid anatomy
-— uploaded face + original body
-— uploaded face + original hands
-— pasted identities
+The uploaded people must remain fully recognizable and identical to their source photos.
 
-The uploaded people must look like authentic photographed humans physically present in the scene.
+Keep their:
+— exact facial features
+— exact proportions
+— exact body type
+— exact skin tone
+— exact hairstyle
 
-IMPORTANT SCENE STRUCTURE:
+Maintain the exact Titanic pose:
+— woman in front with arms extended
+— man behind holding her waist
+— same body positioning
+— same hand placement
+— same camera framing
 
-Maintain the exact Titanic pose and interaction:
-— woman standing in front with both arms extended outward
-— man standing directly behind her
-— man's hands wrapped around her waist
-— exact hand placement on the waist
-— exact body overlap
-— exact romantic body positioning
-— exact head spacing
-— exact body distance
+Preserve the original background and sunset atmosphere exactly.
 
-Preserve EXACTLY:
-— woman's arm angle
-— shoulder position
-— chest direction
-— torso lean
-— neck angle
-— head tilt
-— man's body position behind her
-— waist embrace geometry
-— body contact points
+The uploaded people must look naturally photographed in the scene, not pasted.
 
-Do NOT:
-— lower the arms
-— change the embrace
-— rotate bodies
-— move the characters
-— change pose energy
-— alter interaction dynamics
-
-The iconic Titanic body positioning is LOCKED.
-
-Keep:
-— exact camera angle
-— exact framing
-— exact crop
-— exact perspective
-— exact lens feel
-— exact scene geometry
-— exact subject spacing
-
-Camera position is LOCKED.
-Perspective is LOCKED.
-Composition is LOCKED.
-
-BACKGROUND MUST STAY IDENTICAL:
-
-Keep:
-— sunset atmosphere
-— warm orange lighting
-— ship environment
-— ropes
-— cinematic sky
-— background darkness
-— framing
-— perspective
-— atmospheric mood
-
-Do NOT redesign or regenerate the environment.
-
-NATURAL SCENE ADAPTATION:
-
-Adapt the uploaded people naturally to the scene WITHOUT changing identity.
-
-Scene adaptation may affect ONLY:
-— lighting integration
-— sunset light response
-— environmental shadows
-— color grading
-— atmospheric depth
-— depth of field
-— film grain
-— warm sky reflections
-
-Identity and anatomy must remain untouched.
-
-NATURAL INTEGRATION IS CRITICAL:
-
-The uploaded people must look physically present in the scene as if they were originally filmed there in-camera.
-
-They must NOT look:
-— pasted
-— composited
-— overlaid
-— cut out
-— artificially inserted
-— disconnected from the environment
-— too sharp compared to the scene
-— too clean compared to the scene
-— relit separately from the scene
-
-Blend the uploaded people naturally into the cinematography and atmosphere of the shot.
-
-Environmental integration must be realistic:
-— natural shadow interaction
-— natural ambient light bounce
-— realistic skin shading
-— realistic atmospheric depth
-— realistic color contamination from the environment
-— realistic scene grain
-— realistic softness matching the camera lens
-
-The uploaded people must inherit:
-— the exact scene contrast
-— the exact scene softness
-— the exact scene dynamic range
-— the exact scene color grading
-— the exact scene noise/grain
-— the exact scene depth of field
-
-Do NOT make the transferred people cleaner, sharper, or higher quality than the original scene.
-
-The final image must feel like a real untouched movie frame, not an edited composite.
-
-LIGHTING:
-Match the original sunset cinematic lighting, soft warm shadows, realistic skin shading, atmospheric depth, orange sunset glow, depth of field, cinematic color grading, and film grain.
-
-Faces, bodies, hands, arms, necks, clothes, and hair must inherit identical sunset lighting naturally.
-
-Blend the uploaded people seamlessly into the environment so they appear originally photographed in this exact shot without any identity mixing from the original actors.`;
+Use realistic lighting, shadows, depth of field, and film grain so the people blend naturally into the environment.`;
 
 const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
