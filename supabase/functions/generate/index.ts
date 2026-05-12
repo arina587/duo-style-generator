@@ -1014,6 +1014,153 @@ Faces, bodies, clothes, and dog must inherit identical scene lighting naturally.
 
 Integrate the uploaded people seamlessly into the scene so they appear originally photographed there in-camera.`;
 
+const TERABITHIA_2 = `Use the reference image as a STRICT shot blueprint.
+
+Do NOT reinterpret, redesign, beautify, stylize, age-change, de-age, masculinize, feminize, or alter the uploaded people in any way.
+
+Do NOT generate “inspired by” versions.
+Do NOT create approximations.
+Do NOT create similar-looking people.
+
+The final image must preserve:
+— exact camera angle
+— exact framing
+— exact crop
+— exact perspective
+— exact lens feel
+— exact subject spacing
+— exact body placement
+— exact head placement
+— exact hand placement
+— exact shot orientation
+— exact scene geometry
+
+Camera position is LOCKED.
+Perspective is LOCKED.
+Composition is LOCKED.
+
+Keep the identical viewpoint and framing from the original reference image.
+
+IMPORTANT:
+Maintain the exact interaction and intimacy of the scene.
+
+— the male character remains leaning in and kissing the female character on the forehead
+— the female character remains relaxed with eyes closed
+— preserve the exact head contact point
+— preserve the exact arm placement
+— preserve the exact body closeness
+— preserve the exact emotional tone and tenderness
+
+Do NOT separate the characters.
+Do NOT rotate faces toward the viewer.
+Do NOT alter the physical interaction.
+
+Maintain exact left/right placement:
+— female remains on the left
+— male remains on the right
+
+Erase all original people completely and replace them entirely with the uploaded people.
+
+REPLACEMENT:
+— left slot → woman/girl from uploaded female photo
+— right slot → man/boy from uploaded male photo
+
+Do NOT swap genders, sides, or roles.
+
+CRITICAL IDENTITY LOCK:
+
+The uploaded people must remain IDENTICAL to their source photos.
+
+Preserve EXACTLY:
+— facial bone structure
+— jawline
+— eye shape
+— eyelid shape
+— eyebrow shape and spacing
+— nose shape
+— lip shape
+— cheek volume
+— forehead proportions
+— chin structure
+— ears
+— skin texture
+— skin undertone
+— hairstyle
+— hair density
+— hairline
+— body proportions
+— shoulder width
+— neck thickness
+— silhouette
+— natural asymmetry
+
+Do NOT:
+— modify attractiveness
+— smooth facial structure
+— enlarge eyes
+— shrink nose
+— sharpen jawline
+— alter face proportions
+— change ethnicity
+— change age appearance
+— make skin porcelain/artificial
+— stylize facial anatomy
+
+FULL HUMAN TRANSFER:
+
+Transfer the uploaded people holistically into the scene:
+— face
+— body
+— physique
+— posture
+— proportions
+— clothing behavior
+— natural imperfections
+
+Do NOT only transfer faces.
+
+The uploaded people must look physically present in the scene as real photographed humans.
+
+They must NOT look:
+— pasted
+— composited
+— face-swapped
+— AI-generated
+— plastic
+— beauty-filtered
+— disconnected from environment
+
+NATURAL SCENE ADAPTATION:
+
+Adapt the uploaded people naturally to the scene lighting and cinematography WITHOUT changing identity.
+
+Scene adaptation must affect ONLY:
+— lighting response
+— shadow integration
+— color temperature
+— atmospheric grading
+— depth of field
+— film grain
+
+Identity and anatomy must remain untouched.
+
+SKIN CONSISTENCY:
+Hands, fingers, neck, ears, arms, and visible body skin must perfectly match facial skin tone and undertone.
+
+No mismatched body color.
+No separate face/body lighting.
+No artificial skin smoothing.
+
+POSE:
+Match original posture, shoulder angle, neck angle, head tilt, eye direction, and interaction precisely.
+
+LIGHTING:
+Match the original warm indoor cinematic lighting, soft shadows, environmental bounce light, depth of field, atmospheric warmth, realistic skin shading, and film grain.
+
+Faces, bodies, hands, clothes, and hair must inherit identical scene lighting naturally.
+
+Blend the uploaded people seamlessly into the cinematography so they appear originally photographed in this exact moment.`
+
 const WORLD_1 = `Use the reference image as a composition and scene template.
 
 Erase all original people from the scene completely. Treat them as temporary placeholders only. Their positions become empty slots that must be fully rebuilt using the uploaded identity photos.
