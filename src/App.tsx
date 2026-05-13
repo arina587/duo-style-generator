@@ -291,27 +291,30 @@ function App() {
           body: formData,
         });
 
+        // READ RESPONSE ONLY ONCE
+        const responseBlob = await response.blob();
+
         if (activeRequestId.current !== requestId) {
           return;
         }
 
-        // IMPORTANT:
-        // GPT-image models return direct binary image responses.
-        // Replicate returns JSON.
-        // We MUST handle image responses BEFORE response.json().
+        const responseContentType =
+          response.headers.get('content-type') ||
+          responseBlob.type ||
+          '';
 
-        const contentType =
-          response.headers.get('content-type') || '';
-
-        // GPT direct image response
-        if (
+        const isImageResponse =
           response.ok &&
-          contentType.startsWith('image/')
-        ) {
-          const blob = await response.blob();
+          (
+            responseContentType.startsWith('image/') ||
+            responseBlob.type.startsWith('image/')
+          );
+
+        // GPT-image direct binary response
+        if (isImageResponse) {
 
           const imageUrl =
-            URL.createObjectURL(blob);
+            URL.createObjectURL(responseBlob);
 
           if (
             activeRequestId.current !== requestId
@@ -321,9 +324,10 @@ function App() {
           }
 
           console.log(
-            '[GENERATE] direct image response:',
-            contentType,
-            blob.size
+            '[GENERATE] direct image blob:',
+            responseContentType,
+            responseBlob.type,
+            responseBlob.size
           );
 
           setGenerationError('');
@@ -337,28 +341,41 @@ function App() {
           return;
         }
 
+        // Non-image response → parse as JSON
+        let jsonData: any = null;
+
+        try {
+          const text =
+            await responseBlob.text();
+
+          jsonData = text
+            ? JSON.parse(text)
+            : null;
+
+        } catch {
+          throw new Error(
+            'Server returned non-JSON non-image response'
+          );
+        }
+
         // JSON error branch
         if (!response.ok) {
-          const data =
-            await response
-              .json()
-              .catch(() => null);
 
           console.error(
-            '[OPENAI FULL ERROR]',
-            data
+            '[GENERATE FULL ERROR]',
+            jsonData
           );
 
           const message =
-            typeof data?.error === 'string'
-              ? data.error
-              : typeof data?.error?.message ===
+            typeof jsonData?.error === 'string'
+              ? jsonData.error
+              : typeof jsonData?.error?.message ===
                   'string'
-                ? data.error.message
-                : typeof data?.message ===
+                ? jsonData.error.message
+                : typeof jsonData?.message ===
                     'string'
-                  ? data.message
-                  : JSON.stringify(data);
+                  ? jsonData.message
+                  : JSON.stringify(jsonData);
 
           throw new Error(
             message ||
@@ -367,7 +384,7 @@ function App() {
         }
 
         // Replicate JSON branch
-        const data = await response.json() as {
+        const data = jsonData as {
           id?: string;
           status?: string;
           output?: string;
@@ -421,6 +438,7 @@ function App() {
         );
 
         return;
+
       } catch (err) {
         if (activeRequestId.current !== requestId) {
           return;
