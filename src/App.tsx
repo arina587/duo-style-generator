@@ -56,20 +56,34 @@ function App() {
 
         if (data.status === 'succeeded') {
           const rawUrl = data.output ?? '';
-
-          const proxied = rawUrl.startsWith('https://replicate.delivery/')
-            ? `${apiBase}?proxyUrl=${encodeURIComponent(rawUrl)}`
-            : rawUrl;
-
-          console.log('[POLL] succeeded, proxied url:', proxied.substring(0, 100));
-
+          
+          let finalUrl = rawUrl;
+          
+          if (rawUrl.startsWith('data:image/')) {
+            try {
+              const res = await fetch(rawUrl);
+              const blob = await res.blob();
+              
+              finalUrl = URL.createObjectURL(blob);
+              
+              console.log('[POLL BLOB URL CREATED]', finalUrl);
+            } catch (err) {
+              console.error('[POLL BLOB CONVERSION FAILED]', err);
+            }
+          } else if (rawUrl.startsWith('https://replicate.delivery/')) {
+            finalUrl = `${apiBase}?proxyUrl=${encodeURIComponent(rawUrl)}`;
+          }
+          
+          console.log('[POLL] succeeded');
+          
           setGenerationError('');
           setImgLoadFailed(false);
-
+          
           setRawImageUrl(rawUrl);
-          setGeneratedImageUrl(proxied);
-
+          setGeneratedImageUrl(finalUrl);
+          
           setIsGenerating(false);
+          
           return;
         }
 
