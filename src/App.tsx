@@ -129,9 +129,7 @@ function App() {
   ) => {
     if (isGenerating) return;
 
-    if (generatedImageUrl.startsWith('blob:')) {
-      URL.revokeObjectURL(generatedImageUrl);
-    }
+    
 
     if (!photo1 || !photo2 || !referenceFile || !selectedRef) {
       setGenerationError('Missing required data. Please try again.');
