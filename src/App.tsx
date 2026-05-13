@@ -174,10 +174,32 @@ function App() {
           setGenerationError('');
           setImgLoadFailed(false);
           
+          let finalUrl = data.output;
+
+  // OpenAI GPT Image models return base64 data URIs.
+  // Mobile browsers often fail rendering huge data:image strings directly.
+  // Convert them into Blob URLs first.
+          if (
+            typeof finalUrl === 'string' &&
+            finalUrl.startsWith('data:image/')
+          ) {
+            try {
+              const response = await fetch(finalUrl);
+              const blob = await response.blob();
+              
+              finalUrl = URL.createObjectURL(blob);
+              
+              console.log('[OPENAI] blob URL created');
+            } catch (err) {
+              console.error('[OPENAI] blob conversion failed', err);
+            }
+          }
+          
           setRawImageUrl(data.output);
-          setGeneratedImageUrl(data.output);
+          setGeneratedImageUrl(finalUrl);
           
           setIsGenerating(false);
+          
           return;
         }
 
