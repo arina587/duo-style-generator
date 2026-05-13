@@ -38,23 +38,34 @@ export default function Result({
   const [copyDone, setCopyDone] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
 
-  const generationSucceeded = !!rawImageUrl;
-  const showImage = !!generatedImageUrl && !imgLoadFailed && !isGenerating;
+  const displaySrc = generatedImageUrl || rawImageUrl;
+
+  const generationSucceeded = !!displaySrc;
+  const showImage = !!displaySrc && !imgLoadFailed && !isGenerating;
 
   // Show action bar only after the image has painted
   const showActions = showImage && imgLoaded;
 
-  const displaySrc = generatedImageUrl || rawImageUrl;
-
   // Reset per-image state when a new URL arrives
   const prevUrl = useRef('');
-  if (generatedImageUrl !== prevUrl.current) {
-    prevUrl.current = generatedImageUrl;
+
+  if (displaySrc !== prevUrl.current) {
+    prevUrl.current = displaySrc;
+
     hasRetried.current = false;
-    setRetryKey(0);
-    setDebugInfo(null);
-    setImgLoaded(false);
-  }
+
+    if (retryKey !== 0) {
+      setRetryKey(0);
+    } 
+
+    if (debugInfo !== null) {
+      setDebugInfo(null);
+    }
+
+    if (imgLoaded) {
+      setImgLoaded(false);
+    }
+ }
 
   useEffect(() => {
     if (!imgLoadFailed || !displaySrc || displaySrc.startsWith('blob:')) return;
@@ -82,7 +93,7 @@ export default function Result({
 
     if (!hasRetried.current) {
       hasRetried.current = true;
-      console.log('[IMG RETRY]', generatedImageUrl.substring(0, 100));
+      console.log('[IMG RETRY]', displaySrc.substring(0, 100));
       setTimeout(() => setRetryKey(k => k + 1), 1500);
     } else {
       console.log('[IMG RETRY EXHAUSTED] marking imgLoadFailed');
@@ -245,7 +256,7 @@ export default function Result({
             with absolute inset-0 + object-cover is used for every provider and
             URL type (base64, blob, CDN) — there is no provider-specific branch. */}
         <div className="card-premium overflow-hidden mb-6" style={{ transition: 'box-shadow 0.3s' }}>
-          <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1', background: 'linear-gradient(145deg, #f3eefa, #ede6f6)' }}>
+          <div className="relative w-full overflow-hidden" style={{ aspectRatio: '2 / 3', background: 'linear-gradient(145deg, #f3eefa, #ede6f6)' }}>
 
             {/* ── State 1: Generating ── */}
             {isGenerating && (
@@ -278,9 +289,9 @@ export default function Result({
             {!isGenerating && showImage && (
               <img
                 key={retryKey}
-                src={generatedImageUrl}
+                src={displaySrc}
                 alt="Generated fusion result"
-                className="absolute inset-0 w-full h-full object-cover block animate-scale-in"
+                className="absolute inset-0 w-full h-full object-cover object-center block animate-scale-in"
                 onLoad={(e) => {
                   console.log('[IMG LOADED]', (e.target as HTMLImageElement).src.substring(0, 80));
                   setImgLoaded(true);
