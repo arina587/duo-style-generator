@@ -6,32 +6,20 @@ import AnimatedBackground from './components/AnimatedBackground';
 import type { ReferenceItem } from './data/references';
 
 type View = 'home' | 'upload' | 'result';
-function dataUrlToBlobUrl(dataUrl: string): string {
-  const [header, b64] = dataUrl.split(',');
-  const mime = header.replace('data:', '').replace(';base64', '') || 'image/png';
+async function dataUrlToBlobUrl(dataUrl: string): Promise<string> {
+  const response = await fetch(dataUrl);
+  const blob = await response.blob();
 
-  const binary = atob(b64);
-  const chunkSize = 0x8000;
-  const chunks: Uint8Array[] = [];
-
-  for (let i = 0; i < binary.length; i += chunkSize) {
-    const slice = binary.slice(i, i + chunkSize);
-    const bytes = new Uint8Array(slice.length);
-
-    for (let j = 0; j < slice.length; j++) {
-      bytes[j] = slice.charCodeAt(j);
-    }
-
-    chunks.push(bytes);
-  }
+  return URL.createObjectURL(blob);
+}
 
   const blob = new Blob(chunks, { type: mime });
   return URL.createObjectURL(blob);
 }
 
-function normalizeImageUrl(url: string): string {
+async function normalizeImageUrl(url: string): Promise<string> {
   if (url.startsWith('data:image/')) {
-    return dataUrlToBlobUrl(url);
+    return await dataUrlToBlobUrl(url);
   }
 
   return url;
@@ -204,7 +192,7 @@ function App() {
           setGenerationError('');
           setImgLoadFailed(false);
           
-          const imageUrl = normalizeImageUrl(data.output);
+          const imageUrl = await normalizeImageUrl(data.output);
           
           setRawImageUrl(imageUrl);
           setGeneratedImageUrl(imageUrl);
