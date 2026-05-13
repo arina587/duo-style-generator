@@ -151,7 +151,17 @@ function App() {
           if (activeRequestId.current !== requestId) return;
           console.log('[GENERATE] immediate result, skipping poll');
           setRawImageUrl(data.output);
-          setGeneratedImageUrl(data.output);
+          if (data.output.startsWith('data:')) {
+            const res = await fetch(data.output);
+            const blob = await res.blob();
+            const blobUrl = URL.createObjectURL(blob);
+
+            setRawImageUrl(data.output);
+            setGeneratedImageUrl(blobUrl);
+          } else {
+            setRawImageUrl(data.output);
+            setGeneratedImageUrl(data.output);
+          }
           setIsGenerating(false);
           return;
         }
