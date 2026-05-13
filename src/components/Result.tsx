@@ -284,7 +284,7 @@ export default function Result({
                 key={retryKey}
                 src={displaySrc}
                 alt="Generated fusion result"
-                className="absolute inset-0 w-full h-full object-cover object-center block animate-scale-in"
+                className="absolute inset-0 w-full h-full object-contain object-center block animate-scale-in"
                 onLoad={(e) => {
                   console.log('[IMG LOADED]', (e.target as HTMLImageElement).src.substring(0, 80));
                   setImgLoaded(true);
