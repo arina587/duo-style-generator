@@ -3956,223 +3956,500 @@ Do NOT mix man and woman identity sources.
 Do NOT use image_input[${idxScene}] as an identity source.`;
 
       const config = STYLE_CONFIG[referenceId as string];
-      if (!config) {
-        throw new Error(`Unknown referenceId: ${referenceId}`);
-      }
 
-      const finalPrompt = config.locked
-        ? roleMappingBlock + "\n\n" + config.prompt
-        : roleMappingBlock + "\n\n" + UNIVERSAL_PROMPT;
-
-      // ── Build image array ──
-      const personDataUrls = await Promise.all([
-        fileToDataUrl(person1),
-        ...(hasMan2 ? [fileToDataUrl(person1b!)] : []),
-        fileToDataUrl(person2),
-        ...(hasWoman2 ? [fileToDataUrl(person2b!)] : []),
-      ]);
-
-      const referenceDataUrl = await fileToDataUrl(reference);
-      const images = [referenceDataUrl, ...personDataUrls];
-
-      if (images.length !== totalImages) {
-        throw new Error(`Image count mismatch: expected ${totalImages}, got ${images.length}`);
-      }
-
-      // Per-image size guard
-      for (let i = 0; i < images.length; i++) {
-        const rawBytes = base64ByteSize(images[i]);
-        if (rawBytes > IMAGE_SIZE_LIMIT_BYTES) {
-          throw new Error(`Image ${i} is ${(rawBytes / 1024 / 1024).toFixed(2)}MB — exceeds the 6MB per-image limit. Please use a smaller or more compressed photo.`);
-        }
-      }
-
-      const imageSummary = images.map((img, i) => ({
-        index: i,
-        mime: img.startsWith("data:") ? img.substring(5, img.indexOf(";")) : "unknown",
-        bytes: base64ByteSize(img),
-      }));
-
-      // ── Debug logging ──
-      console.log("[PROVIDER]", config.provider);
-      console.log("[MODEL]", config.model);
-      console.log("[REFERENCE_ID]", referenceId);
-      console.log("[INPUT_IMAGES]", images.length);
-      console.log("[PROMPT_SOURCE]", config.locked ? "locked" : "universal");
-      console.log("[PROMPT_LENGTH]", finalPrompt.length);
-      console.log("[IMAGE_SUMMARY]", JSON.stringify(imageSummary));
-      console.log("[TOTAL_MB]", (imageSummary.reduce((s, x) => s + x.bytes, 0) / 1024 / 1024).toFixed(2));
-
-      // ── Provider routing ──
-      if (config.provider === "replicate") {
-        if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
-
-        console.log("[REQUEST_BODY_SHAPE]", JSON.stringify({
-          version: config.model,
-          input: {
-            image_input: `[${images.length} base64 data URLs]`,
-            prompt: `[${finalPrompt.length} chars]`,
-          },
-        }));
-
-        const createRes = await fetch("https://api.replicate.com/v1/predictions", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${replicateApiKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            version: config.model,
-            input: {
-              prompt: finalPrompt,
-              image_input: images,
-            },
-          }),
-        });
-
-        const createText = await createRes.text();
-        console.log("[CREATE] status:", createRes.status, "body:", createText.substring(0, 500));
-
-        if (!createRes.ok) {
-          throw new Error(`Replicate prediction creation failed (${createRes.status}): ${createText.substring(0, 400)}`);
-        }
-
-        let prediction: Record<string, unknown>;
-        try {
-          prediction = JSON.parse(createText);
-        } catch {
-          throw new Error(`Replicate create response non-JSON: ${createText.substring(0, 300)}`);
-        }
-
-        const predictionId = prediction.id as string | undefined;
-        if (!predictionId) {
-          throw new Error(`Replicate prediction has no ID: ${JSON.stringify(prediction).substring(0, 300)}`);
-        }
-
-        console.log("[CREATE] prediction started id=" + predictionId + " status=" + prediction.status);
-
-        return new Response(JSON.stringify({ id: predictionId, status: prediction.status }), {
-          status: 201,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-
-      if (config.provider === "openai") {
-        const openaiApiKey = Deno.env.get("OPENAI_API_KEY");
-        if (!openaiApiKey) throw new Error("OPENAI_API_KEY not configured");
-
-        // Reject HEIC/HEIF and unsupported formats before hitting the API.
-        // Replicate is intentionally left out of this check — it has its own
-        // preprocessing pipeline and is unaffected by this validation.
-        validateOpenAIImages(images);
-
-        console.log("[OPENAI] building multipart request, images:", images.length);
-
-        const openaiForm = new FormData();
-        openaiForm.append("model", config.model);
-        openaiForm.append("prompt", finalPrompt);
-        openaiForm.append("n", "1");
-        
-        openaiForm.append("size", "1024x1024");
-        openaiForm.append("quality", "medium");
-
-        openaiForm.append("output_format", "jpeg");
-        openaiForm.append("output_compression", "85");
-
-
-        // Attach each image as a separate file entry
-        for (let i = 0; i < images.length; i++) {
-          const dataUrl = images[i];
-          const commaIdx = dataUrl.indexOf(",");
-          const meta = dataUrl.substring(5, dataUrl.indexOf(";"));
-          const b64 = dataUrl.substring(commaIdx + 1);
-          const binaryStr = atob(b64);
-          const bytes = new Uint8Array(binaryStr.length);
-          for (let j = 0; j < binaryStr.length; j++) bytes[j] = binaryStr.charCodeAt(j);
-          const ext = meta.split("/")[1] ?? "jpg";
-          openaiForm.append("image[]", new Blob([bytes], { type: meta }), `image_${i}.${ext}`);
-        }
-
-        const openaiRes = await fetch("https://api.openai.com/v1/images/edits", {
-          method: "POST",
-          headers: { "Authorization": `Bearer ${openaiApiKey}` },
-          body: openaiForm,
-        });
-
-        const openaiText = await openaiRes.text();
-        console.log("[OPENAI] status:", openaiRes.status, "body:", openaiText.substring(0, 800));
-
-        if (!openaiRes.ok) {
-          let parsedError: unknown;
-          try { parsedError = JSON.parse(openaiText); } catch { parsedError = null; }
-          const message = (parsedError as Record<string, unknown>)?.error
-            ? JSON.stringify((parsedError as Record<string, unknown>).error)
-            : openaiText.substring(0, 400);
-          throw new Error(`OpenAI image generation failed (${openaiRes.status}): ${message}`);
-        }
-
-        let openaiData: Record<string, unknown>;
-        try {
-          openaiData = JSON.parse(openaiText);
-        } catch {
-          throw new Error(`OpenAI response non-JSON: ${openaiText.substring(0, 300)}`);
-        }
-
-       const dataArr = openaiData.data as Array<Record<string, unknown>> | undefined;
-const first = dataArr?.[0];
-
-const outputUrl = first?.url as string | undefined;
-const b64 = first?.b64_json as string | undefined;
-
-
-if (outputUrl) {
-  return new Response(JSON.stringify({
-    status: "succeeded",
-    output: outputUrl,
-  }), {
-    status: 200,
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
-  });
-} else if (b64) {
-
-  const binaryStr = atob(b64);
-  const bytes = new Uint8Array(binaryStr.length);
-
-  for (let i = 0; i < binaryStr.length; i++) {
-    bytes[i] = binaryStr.charCodeAt(i);
-  }
-
-  return new Response(bytes, {
-    status: 200,
-    headers: {
-      ...corsHeaders,
-      "Content-Type": "image/jpeg",
-      "Cache-Control": "no-store",
-      "X-Image-Result": "direct-binary",
-    },
-  });
+if (!config) {
+  throw new Error(`Unknown referenceId: ${referenceId}`);
 }
-        throw new Error(
-  `OpenAI response missing output image: ${JSON.stringify(openaiData).substring(0, 300)}`
-        );
 
+const finalPrompt = config.locked
+  ? roleMappingBlock + "\n\n" + config.prompt
+  : roleMappingBlock + "\n\n" + UNIVERSAL_PROMPT;
 
-      }
+// ── Build image array ──
+const personDataUrls = await Promise.all([
+  fileToDataUrl(person1),
+  ...(hasMan2 ? [fileToDataUrl(person1b!)] : []),
+  fileToDataUrl(person2),
+  ...(hasWoman2 ? [fileToDataUrl(person2b!)] : []),
+]);
 
-      throw new Error(`Unknown provider: ${(config as { provider: string }).provider}`);
+const referenceDataUrl = await fileToDataUrl(reference);
 
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : "Unknown error";
-      console.error("[GENERATE ERROR]", msg);
-      return new Response(
-        JSON.stringify({ error: msg }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
+const images = [
+  referenceDataUrl,
+  ...personDataUrls,
+];
+
+if (images.length !== totalImages) {
+  throw new Error(
+    `Image count mismatch: expected ${totalImages}, got ${images.length}`
+  );
+}
+
+// Per-image size guard
+for (let i = 0; i < images.length; i++) {
+
+  const rawBytes =
+    base64ByteSize(images[i]);
+
+  if (rawBytes > IMAGE_SIZE_LIMIT_BYTES) {
+
+    throw new Error(
+      `Image ${i} is ${(rawBytes / 1024 / 1024).toFixed(2)}MB — exceeds the 6MB per-image limit. Please use a smaller or more compressed photo.`
+    );
+  }
+}
+
+const imageSummary = images.map((img, i) => ({
+  index: i,
+
+  mime: img.startsWith("data:")
+    ? img.substring(5, img.indexOf(";"))
+    : "unknown",
+
+  bytes: base64ByteSize(img),
+}));
+
+// ── Debug logging ──
+console.log("[PROVIDER]", config.provider);
+console.log("[MODEL]", config.model);
+console.log("[REFERENCE_ID]", referenceId);
+console.log("[INPUT_IMAGES]", images.length);
+
+console.log(
+  "[PROMPT_SOURCE]",
+  config.locked ? "locked" : "universal"
+);
+
+console.log(
+  "[PROMPT_LENGTH]",
+  finalPrompt.length
+);
+
+console.log(
+  "[IMAGE_SUMMARY]",
+  JSON.stringify(imageSummary)
+);
+
+console.log(
+  "[TOTAL_MB]",
+  (
+    imageSummary.reduce((s, x) => s + x.bytes, 0) /
+    1024 /
+    1024
+  ).toFixed(2)
+);
+
+// ── Provider routing ──
+if (config.provider === "replicate") {
+
+  if (!replicateApiKey) {
+    throw new Error(
+      "REPLICATE_API_KEY not configured"
+    );
   }
 
-  return new Response(JSON.stringify({ error: "Method not allowed" }), {
-    status: 405,
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
-  });
-});
+  console.log(
+    "[REQUEST_BODY_SHAPE]",
+    JSON.stringify({
+      version: config.model,
+
+      input: {
+        image_input:
+          `[${images.length} base64 data URLs]`,
+
+        prompt:
+          `[${finalPrompt.length} chars]`,
+      },
+    })
+  );
+
+  const createRes = await fetch(
+    "https://api.replicate.com/v1/predictions",
+    {
+      method: "POST",
+
+      headers: {
+        "Authorization":
+          `Bearer ${replicateApiKey}`,
+
+        "Content-Type":
+          "application/json",
+      },
+
+      body: JSON.stringify({
+        version: config.model,
+
+        input: {
+          prompt: finalPrompt,
+          image_input: images,
+        },
+      }),
+    }
+  );
+
+  const createText =
+    await createRes.text();
+
+  console.log(
+    "[CREATE] status:",
+    createRes.status,
+    "body:",
+    createText.substring(0, 500)
+  );
+
+  if (!createRes.ok) {
+
+    throw new Error(
+      `Replicate prediction creation failed (${createRes.status}): ${createText.substring(0, 400)}`
+    );
+  }
+
+  let prediction:
+    Record<string, unknown>;
+
+  try {
+    prediction =
+      JSON.parse(createText);
+
+  } catch {
+
+    throw new Error(
+      `Replicate create response non-JSON: ${createText.substring(0, 300)}`
+    );
+  }
+
+  const predictionId =
+    prediction.id as string | undefined;
+
+  if (!predictionId) {
+
+    throw new Error(
+      `Replicate prediction has no ID: ${JSON.stringify(prediction).substring(0, 300)}`
+    );
+  }
+
+  console.log(
+    "[CREATE] prediction started id=" +
+      predictionId +
+      " status=" +
+      prediction.status
+  );
+
+  return new Response(
+    JSON.stringify({
+      id: predictionId,
+      status: prediction.status,
+    }),
+
+    {
+      status: 201,
+
+      headers: {
+        ...corsHeaders,
+        "Content-Type":
+          "application/json",
+      },
+    }
+  );
+}
+
+if (config.provider === "openai") {
+
+  const openaiApiKey =
+    Deno.env.get("OPENAI_API_KEY");
+
+  if (!openaiApiKey) {
+    throw new Error(
+      "OPENAI_API_KEY not configured"
+    );
+  }
+
+  // Validate formats
+  validateOpenAIImages(images);
+
+  console.log(
+    "[OPENAI] building multipart request, images:",
+    images.length
+  );
+
+  const openaiForm = new FormData();
+
+  openaiForm.append(
+    "model",
+    config.model
+  );
+
+  openaiForm.append(
+    "prompt",
+    finalPrompt
+  );
+
+  openaiForm.append("n", "1");
+
+  openaiForm.append(
+    "size",
+    "1024x1024"
+  );
+
+  openaiForm.append(
+    "quality",
+    "medium"
+  );
+
+  openaiForm.append(
+    "output_format",
+    "jpeg"
+  );
+
+  openaiForm.append(
+    "output_compression",
+    "85"
+  );
+
+  // Attach images
+  for (let i = 0; i < images.length; i++) {
+
+    const dataUrl = images[i];
+
+    const commaIdx =
+      dataUrl.indexOf(",");
+
+    const meta =
+      dataUrl.substring(
+        5,
+        dataUrl.indexOf(";")
+      );
+
+    const b64 =
+      dataUrl.substring(commaIdx + 1);
+
+    const binaryStr = atob(b64);
+
+    const bytes =
+      new Uint8Array(binaryStr.length);
+
+    for (
+      let j = 0;
+      j < binaryStr.length;
+      j++
+    ) {
+      bytes[j] =
+        binaryStr.charCodeAt(j);
+    }
+
+    const ext =
+      meta.split("/")[1] ?? "jpg";
+
+    openaiForm.append(
+      "image[]",
+
+      new Blob(
+        [bytes],
+        { type: meta }
+      ),
+
+      `image_${i}.${ext}`
+    );
+  }
+
+  const openaiRes = await fetch(
+    "https://api.openai.com/v1/images/edits",
+    {
+      method: "POST",
+
+      headers: {
+        "Authorization":
+          `Bearer ${openaiApiKey}`,
+      },
+
+      body: openaiForm,
+    }
+  );
+
+  // DIRECT BINARY IMAGE RESPONSE
+  const contentType =
+    openaiRes.headers.get("content-type") || "";
+
+  if (
+    openaiRes.ok &&
+    contentType.startsWith("image/")
+  ) {
+
+    const imageBuffer =
+      await openaiRes.arrayBuffer();
+
+    const bytes =
+      new Uint8Array(imageBuffer);
+
+    console.log(
+      "[OPENAI] direct image response:",
+      contentType,
+      bytes.byteLength
+    );
+
+    return new Response(
+      imageBuffer,
+      {
+        status: 200,
+
+        headers: {
+          "Content-Type":
+            "image/jpeg",
+
+          "Content-Length":
+            String(bytes.byteLength),
+
+          "Cache-Control":
+            "no-store",
+
+          "Access-Control-Allow-Origin":
+            "*",
+
+          "Access-Control-Allow-Headers":
+            "*",
+
+          "Access-Control-Allow-Methods":
+            "*",
+        },
+      }
+    );
+  }
+
+  // JSON fallback
+  const openaiText =
+    await openaiRes.text();
+
+  console.log(
+    "[OPENAI] status:",
+    openaiRes.status,
+    "body:",
+    openaiText.substring(0, 800)
+  );
+
+  if (!openaiRes.ok) {
+
+    let parsedError: unknown;
+
+    try {
+      parsedError =
+        JSON.parse(openaiText);
+
+    } catch {
+      parsedError = null;
+    }
+
+    const message =
+      (parsedError as Record<string, unknown>)?.error
+        ? JSON.stringify(
+            (parsedError as Record<string, unknown>).error
+          )
+        : openaiText.substring(0, 400);
+
+    throw new Error(
+      `OpenAI image generation failed (${openaiRes.status}): ${message}`
+    );
+  }
+
+  let openaiData:
+    Record<string, unknown>;
+
+  try {
+    openaiData =
+      JSON.parse(openaiText);
+
+  } catch {
+
+    throw new Error(
+      `OpenAI response non-JSON: ${openaiText.substring(0, 300)}`
+    );
+  }
+
+  const dataArr =
+    openaiData.data as
+      Array<Record<string, unknown>>
+      | undefined;
+
+  const first = dataArr?.[0];
+
+  const outputUrl =
+    first?.url as string | undefined;
+
+  const b64 =
+    first?.b64_json as string | undefined;
+
+  // URL response
+  if (outputUrl) {
+
+    return new Response(
+      JSON.stringify({
+        status: "succeeded",
+        output: outputUrl,
+      }),
+
+      {
+        status: 200,
+
+        headers: {
+          ...corsHeaders,
+          "Content-Type":
+            "application/json",
+        },
+      }
+    );
+  }
+
+  // BASE64 response
+  else if (b64) {
+
+    const binaryStr =
+      atob(b64);
+
+    const bytes =
+      new Uint8Array(binaryStr.length);
+
+    for (
+      let i = 0;
+      i < binaryStr.length;
+      i++
+    ) {
+      bytes[i] =
+        binaryStr.charCodeAt(i);
+    }
+
+    return new Response(
+      bytes.buffer,
+      {
+        status: 200,
+
+        headers: {
+          "Content-Type":
+            "image/jpeg",
+
+          "Content-Length":
+            String(bytes.byteLength),
+
+          "Cache-Control":
+            "no-store",
+
+          "Access-Control-Allow-Origin":
+            "*",
+
+          "Access-Control-Allow-Headers":
+            "*",
+
+          "Access-Control-Allow-Methods":
+            "*",
+        },
+      }
+    );
+  }
+
+  throw new Error(
+    `OpenAI response missing output image: ${JSON.stringify(openaiData).substring(0, 300)}`
+  );
+}
+
+throw new Error(
+  `Unknown provider: ${(config as { provider: string }).provider}`
+);
