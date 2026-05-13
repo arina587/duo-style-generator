@@ -49,23 +49,16 @@ export default function Result({
   // Reset per-image state when a new URL arrives
   const prevUrl = useRef('');
 
-  if (displaySrc !== prevUrl.current) {
-    prevUrl.current = displaySrc;
+  useEffect(() => {
+    if (displaySrc !== prevUrl.current) {
+      prevUrl.current = displaySrc;
 
-    hasRetried.current = false;
-
-    if (retryKey !== 0) {
+      hasRetried.current = false;
       setRetryKey(0);
-    } 
-
-    if (debugInfo !== null) {
       setDebugInfo(null);
-    }
-
-    if (imgLoaded) {
       setImgLoaded(false);
     }
- }
+  }, [displaySrc]);
 
   useEffect(() => {
     if (!imgLoadFailed || !displaySrc || displaySrc.startsWith('blob:')) return;
