@@ -56,12 +56,28 @@ function App() {
 
         if (data.status === 'succeeded') {
           const rawUrl = data.output ?? '';
+
           const proxied = rawUrl.startsWith('https://replicate.delivery/')
             ? `${apiBase}?proxyUrl=${encodeURIComponent(rawUrl)}`
             : rawUrl;
+
           console.log('[POLL] succeeded, proxied url:', proxied.substring(0, 100));
-          setRawImageUrl(rawUrl);
-          setGeneratedImageUrl(proxied);
+
+          setGenerationError('');
+          setImgLoadFailed(false);
+
+          if (rawUrl.startsWith('data:')) {
+            const res = await fetch(rawUrl);
+            const blob = await res.blob();
+            const blobUrl = URL.createObjectURL(blob);
+
+            setRawImageUrl(rawUrl);
+            setGeneratedImageUrl(blobUrl);
+          } else {
+            setRawImageUrl(rawUrl);
+            setGeneratedImageUrl(proxied);
+          }
+
           setIsGenerating(false);
           return;
         }
@@ -141,8 +157,20 @@ function App() {
         if (activeRequestId.current !== requestId) return;
 
         if (!response.ok) {
-          const data = await response.json().catch(() => ({}));
-          throw new Error((data as { error?: string }).error || 'Failed to start generation');
+          const data = await response.json().catch(() => null);
+
+          console.error('[OPENAI FULL ERROR]', data);
+
+          const message =
+            typeof data?.error === 'string'
+              ? data.error
+              : typeof data?.error?.message === 'string'
+                ? data.error.message
+                : typeof data?.message === 'string'
+                  ? data.message
+                  : JSON.stringify(data);
+
+          throw new Error(message || 'Failed to start generation');
         }
 
         const data = await response.json() as { id?: string; status?: string; output?: string };
@@ -150,6 +178,8 @@ function App() {
         if (data.status === 'succeeded' && data.output) {
           if (activeRequestId.current !== requestId) return;
           console.log('[GENERATE] immediate result, skipping poll');
+          setGenerationError('');
+          setImgLoadFailed(false);
           setRawImageUrl(data.output);
           if (data.output.startsWith('data:')) {
             const res = await fetch(data.output);
