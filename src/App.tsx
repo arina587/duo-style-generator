@@ -6,6 +6,36 @@ import AnimatedBackground from './components/AnimatedBackground';
 import type { ReferenceItem } from './data/references';
 
 type View = 'home' | 'upload' | 'result';
+function dataUrlToBlobUrl(dataUrl: string): string {
+  const [header, b64] = dataUrl.split(',');
+  const mime = header.replace('data:', '').replace(';base64', '') || 'image/png';
+
+  const binary = atob(b64);
+  const chunkSize = 0x8000;
+  const chunks: Uint8Array[] = [];
+
+  for (let i = 0; i < binary.length; i += chunkSize) {
+    const slice = binary.slice(i, i + chunkSize);
+    const bytes = new Uint8Array(slice.length);
+
+    for (let j = 0; j < slice.length; j++) {
+      bytes[j] = slice.charCodeAt(j);
+    }
+
+    chunks.push(bytes);
+  }
+
+  const blob = new Blob(chunks, { type: mime });
+  return URL.createObjectURL(blob);
+}
+
+function normalizeImageUrl(url: string): string {
+  if (url.startsWith('data:image/')) {
+    return dataUrlToBlobUrl(url);
+  }
+
+  return url;
+}
 
 function App() {
   const [currentView, setCurrentView] = useState<View>('home');
@@ -99,6 +129,10 @@ function App() {
   ) => {
     if (isGenerating) return;
 
+    if (generatedImageUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(generatedImageUrl);
+    }
+
     if (!photo1 || !photo2 || !referenceFile || !selectedRef) {
       setGenerationError('Missing required data. Please try again.');
       return;
@@ -170,8 +204,10 @@ function App() {
           setGenerationError('');
           setImgLoadFailed(false);
           
-          setRawImageUrl(data.output);
-          setGeneratedImageUrl(data.output);
+          const imageUrl = normalizeImageUrl(data.output);
+          
+          setRawImageUrl(imageUrl);
+          setGeneratedImageUrl(imageUrl);
           
           setIsGenerating(false);
           
