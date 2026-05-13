@@ -57,17 +57,13 @@ function App() {
         if (data.status === 'succeeded') {
           const rawUrl = data.output ?? '';
           
-          const proxied = rawUrl.startsWith('https://replicate.delivery/')
-            ? `${apiBase}?proxyUrl=${encodeURIComponent(rawUrl)}`
-            : rawUrl;
-          
-          console.log('[POLL] succeeded, proxied url:', proxied.substring(0, 100));
+          console.log('[POLL] succeeded url:', rawUrl.substring(0, 100));
           
           setGenerationError('');
           setImgLoadFailed(false);
           
           setRawImageUrl(rawUrl);
-          setGeneratedImageUrl(proxied);
+          setGeneratedImageUrl(rawUrl);
           
           setIsGenerating(false);
           return;
@@ -175,7 +171,7 @@ function App() {
           setImgLoadFailed(false);
           
           setRawImageUrl(data.output);
-          setGeneratedImageUrl(finalUrl);
+          setGeneratedImageUrl(data.output);
           
           setIsGenerating(false);
           
