@@ -57,33 +57,19 @@ function App() {
         if (data.status === 'succeeded') {
           const rawUrl = data.output ?? '';
           
-          let finalUrl = rawUrl;
+          const proxied = rawUrl.startsWith('https://replicate.delivery/')
+            ? `${apiBase}?proxyUrl=${encodeURIComponent(rawUrl)}`
+            : rawUrl;
           
-          if (rawUrl.startsWith('data:image/')) {
-            try {
-              const res = await fetch(rawUrl);
-              const blob = await res.blob();
-              
-              finalUrl = URL.createObjectURL(blob);
-              
-              console.log('[POLL BLOB URL CREATED]', finalUrl);
-            } catch (err) {
-              console.error('[POLL BLOB CONVERSION FAILED]', err);
-            }
-          } else if (rawUrl.startsWith('https://replicate.delivery/')) {
-            finalUrl = `${apiBase}?proxyUrl=${encodeURIComponent(rawUrl)}`;
-          }
-          
-          console.log('[POLL] succeeded');
+          console.log('[POLL] succeeded, proxied url:', proxied.substring(0, 100));
           
           setGenerationError('');
           setImgLoadFailed(false);
           
           setRawImageUrl(rawUrl);
-          setGeneratedImageUrl(finalUrl);
+          setGeneratedImageUrl(proxied);
           
           setIsGenerating(false);
-          
           return;
         }
 
@@ -182,11 +168,18 @@ function App() {
 
         if (data.status === 'succeeded' && data.output) {
           if (activeRequestId.current !== requestId) return;
+          
           console.log('[GENERATE] immediate result, skipping poll');
+          
           setGenerationError('');
           setImgLoadFailed(false);
           
-          let finalUrl = data.output;
+          setRawImageUrl(data.output);
+          setGeneratedImageUrl(data.output);
+          
+          setIsGenerating(false);
+          return;
+        }
 
 // Mobile Safari / WebView often fails rendering large base64 images directly.
 // Convert base64 data URLs into Blob URLs before rendering.
