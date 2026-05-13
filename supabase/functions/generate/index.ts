@@ -4100,10 +4100,15 @@ const first = dataArr?.[0];
 const outputUrl = first?.url as string | undefined;
 const b64 = first?.b64_json as string | undefined;
 
-let finalOutput: string | undefined;
 
 if (outputUrl) {
-  finalOutput = outputUrl;
+  return new Response(JSON.stringify({
+    status: "succeeded",
+    output: outputUrl,
+  }), {
+    status: 200,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
 } else if (b64) {
   const bytes = Uint8Array.from(
     atob(b64),
@@ -4120,20 +4125,7 @@ if (outputUrl) {
   });
 }
 
-if (!finalOutput) {
-  throw new Error(`OpenAI response missing output image: ${JSON.stringify(openaiData).substring(0, 300)}`);
-}
 
-console.log("[OPENAI] generation complete");
-
-// Return in the same shape the frontend expects
-return new Response(JSON.stringify({
-  status: "succeeded",
-  output: finalOutput,
-}), {
-          status: 200,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
       }
 
       throw new Error(`Unknown provider: ${(config as { provider: string }).provider}`);
