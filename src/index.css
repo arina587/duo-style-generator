@@ -372,3 +372,7 @@
   }
 
 }
+img {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
