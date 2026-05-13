@@ -46,8 +46,7 @@ export default function Result({
 
   const showImage =
     !!displaySrc &&
-    !imgLoadFailed &&
-    !isGenerating;
+    !imgLoadFailed;
 
   // Show action bar only after the image has painted
   const showActions = showImage && imgLoaded;
@@ -259,7 +258,7 @@ export default function Result({
           <div className="relative w-full overflow-hidden" style={{ aspectRatio: '2 / 3', background: 'linear-gradient(145deg, #f3eefa, #ede6f6)' }}>
 
             {/* ── State 1: Generating ── */}
-            {isGenerating && (
+            {isGenerating && !displaySrc && (
               <div className="absolute inset-0 flex flex-col items-center justify-center animate-fade-in">
                 <div className="relative w-16 h-16 mb-5">
                   <div className="absolute inset-0 rounded-full border-2" style={{ borderColor: '#d8ccea' }} />
@@ -291,7 +290,6 @@ export default function Result({
                 key={retryKey}
                 src={displaySrc}
                 alt="Generated fusion result"
-                decoding="async"
                 loading="eager"
                 style={{
                   transform: 'translateZ(0)',
