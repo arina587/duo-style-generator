@@ -158,14 +158,20 @@ export default function Result({
           <p className="text-[#7a6f96] text-sm font-body">{subtitle}</p>
         </div>
 
-        {/* Result card */}
+        {/* Result card — unified image container.
+            Uses a fixed 1:1 aspect-ratio box so all providers/URL types render
+            identically. The image fills it with object-cover so there is never
+            empty space regardless of portrait/landscape output. Non-image states
+            (loading, error) are absolutely positioned inside the same box. */}
         <div className="card-premium overflow-hidden mb-6">
-          <div className="flex items-center justify-center relative w-full" style={{ background: 'linear-gradient(145deg, #f3eefa, #ede6f6)', minHeight: '280px', maxHeight: '72vh' }}>
+          <div className="relative w-full overflow-hidden" style={{ paddingBottom: '100%', background: 'linear-gradient(145deg, #f3eefa, #ede6f6)' }}>
+
+            {/* All children are absolutely positioned to fill the fixed box */}
 
             {/* 1 — Generating */}
             {isGenerating && (
-              <div className="text-center p-10 animate-fade-in">
-                <div className="relative w-16 h-16 mx-auto mb-5">
+              <div className="absolute inset-0 flex flex-col items-center justify-center animate-fade-in">
+                <div className="relative w-16 h-16 mb-5">
                   <div className="absolute inset-0 rounded-full border-2" style={{ borderColor: '#d8ccea' }} />
                   <div className="absolute inset-0 rounded-full border-t-2 border-[#9b7dd4] animate-spin" />
                   <div className="absolute inset-2.5 rounded-full bg-white flex items-center justify-center">
@@ -186,14 +192,15 @@ export default function Result({
               </div>
             )}
 
-            {/* 2 — Image (normal or retry) */}
+            {/* 2 — Image: absolute inset-0 + object-cover guarantees full fill
+                for every provider (OpenAI, Nanobanana, Replicate), every URL
+                type (base64, blob, CDN), and every device including Mobile Safari. */}
             {!isGenerating && showImage && (
               <img
                 key={retryKey}
                 src={generatedImageUrl}
                 alt="Generated fusion result"
-                className="block animate-scale-in"
-                style={{ maxWidth: '100%', maxHeight: '72vh', width: 'auto', height: 'auto', objectFit: 'contain' }}
+                className="absolute inset-0 w-full h-full object-cover block animate-scale-in"
                 onLoad={(e) => {
                   console.log('[IMG LOADED]', (e.target as HTMLImageElement).src);
                   onImgLoad();
@@ -204,7 +211,7 @@ export default function Result({
 
             {/* 3 — Generation succeeded but browser failed to display after retry */}
             {!isGenerating && generationSucceeded && imgLoadFailed && (
-              <div className="w-full p-6 animate-fade-in overflow-auto">
+              <div className="absolute inset-0 overflow-auto p-6 animate-fade-in">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center flex-shrink-0" style={{ width: 44, height: 44 }}>
                     <AlertCircle className="w-6 h-6 text-amber-400" />
@@ -279,10 +286,10 @@ export default function Result({
 
             {/* 4 — API/generation error (no image URL was returned) */}
             {!isGenerating && !generationSucceeded && generationError && (
-              <div className="text-center p-10 animate-fade-in">
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-10 animate-fade-in">
                 {isNetworkTimeout ? (
                   <>
-                    <div className="relative w-16 h-16 mx-auto mb-5">
+                    <div className="relative w-16 h-16 mb-5">
                       <div className="absolute inset-0 rounded-full border-2" style={{ borderColor: '#d8ccea' }} />
                       <div className="absolute inset-0 rounded-full border-t-2 border-amber-400 animate-spin" />
                       <div className="absolute inset-2.5 rounded-full bg-white flex items-center justify-center">
@@ -308,8 +315,8 @@ export default function Result({
 
             {/* 5 — Empty idle state */}
             {!isGenerating && !generationSucceeded && !generationError && (
-              <div className="text-center p-10 animate-fade-in">
-                <div className="mx-auto mb-5 rounded-xl border-2 flex items-center justify-center" style={{ width: 64, height: 64, background: '#f3eefa', borderColor: '#d8ccea' }}>
+              <div className="absolute inset-0 flex flex-col items-center justify-center animate-fade-in">
+                <div className="mb-5 rounded-xl border-2 flex items-center justify-center" style={{ width: 64, height: 64, background: '#f3eefa', borderColor: '#d8ccea' }}>
                   <Sparkles className="w-8 h-8 text-[#b49cdb]" />
                 </div>
                 <p className="text-[#7a6f96] text-sm font-body">Generated result will appear here</p>
