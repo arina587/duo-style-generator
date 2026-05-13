@@ -648,37 +648,56 @@ LIGHTING: Match lighting direction, shadows, color grading, depth of field, grai
 
 const TITANIC_1 = `Use image 1 as the base scene only.
 
-Replace the original woman with the woman from image 3.
-Replace the original man with the man from image 2.
+Completely replace both original people with the uploaded subjects:
 
-Completely remove the original people.
+replace the original woman with the woman from image 3
+replace the original man with the man from image 2
 
-Preserve:
-- exact pose
-- exact hand placement
-- exact body positioning
-- exact camera angle
-- exact composition
-- exact sunset lighting
-- exact framing
-- exact ship background
+Remove the original actors entirely, including:
 
-The uploaded people must remain clearly recognizable.
+face
+hair
+body
+skin
+clothing
+silhouette
 
-This is full-body character replacement, not a face swap.
+This is a full character replacement, NOT a face swap.
 
-Preserve the uploaded people's:
-- facial structure
-- hairstyle
-- skin tone
-- body proportions
-- identity
+Preserve the exact original scene composition:
 
-The woman keeps both arms extended outward.
-The man remains behind her holding her waist.
+exact pose
+exact arm positioning
+exact hand placement
+exact body positioning
+exact camera angle
+exact framing
+exact perspective
+exact ship background
+exact sunset lighting
+exact cinematic atmosphere
+
+Preserve the uploaded people’s identity and recognizable features:
+
+facial structure
+eye shape
+nose and lips
+hairstyle
+skin tone
+body proportions
+
+The woman stands in front with both arms fully extended outward.
+The man stands directly behind her with his hands around her waist.
+
+Generate entirely new clothing matching the Titanic-style scene:
+
+elegant 1910s cinematic wardrobe
+realistic fabric folds
+period-accurate styling
+natural interaction between clothing and body posture
 
 Photorealistic cinematic movie still.
-Natural lighting, realistic shadows, film grain, seamless integration.`;
+Ultra realistic skin texture, realistic shadows, warm golden-hour lighting, subtle film grain, seamless compositing, high detail, natural anatomy, no morphing artifacts, no remnants of the original actors.`;
 
 const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
