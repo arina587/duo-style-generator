@@ -45,7 +45,7 @@ export default function Result({
     !generationError;
 
   const showImage =
-    generationSucceeded &&
+    !!displaySrc &&
     !imgLoadFailed &&
     !isGenerating;
 
@@ -210,7 +210,7 @@ export default function Result({
 
   // Hide heading section once the image is successfully showing — let the image speak
   const hideHeading =
-    generationSucceeded;
+    imgLoaded;
 
   return (
     <div className="min-h-screen" style={{ position: 'relative', zIndex: 1 }}>
@@ -291,7 +291,13 @@ export default function Result({
                 key={retryKey}
                 src={displaySrc}
                 alt="Generated fusion result"
-                className="absolute inset-0 w-full h-full object-contain object-center block animate-scale-in"
+                decoding="async"
+                loading="eager"
+                style={{
+                  transform: 'translateZ(0)',
+                  WebkitTransform: 'translateZ(0)',
+                }}
+                className="absolute inset-0 z-10 w-full h-full object-contain object-center block animate-scale-in"
                 onLoad={(e) => {
                   console.log('[IMG LOADED]', (e.target as HTMLImageElement).src.substring(0, 80));
                   setImgLoaded(true);
