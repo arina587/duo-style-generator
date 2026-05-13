@@ -646,80 +646,39 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference image only for:
-— pose
-— composition
-— camera angle
-— lighting
-— background
+const TITANIC_1 = `Use image 1 as the base scene only.
 
-Replace BOTH original people completely with the uploaded people.
+Replace the original woman with the woman from image 3.
+Replace the original man with the man from image 2.
 
-CRITICAL:
-Do NOT transfer only faces or heads.
-
-The uploaded people must replace the ORIGINAL FULL BODIES.
-
-This includes:
-— head
-— face
-— hair
-— neck
-— shoulders
-— torso
-— chest
-— waist
-— arms
-— hands
-— fingers
-— body proportions
-— silhouette
-— clothing
-— posture
-
-The uploaded people must occupy the scene with THEIR OWN bodies.
-
-Do NOT keep:
-— original arms
-— original hands
-— original torso
-— original shoulders
-— original skin tone
-— original body shape
-— original clothing fit
-
-ZERO original anatomy may remain.
-
-This is NOT a face swap.
-
-This is COMPLETE FULL BODY HUMAN REPLACEMENT.
-
-The uploaded people must remain fully recognizable and identical to their source photos.
-
-Keep:
-— exact facial features
-— exact proportions
-— exact body type
-— exact skin tone
-— exact hairstyle
-
-IMPORTANT:
-The woman must keep the exact Titanic pose with both arms extended outward.
-
-The man must remain directly behind her holding her waist.
+Completely remove the original people.
 
 Preserve:
-— exact hand placement
-— exact body overlap
-— exact body positioning
-— exact pose geometry
-— exact camera framing
+- exact pose
+- exact hand placement
+- exact body positioning
+- exact camera angle
+- exact composition
+- exact sunset lighting
+- exact framing
+- exact ship background
 
-Keep the original sunset lighting and background almost identical.
+The uploaded people must remain clearly recognizable.
 
-The uploaded people must look naturally photographed in the scene, not pasted or blended with the original actors.
+This is full-body character replacement, not a face swap.
 
-Use realistic lighting, shadows, depth of field, and film grain so the people integrate naturally into the environment.`;
+Preserve the uploaded people's:
+- facial structure
+- hairstyle
+- skin tone
+- body proportions
+- identity
+
+The woman keeps both arms extended outward.
+The man remains behind her holding her waist.
+
+Photorealistic cinematic movie still.
+Natural lighting, realistic shadows, film grain, seamless integration.`;
 
 const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
