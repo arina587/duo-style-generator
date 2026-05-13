@@ -203,28 +203,7 @@ function App() {
           return;
         }
 
-// Mobile Safari / WebView often fails rendering large base64 images directly.
-// Convert base64 data URLs into Blob URLs before rendering.
-          if (finalUrl.startsWith('data:image/')) {
-            try {
-              const res = await fetch(finalUrl);
-              const blob = await res.blob();
-              
-              finalUrl = URL.createObjectURL(blob);
-              
-              console.log('[BLOB URL CREATED]', finalUrl);
-            } catch (err) {
-              console.error('[BLOB CONVERSION FAILED]', err);
-            }
-          }
-          
-          setRawImageUrl(data.output);
-          setGeneratedImageUrl(finalUrl);
-          
-          setIsGenerating(false);
-          
-          return;
-        }
+
 
         const predictionId = data.id;
 
