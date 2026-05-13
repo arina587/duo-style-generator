@@ -4076,6 +4076,9 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
         openaiForm.append("size", "1024x1024");
         openaiForm.append("quality", "medium");
 
+        openaiForm.append("output_format", "jpeg");
+        openaiForm.append("output_compression", "85");
+
 
         // Attach each image as a separate file entry
         for (let i = 0; i < images.length; i++) {
@@ -4131,12 +4134,22 @@ if (outputUrl) {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 } else if (b64) {
-  return new Response(JSON.stringify({
-    status: "succeeded",
-    output: `data:image/png;base64,${b64}`,
-  }), {
+
+  const binaryStr = atob(b64);
+  const bytes = new Uint8Array(binaryStr.length);
+
+  for (let i = 0; i < binaryStr.length; i++) {
+    bytes[i] = binaryStr.charCodeAt(i);
+  }
+
+  return new Response(bytes, {
     status: 200,
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "image/jpeg",
+      "Cache-Control": "no-store",
+      "X-Image-Result": "direct-binary",
+    },
   });
 }
         throw new Error(
