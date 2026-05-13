@@ -4131,41 +4131,9 @@ if (outputUrl) {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 } else if (b64) {
-
-  // Convert base64 → bytes
-  const binaryStr = atob(b64);
-  const bytes = new Uint8Array(binaryStr.length);
-
-  for (let i = 0; i < binaryStr.length; i++) {
-    bytes[i] = binaryStr.charCodeAt(i);
-  }
-
-  // Unique filename
-  const fileName = `generated/${crypto.randomUUID()}.png`;
-
-  // Upload to Supabase Storage
-  const { error: uploadError } = await supabase.storage
-    .from("generated")
-    .upload(fileName, bytes, {
-      contentType: "image/png",
-      upsert: false,
-    });
-
-  if (uploadError) {
-    console.error("[OPENAI STORAGE UPLOAD ERROR]", uploadError);
-    throw uploadError;
-  }
-
-  // Get public URL
-  const { data: publicUrlData } = supabase.storage
-    .from("generated")
-    .getPublicUrl(fileName);
-
-  const imageUrl = publicUrlData.publicUrl;
-
   return new Response(JSON.stringify({
     status: "succeeded",
-    output: imageUrl,
+    output: `data:image/png;base64,${b64}`,
   }), {
     status: 200,
     headers: { ...corsHeaders, "Content-Type": "application/json" },
