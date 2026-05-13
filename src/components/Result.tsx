@@ -40,8 +40,14 @@ export default function Result({
 
   const displaySrc = generatedImageUrl || rawImageUrl;
 
-  const generationSucceeded = !!displaySrc;
-  const showImage = !!displaySrc && !imgLoadFailed && !isGenerating;
+  const generationSucceeded =
+    !!displaySrc &&
+    !generationError;
+
+  const showImage =
+    generationSucceeded &&
+    !imgLoadFailed &&
+    !isGenerating;
 
   // Show action bar only after the image has painted
   const showActions = showImage && imgLoaded;
@@ -203,7 +209,8 @@ export default function Result({
   }
 
   // Hide heading section once the image is successfully showing — let the image speak
-  const hideHeading = showImage && imgLoaded;
+  const hideHeading =
+    generationSucceeded;
 
   return (
     <div className="min-h-screen" style={{ position: 'relative', zIndex: 1 }}>
@@ -439,7 +446,9 @@ export default function Result({
             {/* ── State 5: Empty idle ──
                 Only shown when there is truly nothing — no image, no error,
                 not generating. Once any image URL is set this state disappears. */}
-            {!isGenerating && !generationSucceeded && !showImage && !generationError && (
+            {!isGenerating &&
+             !displaySrc &&
+             !generationError && (
               <div className="absolute inset-0 flex flex-col items-center justify-center animate-fade-in">
                 <div className="mb-5 rounded-xl border-2 flex items-center justify-center" style={{ width: 64, height: 64, background: '#f3eefa', borderColor: '#d8ccea' }}>
                   <Sparkles className="w-8 h-8 text-[#b49cdb]" />
