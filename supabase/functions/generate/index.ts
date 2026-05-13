@@ -3544,13 +3544,13 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   "titanic-2": { provider: "openai", model: "gpt-image-1.5", locked: true, prompt: TITANIC_2 },
   "titanic-3": { provider: "openai", model: "gpt-image-1.5", locked: true, prompt: TITANIC_3 },
   // ── Terabithia ──
-  "terabithia-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TERABITHIA_1 },
+  "terabithia-1": { provider: "openai", model: "gpt-image-1.5", locked: true, prompt: TERABITHIA_1 },
   "terabithia-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: TERABITHIA_2 },
   "terabithia-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
   // ── Stranger Things ──
   "stranger-things-1": { provider: "openai", model: "gpt-image-1.5", locked: true, prompt: STRANGER_1 },
   "stranger-things-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_2 },
-  "stranger-things-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_3 },
+  "stranger-things-3": { provider: "openai", model: "gpt-image-1.5", locked: true, prompt: STRANGER_3 },
   // ── The End of the F***ing World ──
   "end-of-the-fucking-world-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: WORLD_1 },
   "end-of-the-fucking-world-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: WORLD_2 },
