@@ -4105,7 +4105,19 @@ let finalOutput: string | undefined;
 if (outputUrl) {
   finalOutput = outputUrl;
 } else if (b64) {
-  finalOutput = `data:image/png;base64,${b64}`;
+  const bytes = Uint8Array.from(
+    atob(b64),
+    c => c.charCodeAt(0),
+  );
+
+  return new Response(bytes, {
+    status: 200,
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "image/png",
+      "Cache-Control": "public, max-age=86400",
+    },
+  });
 }
 
 if (!finalOutput) {
