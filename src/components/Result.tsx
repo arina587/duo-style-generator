@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Download, ArrowLeft, Sparkles, Loader2, AlertCircle, Wand2, ExternalLink, RefreshCw } from 'lucide-react';
+import { Download, ArrowLeft, Sparkles, Loader2, AlertCircle, Wand2, ExternalLink, RefreshCw, Copy, Check } from 'lucide-react';
 
 interface ResultProps {
   onBack: () => void;
@@ -10,7 +10,6 @@ interface ResultProps {
   onImgError: (src: string) => void;
   onImgLoad: () => void;
   isGenerating: boolean;
-  // Only set when the API/model call itself failed and no image URL was returned
   generationError: string;
 }
 
@@ -36,24 +35,27 @@ export default function Result({
   const [retryKey, setRetryKey] = useState(0);
   const [debugInfo, setDebugInfo] = useState<DebugInfo | null>(null);
   const [debugFetching, setDebugFetching] = useState(false);
+  const [copyDone, setCopyDone] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
-  // Generation succeeded as long as a raw URL exists
   const generationSucceeded = !!rawImageUrl;
   const showImage = !!generatedImageUrl && !imgLoadFailed && !isGenerating;
 
-  // The URL to diagnose — prefer generatedImageUrl (proxy), fall back to rawImageUrl
+  // Show action bar only after the image has painted
+  const showActions = showImage && imgLoaded;
+
   const displaySrc = generatedImageUrl || rawImageUrl;
 
-  // Reset retry + debug state when a new image URL arrives
+  // Reset per-image state when a new URL arrives
   const prevUrl = useRef('');
   if (generatedImageUrl !== prevUrl.current) {
     prevUrl.current = generatedImageUrl;
     hasRetried.current = false;
     setRetryKey(0);
     setDebugInfo(null);
+    setImgLoaded(false);
   }
 
-  // When imgLoadFailed becomes true, auto-fetch the URL to gather diagnostics
   useEffect(() => {
     if (!imgLoadFailed || !displaySrc || displaySrc.startsWith('blob:')) return;
 
@@ -77,7 +79,6 @@ export default function Result({
   const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const src = (e.target as HTMLImageElement).src;
     console.log('[IMG ERROR]', src, Date.now());
-    console.log('[DEBUG] Check DevTools → Network → filter replicate.delivery or supabase — check status code and response headers');
 
     if (!hasRetried.current) {
       hasRetried.current = true;
@@ -95,15 +96,88 @@ export default function Result({
     setRetryKey(k => k + 1);
   };
 
-  const handleDownload = () => {
+  // Resolve any URL type (base64, blob, CDN) to a blob for saving
+  const resolveBlob = async (url: string): Promise<Blob> => {
+    if (url.startsWith('data:')) {
+      const [header, b64] = url.split(',');
+      const mime = header.replace('data:', '').replace(';base64', '');
+      const binary = atob(b64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      return new Blob([bytes], { type: mime });
+    }
+    const res = await fetch(url);
+    return res.blob();
+  };
+
+  const handleSave = async () => {
     const url = rawImageUrl || generatedImageUrl;
     if (!url) return;
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'duo-style-fusion.jpg';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+
+    try {
+      // Preferred: fetch as blob and use object URL so the browser always
+      // treats it as a download rather than navigation (works for data: too)
+      const blob = await resolveBlob(url);
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = objectUrl;
+      const ext = blob.type === 'image/png' ? 'png' : blob.type === 'image/webp' ? 'webp' : 'jpg';
+      link.download = `duo-style-fusion.${ext}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 5000);
+    } catch {
+      // Fallback for cross-origin CDN URLs where fetch may be blocked
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'duo-style-fusion.jpg';
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
+  const handleCopy = async () => {
+    const url = rawImageUrl || generatedImageUrl;
+    if (!url) return;
+
+    try {
+      const blob = await resolveBlob(url);
+      // Clipboard API requires image/png; convert if needed
+      let pngBlob = blob;
+      if (blob.type !== 'image/png') {
+        pngBlob = await new Promise<Blob>((resolve, reject) => {
+          const img = new window.Image();
+          const objUrl = URL.createObjectURL(blob);
+          img.onload = () => {
+            URL.revokeObjectURL(objUrl);
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            canvas.getContext('2d')!.drawImage(img, 0, 0);
+            canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/png');
+          };
+          img.onerror = () => { URL.revokeObjectURL(objUrl); reject(new Error('img load failed')); };
+          img.src = objUrl;
+        });
+      }
+      await navigator.clipboard.write([
+        new ClipboardItem({ 'image/png': pngBlob }),
+      ]);
+      setCopyDone(true);
+      setTimeout(() => setCopyDone(false), 2000);
+    } catch (err) {
+      console.warn('[COPY] clipboard image write failed, falling back to URL copy:', err);
+      try {
+        await navigator.clipboard.writeText(url.startsWith('data:') ? 'Image copied as file — use Save instead' : url);
+        setCopyDone(true);
+        setTimeout(() => setCopyDone(false), 2000);
+      } catch {
+        console.warn('[COPY] clipboard text write also failed');
+      }
+    }
   };
 
   const isNetworkTimeout = !isGenerating && !generationSucceeded && generationError.toLowerCase().includes('connection timed out');
@@ -123,6 +197,9 @@ export default function Result({
     heading = 'Generation Failed';
     subtitle = 'Something went wrong during generation';
   }
+
+  // Hide heading section once the image is successfully showing — let the image speak
+  const hideHeading = showImage && imgLoaded;
 
   return (
     <div className="min-h-screen" style={{ position: 'relative', zIndex: 1 }}>
@@ -152,23 +229,25 @@ export default function Result({
 
       <div className="max-w-3xl mx-auto px-5 lg:px-8 py-8">
 
-        {/* Page heading */}
-        <div className="text-center mb-7">
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#2d2642] mb-1.5">{heading}</h2>
-          <p className="text-[#7a6f96] text-sm font-body">{subtitle}</p>
-        </div>
+        {/* Page heading — hidden once image is visible so nothing competes with it */}
+        {!hideHeading && (
+          <div className="text-center mb-7 animate-fade-in">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#2d2642] mb-1.5">{heading}</h2>
+            <p className="text-[#7a6f96] text-sm font-body">{subtitle}</p>
+          </div>
+        )}
 
-        {/* Result card — unified image container.
-            aspect-ratio:1/1 locks a square without the padding-bottom trick,
-            avoiding the Mobile Safari bug where absolute children don't fill
-            padding-generated height. All providers and URL types (base64, blob,
-            CDN) render through the same single <img> path. */}
-        <div className="card-premium overflow-hidden mb-6">
+        {/* Result card.
+            aspect-ratio:1/1 gives the container a fixed, predictable size that
+            does not depend on the image's intrinsic dimensions. All states
+            (loading, image, error, idle) are absolutely positioned inside it so
+            nothing can push or pull the container size. The single <img> path
+            with absolute inset-0 + object-cover is used for every provider and
+            URL type (base64, blob, CDN) — there is no provider-specific branch. */}
+        <div className="card-premium overflow-hidden mb-6" style={{ transition: 'box-shadow 0.3s' }}>
           <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1', background: 'linear-gradient(145deg, #f3eefa, #ede6f6)' }}>
 
-            {/* All children are absolutely positioned to fill the fixed box */}
-
-            {/* 1 — Generating */}
+            {/* ── State 1: Generating ── */}
             {isGenerating && (
               <div className="absolute inset-0 flex flex-col items-center justify-center animate-fade-in">
                 <div className="relative w-16 h-16 mb-5">
@@ -192,9 +271,10 @@ export default function Result({
               </div>
             )}
 
-            {/* 2 — Image: absolute inset-0 + object-cover guarantees full fill
-                for every provider (OpenAI, Nanobanana, Replicate), every URL
-                type (base64, blob, CDN), and every device including Mobile Safari. */}
+            {/* ── State 2: Image ──
+                One rendering path for all providers + URL types.
+                absolute inset-0 + w-full h-full + object-cover fills the
+                container edge-to-edge, centered, on every device. */}
             {!isGenerating && showImage && (
               <img
                 key={retryKey}
@@ -202,14 +282,57 @@ export default function Result({
                 alt="Generated fusion result"
                 className="absolute inset-0 w-full h-full object-cover block animate-scale-in"
                 onLoad={(e) => {
-                  console.log('[IMG LOADED]', (e.target as HTMLImageElement).src);
+                  console.log('[IMG LOADED]', (e.target as HTMLImageElement).src.substring(0, 80));
+                  setImgLoaded(true);
                   onImgLoad();
                 }}
                 onError={handleImgError}
               />
             )}
 
-            {/* 3 — Generation succeeded but browser failed to display after retry */}
+            {/* ── Floating action bar — only shown after image has painted ──
+                Sits at the bottom of the image, never over non-image states. */}
+            {showActions && (
+              <div
+                className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-4 py-3 animate-fade-in"
+                style={{
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 100%)',
+                  pointerEvents: 'auto',
+                }}
+              >
+                {/* Left: Create Another */}
+                <button
+                  onClick={onStartOver}
+                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold font-body text-white transition-opacity hover:opacity-80 active:opacity-70"
+                  style={{ background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)' }}
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  New
+                </button>
+
+                {/* Right: Copy + Save */}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleCopy}
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold font-body text-white transition-all hover:opacity-80 active:opacity-70"
+                    style={{ background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)' }}
+                  >
+                    {copyDone ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copyDone ? 'Copied' : 'Copy'}
+                  </button>
+                  <button
+                    onClick={handleSave}
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold font-body text-white transition-all hover:opacity-80 active:opacity-70"
+                    style={{ background: 'rgba(155,125,212,0.75)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)' }}
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    Save
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* ── State 3: Generation succeeded but browser failed to display ── */}
             {!isGenerating && generationSucceeded && imgLoadFailed && (
               <div className="absolute inset-0 overflow-auto p-6 animate-fade-in">
                 <div className="flex items-center gap-3 mb-4">
@@ -222,16 +345,13 @@ export default function Result({
                   </div>
                 </div>
 
-                {/* Debug panel */}
                 <div className="rounded-xl border border-gray-200 bg-gray-950 text-green-400 font-mono text-xs p-4 mb-4 space-y-1 overflow-x-auto">
                   <p className="text-gray-500 mb-2">// debug info</p>
-                  <p><span className="text-gray-400">URL:</span> <a href={displaySrc} target="_blank" rel="noopener noreferrer" className="underline break-all text-green-300">{displaySrc}</a></p>
+                  <p><span className="text-gray-400">URL:</span> <a href={displaySrc} target="_blank" rel="noopener noreferrer" className="underline break-all text-green-300">{displaySrc.substring(0, 120)}</a></p>
                   {rawImageUrl && rawImageUrl !== displaySrc && (
-                    <p><span className="text-gray-400">RAW:</span> <a href={rawImageUrl} target="_blank" rel="noopener noreferrer" className="underline break-all text-green-300">{rawImageUrl}</a></p>
+                    <p><span className="text-gray-400">RAW:</span> <a href={rawImageUrl} target="_blank" rel="noopener noreferrer" className="underline break-all text-green-300">{rawImageUrl.substring(0, 120)}</a></p>
                   )}
-                  {debugFetching && (
-                    <p className="text-yellow-400">fetching diagnostics...</p>
-                  )}
+                  {debugFetching && <p className="text-yellow-400">fetching diagnostics...</p>}
                   {debugInfo && (
                     <>
                       {debugInfo.status !== undefined && (
@@ -250,7 +370,6 @@ export default function Result({
                   )}
                 </div>
 
-                {/* Actions */}
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={handleRetry}
@@ -284,7 +403,7 @@ export default function Result({
               </div>
             )}
 
-            {/* 4 — API/generation error (no image URL was returned) */}
+            {/* ── State 4: API/generation error ── */}
             {!isGenerating && !generationSucceeded && generationError && (
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-10 animate-fade-in">
                 {isNetworkTimeout ? (
@@ -313,8 +432,10 @@ export default function Result({
               </div>
             )}
 
-            {/* 5 — Empty idle state */}
-            {!isGenerating && !generationSucceeded && !generationError && (
+            {/* ── State 5: Empty idle ──
+                Only shown when there is truly nothing — no image, no error,
+                not generating. Once any image URL is set this state disappears. */}
+            {!isGenerating && !generationSucceeded && !showImage && !generationError && (
               <div className="absolute inset-0 flex flex-col items-center justify-center animate-fade-in">
                 <div className="mb-5 rounded-xl border-2 flex items-center justify-center" style={{ width: 64, height: 64, background: '#f3eefa', borderColor: '#d8ccea' }}>
                   <Sparkles className="w-8 h-8 text-[#b49cdb]" />
@@ -326,24 +447,45 @@ export default function Result({
           </div>
         </div>
 
-        {/* Action buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <button
-            onClick={handleDownload}
-            disabled={isGenerating || (!generatedImageUrl && !rawImageUrl)}
-            className="btn-generate flex items-center justify-center gap-2 px-8 py-3.5 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            <Download className="w-4 h-4" />
-            Download Image
-          </button>
-          <button
-            onClick={onStartOver}
-            disabled={isGenerating}
-            className="btn-secondary flex items-center justify-center gap-2 px-8 py-3.5 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            Create Another
-          </button>
-        </div>
+        {/* Below-card action row — visible when image is loaded, supplements the in-image bar */}
+        {showActions && (
+          <div className="flex flex-col sm:flex-row gap-3 justify-center animate-fade-in">
+            <button
+              onClick={handleSave}
+              className="btn-generate flex items-center justify-center gap-2 px-8 py-3.5 text-sm"
+            >
+              <Download className="w-4 h-4" />
+              Save Image
+            </button>
+            <button
+              onClick={onStartOver}
+              className="btn-secondary flex items-center justify-center gap-2 px-8 py-3.5 text-sm"
+            >
+              Create Another
+            </button>
+          </div>
+        )}
+
+        {/* Below-card action row — non-image states (generating / error) */}
+        {!showActions && (
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <button
+              onClick={handleSave}
+              disabled={isGenerating || (!generatedImageUrl && !rawImageUrl)}
+              className="btn-generate flex items-center justify-center gap-2 px-8 py-3.5 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <Download className="w-4 h-4" />
+              Save Image
+            </button>
+            <button
+              onClick={onStartOver}
+              disabled={isGenerating}
+              className="btn-secondary flex items-center justify-center gap-2 px-8 py-3.5 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Create Another
+            </button>
+          </div>
+        )}
 
       </div>
     </div>
