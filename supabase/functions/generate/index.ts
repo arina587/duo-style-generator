@@ -4072,6 +4072,9 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
         openaiForm.append("model", config.model);
         openaiForm.append("prompt", finalPrompt);
         openaiForm.append("n", "1");
+        
+        openaiForm.append("size", "1024x1024");
+        openaiForm.append("quality", "medium");
 
 
         // Attach each image as a separate file entry
