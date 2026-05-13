@@ -3642,6 +3642,37 @@ const OPENAI_ALLOWED_MIMES = new Set([
   "image/webp",
 ]);
 
+
+
+function detectImageMime(bytes: Uint8Array): string {
+  if (
+    bytes[0] === 0xff &&
+    bytes[1] === 0xd8
+  ) {
+    return "image/jpeg";
+  }
+
+  if (
+    bytes[0] === 0x89 &&
+    bytes[1] === 0x50 &&
+    bytes[2] === 0x4e &&
+    bytes[3] === 0x47
+  ) {
+    return "image/png";
+  }
+
+  if (
+    bytes[0] === 0x52 &&
+    bytes[1] === 0x49 &&
+    bytes[2] === 0x46 &&
+    bytes[3] === 0x46
+  ) {
+    return "image/webp";
+  }
+
+  return "image/png";
+}
+
 function validateOpenAIImages(images: string[]): void {
   for (let i = 0; i < images.length; i++) {
     const dataUrl = images[i];
@@ -4288,6 +4319,11 @@ if (config.provider === "openai") {
       bytes.byteLength
     );
 
+    const mime =
+      contentType?.startsWith("image/")
+        ? contentType
+        : detectImageMime(bytes);
+
     return new Response(
       imageBuffer,
       {
@@ -4295,7 +4331,7 @@ if (config.provider === "openai") {
 
         headers: {
           "Content-Type":
-            "image/jpeg",
+            mime,
 
           "Content-Length":
             String(bytes.byteLength),
@@ -4417,6 +4453,9 @@ if (config.provider === "openai") {
         binaryStr.charCodeAt(i);
     }
 
+    const mime =
+      detectImageMime(bytes);
+
     return new Response(
       bytes.buffer,
       {
@@ -4424,7 +4463,7 @@ if (config.provider === "openai") {
 
         headers: {
           "Content-Type":
-            "image/jpeg",
+            mime,
 
           "Content-Length":
             String(bytes.byteLength),
