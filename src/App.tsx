@@ -133,7 +133,7 @@ function App() {
     if (mode) formData.append('mode', mode);
 
     const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
-    const MAX_START_RETRIES = 2;
+    const MAX_START_RETRIES = 0;
 
     for (let attempt = 0; attempt <= MAX_START_RETRIES; attempt++) {
       if (activeRequestId.current !== requestId) return;
