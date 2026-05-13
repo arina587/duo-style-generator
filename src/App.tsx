@@ -13,9 +13,6 @@ async function dataUrlToBlobUrl(dataUrl: string): Promise<string> {
   return URL.createObjectURL(blob);
 }
 
-  const blob = new Blob(chunks, { type: mime });
-  return URL.createObjectURL(blob);
-}
 
 async function normalizeImageUrl(url: string): Promise<string> {
   if (url.startsWith('data:image/')) {
