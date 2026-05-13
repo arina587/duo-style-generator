@@ -66,17 +66,8 @@ function App() {
           setGenerationError('');
           setImgLoadFailed(false);
 
-          if (rawUrl.startsWith('data:')) {
-            const res = await fetch(rawUrl);
-            const blob = await res.blob();
-            const blobUrl = URL.createObjectURL(blob);
-
-            setRawImageUrl(rawUrl);
-            setGeneratedImageUrl(blobUrl);
-          } else {
-            setRawImageUrl(rawUrl);
-            setGeneratedImageUrl(proxied);
-          }
+          setRawImageUrl(rawUrl);
+          setGeneratedImageUrl(proxied);
 
           setIsGenerating(false);
           return;
