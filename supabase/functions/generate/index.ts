@@ -4110,18 +4110,12 @@ if (outputUrl) {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 } else if (b64) {
-  const bytes = Uint8Array.from(
-    atob(b64),
-    c => c.charCodeAt(0),
-  );
-
-  return new Response(bytes, {
+  return new Response(JSON.stringify({
+    status: "succeeded",
+    output: `data:image/png;base64,${b64}`,
+  }), {
     status: 200,
-    headers: {
-      ...corsHeaders,
-      "Content-Type": "image/png",
-      "Cache-Control": "public, max-age=86400",
-    },
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 }
 
