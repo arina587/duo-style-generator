@@ -646,58 +646,76 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use image 1 as the base scene only.
+const TITANIC_1 = `Use the reference movie frame ONLY for cinematic composition, pose, interaction, framing, lighting, camera angle, and emotional atmosphere.
 
-Completely replace both original people with the uploaded subjects:
+The uploaded people should naturally appear in the scene while maintaining their own recognizable appearance, clothing style, body proportions, and overall identity.
 
-replace the original woman with the woman from image 3
-replace the original man with the man from image 2
+The reference actors must NOT influence the final appearance of the generated people.
 
-Remove the original actors entirely, including:
+Preserve the uploaded people's:
 
-face
-hair
-body
-skin
-clothing
-silhouette
+* natural facial features
+* hairstyle
+* skin tone
+* body proportions
+* clothing appearance
+* silhouette
+* natural anatomy
+* overall likeness
 
-This is a full character replacement, NOT a face swap.
+The uploaded people should appear as authentic humans naturally photographed in this cinematic scene.
 
-Preserve the exact original scene composition:
+Maintain:
 
-exact pose
-exact arm positioning
-exact hand placement
-exact body positioning
-exact camera angle
-exact framing
-exact perspective
-exact ship background
-exact sunset lighting
-exact cinematic atmosphere
+* the exact camera angle
+* framing
+* pose dynamics
+* body positioning
+* interaction
+* perspective
+* cinematic lighting
+* emotional mood
+* sunset atmosphere
+* filmic depth of field
+* realistic environmental integration
 
-Preserve the uploaded people’s identity and recognizable features:
+Keep the left person positioned on the left side and the right person positioned on the right side.
 
-facial structure
-eye shape
-nose and lips
-hairstyle
-skin tone
-body proportions
+Preserve the original scene composition and interaction while naturally adapting the uploaded people into the shot.
 
-The woman stands in front with both arms fully extended outward.
-The man stands directly behind her with his hands around her waist.
+The result should look like a real cinematic movie frame captured in-camera, not a face swap or pasted composite.
 
-Generate entirely new clothing matching the Titanic-style scene:
+Lighting and atmosphere should match the original warm sunset scene:
 
-elegant 1910s cinematic wardrobe
-realistic fabric folds
-period-accurate styling
-natural interaction between clothing and body posture
+* soft cinematic shadows
+* atmospheric depth
+* realistic skin shading
+* natural environmental reflections
+* realistic film grain
+* cinematic color grading
 
-Photorealistic cinematic movie still.
-Ultra realistic skin texture, realistic shadows, warm golden-hour lighting, subtle film grain, seamless compositing, high detail, natural anatomy, no morphing artifacts, no remnants of the original actors.`;
+The uploaded people must blend naturally into the environment with realistic lighting consistency across:
+
+* face
+* hands
+* neck
+* arms
+* clothing
+* hair
+
+Avoid:
+
+* face swap appearance
+* pasted faces
+* artificial compositing
+* exaggerated beauty retouching
+* unrealistic anatomy
+* uncanny facial rendering
+* overly sharpened skin
+* disconnected body parts
+* mismatched skin tones
+
+The final image should feel like an authentic untouched cinematic frame with the uploaded people naturally existing inside the scene.`;
 
 const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
