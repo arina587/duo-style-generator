@@ -3576,14 +3576,55 @@ async function fileToDataUrl(file: File): Promise<string> {
 
   const b64 = uint8ToBase64(bytes);
 
-  // Normalize MIME type — reject HEIC/HEIF which Replicate does not accept
-  let mime = file.type && file.type.startsWith("image/") ? file.type : "image/jpeg";
-  if (mime === "image/heic" || mime === "image/heif" || mime === "image/heic-sequence" || mime === "image/heif-sequence") {
-    mime = "image/jpeg";
-  }
+  // Use the real MIME type as-is. We do NOT remap HEIC→JPEG here because
+  // changing the MIME header without converting the binary data causes silent
+  // corruption. Provider-specific validation (e.g. OpenAI HEIC rejection) is
+  // handled in each provider branch, not here.
+  const mime = file.type && file.type.startsWith("image/") ? file.type : "image/jpeg";
 
-  console.log(`[FILE] name=${file.name} size=${file.size} mime=${file.type} → normalized=${mime} b64len=${b64.length}`);
+  console.log(`[FILE] name=${file.name} size=${file.size} mime=${file.type} b64len=${b64.length}`);
   return `data:${mime};base64,${b64}`;
+}
+
+// OpenAI only: HEIC/HEIF images cannot be server-converted in Deno without a
+// native codec, and fake MIME remapping causes silent binary corruption. We
+// reject them early with a clear user-facing message so the frontend can
+// prompt the user to re-shoot or convert before uploading.
+const HEIC_MIMES = new Set([
+  "image/heic",
+  "image/heif",
+  "image/heic-sequence",
+  "image/heif-sequence",
+]);
+
+// OpenAI /v1/images/edits accepts only these formats.
+const OPENAI_ALLOWED_MIMES = new Set([
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+]);
+
+function validateOpenAIImages(images: string[]): void {
+  for (let i = 0; i < images.length; i++) {
+    const dataUrl = images[i];
+    const mime = dataUrl.startsWith("data:") ? dataUrl.substring(5, dataUrl.indexOf(";")) : "";
+
+    if (HEIC_MIMES.has(mime)) {
+      throw new Error(
+        `Image ${i + 1} is in HEIC/HEIF format, which is not supported by OpenAI. ` +
+        `Please convert your photo to JPEG or PNG before uploading. ` +
+        `On iPhone, you can enable "Most Compatible" format in Settings → Camera → Formats.`
+      );
+    }
+
+    if (mime && !OPENAI_ALLOWED_MIMES.has(mime)) {
+      throw new Error(
+        `Image ${i + 1} has unsupported format "${mime}". ` +
+        `OpenAI requires JPEG, PNG, or WebP images.`
+      );
+    }
+  }
 }
 
 const IMAGE_SIZE_LIMIT_BYTES = 6 * 1024 * 1024; // 6MB hard limit
@@ -3983,6 +4024,11 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
         const openaiApiKey = Deno.env.get("OPENAI_API_KEY");
         if (!openaiApiKey) throw new Error("OPENAI_API_KEY not configured");
 
+        // Reject HEIC/HEIF and unsupported formats before hitting the API.
+        // Replicate is intentionally left out of this check — it has its own
+        // preprocessing pipeline and is unaffected by this validation.
+        validateOpenAIImages(images);
+
         console.log("[OPENAI] building multipart request, images:", images.length);
 
         const openaiForm = new FormData();
@@ -4011,10 +4057,15 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
         });
 
         const openaiText = await openaiRes.text();
-        console.log("[OPENAI] status:", openaiRes.status, "body:", openaiText.substring(0, 500));
+        console.log("[OPENAI] status:", openaiRes.status, "body:", openaiText.substring(0, 800));
 
         if (!openaiRes.ok) {
-          throw new Error(`OpenAI image generation failed (${openaiRes.status}): ${openaiText.substring(0, 400)}`);
+          let parsedError: unknown;
+          try { parsedError = JSON.parse(openaiText); } catch { parsedError = null; }
+          const message = (parsedError as Record<string, unknown>)?.error
+            ? JSON.stringify((parsedError as Record<string, unknown>).error)
+            : openaiText.substring(0, 400);
+          throw new Error(`OpenAI image generation failed (${openaiRes.status}): ${message}`);
         }
 
         let openaiData: Record<string, unknown>;
