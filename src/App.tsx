@@ -150,6 +150,7 @@ function App() {
         if (data.status === 'succeeded' && data.output) {
           if (activeRequestId.current !== requestId) return;
           console.log('[GENERATE] immediate result, skipping poll');
+          setRawImageUrl(data.output);
           setGeneratedImageUrl(data.output);
           setIsGenerating(false);
           return;

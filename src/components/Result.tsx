@@ -159,12 +159,12 @@ export default function Result({
         </div>
 
         {/* Result card — unified image container.
-            Uses a fixed 1:1 aspect-ratio box so all providers/URL types render
-            identically. The image fills it with object-cover so there is never
-            empty space regardless of portrait/landscape output. Non-image states
-            (loading, error) are absolutely positioned inside the same box. */}
+            aspect-ratio:1/1 locks a square without the padding-bottom trick,
+            avoiding the Mobile Safari bug where absolute children don't fill
+            padding-generated height. All providers and URL types (base64, blob,
+            CDN) render through the same single <img> path. */}
         <div className="card-premium overflow-hidden mb-6">
-          <div className="relative w-full overflow-hidden" style={{ paddingBottom: '100%', background: 'linear-gradient(145deg, #f3eefa, #ede6f6)' }}>
+          <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1', background: 'linear-gradient(145deg, #f3eefa, #ede6f6)' }}>
 
             {/* All children are absolutely positioned to fill the fixed box */}
 
