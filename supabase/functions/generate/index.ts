@@ -4118,6 +4118,9 @@ if (outputUrl) {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 }
+        throw new Error(
+  `OpenAI response missing output image: ${JSON.stringify(openaiData).substring(0, 300)}`
+        );
 
 
       }
