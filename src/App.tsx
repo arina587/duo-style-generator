@@ -203,6 +203,13 @@ function App() {
         selectedRef.id
     );
 
+    console.log(
+      "[UPLOAD FILE]",
+      file.name,
+      file.type,
+      file.size
+    );
+
     const formData = new FormData();
 
     formData.append('person1', photo1);
