@@ -1,4 +1,10 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const supabase = createClient(
+  Deno.env.get("SUPABASE_URL")!,
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+);
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -4238,6 +4244,11 @@ if (config.provider === "openai") {
     "85"
   );
 
+  openaiForm.append(
+  "response_format",
+  "b64_json"
+  );
+
   // Attach images
   for (let i = 0; i < images.length; i++) {
 
@@ -4298,59 +4309,6 @@ if (config.provider === "openai") {
     }
   );
 
-  // DIRECT BINARY IMAGE RESPONSE
-  const contentType =
-    openaiRes.headers.get("content-type") || "";
-
-  if (
-    openaiRes.ok &&
-    contentType.startsWith("image/")
-  ) {
-
-    const imageBuffer =
-      await openaiRes.arrayBuffer();
-
-    const bytes =
-      new Uint8Array(imageBuffer);
-
-    console.log(
-      "[OPENAI] direct image response:",
-      contentType,
-      bytes.byteLength
-    );
-
-    const mime =
-      contentType?.startsWith("image/")
-        ? contentType
-        : detectImageMime(bytes);
-
-    return new Response(
-      imageBuffer,
-      {
-        status: 200,
-
-        headers: {
-          "Content-Type":
-            mime,
-
-          "Content-Length":
-            String(bytes.byteLength),
-
-          "Cache-Control":
-            "no-store",
-
-          "Access-Control-Allow-Origin":
-            "*",
-
-          "Access-Control-Allow-Headers":
-            "*",
-
-          "Access-Control-Allow-Methods":
-            "*",
-        },
-      }
-    );
-  }
 
   // JSON fallback
   const openaiText =
@@ -4436,53 +4394,66 @@ if (config.provider === "openai") {
   }
 
   // BASE64 response
-  else if (b64) {
+else if (b64) {
 
-    const binaryStr =
-      atob(b64);
+  const binaryStr =
+    atob(b64);
 
-    const bytes =
-      new Uint8Array(binaryStr.length);
+  const bytes =
+    new Uint8Array(binaryStr.length);
 
-    for (
-      let i = 0;
-      i < binaryStr.length;
-      i++
-    ) {
-      bytes[i] =
-        binaryStr.charCodeAt(i);
-    }
-
-    const mime =
-      detectImageMime(bytes);
-
-    return new Response(
-      bytes.buffer,
-      {
-        status: 200,
-
-        headers: {
-          "Content-Type":
-            mime,
-
-          "Content-Length":
-            String(bytes.byteLength),
-
-          "Cache-Control":
-            "no-store",
-
-          "Access-Control-Allow-Origin":
-            "*",
-
-          "Access-Control-Allow-Headers":
-            "*",
-
-          "Access-Control-Allow-Methods":
-            "*",
-        },
-      }
-    );
+  for (
+    let i = 0;
+    i < binaryStr.length;
+    i++
+  ) {
+    bytes[i] =
+      binaryStr.charCodeAt(i);
   }
+
+  const fileName =
+    `generated/${crypto.randomUUID()}.jpg`;
+
+  const { error: uploadError } =
+    await supabase.storage
+      .from("generated-images")
+      .upload(
+        fileName,
+        bytes,
+        {
+          contentType: "image/jpeg",
+          upsert: false,
+        }
+      );
+
+  if (uploadError) {
+    throw uploadError;
+  }
+
+  const {
+    data: publicUrlData,
+  } = supabase.storage
+    .from("generated-images")
+    .getPublicUrl(fileName);
+
+  return new Response(
+    JSON.stringify({
+      status: "succeeded",
+      output:
+        publicUrlData.publicUrl,
+    }),
+
+    {
+      status: 200,
+
+      headers: {
+        ...corsHeaders,
+        "Content-Type":
+          "application/json",
+      },
+    }
+  );
+}
 
   throw new Error(
     `OpenAI response missing output image: ${JSON.stringify(openaiData).substring(0, 300)}`
