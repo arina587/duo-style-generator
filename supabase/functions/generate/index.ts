@@ -875,152 +875,25 @@ All characters are adults over 18 years old.
 Negative prompt:
 cartoon, anime, illustration, painting, CGI, 3d render, fake skin, blurry face, distorted anatomy, bad hands, extra fingers, duplicate people, low quality, oversaturated, watermark, text, logo, deformed body, unrealistic proportions`;
 
-const TERABITHIA_2 = `Use the reference image as a STRICT shot blueprint.
+const TERABITHIA_2 = `Replace the two people in the original image with the people from the provided reference photos while preserving the original composition, pose, lighting, and emotional atmosphere.
 
-Do NOT reinterpret, redesign, beautify, stylize, age-change, de-age, masculinize, feminize, or alter the uploaded people in any way.
+Left side:
+Replace the girl with the female reference person. Preserve her exact facial features, hairstyle, hair color, skin tone, expression, clothing style, and natural proportions.
 
-Do NOT generate “inspired by” versions.
-Do NOT create approximations.
-Do NOT create similar-looking people.
+Right side:
+Replace the boy with the male reference person. Preserve his exact facial features, hairstyle, hair texture, skin tone, expression, clothing style, and natural proportions.
 
-The final image must preserve:
-— exact camera angle
-— exact framing
-— exact crop
-— exact perspective
-— exact lens feel
-— exact subject spacing
-— exact body placement
-— exact head placement
-— exact hand placement
-— exact shot orientation
-— exact scene geometry
+Keep the original pose and interaction unchanged:
+the boy gently leaning toward the girl, soft affectionate moment, seated close together indoors with warm lighting.
 
-Camera position is LOCKED.
-Perspective is LOCKED.
-Composition is LOCKED.
+Maintain the original environment, camera angle, shadows, framing, and cinematic mood. Make the replacement seamless and photorealistic with realistic skin texture, natural anatomy, realistic hands, and accurate lighting consistency.
 
-Keep the identical viewpoint and framing from the original reference image.
+Ultra realistic photo, cinematic lighting, soft warm tones, shallow depth of field, natural expressions, DSLR quality, highly detailed.
 
-IMPORTANT:
-Maintain the exact interaction and intimacy of the scene.
+All characters are adults over 18 years old.
 
-— the male character remains leaning in and kissing the female character on the forehead
-— the female character remains relaxed with eyes closed
-— preserve the exact head contact point
-— preserve the exact arm placement
-— preserve the exact body closeness
-— preserve the exact emotional tone and tenderness
-
-Do NOT separate the characters.
-Do NOT rotate faces toward the viewer.
-Do NOT alter the physical interaction.
-
-Maintain exact left/right placement:
-— female remains on the left
-— male remains on the right
-
-Erase all original people completely and replace them entirely with the uploaded people.
-
-REPLACEMENT:
-— left slot → woman/girl from uploaded female photo
-— right slot → man/boy from uploaded male photo
-
-Do NOT swap genders, sides, or roles.
-
-CRITICAL IDENTITY LOCK:
-
-The uploaded people must remain IDENTICAL to their source photos.
-
-Preserve EXACTLY:
-— facial bone structure
-— jawline
-— eye shape
-— eyelid shape
-— eyebrow shape and spacing
-— nose shape
-— lip shape
-— cheek volume
-— forehead proportions
-— chin structure
-— ears
-— skin texture
-— skin undertone
-— hairstyle
-— hair density
-— hairline
-— body proportions
-— shoulder width
-— neck thickness
-— silhouette
-— natural asymmetry
-
-Do NOT:
-— modify attractiveness
-— smooth facial structure
-— enlarge eyes
-— shrink nose
-— sharpen jawline
-— alter face proportions
-— change ethnicity
-— change age appearance
-— make skin porcelain/artificial
-— stylize facial anatomy
-
-FULL HUMAN TRANSFER:
-
-Transfer the uploaded people holistically into the scene:
-— face
-— body
-— physique
-— posture
-— proportions
-— clothing behavior
-— natural imperfections
-
-Do NOT only transfer faces.
-
-The uploaded people must look physically present in the scene as real photographed humans.
-
-They must NOT look:
-— pasted
-— composited
-— face-swapped
-— AI-generated
-— plastic
-— beauty-filtered
-— disconnected from environment
-
-NATURAL SCENE ADAPTATION:
-
-Adapt the uploaded people naturally to the scene lighting and cinematography WITHOUT changing identity.
-
-Scene adaptation must affect ONLY:
-— lighting response
-— shadow integration
-— color temperature
-— atmospheric grading
-— depth of field
-— film grain
-
-Identity and anatomy must remain untouched.
-
-SKIN CONSISTENCY:
-Hands, fingers, neck, ears, arms, and visible body skin must perfectly match facial skin tone and undertone.
-
-No mismatched body color.
-No separate face/body lighting.
-No artificial skin smoothing.
-
-POSE:
-Match original posture, shoulder angle, neck angle, head tilt, eye direction, and interaction precisely.
-
-LIGHTING:
-Match the original warm indoor cinematic lighting, soft shadows, environmental bounce light, depth of field, atmospheric warmth, realistic skin shading, and film grain.
-
-Faces, bodies, hands, clothes, and hair must inherit identical scene lighting naturally.
-
-Blend the uploaded people seamlessly into the cinematography so they appear originally photographed in this exact moment.`;
+Negative prompt:
+cartoon, anime, illustration, CGI, 3d render, fake skin, blurry, distorted anatomy, extra fingers, bad hands, deformed face, unrealistic proportions, oversaturated, watermark, text, logo, duplicate people, childlike appearance, underage`;
 
 const WORLD_1 = `Use the reference image ONLY as a cinematography, composition, pose, and interaction template.
 
