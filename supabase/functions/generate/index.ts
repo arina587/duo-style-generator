@@ -895,6 +895,30 @@ All characters are adults over 18 years old.
 Negative prompt:
 cartoon, anime, illustration, CGI, 3d render, fake skin, blurry, distorted anatomy, extra fingers, bad hands, deformed face, unrealistic proportions, oversaturated, watermark, text, logo, duplicate people, childlike appearance, underage`;
 
+const TERABITHIA_3 = `Replace the two people in the original car scene with the people from the provided reference photos.
+
+IMPORTANT:
+Transfer the people completely and proportionally from the reference images — preserve accurate face shape, head size, body proportions, shoulder width, posture, neck length, hairstyle, hair texture, skin tone, facial expression, and natural anatomy. Do not stylize or reinterpret their appearance.
+
+Left side:
+Replace the boy with the male reference person while preserving the original seated pose, body angle, gaze direction, and relaxed expression. Keep realistic proportions relative to the car interior.
+
+Right side:
+Replace the girl with the female reference person while preserving the leaning pose, arm placement, facial angle, smile, and natural proportions.
+
+Keep the original scene unchanged:
+inside of a moving car, warm daylight, blurred outdoor landscape through the windows, cinematic framing, soft natural lighting, shallow depth of field, emotional atmosphere.
+
+The replacement must look seamless and photorealistic:
+accurate anatomy, realistic skin texture, natural shadows, matching perspective, matching focal length, correct body scaling, realistic interaction with the environment, and believable positioning inside the car.
+
+Ultra realistic cinematic photography, DSLR quality, natural colors, soft lighting, highly detailed, authentic human proportions.
+
+All characters are adults over 18 years old.
+
+Negative prompt:
+cartoon, anime, illustration, painting, CGI, 3d render, distorted anatomy, oversized head, incorrect proportions, warped face, bad hands, extra fingers, blurry, low quality, fake skin, oversaturated, watermark, text, logo, duplicate people, childlike appearance, underage`
+
 const WORLD_1 = `Use the reference image ONLY as a cinematography, composition, pose, and interaction template.
 
 DO NOT use the original people as appearance references in ANY way.
