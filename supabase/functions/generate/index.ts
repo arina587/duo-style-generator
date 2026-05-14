@@ -652,90 +652,51 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference movie frame ONLY for composition, pose, camera angle, lighting, framing, perspective, and cinematic atmosphere.
+const TITANIC_1 = `Use the reference image only as a guide for composition, pose, camera angle, framing, lighting, perspective, and cinematic atmosphere.
 
-Replace BOTH original people completely with the uploaded people, including:
+Create a realistic cinematic image where the two uploaded people appear naturally in the same scene and pose.
 
-- face
-- hair
-- neck
-- shoulders
-- torso
-- arms
-- hands
-- full body
-- clothing
-- silhouette
-- proportions
+Place the first uploaded person on the left and the second uploaded person on the right.
 
-The uploaded people must fully replace the original actors while preserving their real recognizable appearance and identity.
-
-Preserve the uploaded people’s:
+Preserve the uploaded people’s real visual appearance as accurately as possible, including:
 
 - facial features
-- eye shape
-- nose
-- lips
-- jawline
 - hairstyle
-- hair texture
 - skin tone
 - body proportions
-- anatomy
-- clothing appearance
-- natural likeness
-
-Do NOT copy any facial or body features from the reference actors.
-
-Keep:
-
-- the exact Titanic pose
-- left/right positioning
-- body interaction
-- framing
-- perspective
-- cinematic balance
-- sunset lighting
-- warm atmosphere
-- cinematic shadows
-- realistic depth of field
-- filmic color grading
-
-The uploaded people should look naturally photographed in the scene, with realistic full-body integration and consistent lighting across:
-
-- face
-- neck
-- hair
-- hands
-- arms
 - clothing
+- silhouette
+- natural anatomy
 
-Ensure realistic anatomy and seamless body integration:
+The people should be shown from face to body as complete, coherent humans, with realistic posture, natural shoulders, arms, hands, torso, and clothing folds.
 
-- natural shoulders
-- correct neck connection
-- realistic hands
-- coherent body proportions
-- physically correct posture
-- natural clothing folds
+Keep the scene structure:
 
-The result must look like a real cinematic movie frame captured in-camera, not a face swap, pasted composite, deepfake, or AI-generated edit.
+- two people standing together
+- one person behind the other
+- arms extended outward
+- warm sunset lighting
+- cinematic shadows
+- soft film look
+- realistic depth of field
+- natural color grading
+- subtle film grain
+
+Make the people blend naturally into the environment with consistent lighting on face, hair, neck, hands, arms, and clothing.
+
+The final image should look like an authentic cinematic photograph captured in-camera, with realistic anatomy and natural integration.
 
 Avoid:
 
-- face swap artifacts
-- preserving original actors’ bodies
-- pasted faces
-- mismatched anatomy
-- disconnected necks
-- unrealistic hands
-- distorted limbs
-- identity drift
-- synthetic skin
-- over-retouching
-- plastic-looking faces
+- distorted faces
+- distorted hands
+- unnatural body proportions
+- disconnected necks or shoulders
+- inconsistent lighting
+- artificial skin texture
+- overly polished or plastic-looking faces
 - warped clothing
-- unrealistic proportions
+- unnatural compositing
 
 All people in the photo are over 18 years old.`;
 
