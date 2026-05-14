@@ -138,6 +138,8 @@ function App() {
     provider: 'openai' | 'replicate'
   ) => {
     const POLL_INTERVAL_MS = 2500;
+    const POLL_NETWORK_RETRY_DELAY_MS = 3000;
+    const MAX_CONSECUTIVE_POLL_FAILURES = 10;
 
     const apiBase =
       `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
@@ -150,6 +152,8 @@ function App() {
     // OpenAI jobs are tracked in generation_jobs table via ?jobId=
     // Replicate predictions are polled via Replicate API using ?id=
     const pollParam = provider === 'openai' ? 'jobId' : 'id';
+
+    let consecutiveFailures = 0;
 
     const poll = async () => {
       if (activeRequestId.current !== requestId) {
@@ -179,6 +183,9 @@ function App() {
           output?: string;
           error?: string;
         };
+
+        // Any successful server response resets the failure counter
+        consecutiveFailures = 0;
 
         console.log('[POLL] id=' + predictionId + ' provider=' + data.provider + ' status=' + data.status);
 
@@ -226,12 +233,28 @@ function App() {
           return;
         }
 
-        console.warn(
-          '[POLL] network error, retrying:',
-          err instanceof Error ? err.message : err
-        );
+        consecutiveFailures += 1;
+        const message = err instanceof Error ? err.message : String(err);
 
-        setTimeout(poll, POLL_INTERVAL_MS);
+        console.warn('[POLL NETWORK ERROR]', {
+          provider,
+          predictionId,
+          consecutiveFailures,
+          message,
+          userAgent: navigator.userAgent,
+        });
+
+        if (consecutiveFailures >= MAX_CONSECUTIVE_POLL_FAILURES) {
+          console.error('[POLL] max consecutive network failures (' + MAX_CONSECUTIVE_POLL_FAILURES + '), stopping');
+          setGenerationError(
+            'Network error while waiting for the result. Please try again.'
+          );
+          setIsGenerating(false);
+          return;
+        }
+
+        // Temporary network hiccup — keep retrying with slightly longer delay
+        setTimeout(poll, POLL_NETWORK_RETRY_DELAY_MS);
       }
     };
 
@@ -350,17 +373,42 @@ function App() {
       return;
     }
 
+    const POST_NETWORK_RETRY_DELAY_MS = 2000;
+
+    const doPost = () => fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        Authorization:
+          `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+      },
+      body: formData,
+    });
+
     try {
       console.log('[GENERATE] POSTing to', apiUrl.substring(0, 60));
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          Authorization:
-            `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: formData,
-      });
+      let response: Response;
+      try {
+        response = await doPost();
+      } catch (postErr) {
+        const postErrMsg = postErr instanceof Error ? postErr.message : String(postErr);
+        console.warn('[POST NETWORK ERROR] first attempt failed, retrying in ' + POST_NETWORK_RETRY_DELAY_MS + 'ms', {
+          message: postErrMsg,
+          userAgent: navigator.userAgent,
+        });
+        await new Promise<void>(r => setTimeout(r, POST_NETWORK_RETRY_DELAY_MS));
+        if (activeRequestId.current !== requestId) {
+          return;
+        }
+        console.log('[POST RETRY] retrying POST...');
+        try {
+          response = await doPost();
+        } catch (retryErr) {
+          const retryErrMsg = retryErr instanceof Error ? retryErr.message : String(retryErr);
+          console.error('[POST NETWORK ERROR] retry also failed', { message: retryErrMsg, userAgent: navigator.userAgent });
+          throw new Error('Network error starting generation. Please check your connection and try again.');
+        }
+      }
 
       if (activeRequestId.current !== requestId) {
         return;
