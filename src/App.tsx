@@ -292,6 +292,7 @@ function App() {
         });
 
         const jsonData = await response.json();
+        console.log('[GENERATE RESPONSE]', jsonData);
         
         if (activeRequestId.current !== requestId) {
           return;
