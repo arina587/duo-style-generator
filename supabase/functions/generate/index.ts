@@ -855,110 +855,25 @@ Avoid:
 
 All people in the photo are over 18 years old.`;
 
-const TERABITHIA_1 = `Use the reference image ONLY for:
-— composition
-— camera angle
-— pose
-— framing
-— lighting
-— environment
-— interaction
+const TERABITHIA_1 = `Replace the two people in the original forest photo with the people from the provided reference images.
 
-DO NOT use the original people as appearance references in ANY way.
+Left side:
+Replace the girl while preserving the original pose, body position, hand placement, clothing fit, and interaction with the dog. Use the exact face, hairstyle, hair color, skin tone, body proportions, expression, clothing, and accessories from the female reference image.
 
-The original actors must be treated as empty placeholders only.
+Right side:
+Replace the boy while preserving the original standing pose and proportions. Use the exact face, hairstyle, hair texture, skin tone, expression, clothing, and body proportions from the male reference image.
 
-Completely remove all original identities, facial traits, bone structure, expressions, skin texture, and anatomy from the final result.
+Preserve the original forest environment completely:
+tree trunk, green forest background, natural daylight, depth of field, shadows, cinematic composition, and the fluffy dog.
 
-ABSOLUTELY NO blending between the uploaded people and the original actors.
+The new characters must blend naturally into the scene with matching lighting, realistic shadows, realistic anatomy, realistic skin texture, and seamless photorealistic integration.
 
-The uploaded people must remain 100% independent identities.
+Ultra realistic photo, cinematic photography, natural colors, shallow depth of field, DSLR quality, highly detailed, emotionally warm atmosphere.
 
-Do NOT inherit from the original actors:
-— face shape
-— jawline
-— eyes
-— eyebrows
-— nose
-— lips
-— smile
-— cheek structure
-— body type
-— silhouette
-— hairstyle
-— skin texture
-— age appearance
+All characters are adults over 18 years old.
 
-CRITICAL:
-Do NOT face-swap onto the original actors.
-
-Instead:
-fully replace the original people with the uploaded people as entirely new humans naturally existing in the same scene.
-
-The uploaded people must preserve EXACTLY:
-— their real facial structure
-— their real proportions
-— their real body shape
-— their real silhouette
-— their real asymmetry
-— their real skin texture
-— their real hairstyle
-— their real age appearance
-
-Do NOT beautify.
-Do NOT stylize.
-Do NOT cinematic-glamorize faces.
-Do NOT make them look AI-generated.
-
-The uploaded people must look naturally photographed in-camera.
-
-They must NOT look:
-— pasted
-— composited
-— blended with original actors
-— face-swapped
-— over-smoothed
-— plastic
-— uncanny
-— synthetic
-
-IMPORTANT:
-Identity preservation is MORE important than similarity to the original actors.
-
-Use the original image ONLY as a staging and cinematography template.
-
-Keep:
-— exact camera angle
-— exact pose
-— exact framing
-— exact interaction
-— exact body placement
-— exact scene geometry
-— exact eye direction
-— exact crop
-
-Camera position is LOCKED.
-Perspective is LOCKED.
-Composition is LOCKED.
-
-Natural scene adaptation should affect ONLY:
-— lighting integration
-— shadows
-— color grading
-— depth of field
-— atmospheric perspective
-— film grain
-
-Identity and anatomy must remain untouched.
-
-SKIN CONSISTENCY:
-Hands, neck, arms, ears, and body skin must perfectly match the face skin tone and undertone.
-
-No different body color.
-No separate face lighting.
-No artificial skin smoothing.
-
-Blend the uploaded people seamlessly into the environment so they appear originally photographed there without any identity mixing from the reference actors.`;
+Negative prompt:
+cartoon, anime, illustration, painting, CGI, 3d render, fake skin, blurry face, distorted anatomy, bad hands, extra fingers, duplicate people, low quality, oversaturated, watermark, text, logo, deformed body, unrealistic proportions`;
 
 const TERABITHIA_2 = `Use the reference image as a STRICT shot blueprint.
 
