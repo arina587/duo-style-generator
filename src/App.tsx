@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Home from './components/Home';
 import Upload from './components/Upload';
 import Result from './components/Result';
@@ -99,6 +99,27 @@ function App() {
     useState<string>('');
 
   const activeRequestId = useRef<string>('');
+  // Tracks the pending poll setTimeout so it can be cancelled before a new generation starts
+  const pollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Ref mirror of isGenerating to prevent double-submit races in async handlers
+  const isGeneratingRef = useRef(false);
+
+  const cancelPoll = (reason: string) => {
+    if (pollTimeoutRef.current !== null) {
+      clearTimeout(pollTimeoutRef.current);
+      pollTimeoutRef.current = null;
+      console.log('[POLL STOP]', reason);
+    }
+  };
+
+  // Cancel polling on unmount to prevent state updates on an unmounted component
+  useEffect(() => {
+    return () => {
+      cancelPoll('unmount');
+      activeRequestId.current = '';
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Primary photos
   const [photo1, setPhoto1] =
@@ -155,8 +176,18 @@ function App() {
 
     let consecutiveFailures = 0;
 
+    console.log('[POLL START]', { requestId, predictionId, provider });
+
+    const schedulePoll = (delayMs: number) => {
+      // Always cancel any existing timer before scheduling a new one
+      cancelPoll('reschedule');
+      pollTimeoutRef.current = setTimeout(poll, delayMs);
+    };
+
     const poll = async () => {
+      // Stale check — a new generation has started, discard this poll entirely
       if (activeRequestId.current !== requestId) {
+        console.log('[POLL CANCELLED]', { requestId, predictionId, provider });
         return;
       }
 
@@ -166,7 +197,9 @@ function App() {
           { headers: authHeader }
         );
 
+        // Re-check after async fetch — new generation may have started while we were waiting
         if (activeRequestId.current !== requestId) {
+          console.log('[POLL IGNORED STALE]', { requestId, predictionId, provider });
           return;
         }
 
@@ -184,23 +217,31 @@ function App() {
           error?: string;
         };
 
+        // Re-check after json parse
+        if (activeRequestId.current !== requestId) {
+          console.log('[POLL IGNORED STALE]', { requestId, predictionId, provider, status: data.status });
+          return;
+        }
+
         // Any successful server response resets the failure counter
         consecutiveFailures = 0;
 
-        console.log('[POLL] id=' + predictionId + ' provider=' + data.provider + ' status=' + data.status);
+        console.log('[POLL]', { requestId, predictionId, provider: data.provider, status: data.status });
 
         if (data.status === 'succeeded') {
           const rawUrl = data.output ?? '';
-          console.log('[POLL] succeeded url:', rawUrl.substring(0, 100));
+          console.log('[POLL SUCCESS]', { requestId, predictionId, provider, url: rawUrl.substring(0, 100) });
 
           let validatedUrl: string;
           try {
             validatedUrl = validateOutputUrl(rawUrl);
           } catch (validateErr) {
             const msg = validateErr instanceof Error ? validateErr.message : String(validateErr);
-            console.error('[POLL] URL validation failed:', msg);
+            console.error('[POLL FAILURE] URL validation failed:', { requestId, predictionId, provider, msg });
+            pollTimeoutRef.current = null;
             setGenerationError(msg);
             setIsGenerating(false);
+            isGeneratingRef.current = false;
             return;
           }
 
@@ -211,25 +252,36 @@ function App() {
             console.warn('[PRELOAD] failed (will still attempt render):', preloadErr instanceof Error ? preloadErr.message : preloadErr);
           }
 
+          // Final stale check after preload await
+          if (activeRequestId.current !== requestId) {
+            console.log('[POLL IGNORED STALE] after preload', { requestId, predictionId, provider });
+            return;
+          }
+
+          pollTimeoutRef.current = null;
           setGenerationError('');
           setImgLoadFailed(false);
           setRawImageUrl(validatedUrl);
           setGeneratedImageUrl(validatedUrl);
           setIsGenerating(false);
+          isGeneratingRef.current = false;
           return;
         }
 
         if (data.status === 'failed' || data.status === 'canceled') {
-          console.error('[POLL] prediction', data.status, data.error);
+          console.error('[POLL FAILURE]', { requestId, predictionId, provider, status: data.status, error: data.error });
+          pollTimeoutRef.current = null;
           setGenerationError(data.error || 'Generation failed. Please try again.');
           setIsGenerating(false);
+          isGeneratingRef.current = false;
           return;
         }
 
         // processing — keep polling
-        setTimeout(poll, POLL_INTERVAL_MS);
+        schedulePoll(POLL_INTERVAL_MS);
       } catch (err) {
         if (activeRequestId.current !== requestId) {
+          console.log('[POLL IGNORED STALE] in catch', { requestId, predictionId, provider });
           return;
         }
 
@@ -239,22 +291,25 @@ function App() {
         console.warn('[POLL NETWORK ERROR]', {
           provider,
           predictionId,
+          requestId,
           consecutiveFailures,
           message,
           userAgent: navigator.userAgent,
         });
 
         if (consecutiveFailures >= MAX_CONSECUTIVE_POLL_FAILURES) {
-          console.error('[POLL] max consecutive network failures (' + MAX_CONSECUTIVE_POLL_FAILURES + '), stopping');
+          console.error('[POLL FAILURE] max consecutive network failures', { requestId, predictionId, provider, consecutiveFailures });
+          pollTimeoutRef.current = null;
           setGenerationError(
             'Network error while waiting for the result. Please try again.'
           );
           setIsGenerating(false);
+          isGeneratingRef.current = false;
           return;
         }
 
         // Temporary network hiccup — keep retrying with slightly longer delay
-        setTimeout(poll, POLL_NETWORK_RETRY_DELAY_MS);
+        schedulePoll(POLL_NETWORK_RETRY_DELAY_MS);
       }
     };
 
@@ -269,9 +324,17 @@ function App() {
     photo1b?: File | null,
     photo2b?: File | null,
   ) => {
-    if (isGenerating) {
+    // Use ref for the guard — React state is stale inside async closures
+    if (isGeneratingRef.current) {
+      console.log('[GENERATE] skipped — already generating');
       return;
     }
+
+    // Cancel any previous poll timers before starting fresh
+    cancelPoll('new generation');
+
+    // Invalidate any previous request so stale poll callbacks no-op
+    activeRequestId.current = '';
 
     // cleanup old blob urls
     if (generatedImageUrl.startsWith('blob:')) {
@@ -295,6 +358,8 @@ function App() {
         .toString(36)
         .slice(2, 7)}`;
 
+    // Set ref synchronously before any await so re-entrant calls are blocked immediately
+    isGeneratingRef.current = true;
     activeRequestId.current = requestId;
 
     setIsGenerating(true);
@@ -343,6 +408,7 @@ function App() {
         'Failed to convert image format. Please use JPEG or PNG.'
       );
       setIsGenerating(false);
+      isGeneratingRef.current = false;
       return;
     }
 
@@ -492,16 +558,20 @@ function App() {
         msg || 'Generation failed. Please try again.'
       );
       setIsGenerating(false);
+      isGeneratingRef.current = false;
     }
   };
 
   const handleBackToHome = () => {
+    cancelPoll('back to home');
     activeRequestId.current = '';
+    isGeneratingRef.current = false;
 
     if (generatedImageUrl.startsWith('blob:')) {
       URL.revokeObjectURL(generatedImageUrl);
     }
 
+    setIsGenerating(false);
     setCurrentView('home');
     setSelectedRef(null);
     setSelectedCategory(null);
@@ -520,6 +590,10 @@ function App() {
   };
 
   const handleBackFromUpload = () => {
+    cancelPoll('back from upload');
+    activeRequestId.current = '';
+    isGeneratingRef.current = false;
+    setIsGenerating(false);
     setCurrentView('home');
     setGeneratedImageUrl('');
     setRawImageUrl('');
@@ -528,8 +602,9 @@ function App() {
   };
 
   const handleBackToUpload = () => {
-    // Cancel any in-flight request
+    cancelPoll('back to upload');
     activeRequestId.current = '';
+    isGeneratingRef.current = false;
     setIsGenerating(false);
     setCurrentView('upload');
     setGeneratedImageUrl('');
