@@ -2857,7 +2857,7 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   // ── Terabithia ──
   "terabithia-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TERABITHIA_1 },
   "terabithia-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TERABITHIA_2 },
-  "terabithia-3": { provider: "openai", model: "gpt-image-2", locked: false },
+  "terabithia-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TERABITHIA_3 },
   // ── Stranger Things ──
   "stranger-things-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_1 },
   "stranger-things-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_2 },
