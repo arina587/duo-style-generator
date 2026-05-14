@@ -703,137 +703,60 @@ All characters are adults over 18 years old.
 Negative prompt:
 face swap only, mismatched body, incorrect proportions, oversized head, tiny body, warped anatomy, distorted limbs, bad hands, extra fingers, unrealistic torso, fake skin, cartoon, anime, CGI, 3d render, blurry, low quality, oversaturated, watermark, logo, text, duplicate people, childlike appearance, underage`;
 
-const TITANIC_2 = `Use the reference image only for cinematic composition, camera angle, framing, lighting, perspective, pose, and emotional atmosphere.
+const TITANIC_2 = `Replace the two people in the original warm cinematic scene with the people from the provided reference photos.
 
-Create a realistic cinematic scene where the two uploaded people naturally appear in the same position and interaction.
+IMPORTANT:
+Preserve the full appearance of both reference people — including face, hairstyle, body proportions, shoulder width, posture, clothing structure, natural anatomy, and overall silhouette. Do not perform a simple face swap.
 
-Keep:
+Male character:
+Use the exact male reference appearance while keeping the seated pose and natural interaction with the object in his hands. Preserve realistic torso proportions, neck shape, shoulders, hairstyle, expression, and clothing details.
 
-- the seated composition
-- the intimate over-shoulder interaction
-- one person leaning toward the other
-- the sketchbook/book held in the foreground
-- warm low-key lighting
-- soft cinematic shadows
-- film-like depth of field
-- warm amber color grading
+Female character:
+Use the exact female reference appearance while preserving the gentle leaning pose over the male character’s shoulder. Keep accurate body proportions, hairstyle, facial features, posture, and realistic interaction between both characters.
 
-Place the uploaded male in the front/right position and the uploaded female behind/left, matching the original scene structure.
+Maintain the original cinematic environment:
+warm low indoor lighting, elegant vintage atmosphere, soft shadows, intimate composition, dark background, realistic depth of field, movie-style framing.
 
-Preserve the uploaded people’s real appearance as accurately as possible, including:
+The characters must blend naturally into the scene with:
+matching lighting direction, realistic skin texture, accurate anatomy, realistic clothing folds, proportional body scaling, natural hand positioning, and seamless photorealistic integration.
 
-- facial features
-- hairstyle
-- skin tone
-- body proportions
-- natural anatomy
-- clothing appearance
-- silhouette
+Ultra realistic cinematic photography, movie still quality, natural warm tones, DSLR detail, soft ambient lighting, highly detailed, emotionally cinematic atmosphere.
 
-The people should appear as complete realistic humans with coherent:
+All characters are adults over 18 years old.
 
-- necks
-- shoulders
-- arms
-- hands
-- posture
-- clothing folds
-- body proportions
+Negative prompt:
+face swap only, distorted anatomy, oversized head, mismatched body, unrealistic proportions, warped limbs, bad hands, extra fingers, fake skin, cartoon, anime, CGI, 3d render, blurry, low quality, oversaturated, watermark, logo, text, duplicate people, childlike appearance, underage`;
 
-Maintain realistic lighting consistency across:
+const TITANIC_3 = `Replace the two people in the original cinematic ship-deck scene with the people from the provided reference photos.
 
-- face
-- hair
-- neck
-- hands
-- clothing
+IMPORTANT:
+Transfer the people completely and naturally from the reference images — not only the faces. Preserve full body proportions, torso shape, shoulder width, neck length, posture, arm positioning, hairstyle, clothing structure, silhouette, and overall anatomy exactly from the references.
 
-The final image should look like an authentic cinematic movie still captured in-camera, with natural human detail and realistic environmental integration.
+Do not keep the original bodies underneath the new faces.
+Do not create mismatched proportions or oversized heads.
+The final result must look like the reference people themselves are physically present in the scene.
 
-Avoid:
+Preserve the original romantic pose exactly:
+the male character standing behind the female character, arms wrapped naturally around her waist, both leaning closely toward each other with soft intimate body language.
 
-- distorted faces
-- distorted hands
-- unnatural anatomy
-- disconnected body parts
-- unrealistic proportions
-- artificial skin texture
-- plastic-looking faces
-- warped clothing
-- inconsistent lighting
-- unnatural compositing
-- overprocessed details
+Male character:
+Use the exact male reference appearance while adapting naturally to the embracing pose. Preserve realistic anatomy, shoulder proportions, hairstyle, clothing style, and natural hand positioning around the female character.
 
-All people in the photo are over 18 years old.`;
+Female character:
+Use the exact female reference appearance while preserving the leaning pose, head angle, torso posture, elegant body proportions, hairstyle, clothing style, and natural interaction with the male character’s arms.
 
-const TITANIC_3 = `Use the reference image only for cinematic composition, pose, framing, camera angle, perspective, lighting, and emotional atmosphere.
+Keep the original cinematic environment unchanged:
+ship deck at sunset, warm golden-hour lighting, dramatic movie atmosphere, elegant composition, realistic shadows, ocean-side ambiance, shallow depth of field, cinematic framing.
 
-Create a realistic cinematic scene where the two uploaded people naturally appear in the same interaction and position.
+The characters must blend seamlessly into the environment with:
+matching lighting direction, realistic body scaling, accurate perspective, realistic skin texture, believable interaction between bodies, natural clothing folds, realistic hands, and photorealistic detail.
 
-Keep:
+Ultra realistic cinematic photography, movie still quality, natural proportions, warm sunset tones, DSLR detail, highly detailed, emotionally cinematic atmosphere.
 
-- the romantic close embrace
-- one person standing behind the other
-- hands around the waist
-- intimate face positioning
-- sunset ship-deck atmosphere
-- warm golden-hour lighting
-- cinematic shadows
-- soft film-like depth of field
-- realistic background perspective
-- natural cinematic color grading
+All characters are adults over 18 years old.
 
-Place the uploaded male behind and the uploaded female in front, matching the original composition.
-
-Preserve the uploaded people’s real appearance as accurately as possible, including:
-
-- facial structure
-- hairstyle
-- skin tone
-- body proportions
-- silhouette
-- clothing appearance
-- natural anatomy
-
-The people should appear as complete realistic humans with coherent:
-
-- necks
-- shoulders
-- torso
-- arms
-- hands
-- posture
-- clothing folds
-- body proportions
-
-Maintain realistic lighting consistency across:
-
-- face
-- hair
-- neck
-- hands
-- arms
-- clothing
-
-The uploaded people should blend naturally into the environment as if photographed in-camera during a real cinematic scene.
-
-The final image should look like an authentic romantic movie still with realistic human detail and seamless environmental integration.
-
-Avoid:
-
-- distorted faces
-- distorted hands
-- unnatural anatomy
-- disconnected body parts
-- unrealistic proportions
-- artificial skin texture
-- plastic-looking faces
-- warped clothing
-- inconsistent lighting
-- unnatural compositing
-- overprocessed details
-
-All people in the photo are over 18 years old.`;
+Negative prompt:
+face swap only, mismatched body, oversized head, tiny body, warped anatomy, distorted limbs, bad hands, extra fingers, unrealistic proportions, fake skin, cartoon, anime, CGI, 3d render, blurry, low quality, oversaturated, watermark, logo, text, duplicate people, childlike appearance, underage`;
 
 const TERABITHIA_1 = `Replace the two people in the original forest photo with the people from the provided reference images.
 
