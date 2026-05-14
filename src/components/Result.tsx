@@ -33,6 +33,7 @@ export default function Result({
 }: ResultProps) {
   const retryCount = useRef(0);
   const [retryKey, setRetryKey] = useState(0);
+  const [isRetrying, setIsRetrying] = useState(false);
   const [debugInfo, setDebugInfo] = useState<DebugInfo | null>(null);
   const [debugFetching, setDebugFetching] = useState(false);
   const [copyDone, setCopyDone] = useState(false);
@@ -61,8 +62,11 @@ export default function Result({
 
       retryCount.current = 0;
       setRetryKey(0);
+      setIsRetrying(false);
       setDebugInfo(null);
       setImgLoaded(false);
+
+      console.log('[IMG] new url set:', displaySrc.substring(0, 100), 'ua:', navigator.userAgent.substring(0, 80));
     }
   }, [displaySrc]);
 
@@ -88,36 +92,36 @@ export default function Result({
       .finally(() => setDebugFetching(false));
   }, [imgLoadFailed, displaySrc]);
 
-  const handleImgError = () => {
-    console.log('[IMG ERROR]', displaySrc, Date.now());
+  const MAX_AUTO_RETRIES = 2;
+  const RETRY_DELAY_MS = 1000;
 
-    if (retryCount.current < 6) {
+  const handleImgError = () => {
+    console.log('[IMG ERROR] retry=' + retryCount.current + ' url=' + displaySrc.substring(0, 100) + ' ua=' + navigator.userAgent.substring(0, 60));
+
+    if (retryCount.current < MAX_AUTO_RETRIES) {
       retryCount.current += 1;
 
-      const delay = retryCount.current * 3000;
+      console.log('[IMG RETRY] attempt=' + retryCount.current + '/' + MAX_AUTO_RETRIES + ' delay=' + RETRY_DELAY_MS + 'ms url=' + displaySrc.substring(0, 100));
 
-      console.log(
-        '[IMG RETRY]',
-        retryCount.current,
-        'delay=',
-        delay,
-        displaySrc.substring(0, 100)
-      );
+      setIsRetrying(true);
 
       setTimeout(() => {
+        setIsRetrying(false);
         setRetryKey(k => k + 1);
-      }, delay);
+      }, RETRY_DELAY_MS);
 
       return;
     }
 
-    console.log('[IMG RETRY EXHAUSTED] marking imgLoadFailed, url:', displaySrc.substring(0, 100));
+    console.log('[IMG RETRY EXHAUSTED] attempts=' + retryCount.current + ' url=' + displaySrc.substring(0, 100));
 
+    setIsRetrying(false);
     onImgError(displaySrc);
   };
 
   const handleRetry = () => {
     retryCount.current = 0;
+    setIsRetrying(false);
     setDebugInfo(null);
     setRetryKey(k => k + 1);
   };
@@ -312,7 +316,8 @@ export default function Result({
                 referrerPolicy="no-referrer"
                 className="absolute inset-0 z-10 w-full h-full object-contain object-center block animate-scale-in"
                 onLoad={() => {
-                  console.log('[IMG LOADED]', displaySrc.substring(0, 80));
+                  console.log('[IMG LOADED] retry=' + retryCount.current + ' url=' + displaySrc.substring(0, 80));
+                  setIsRetrying(false);
                   setImgLoaded(true);
                   onImgLoad();
                 }}
@@ -359,6 +364,21 @@ export default function Result({
                     Save
                   </button>
                 </div>
+              </div>
+            )}
+
+            {/* ── State 2b: Retrying image load ── */}
+            {isRetrying && (
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center animate-fade-in" style={{ background: 'linear-gradient(145deg, #f3eefa, #ede6f6)' }}>
+                <div className="relative w-14 h-14 mb-4">
+                  <div className="absolute inset-0 rounded-full border-2" style={{ borderColor: '#d8ccea' }} />
+                  <div className="absolute inset-0 rounded-full border-t-2 border-[#9b7dd4] animate-spin" />
+                  <div className="absolute inset-2.5 rounded-full bg-white flex items-center justify-center">
+                    <Loader2 className="w-5 h-5 text-[#9b7dd4] animate-spin" />
+                  </div>
+                </div>
+                <p className="font-display font-bold text-[#2d2642] text-sm mb-1">Retrying...</p>
+                <p className="text-[#7a6f96] text-xs font-body">Attempt {retryCount.current} of {MAX_AUTO_RETRIES}</p>
               </div>
             )}
 
