@@ -512,106 +512,25 @@ High-resolution, sharp, natural skin texture, correct lighting.
 OUTPUT:
 Same scene, same composition — only identities replaced.`;
 
-const EUPHORIA_1 = `Use the reference image ONLY for:
-- composition
-- hallway environment
-- camera angle
-- framing
-- perspective
-- pose layout
-- lighting
-- cinematic atmosphere
+const EUPHORIA_1 = `Replace the two people in the original hallway image with the people from the provided reference photos.
 
-Completely remove the original male and female from the scene.
+Left side:
+Use the girl from the reference image. Preserve her exact facial features, hairstyle, hair color, skin tone, body proportions, expression, clothing, accessories, and overall appearance.
 
-Generate TWO entirely new people using ONLY the uploaded reference people as the source of appearance.
+Right side:
+Use the boy from the reference image. Preserve his exact facial features, hairstyle, hair texture, skin tone, body proportions, expression, clothing, and overall appearance.
 
-CRITICAL:
-The uploaded people must remain highly recognizable and visually identical to their reference photos.
+Keep the original hallway environment unchanged:
+school corridor, lockers, background students, cinematic composition, camera angle, lighting, depth of field, shadows, and realistic atmosphere.
 
-Prioritize identity preservation over cinematic stylization.
+The new people must naturally match the original poses and positions from the base image. Maintain realistic anatomy, realistic skin texture, photorealistic details, natural lighting, accurate proportions, and seamless blending into the scene.
 
-Do NOT reinterpret, redesign, beautify, or approximate their appearance.
+High detail, ultra realistic photo, cinematic photography, shallow depth of field, natural colors, realistic shadows, no filters.
 
-Preserve EXACTLY:
-- facial structure
-- eye shape and spacing
-- nose shape
-- lips
-- jawline
-- cheekbones
-- hairstyle
-- hairline
-- hair texture
-- eyebrows
-- skin tone
-- facial proportions
-- body proportions
-- silhouette
-- age appearance
+All characters are adults over 18 years old.
 
-The generated people must look like the SAME real people from the uploaded photos, not similar-looking substitutes.
-
-Do NOT inherit ANY facial features, hairstyles, body shapes, expressions, or skin details from the original people in the reference image.
-
-Replacement mapping:
-- uploaded female → left side
-- uploaded male → right side
-
-Keep:
-- exact body positioning
-- eye-line interaction
-- hallway placement
-- relative scale
-- camera perspective
-- scene depth
-
-Create fully reconstructed realistic bodies with:
-- correct anatomy
-- realistic shoulders
-- coherent neck connection
-- natural hands
-- accurate proportions
-- natural posture
-
-The people must appear as complete humans fully generated from the uploaded references across the ENTIRE body.
-
-Do NOT perform:
-- face swap
-- morphing
-- blending
-- partial replacement
-- identity mixing
-
-Lighting must match the hallway naturally:
-- fluorescent indoor lighting
-- soft realistic shadows
-- realistic skin shading
-- cinematic depth of field
-- subtle film grain
-
-Preserve:
-- hallway
-- lockers
-- background students
-- environmental blur
-- cinematic realism
-
-The final image must look like a real photograph captured in-camera with the uploaded people naturally existing in the scene.
-
-Avoid:
-- identity drift
-- generic faces
-- beautification
-- AI glamour look
-- plastic skin
-- distorted anatomy
-- warped hands
-- inconsistent lighting
-- blended identities
-- remnants of original people
-
-All people in the photo are over 18 years old.`;
+Negative prompt:
+cartoon, anime, illustration, painting, CGI, 3d render, fake skin, blurry face, distorted anatomy, extra fingers, bad hands, low quality, overexposed, oversaturated, watermark, text, logo, duplicate person, deformed face, unrealistic proportions`;
 
 const EUPHORIA_2 = `Use the reference image ONLY for:
 - composition
