@@ -613,68 +613,109 @@ Avoid:
 
 All people in the photo are over 18 years old.`;
 
-const EUPHORIA_2 = `Use the reference image as a STRICT shot blueprint.
+const EUPHORIA_2 = `Use the reference image ONLY for:
+- composition
+- camera angle
+- framing
+- perspective
+- pose interaction
+- lighting
+- depth of field
+- cinematic atmosphere
 
-Do NOT reinterpret, restage, reframe, rotate, recrop, zoom, or change the camera viewpoint in any way.
+Completely remove the original man and woman from the scene.
 
-The final image must preserve:
-— exact camera angle
-— exact perspective
-— exact framing
-— exact crop
-— exact lens feel
-— exact subject placement
-— exact body orientation
-— exact scene geometry
-— exact distance between subjects
-— exact shot orientation
+Generate TWO entirely new people using ONLY the uploaded reference people as the source of appearance.
 
-Camera position is LOCKED.
-Perspective is LOCKED.
-Composition is LOCKED.
+CRITICAL:
+The uploaded people must remain highly recognizable and visually consistent with their reference photos.
 
-Keep the scene from the identical viewpoint as the reference frame.
+Prioritize identity preservation over cinematic stylization.
 
-IMPORTANT:
-The woman must remain turned away from the camera exactly like in the reference image.
-Do NOT rotate her toward the viewer.
-Do NOT reveal more of her face.
-Maintain the same head angle, shoulder angle, and back-facing orientation.
+Do NOT reinterpret, beautify, redesign, or approximate their appearance.
 
-Erase all original people. Their positions are empty slots — fill them with the people from the uploaded photos.
+Preserve EXACTLY:
+- facial structure
+- eye shape and spacing
+- nose shape
+- lips
+- jawline
+- cheekbones
+- hairstyle
+- hairline
+- hair texture
+- eyebrows
+- skin tone
+- facial proportions
+- body proportions
+- silhouette
+- age appearance
 
-REPLACEMENT:
-— woman slot → woman from uploaded female photo
-— man slot → man from uploaded male photo
-Do NOT swap genders or roles.
+Do NOT inherit ANY facial or body features from the original people in the reference image.
 
-RECONSTRUCTION:
-Rebuild each person completely from scratch.
-Do NOT face-swap.
-Do NOT blend identities with original actors.
-Do NOT preserve original facial features.
+Replacement mapping:
+- uploaded male → foreground left position on couch
+- uploaded female → foreground right position facing him
 
-IDENTITY:
-Preserve facial structure, proportions, skin tone, hair, and recognizability of uploaded people.
+The generated people must fully replace the original subjects across the ENTIRE body.
 
-SKIN CONSISTENCY:
-Hands, arms, neck, shoulders, and visible body skin must perfectly match the facial skin tone and undertone.
-No mismatched skin color between face and body.
-No different lighting temperature on hands or body.
+Keep:
+- exact seating positions
+- eye-line interaction
+- couch placement
+- framing
+- perspective
+- emotional tension
+- environmental depth
 
-CLOTHING:
-Adapt naturally to the environment and cinematic style of the scene.
+Create complete realistic anatomy with:
+- coherent neck connection
+- realistic shoulders
+- natural arms
+- realistic hands
+- proper body proportions
+- natural posture
+- realistic clothing folds
 
-POSE:
-Match the original pose, body direction, posture, eye-line, interaction, and cinematic blocking precisely.
+Do NOT perform:
+- face swap
+- morphing
+- blending
+- partial replacement
+- identity mixing
 
-LIGHTING:
-Match original lighting direction, shadows, color grading, depth of field, film grain, and scene atmosphere.
+The uploaded people must look like naturally photographed real humans existing inside the scene.
 
-Faces and bodies must inherit identical scene lighting naturally.
-The result must not look pasted, composited, or AI-generated.
+Lighting must match the original environment:
+- warm indoor cinematic lighting
+- soft shadows
+- realistic skin shading
+- shallow depth of field
+- subtle film grain
+- realistic environmental reflections
 
-The uploaded people must look like they were originally filmed in this exact shot.`;
+Preserve:
+- couch
+- background blur
+- warm room atmosphere
+- cinematic color grading
+- environmental realism
+
+The final image must look like a real cinematic photograph captured in-camera, not composited or AI-generated.
+
+Avoid:
+- identity drift
+- generic faces
+- beauty retouching
+- plastic skin
+- distorted anatomy
+- warped hands
+- inconsistent lighting
+- blended identities
+- remnants of original people
+- face swap appearance
+
+All people in the photo are over 18 years old.`;
 
 const EUPHORIA_3 = `Use the reference image as a composition and scene template.
 
