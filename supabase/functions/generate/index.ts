@@ -512,105 +512,104 @@ High-resolution, sharp, natural skin texture, correct lighting.
 OUTPUT:
 Same scene, same composition — only identities replaced.`;
 
-const EUPHORIA_1 = `Use the reference image only for hallway environment, framing, camera angle, perspective, lighting, pose layout, and cinematic atmosphere.
+const EUPHORIA_1 = `Use the reference image ONLY for:
+- composition
+- hallway environment
+- camera angle
+- framing
+- perspective
+- pose layout
+- lighting
+- cinematic atmosphere
 
-IMPORTANT:
-Remove BOTH original people completely from the image before generating the new subjects.
+Completely remove the original male and female from the scene.
 
-Do NOT preserve any part of the original male or female:
-- no original face
-- no original hair
-- no original body
-- no original hands
-- no original skin
-- no original clothing
-- no original silhouette
+Generate TWO entirely new people using ONLY the uploaded reference people as the source of appearance.
 
-Generate TWO entirely new full-body people using ONLY the uploaded references.
+CRITICAL:
+The uploaded people must remain highly recognizable and visually identical to their reference photos.
 
-Replacement mapping:
-- uploaded female → left side position
-- uploaded male → right side position
+Prioritize identity preservation over cinematic stylization.
 
-The generated people must fully replace the original subjects in the scene.
+Do NOT reinterpret, redesign, beautify, or approximate their appearance.
 
-Preserve the uploaded people’s recognizable appearance:
-
+Preserve EXACTLY:
 - facial structure
-- eyes
-- nose
+- eye shape and spacing
+- nose shape
 - lips
 - jawline
+- cheekbones
 - hairstyle
+- hairline
 - hair texture
+- eyebrows
 - skin tone
+- facial proportions
 - body proportions
 - silhouette
-- natural anatomy
+- age appearance
 
-Both people must remain clearly recognizable as the uploaded individuals across the entire body, not only the face.
+The generated people must look like the SAME real people from the uploaded photos, not similar-looking substitutes.
 
-Preserve the original scene composition:
+Do NOT inherit ANY facial features, hairstyles, body shapes, expressions, or skin details from the original people in the reference image.
 
-- exact camera angle
-- hallway framing
-- body orientation
-- relative distance
+Replacement mapping:
+- uploaded female → left side
+- uploaded male → right side
+
+Keep:
+- exact body positioning
 - eye-line interaction
-- perspective
-- environmental depth
+- hallway placement
+- relative scale
+- camera perspective
+- scene depth
 
-Create realistic complete bodies with coherent:
+Create fully reconstructed realistic bodies with:
+- correct anatomy
+- realistic shoulders
+- coherent neck connection
+- natural hands
+- accurate proportions
+- natural posture
 
-- necks
-- shoulders
-- torso
-- arms
-- hands
-- legs
-- posture
-- clothing folds
-- body proportions
+The people must appear as complete humans fully generated from the uploaded references across the ENTIRE body.
 
-Do NOT morph or blend the uploaded people with the original people from the reference image.
+Do NOT perform:
+- face swap
+- morphing
+- blending
+- partial replacement
+- identity mixing
 
-Do NOT perform partial replacement.
-
-The uploaded people must appear as fully reconstructed realistic humans naturally standing in the hallway scene.
-
-Adapt clothing naturally to the cinematic school hallway environment while keeping the uploaded people visually recognizable.
-
-Match the original scene lighting:
-
-- indoor fluorescent lighting
+Lighting must match the hallway naturally:
+- fluorescent indoor lighting
 - soft realistic shadows
-- cinematic contrast
 - realistic skin shading
-- shallow depth of field
+- cinematic depth of field
 - subtle film grain
 
 Preserve:
+- hallway
 - lockers
-- hallway depth
 - background students
-- blur intensity
-- environmental realism
+- environmental blur
+- cinematic realism
 
-The result should look like a real cinematic photograph captured in-camera, not a face swap, pasted composite, morph, or AI edit.
+The final image must look like a real photograph captured in-camera with the uploaded people naturally existing in the scene.
 
 Avoid:
-
-- partial replacement
-- keeping original bodies
-- keeping original hairstyles
-- blended identities
+- identity drift
+- generic faces
+- beautification
+- AI glamour look
+- plastic skin
 - distorted anatomy
-- unrealistic hands
-- disconnected body parts
-- warped clothing
-- plastic-looking skin
+- warped hands
 - inconsistent lighting
-- overprocessed details
+- blended identities
+- remnants of original people
 
 All people in the photo are over 18 years old.`;
 
