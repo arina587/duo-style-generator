@@ -1,6 +1,8 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+const FUNCTION_VERSION = "generate-routing-v2";
+
 const supabase = createClient(
   Deno.env.get("SUPABASE_URL")!,
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
@@ -11,6 +13,24 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
+
+type GenerateResponse = {
+  provider: "openai" | "replicate";
+  status: "processing" | "succeeded" | "failed";
+  predictionId?: string;
+  output?: string;
+  error?: string;
+  model?: string;
+  referenceId?: string;
+  functionVersion?: string;
+};
+
+function jsonResponse(body: GenerateResponse | Record<string, unknown>, status = 200): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
 
 const REPLICATE_DEFAULT_MODEL = "google/nano-banana-pro";
 
@@ -3350,27 +3370,19 @@ Deno.serve(async (req: Request) => {
         const outputUrl = extractOutputUrl(prediction.output);
         console.log("PARSED IMAGE URL:", outputUrl?.substring(0, 200) ?? "(none)");
         if (!outputUrl) {
-          return new Response(JSON.stringify({ status: "failed", error: "Output URL could not be extracted" }), {
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          });
+          return jsonResponse({ provider: "replicate", status: "failed", error: "Output URL could not be extracted" });
         }
-        return new Response(JSON.stringify({ status: "succeeded", output: outputUrl }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return jsonResponse({ provider: "replicate", status: "succeeded", output: outputUrl, functionVersion: FUNCTION_VERSION });
       }
 
       if (status === "failed" || status === "canceled") {
         const errDetail = JSON.stringify(prediction.error ?? prediction.logs ?? status);
         console.error(`[STATUS] prediction ${status}:`, errDetail);
-        return new Response(JSON.stringify({ status, error: errDetail }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return jsonResponse({ provider: "replicate", status: "failed", error: errDetail });
       }
 
       // starting / processing
-      return new Response(JSON.stringify({ status }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return jsonResponse({ provider: "replicate", status: "processing" });
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Unknown error";
       console.error("[STATUS ERROR]", msg);
@@ -3508,6 +3520,7 @@ const imageSummary = images.map((img, i) => ({
 }));
 
 // ── Debug logging ──
+console.log("[VERSION]", FUNCTION_VERSION);
 console.log("[PROVIDER]", config.provider);
 console.log("[MODEL]", config.model);
 console.log("[REFERENCE_ID]", referenceId);
@@ -3633,25 +3646,14 @@ if (config.provider === "replicate") {
       prediction.status
   );
 
-  return new Response(
-    JSON.stringify({
-      id: predictionId,
-      status: prediction.status,
-      provider: config.provider,
-      model: config.model,
-      referenceId,
-    }),
-
-    {
-      status: 201,
-
-      headers: {
-        ...corsHeaders,
-        "Content-Type":
-          "application/json",
-      },
-    }
-  );
+  return jsonResponse({
+    provider: "replicate",
+    status: "processing",
+    predictionId,
+    model: config.model,
+    referenceId: referenceId as string,
+    functionVersion: FUNCTION_VERSION,
+  }, 201);
 }
 
 if (config.provider === "openai") {
@@ -3743,7 +3745,7 @@ if (config.provider === "openai") {
       meta.split("/")[1] ?? "jpg";
 
     openaiForm.append(
-      "image[]",
+      "image",
 
       new Blob(
         [bytes],
@@ -3769,162 +3771,81 @@ if (config.provider === "openai") {
   );
 
 
-  // JSON fallback
-  const openaiText =
-    await openaiRes.text();
-
-  console.log(
-    "[OPENAI] status:",
-    openaiRes.status,
-    "body:",
-    openaiText.substring(0, 800)
-  );
+  const openaiContentType = openaiRes.headers.get("content-type") ?? "";
+  console.log("[OPENAI] status:", openaiRes.status, "content-type:", openaiContentType);
 
   if (!openaiRes.ok) {
-
-    let parsedError: unknown;
-
+    let errMsg = `OpenAI image generation failed (${openaiRes.status})`;
     try {
-      parsedError =
-        JSON.parse(openaiText);
-
+      const errData = await openaiRes.json() as Record<string, unknown>;
+      console.log("[OPENAI] error body:", JSON.stringify(errData).substring(0, 400));
+      errMsg += ": " + (errData?.error ? JSON.stringify(errData.error) : JSON.stringify(errData).substring(0, 300));
     } catch {
-      parsedError = null;
+      errMsg += ": (non-JSON error body)";
+    }
+    throw new Error(errMsg);
+  }
+
+  const openaiData = await openaiRes.json() as Record<string, unknown>;
+  console.log("[OPENAI] response keys:", Object.keys(openaiData).join(", "));
+
+  const dataArr = openaiData.data as Array<Record<string, unknown>> | undefined;
+  const first = dataArr?.[0];
+  const outputUrl = first?.url as string | undefined;
+  const b64 = first?.b64_json as string | undefined;
+
+  // URL response — return immediately with normalized shape
+  if (outputUrl) {
+    console.log("[OPENAI] URL response, length:", outputUrl.length);
+    return jsonResponse({
+      provider: "openai",
+      status: "succeeded",
+      output: outputUrl,
+      model: config.model,
+      referenceId: referenceId as string,
+      functionVersion: FUNCTION_VERSION,
+    });
+  }
+
+  // BASE64 response — decode, upload to storage, return public URL
+  if (b64) {
+    const binaryStr = atob(b64);
+    const bytes = new Uint8Array(binaryStr.length);
+    for (let i = 0; i < binaryStr.length; i++) {
+      bytes[i] = binaryStr.charCodeAt(i);
     }
 
-    const message =
-      (parsedError as Record<string, unknown>)?.error
-        ? JSON.stringify(
-            (parsedError as Record<string, unknown>).error
-          )
-        : openaiText.substring(0, 400);
+    const fileName = `generated/${crypto.randomUUID()}.jpg`;
+    console.log("[OPENAI] uploading b64 image to storage, fileName:", fileName);
 
-    throw new Error(
-      `OpenAI image generation failed (${openaiRes.status}): ${message}`
-    );
-  }
-
-  let openaiData:
-    Record<string, unknown>;
-
-  try {
-    openaiData =
-      JSON.parse(openaiText);
-
-  } catch {
-
-    throw new Error(
-      `OpenAI response non-JSON: ${openaiText.substring(0, 300)}`
-    );
-  }
-
-  const dataArr =
-    openaiData.data as
-      Array<Record<string, unknown>>
-      | undefined;
-
-  const first = dataArr?.[0];
-
-  const outputUrl =
-    first?.url as string | undefined;
-
-  const b64 =
-    first?.b64_json as string | undefined;
-
-  // URL response
-  if (outputUrl) {
-
-    return new Response(
-      JSON.stringify({
-        status: "succeeded",
-        output: outputUrl,
-      }),
-
-      {
-        status: 200,
-
-        headers: {
-          ...corsHeaders,
-          "Content-Type":
-            "application/json",
-        },
-      }
-    );
-  }
-
-  // BASE64 response
-else if (b64) {
-
-  const binaryStr =
-    atob(b64);
-
-  const bytes =
-    new Uint8Array(binaryStr.length);
-
-  for (
-    let i = 0;
-    i < binaryStr.length;
-    i++
-  ) {
-    bytes[i] =
-      binaryStr.charCodeAt(i);
-  }
-
-  const fileName =
-    `generated/${crypto.randomUUID()}.jpg`;
-
-  const { error: uploadError } =
-    await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("generated-images")
-      .upload(
-        fileName,
-        bytes,
-        {
-          contentType: "image/jpeg",
-          cacheControl: "60",
-          upsert: false,
-        }
-      );
+      .upload(fileName, bytes, {
+        contentType: "image/jpeg",
+        cacheControl: "60",
+        upsert: false,
+      });
 
-  if (uploadError) {
-    throw uploadError;
-  }
+    if (uploadError) {
+      console.error("[OPENAI] storage upload error:", uploadError.message);
+      throw uploadError;
+    }
 
-  const { error: downloadError } =
-  await supabase.storage
-    .from("generated-images")
-    .download(fileName);
-  
-  if (downloadError) {
-    throw downloadError;
-  }
+    const { data: publicUrlData } = supabase.storage
+      .from("generated-images")
+      .getPublicUrl(fileName);
 
-  const {
-    data: publicUrlData,
-  } = supabase.storage
-    .from("generated-images")
-    .getPublicUrl(fileName);
+    console.log("[OPENAI] b64 uploaded, public url:", publicUrlData.publicUrl.substring(0, 100));
 
-  return new Response(
-    JSON.stringify({
+    return jsonResponse({
+      provider: "openai",
       status: "succeeded",
       output: publicUrlData.publicUrl,
-      provider: config.provider,
       model: config.model,
-      referenceId,
-    }),
-
-    {
-      status: 200,
-
-      headers: {
-        ...corsHeaders,
-        "Content-Type":
-          "application/json",
-      },
-    }
-  );
-}
+      referenceId: referenceId as string,
+      functionVersion: FUNCTION_VERSION,
+    });
+  }
 
   throw new Error(
     `OpenAI response missing output image: ${JSON.stringify(openaiData).substring(0, 300)}`
@@ -3934,3 +3855,13 @@ else if (b64) {
 throw new Error(
   `Unknown provider: ${(config as { provider: string }).provider}`
 );
+
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error("[POST ERROR]", msg);
+      return jsonResponse({ error: msg } as unknown as GenerateResponse, 500);
+    }
+  }
+
+  return jsonResponse({ error: "Method not allowed" } as unknown as GenerateResponse, 405);
+});

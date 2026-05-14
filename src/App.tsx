@@ -97,57 +97,33 @@ function App() {
         }
 
         const data = await res.json() as {
+          provider?: string;
           status: string;
           output?: string;
           error?: string;
         };
 
-        console.log(
-          '[POLL] id=' +
-            predictionId +
-            ' status=' +
-            data.status
-        );
+        console.log('[POLL] id=' + predictionId + ' provider=' + data.provider + ' status=' + data.status);
 
         if (data.status === 'succeeded') {
           const rawUrl = data.output ?? '';
-
-          console.log(
-            '[POLL] succeeded url:',
-            rawUrl.substring(0, 100)
-          );
-
+          console.log('[POLL] succeeded url:', rawUrl.substring(0, 100));
           setGenerationError('');
           setImgLoadFailed(false);
-
           setRawImageUrl(rawUrl);
           setGeneratedImageUrl(rawUrl);
-
           setIsGenerating(false);
-
           return;
         }
 
-        if (
-          data.status === 'failed' ||
-          data.status === 'canceled'
-        ) {
-          console.error(
-            '[POLL] prediction',
-            data.status,
-            data.error
-          );
-
-          setGenerationError(
-            data.error ||
-              'Generation failed. Please try again.'
-          );
-
+        if (data.status === 'failed' || data.status === 'canceled') {
+          console.error('[POLL] prediction', data.status, data.error);
+          setGenerationError(data.error || 'Generation failed. Please try again.');
           setIsGenerating(false);
-
           return;
         }
 
+        // processing — keep polling
         setTimeout(poll, POLL_INTERVAL_MS);
       } catch (err) {
         if (activeRequestId.current !== requestId) {
@@ -291,93 +267,66 @@ function App() {
           body: formData,
         });
 
-        const jsonData = await response.json();
-        console.log('[GENERATE RESPONSE]', jsonData);
-        
+        // Validate content-type before parsing
+        const ct = response.headers.get('content-type') ?? '';
+        if (!ct.includes('application/json')) {
+          throw new Error(
+            `Unexpected response type "${ct}" — expected application/json`
+          );
+        }
+
+        const jsonData = await response.json() as {
+          provider?: 'openai' | 'replicate';
+          status?: string;
+          predictionId?: string;
+          output?: string;
+          error?: string;
+          model?: string;
+          referenceId?: string;
+          functionVersion?: string;
+        };
+
+        console.log('[GENERATE RESPONSE]', {
+          provider: jsonData.provider,
+          status: jsonData.status,
+          predictionId: jsonData.predictionId,
+          output: jsonData.output?.substring(0, 80),
+          functionVersion: jsonData.functionVersion,
+        });
+
         if (activeRequestId.current !== requestId) {
           return;
         }
 
-        // JSON error branch
         if (!response.ok) {
-
-          console.error(
-            '[GENERATE FULL ERROR]',
-            jsonData
-          );
-
           const message =
             typeof jsonData?.error === 'string'
               ? jsonData.error
-              : typeof jsonData?.error?.message ===
-                  'string'
-                ? jsonData.error.message
-                : typeof jsonData?.message ===
-                    'string'
-                  ? jsonData.message
-                  : JSON.stringify(jsonData);
-
-          throw new Error(
-            message ||
-              'Failed to start generation'
-          );
+              : JSON.stringify(jsonData);
+          throw new Error(message || 'Failed to start generation');
         }
 
-        // Replicate JSON branch
-        const data = jsonData as {
-          id?: string;
-          status?: string;
-          output?: string;
-        };
-
-        // Replicate immediate result
-        if (
-          data.status === 'succeeded' &&
-          data.output
-        ) {
-          if (
-            activeRequestId.current !== requestId
-          ) {
-            return;
-          }
-
-          console.log(
-            '[GENERATE] immediate result, skipping poll'
-          );
-
+        // OpenAI: always immediate — never poll
+        if (jsonData.provider === 'openai' && jsonData.status === 'succeeded' && jsonData.output) {
+          console.log('[GENERATE] OpenAI immediate result, provider=openai');
           setGenerationError('');
           setImgLoadFailed(false);
-
-          setRawImageUrl(data.output);
-          setGeneratedImageUrl(data.output);
-
+          setRawImageUrl(jsonData.output);
+          setGeneratedImageUrl(jsonData.output);
           setIsGenerating(false);
-
           return;
         }
 
-        const predictionId = data.id;
-
-        if (!predictionId) {
-          throw new Error(
-            'No prediction ID returned from server. Please try again.'
-          );
+        // Replicate: start polling using predictionId
+        if (jsonData.provider === 'replicate' && jsonData.predictionId) {
+          console.log('[GENERATE] Replicate prediction started id=' + jsonData.predictionId);
+          pollPrediction(jsonData.predictionId, requestId);
+          return;
         }
 
-        console.log(
-          '[GENERATE] prediction started id=' +
-            predictionId +
-            ' status=' +
-            data.status
+        throw new Error(
+          `Unexpected response shape: provider=${jsonData.provider} status=${jsonData.status}`
         );
-
-        // Replicate polling
-        pollPrediction(
-          predictionId,
-          requestId
-        );
-
-        return;
 
       } catch (err) {
         if (activeRequestId.current !== requestId) {
