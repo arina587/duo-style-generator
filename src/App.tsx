@@ -291,71 +291,10 @@ function App() {
           body: formData,
         });
 
-        // READ RESPONSE ONLY ONCE
-        const responseBlob = await response.blob();
-
+        const jsonData = await response.json();
+        
         if (activeRequestId.current !== requestId) {
           return;
-        }
-
-        const responseContentType =
-          response.headers.get('content-type') ||
-          responseBlob.type ||
-          '';
-
-        const isImageResponse =
-          response.ok &&
-          (
-            responseContentType.startsWith('image/') ||
-            responseBlob.type.startsWith('image/')
-          );
-
-        // GPT-image direct binary response
-        if (isImageResponse) {
-
-          const imageUrl =
-            URL.createObjectURL(responseBlob);
-
-          if (
-            activeRequestId.current !== requestId
-          ) {
-            URL.revokeObjectURL(imageUrl);
-            return;
-          }
-
-          console.log(
-            '[GENERATE] direct image blob:',
-            responseContentType,
-            responseBlob.type,
-            responseBlob.size
-          );
-
-          setGenerationError('');
-          setImgLoadFailed(false);
-
-          setRawImageUrl(imageUrl);
-          setGeneratedImageUrl(imageUrl);
-
-          setIsGenerating(false);
-
-          return;
-        }
-
-        // Non-image response → parse as JSON
-        let jsonData: any = null;
-
-        try {
-          const text =
-            await responseBlob.text();
-
-          jsonData = text
-            ? JSON.parse(text)
-            : null;
-
-        } catch {
-          throw new Error(
-            'Server returned non-JSON non-image response'
-          );
         }
 
         // JSON error branch
