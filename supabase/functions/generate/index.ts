@@ -3637,6 +3637,9 @@ if (config.provider === "replicate") {
     JSON.stringify({
       id: predictionId,
       status: prediction.status,
+      provider: config.provider,
+      model: config.model,
+      referenceId,
     }),
 
     {
@@ -3704,10 +3707,6 @@ if (config.provider === "openai") {
     "85"
   );
 
-  openaiForm.append(
-  "response_format",
-  "b64_json"
-  );
 
   // Attach images
   for (let i = 0; i < images.length; i++) {
@@ -3909,8 +3908,10 @@ else if (b64) {
   return new Response(
     JSON.stringify({
       status: "succeeded",
-      output:
-        publicUrlData.publicUrl,
+      output: publicUrlData.publicUrl,
+      provider: config.provider,
+      model: config.model,
+      referenceId,
     }),
 
     {
