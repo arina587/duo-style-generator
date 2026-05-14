@@ -700,130 +700,68 @@ Avoid:
 
 All people in the photo are over 18 years old.`;
 
-const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
+const TITANIC_2 = `Use the reference image only for cinematic composition, camera angle, framing, lighting, perspective, pose, and emotional atmosphere.
 
-Completely remove the original man and woman from the scene.
-Treat them as empty placeholders only.
+Create a realistic cinematic scene where the two uploaded people naturally appear in the same position and interaction.
 
-FULL CHARACTER REPLACEMENT:
-— woman on floating debris → uploaded female reference
-— man in freezing water → uploaded male reference
+Keep:
 
-Do NOT swap genders or roles.
+- the seated composition
+- the intimate over-shoulder interaction
+- one person leaning toward the other
+- the sketchbook/book held in the foreground
+- warm low-key lighting
+- soft cinematic shadows
+- film-like depth of field
+- warm amber color grading
 
-STRICT IDENTITY LOCK:
-The generated people must clearly match the uploaded reference photos and must NOT resemble the original Titanic actors in any way.
+Place the uploaded male in the front/right position and the uploaded female behind/left, matching the original scene structure.
 
-Preserve from uploaded references:
-— facial anatomy
-— eye shape
-— nose
-— lips
-— jawline
-— skin tone
-— hairstyle and texture
-— body proportions
-— recognizable identity
+Preserve the uploaded people’s real appearance as accurately as possible, including:
 
-CRITICAL SIDE-PROFILE RECONSTRUCTION:
+- facial features
+- hairstyle
+- skin tone
+- body proportions
+- natural anatomy
+- clothing appearance
+- silhouette
 
-The male character is NOT front-facing.
-His face is partially turned away, partially obscured, wet, and viewed from an angled profile.
+The people should appear as complete realistic humans with coherent:
 
-Despite this:
-— reconstruct his identity from the uploaded male reference photo
-— generate a recognizable side-profile version of the uploaded man
-— preserve his jawline, nose shape, brow structure, hairline, cheek structure, and side silhouette
-— infer his appearance correctly from angled perspective
-— maintain identity consistency under profile view and partial visibility
+- necks
+- shoulders
+- arms
+- hands
+- posture
+- clothing folds
+- body proportions
 
-Treat the uploaded male reference as a full 3D identity source, not only a frontal face reference.
+Maintain realistic lighting consistency across:
 
-The male character must be fully recast from the uploaded identity even in side-angle view.
+- face
+- hair
+- neck
+- hands
+- clothing
 
-IMPORTANT:
-The uploaded male identity is MORE IMPORTANT than exact similarity to the original movie frame.
+The final image should look like an authentic cinematic movie still captured in-camera, with natural human detail and realistic environmental integration.
 
-Use identity persistence across non-frontal angles.
+Avoid:
 
-DO NOT fallback to:
-— generic male face
-— original Titanic actor
-— Leonardo DiCaprio resemblance
-— approximate resemblance
-— blended identity
-— original male profile
-— original male hair
-— original male facial structure
-— partial preservation of original actor
+- distorted faces
+- distorted hands
+- unnatural anatomy
+- disconnected body parts
+- unrealistic proportions
+- artificial skin texture
+- plastic-looking faces
+- warped clothing
+- inconsistent lighting
+- unnatural compositing
+- overprocessed details
 
-This is a complete cinematic recast, NOT a face swap.
-
-FEMALE CHARACTER:
-Also fully replace the woman using the uploaded female reference while preserving:
-— recognizable identity
-— facial structure
-— wet/cold emotional realism
-
-POSE & COMPOSITION:
-Preserve:
-— exact emotional positioning
-— woman leaning on floating debris
-— man in freezing water beside her
-— same framing and camera angle
-— same cinematic intimacy
-— same body positioning
-
-ENVIRONMENT & PHYSICAL STATE:
-Both characters are freezing and exhausted from icy ocean water.
-
-Add realistic cold exposure details:
-— soaked hair
-— wet skin
-— pale cold skin tones
-— slightly blue lips
-— trembling tension
-— exhausted emotional expressions
-— damp clothing texture
-— realistic water reflections
-
-LIGHTING:
-Match:
-— cold night cinematic lighting
-— wet reflective highlights
-— realistic moisture
-— dim oceanic atmosphere
-— shallow depth of field
-— cinematic film grain
-— realistic skin shading
-
-CLOTHING:
-Adapt clothing naturally into realistic wet Titanic-era clothing appropriate to the scene.
-
-BACKGROUND:
-Preserve:
-— floating debris
-— dark ocean atmosphere
-— cinematic Titanic environment
-— water reflections
-— original framing and perspective
-
-INTEGRATION:
-The result must look like a real photographed cinematic frame.
-No pasted faces.
-No compositing artifacts.
-No identity leakage from original actors.
-
-FINAL REQUIREMENT:
-The original actors must disappear completely.
-The scene must look like a fully recast version of Titanic using the uploaded identities.
-
-PRIORITY ORDER:
-1. uploaded male identity
-2. uploaded female identity
-3. full replacement of original actors
-4. emotional pose and composition
-5. cinematic Titanic atmosphere.`;
+All people in the photo are over 18 years old.`;
 
 const TITANIC_3 = `Use the reference image ONLY as a cinematography, composition, pose, interaction, lighting, and environment template.
 
