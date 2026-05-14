@@ -88,36 +88,33 @@ export default function Result({
       .finally(() => setDebugFetching(false));
   }, [imgLoadFailed, displaySrc]);
 
-  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-  const src = (e.target as HTMLImageElement).src;
+  const handleImgError = () => {
+    console.log('[IMG ERROR]', displaySrc, Date.now());
 
-  console.log('[IMG ERROR]', src, Date.now());
+    if (retryCount.current < 6) {
+      retryCount.current += 1;
 
-  if (retryCount.current < 6) {
-    retryCount.current += 1;
+      const delay = retryCount.current * 3000;
 
-    const delay =
-      retryCount.current * 3000;
+      console.log(
+        '[IMG RETRY]',
+        retryCount.current,
+        'delay=',
+        delay,
+        displaySrc.substring(0, 100)
+      );
 
-    console.log(
-      '[IMG RETRY]',
-      retryCount.current,
-      'delay=',
-      delay,
-      displaySrc.substring(0, 100)
-    );
+      setTimeout(() => {
+        setRetryKey(k => k + 1);
+      }, delay);
 
-    setTimeout(() => {
-      setRetryKey(k => k + 1);
-    }, delay);
+      return;
+    }
 
-    return;
-  }
+    console.log('[IMG RETRY EXHAUSTED] marking imgLoadFailed, url:', displaySrc.substring(0, 100));
 
-  console.log('[IMG RETRY EXHAUSTED] marking imgLoadFailed');
-
-  onImgError(src);
-};
+    onImgError(displaySrc);
+  };
 
   const handleRetry = () => {
     retryCount.current = 0;
@@ -308,16 +305,14 @@ export default function Result({
             {!isGenerating && showImage && (
               <img
                 key={retryKey}
-                src={
-                  displaySrc.startsWith('http')
-                    ? `${displaySrc}${displaySrc.includes('?') ? '&' : '?'}t=${retryKey}`
-                    : displaySrc
-                }
+                src={displaySrc}
                 alt="Generated fusion result"
                 loading="eager"
+                decoding="async"
+                referrerPolicy="no-referrer"
                 className="absolute inset-0 z-10 w-full h-full object-contain object-center block animate-scale-in"
-                onLoad={(e) => {
-                  console.log('[IMG LOADED]', (e.target as HTMLImageElement).src.substring(0, 80));
+                onLoad={() => {
+                  console.log('[IMG LOADED]', displaySrc.substring(0, 80));
                   setImgLoaded(true);
                   onImgLoad();
                 }}

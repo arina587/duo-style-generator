@@ -13,6 +13,8 @@ interface UploadProps {
     photo1b?: File | null,
     photo2b?: File | null,
   ) => void;
+  /** Passed from App so the button reflects the true generation state. */
+  isGeneratingFromParent?: boolean;
   photo1: File | null;
   setPhoto1: (file: File | null) => void;
   photo2: File | null;
@@ -33,11 +35,14 @@ interface UploadProps {
 
 export default function Upload({
   selectedRef, onBack, onGenerate,
+  isGeneratingFromParent = false,
   photo1, setPhoto1, photo2, setPhoto2,
   preview1, setPreview1, preview2, setPreview2,
   photo1b, setPhoto1b, photo2b, setPhoto2b,
   preview1b, setPreview1b, preview2b, setPreview2b,
 }: UploadProps) {
+  // isGeneratingFromParent is the authoritative generating state.
+  // Local isGenerating is only used to disable the button between click and parent state update.
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string>('');
   const [referenceFile, setReferenceFile] = useState<File | null>(null);
@@ -143,7 +148,6 @@ export default function Upload({
   };
 
   const removeSecondary = (
-    person: 1 | 2,
     setPhoto: (f: File | null) => void,
     setPreview: (u: string) => void,
     setShow: (v: boolean) => void
@@ -153,20 +157,24 @@ export default function Upload({
     setShow(false);
   };
 
-  const handleGenerate = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleGenerate = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isGenerating) return;
+    if (isGenerating || isGeneratingFromParent) return;
 
     if (!photo1 || !photo2) { setError('Please upload both photos before generating'); return; }
     if (!referenceFile) { setError('Reference image still loading. Please wait.'); return; }
 
+    // Set local state briefly; App.tsx will navigate away to the result view immediately
     setIsGenerating(true);
     setError('');
     onGenerate(photo1, photo2, referenceFile, undefined, photo1b, photo2b);
+    // Reset local state after tick so if user navigates back, button is re-enabled
+    setTimeout(() => setIsGenerating(false), 500);
   };
 
-  const canGenerate = !isGenerating && !!photo1 && !!photo2 && !!referenceFile;
+  const effectivelyGenerating = isGenerating || isGeneratingFromParent;
+  const canGenerate = !effectivelyGenerating && !!photo1 && !!photo2 && !!referenceFile;
 
   const steps = [
     { n: 1, label: 'Upload Photos', done: !!(photo1 && photo2) },
@@ -310,8 +318,8 @@ export default function Upload({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           {persons.map(({
             letter, label, hint, secondaryHint,
-            primaryPhoto, primaryPreview, setPrimaryPhoto, setPrimaryPreview,
-            secondaryPhoto, secondaryPreview, setSecondaryPhoto, setSecondaryPreview,
+            primaryPreview, setPrimaryPhoto, setPrimaryPreview,
+            secondaryPreview, setSecondaryPhoto, setSecondaryPreview,
             showSecondary, setShowSecondary,
           }) => (
             <div key={letter} className="card-premium p-4 flex flex-col gap-3">
@@ -344,7 +352,7 @@ export default function Upload({
                 <label className="block cursor-pointer">
                   <input
                     type="file"
-                    accept="image/*"
+                    accept="image/*,.heic,.heif"
                     onChange={(e) => handleFileChange(e, setPrimaryPhoto, setPrimaryPreview)}
                     className="hidden"
                   />
@@ -395,7 +403,6 @@ export default function Upload({
                     <button
                       type="button"
                       onClick={() => removeSecondary(
-                        letter === 'A' ? 1 : 2,
                         setSecondaryPhoto,
                         setSecondaryPreview,
                         setShowSecondary
@@ -422,7 +429,7 @@ export default function Upload({
                   <label className="block cursor-pointer">
                     <input
                       type="file"
-                      accept="image/*"
+                      accept="image/*,.heic,.heif"
                       onChange={(e) => handleFileChange(e, setSecondaryPhoto, setSecondaryPreview)}
                       className="hidden"
                     />
@@ -471,7 +478,7 @@ export default function Upload({
             disabled={!canGenerate}
             className="btn-generate flex items-center gap-2.5 px-10 py-3.5 text-base tracking-wide"
           >
-            {isGenerating ? (
+            {effectivelyGenerating ? (
               <>
                 <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />

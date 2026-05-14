@@ -7,6 +7,73 @@ import type { ReferenceItem } from './data/references';
 
 type View = 'home' | 'upload' | 'result';
 
+// heic2any is lazy-loaded only when needed (avoids eager Worker creation at app init)
+async function convertHeicToJpeg(file: File): Promise<File> {
+  const { default: heic2any } = await import('heic2any');
+  console.log('[HEIC] converting', file.name, file.type, '->', 'image/jpeg');
+  const blob = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.92 }) as Blob;
+  return new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
+}
+
+const HEIC_TYPES = new Set(['image/heic', 'image/heif']);
+
+async function normalizeFile(file: File): Promise<File> {
+  const ltype = file.type.toLowerCase();
+  // Check explicit MIME type
+  if (HEIC_TYPES.has(ltype)) {
+    return convertHeicToJpeg(file);
+  }
+  // Check file extension for cases where iOS gives empty or wrong type
+  if (/\.(heic|heif)$/i.test(file.name)) {
+    return convertHeicToJpeg(file);
+  }
+  return file;
+}
+
+function preloadImage(url: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const img = new window.Image();
+    // crossOrigin needed for Supabase storage public URLs to avoid CORS taint
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      console.log('[PRELOAD] loaded:', url.substring(0, 80));
+      resolve();
+    };
+    img.onerror = () => {
+      // Try without crossOrigin as fallback (some CDNs don't allow credentialed requests)
+      const img2 = new window.Image();
+      img2.onload = () => {
+        console.log('[PRELOAD] loaded (no-cors):', url.substring(0, 80));
+        resolve();
+      };
+      img2.onerror = () => {
+        reject(new Error(`Image failed to preload: ${url.substring(0, 80)}`));
+      };
+      img2.src = url;
+    };
+    img.src = url;
+  });
+}
+
+function validateOutputUrl(url: string | undefined): string {
+  if (!url) {
+    throw new Error('Generation succeeded but no output URL was returned');
+  }
+  if (!url.startsWith('https://')) {
+    throw new Error(
+      `Output URL is not a valid HTTPS URL: "${url.substring(0, 80)}"`
+    );
+  }
+  // Guard against temporary OpenAI/Azure blob storage URLs leaking through
+  if (url.includes('oaidalleapiprodscus.blob.core.windows.net') ||
+      url.includes('openai.com/files/')) {
+    throw new Error(
+      'Received temporary OpenAI URL — backend must upload to storage first'
+    );
+  }
+  return url;
+}
+
 function App() {
   const [currentView, setCurrentView] = useState<View>('home');
 
@@ -67,7 +134,8 @@ function App() {
 
   const pollPrediction = (
     predictionId: string,
-    requestId: string
+    requestId: string,
+    provider: 'openai' | 'replicate'
   ) => {
     const POLL_INTERVAL_MS = 2500;
 
@@ -79,6 +147,10 @@ function App() {
         `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
     };
 
+    // OpenAI jobs are tracked in generation_jobs table via ?jobId=
+    // Replicate predictions are polled via Replicate API using ?id=
+    const pollParam = provider === 'openai' ? 'jobId' : 'id';
+
     const poll = async () => {
       if (activeRequestId.current !== requestId) {
         return;
@@ -86,14 +158,19 @@ function App() {
 
       try {
         const res = await fetch(
-          `${apiBase}?id=${predictionId}`,
-          {
-            headers: authHeader,
-          }
+          `${apiBase}?${pollParam}=${predictionId}`,
+          { headers: authHeader }
         );
 
         if (activeRequestId.current !== requestId) {
           return;
+        }
+
+        const ct = res.headers.get('content-type') ?? '';
+        if (!ct.includes('application/json')) {
+          throw new Error(
+            `Poll response has unexpected content-type "${ct}" — expected application/json`
+          );
         }
 
         const data = await res.json() as {
@@ -108,10 +185,29 @@ function App() {
         if (data.status === 'succeeded') {
           const rawUrl = data.output ?? '';
           console.log('[POLL] succeeded url:', rawUrl.substring(0, 100));
+
+          let validatedUrl: string;
+          try {
+            validatedUrl = validateOutputUrl(rawUrl);
+          } catch (validateErr) {
+            const msg = validateErr instanceof Error ? validateErr.message : String(validateErr);
+            console.error('[POLL] URL validation failed:', msg);
+            setGenerationError(msg);
+            setIsGenerating(false);
+            return;
+          }
+
+          // Preload before showing — swallow failures (image will still attempt to render)
+          try {
+            await preloadImage(validatedUrl);
+          } catch (preloadErr) {
+            console.warn('[PRELOAD] failed (will still attempt render):', preloadErr instanceof Error ? preloadErr.message : preloadErr);
+          }
+
           setGenerationError('');
           setImgLoadFailed(false);
-          setRawImageUrl(rawUrl);
-          setGeneratedImageUrl(rawUrl);
+          setRawImageUrl(validatedUrl);
+          setGeneratedImageUrl(validatedUrl);
           setIsGenerating(false);
           return;
         }
@@ -132,9 +228,7 @@ function App() {
 
         console.warn(
           '[POLL] network error, retrying:',
-          err instanceof Error
-            ? err.message
-            : err
+          err instanceof Error ? err.message : err
         );
 
         setTimeout(poll, POLL_INTERVAL_MS);
@@ -170,7 +264,6 @@ function App() {
       setGenerationError(
         'Missing required data. Please try again.'
       );
-
       return;
     }
 
@@ -182,67 +275,69 @@ function App() {
     activeRequestId.current = requestId;
 
     setIsGenerating(true);
-
     setGenerationError('');
     setGeneratedImageUrl('');
     setRawImageUrl('');
-
     setImgLoadFailed(false);
-
     setCurrentView('result');
 
+    console.log('[DEVICE]', navigator.userAgent);
     console.log(
-      '[DEVICE]',
-      navigator.userAgent
+      '[GENERATE] requestId=' + requestId +
+      ' referenceId=' + selectedRef.id
     );
 
-    console.log(
-      '[GENERATE] requestId=' +
-        requestId +
-        ' referenceId=' +
-        selectedRef.id
-    );
+    // Log file info — these are the already-resized files from Upload.tsx
+    console.log('[UPLOAD FILE] photo1:', photo1.name, photo1.type, photo1.size);
+    console.log('[UPLOAD FILE] photo2:', photo2.name, photo2.type, photo2.size);
+    if (photo1b) {
+      console.log('[UPLOAD FILE] photo1b:', photo1b.name, photo1b.type, photo1b.size);
+    }
+    if (photo2b) {
+      console.log('[UPLOAD FILE] photo2b:', photo2b.name, photo2b.type, photo2b.size);
+    }
 
-    console.log(
-      "[UPLOAD FILE]",
-      file.name,
-      file.type,
-      file.size
-    );
+    // Normalize HEIC/HEIF files to JPEG.
+    // Note: Upload.tsx's resizeImage already converts to JPEG via canvas for photos the
+    // user uploads. This normalizeFile pass is an extra safety net for any file that
+    // bypassed resizeImage or arrived with wrong/empty type.
+    let normalizedPhoto1 = photo1;
+    let normalizedPhoto2 = photo2;
+    let normalizedPhoto1b = photo1b ?? null;
+    let normalizedPhoto2b = photo2b ?? null;
+
+    try {
+      [normalizedPhoto1, normalizedPhoto2] = await Promise.all([
+        normalizeFile(photo1),
+        normalizeFile(photo2),
+      ]);
+      if (photo1b) normalizedPhoto1b = await normalizeFile(photo1b);
+      if (photo2b) normalizedPhoto2b = await normalizeFile(photo2b);
+    } catch (normalizeErr) {
+      const msg = normalizeErr instanceof Error ? normalizeErr.message : String(normalizeErr);
+      console.error('[HEIC CONVERT ERROR]', msg);
+      setGenerationError(
+        'Failed to convert image format. Please use JPEG or PNG.'
+      );
+      setIsGenerating(false);
+      return;
+    }
+
+    console.log('[NORMALIZED] photo1:', normalizedPhoto1.name, normalizedPhoto1.type, normalizedPhoto1.size);
+    console.log('[NORMALIZED] photo2:', normalizedPhoto2.name, normalizedPhoto2.type, normalizedPhoto2.size);
 
     const formData = new FormData();
-
-    formData.append('person1', photo1);
-
-    if (photo1b) {
-      formData.append('person1b', photo1b);
+    formData.append('person1', normalizedPhoto1);
+    if (normalizedPhoto1b) {
+      formData.append('person1b', normalizedPhoto1b);
     }
-
-    formData.append('person2', photo2);
-
-    if (photo2b) {
-      formData.append('person2b', photo2b);
+    formData.append('person2', normalizedPhoto2);
+    if (normalizedPhoto2b) {
+      formData.append('person2b', normalizedPhoto2b);
     }
-
-    formData.append(
-      'reference',
-      referenceFile
-    );
-
-    formData.append(
-      'style',
-      selectedRef.style
-    );
-
-    formData.append(
-      'referenceId',
-      selectedRef.id
-    );
-
-    formData.append(
-      'prompt',
-      selectedRef.prompt ?? ''
-    );
+    formData.append('reference', referenceFile);
+    formData.append('style', selectedRef.style);
+    formData.append('referenceId', selectedRef.id);
 
     if (mode) {
       formData.append('mode', mode);
@@ -251,142 +346,104 @@ function App() {
     const apiUrl =
       `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
 
-    const MAX_START_RETRIES = 0;
+    if (activeRequestId.current !== requestId) {
+      return;
+    }
 
-    for (
-      let attempt = 0;
-      attempt <= MAX_START_RETRIES;
-      attempt++
-    ) {
+    try {
+      console.log('[GENERATE] POSTing to', apiUrl.substring(0, 60));
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          Authorization:
+            `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        },
+        body: formData,
+      });
+
       if (activeRequestId.current !== requestId) {
         return;
       }
 
-      try {
-        const response = await fetch(apiUrl, {
-          method: 'POST',
-
-          headers: {
-            Authorization:
-              `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-
-          body: formData,
-        });
-
-        // Validate content-type before parsing
-        const ct = response.headers.get('content-type') ?? '';
-        if (!ct.includes('application/json')) {
-          throw new Error(
-            `Unexpected response type "${ct}" — expected application/json`
-          );
-        }
-
-        const jsonData = await response.json() as {
-          provider?: 'openai' | 'replicate';
-          status?: string;
-          predictionId?: string;
-          output?: string;
-          error?: string;
-          model?: string;
-          referenceId?: string;
-          functionVersion?: string;
-        };
-
-        console.log('[GENERATE RESPONSE]', {
-          provider: jsonData.provider,
-          status: jsonData.status,
-          predictionId: jsonData.predictionId,
-          output: jsonData.output?.substring(0, 80),
-          functionVersion: jsonData.functionVersion,
-        });
-
-        if (activeRequestId.current !== requestId) {
-          return;
-        }
-
-        if (!response.ok) {
-          const message =
-            typeof jsonData?.error === 'string'
-              ? jsonData.error
-              : JSON.stringify(jsonData);
-          throw new Error(message || 'Failed to start generation');
-        }
-
-        // OpenAI: always immediate — never poll
-        if (jsonData.provider === 'openai' && jsonData.status === 'succeeded' && jsonData.output) {
-          console.log('[GENERATE] OpenAI immediate result, provider=openai');
-          setGenerationError('');
-          setImgLoadFailed(false);
-          setRawImageUrl(jsonData.output);
-          setGeneratedImageUrl(jsonData.output);
-          setIsGenerating(false);
-          return;
-        }
-
-        // Replicate: start polling using predictionId
-        if (jsonData.provider === 'replicate' && jsonData.predictionId) {
-          console.log('[GENERATE] Replicate prediction started id=' + jsonData.predictionId);
-          pollPrediction(jsonData.predictionId, requestId);
-          return;
-        }
-
+      // Validate content-type before parsing — non-JSON means edge function crashed
+      const ct = response.headers.get('content-type') ?? '';
+      if (!ct.includes('application/json')) {
+        let body = '';
+        try { body = await response.text(); } catch { /* ignore */ }
         throw new Error(
-          `Unexpected response shape: provider=${jsonData.provider} status=${jsonData.status}`
+          `Server returned unexpected content-type "${ct}" (status ${response.status}). ` +
+          (body ? `Body: ${body.substring(0, 200)}` : '')
         );
+      }
 
-      } catch (err) {
-        if (activeRequestId.current !== requestId) {
-          return;
-        }
+      const jsonData = await response.json() as {
+        provider?: 'openai' | 'replicate';
+        status?: string;
+        predictionId?: string;
+        output?: string;
+        error?: string;
+        model?: string;
+        referenceId?: string;
+        functionVersion?: string;
+      };
 
-        const msg =
-          err instanceof Error
-            ? err.message
-            : String(err);
+      console.log('[GENERATE RESPONSE]', {
+        provider: jsonData.provider,
+        status: jsonData.status,
+        predictionId: jsonData.predictionId,
+        output: jsonData.output?.substring(0, 80),
+        functionVersion: jsonData.functionVersion,
+        httpStatus: response.status,
+      });
 
-        const lower = msg.toLowerCase();
-
-        const isNetworkTimeout =
-          lower.includes(
-            'failed to fetch'
-          ) ||
-          lower.includes('network') ||
-          lower.includes('timeout') ||
-          lower.includes('aborted');
-
-        if (
-          isNetworkTimeout &&
-          attempt < MAX_START_RETRIES
-        ) {
-          console.warn(
-            `[GENERATE] network timeout on attempt ${
-              attempt + 1
-            }, retrying in 3s...`
-          );
-
-          await new Promise((resolve) =>
-            setTimeout(resolve, 3000)
-          );
-
-          continue;
-        }
-
-        console.error(
-          '[GENERATE ERROR] requestId=' +
-            requestId,
-          msg
-        );
-
-        setGenerationError(
-          msg ||
-            'Generation failed. Please try again.'
-        );
-
-        setIsGenerating(false);
-
+      if (activeRequestId.current !== requestId) {
         return;
       }
+
+      if (!response.ok) {
+        const message =
+          typeof jsonData?.error === 'string'
+            ? jsonData.error
+            : JSON.stringify(jsonData);
+        throw new Error(message || `Server error ${response.status}`);
+      }
+
+      // Both providers now return status:"processing" + predictionId — poll until done.
+      // OpenAI jobs use ?jobId= (generation_jobs table), Replicate uses ?id= (Replicate API).
+      if (
+        jsonData.status === 'processing' &&
+        jsonData.predictionId &&
+        (jsonData.provider === 'openai' || jsonData.provider === 'replicate')
+      ) {
+        const provider = jsonData.provider;
+        console.log(`[GENERATE] ${provider} job started, polling predictionId=${jsonData.predictionId}`);
+        pollPrediction(jsonData.predictionId, requestId, provider);
+        return;
+      }
+
+      // Unknown shape — should not happen
+      throw new Error(
+        `Unexpected response: provider=${jsonData.provider} status=${jsonData.status} ` +
+        `predictionId=${jsonData.predictionId ?? 'none'}`
+      );
+
+    } catch (err) {
+      if (activeRequestId.current !== requestId) {
+        return;
+      }
+
+      const msg =
+        err instanceof Error
+          ? err.message
+          : String(err);
+
+      console.error('[GENERATE ERROR] requestId=' + requestId, msg);
+
+      setGenerationError(
+        msg || 'Generation failed. Please try again.'
+      );
+      setIsGenerating(false);
     }
   };
 
@@ -398,45 +455,37 @@ function App() {
     }
 
     setCurrentView('home');
-
     setSelectedRef(null);
     setSelectedCategory(null);
-
     setGeneratedImageUrl('');
     setRawImageUrl('');
-
     setImgLoadFailed(false);
     setGenerationError('');
-
     setPhoto1(null);
     setPhoto2(null);
-
     setPreview1('');
     setPreview2('');
-
     setPhoto1b(null);
     setPhoto2b(null);
-
     setPreview1b('');
     setPreview2b('');
   };
 
   const handleBackFromUpload = () => {
     setCurrentView('home');
-
     setGeneratedImageUrl('');
     setRawImageUrl('');
-
     setImgLoadFailed(false);
     setGenerationError('');
   };
 
   const handleBackToUpload = () => {
+    // Cancel any in-flight request
+    activeRequestId.current = '';
+    setIsGenerating(false);
     setCurrentView('upload');
-
     setGeneratedImageUrl('');
     setRawImageUrl('');
-
     setImgLoadFailed(false);
     setGenerationError('');
   };
@@ -448,9 +497,7 @@ function App() {
       {currentView === 'home' && (
         <Home
           onImageSelect={handleImageSelect}
-          initialCategory={
-            selectedCategory
-          }
+          initialCategory={selectedCategory}
         />
       )}
 
@@ -460,6 +507,7 @@ function App() {
             selectedRef={selectedRef}
             onBack={handleBackFromUpload}
             onGenerate={handleGenerate}
+            isGeneratingFromParent={isGenerating}
             photo1={photo1}
             setPhoto1={setPhoto1}
             photo2={photo2}
@@ -483,26 +531,17 @@ function App() {
         <Result
           onBack={handleBackToUpload}
           onStartOver={handleBackToHome}
-          generatedImageUrl={
-            generatedImageUrl
-          }
+          generatedImageUrl={generatedImageUrl}
           rawImageUrl={rawImageUrl}
           imgLoadFailed={imgLoadFailed}
           onImgError={(src) => {
-            console.log(
-              '[IMG ERROR]',
-              src
-            );
-
+            console.log('[IMG ERROR cb]', src?.substring(0, 80));
             setImgLoadFailed(true);
           }}
           onImgLoad={() => {
             console.log(
-              '[IMG LOADED]',
-              generatedImageUrl?.substring(
-                0,
-                80
-              )
+              '[IMG LOADED cb]',
+              generatedImageUrl?.substring(0, 80)
             );
           }}
           isGenerating={isGenerating}

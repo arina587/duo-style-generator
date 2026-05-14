@@ -1,7 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const FUNCTION_VERSION = "generate-routing-v2";
+const FUNCTION_VERSION = "generate-v3-async-openai";
 
 const supabase = createClient(
   Deno.env.get("SUPABASE_URL")!,
@@ -3322,6 +3322,152 @@ async function proxyImage(proxyUrl: string): Promise<Response> {
   });
 }
 
+// ── Shared helper: upload image bytes to Supabase Storage, return public URL ──
+async function uploadToStorage(imageBytes: Uint8Array, mimeType: string): Promise<string> {
+  const ext = mimeType === "image/png" ? "png" : mimeType === "image/webp" ? "webp" : "jpg";
+  const fileName = `generated/${crypto.randomUUID()}.${ext}`;
+  console.log("[STORAGE] uploading fileName:", fileName, "mime:", mimeType, "bytes:", imageBytes.byteLength);
+
+  const { error: uploadError } = await supabase.storage
+    .from("generated-images")
+    .upload(fileName, imageBytes, {
+      contentType: mimeType,
+      cacheControl: "3600",
+      upsert: false,
+    });
+
+  if (uploadError) {
+    console.error("[STORAGE] upload error:", uploadError.message);
+    throw new Error(`Storage upload failed: ${uploadError.message}`);
+  }
+
+  const { data: publicUrlData } = supabase.storage
+    .from("generated-images")
+    .getPublicUrl(fileName);
+
+  const url = publicUrlData.publicUrl;
+  console.log("[STORAGE] public url:", url.substring(0, 100));
+  return url;
+}
+
+// ── OpenAI generation: called inside waitUntil so it runs after response is sent ──
+async function runOpenAIJob(
+  jobId: string,
+  images: string[],
+  finalPrompt: string,
+  model: string,
+  referenceId: string,
+): Promise<void> {
+  const markFailed = async (msg: string) => {
+    console.error("[OPENAI JOB] failed jobId=" + jobId, msg);
+    await supabase.from("generation_jobs").update({
+      status: "failed",
+      error: msg,
+    }).eq("id", jobId);
+  };
+
+  try {
+    const openaiApiKey = Deno.env.get("OPENAI_API_KEY");
+    if (!openaiApiKey) {
+      await markFailed("OPENAI_API_KEY not configured");
+      return;
+    }
+
+    // Mark as processing
+    await supabase.from("generation_jobs").update({ status: "processing" }).eq("id", jobId);
+
+    console.log("[OPENAI JOB] building multipart request, images:", images.length, "jobId:", jobId, "referenceId:", referenceId);
+
+    const openaiForm = new FormData();
+    openaiForm.append("model", model);
+    openaiForm.append("prompt", finalPrompt);
+    openaiForm.append("n", "1");
+    openaiForm.append("size", "1024x1024");
+    openaiForm.append("quality", "medium");
+    openaiForm.append("output_format", "jpeg");
+    openaiForm.append("output_compression", "85");
+
+    for (let i = 0; i < images.length; i++) {
+      const dataUrl = images[i];
+      const commaIdx = dataUrl.indexOf(",");
+      const meta = dataUrl.substring(5, dataUrl.indexOf(";"));
+      const b64str = dataUrl.substring(commaIdx + 1);
+      const binaryStr = atob(b64str);
+      const bytes = new Uint8Array(binaryStr.length);
+      for (let j = 0; j < binaryStr.length; j++) {
+        bytes[j] = binaryStr.charCodeAt(j);
+      }
+      const ext = meta.split("/")[1] ?? "jpg";
+      openaiForm.append("image[]", new Blob([bytes], { type: meta }), `image_${i}.${ext}`);
+    }
+
+    const openaiRes = await fetch("https://api.openai.com/v1/images/edits", {
+      method: "POST",
+      headers: { "Authorization": `Bearer ${openaiApiKey}` },
+      body: openaiForm,
+    });
+
+    const openaiContentType = openaiRes.headers.get("content-type") ?? "";
+    console.log("[OPENAI JOB] response status:", openaiRes.status, "content-type:", openaiContentType);
+
+    if (!openaiRes.ok) {
+      let errMsg = `OpenAI image generation failed (${openaiRes.status})`;
+      try {
+        const errData = await openaiRes.json() as Record<string, unknown>;
+        console.log("[OPENAI JOB] error body:", JSON.stringify(errData).substring(0, 400));
+        errMsg += ": " + (errData?.error ? JSON.stringify(errData.error) : JSON.stringify(errData).substring(0, 300));
+      } catch {
+        errMsg += ": (non-JSON error body)";
+      }
+      await markFailed(errMsg);
+      return;
+    }
+
+    const openaiData = await openaiRes.json() as Record<string, unknown>;
+    console.log("[OPENAI JOB] response keys:", Object.keys(openaiData).join(", "));
+
+    const dataArr = openaiData.data as Array<Record<string, unknown>> | undefined;
+    const first = dataArr?.[0];
+    const outputUrl = first?.url as string | undefined;
+    const b64json = first?.b64_json as string | undefined;
+
+    let stableUrl: string;
+
+    if (outputUrl) {
+      // Temporary OpenAI/Azure URL — fetch binary and upload to stable Supabase Storage
+      console.log("[OPENAI JOB] URL response, fetching binary:", outputUrl.substring(0, 80));
+      const imgFetch = await fetch(outputUrl, { headers: { "Accept": "image/*" } });
+      if (!imgFetch.ok) {
+        await markFailed(`Failed to fetch OpenAI image (${imgFetch.status})`);
+        return;
+      }
+      const imgContentType = (imgFetch.headers.get("content-type") ?? "image/jpeg").split(";")[0].trim();
+      console.log("[OPENAI JOB] fetched content-type:", imgContentType);
+      const imgBytes = new Uint8Array(await imgFetch.arrayBuffer());
+      stableUrl = await uploadToStorage(imgBytes, imgContentType);
+    } else if (b64json) {
+      console.log("[OPENAI JOB] b64_json response, decoding...");
+      const binaryStr = atob(b64json);
+      const bytes = new Uint8Array(binaryStr.length);
+      for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+      stableUrl = await uploadToStorage(bytes, "image/jpeg");
+    } else {
+      await markFailed(`OpenAI response missing output image: ${JSON.stringify(openaiData).substring(0, 200)}`);
+      return;
+    }
+
+    console.log("[OPENAI JOB] succeeded, stableUrl:", stableUrl.substring(0, 100));
+    await supabase.from("generation_jobs").update({
+      status: "succeeded",
+      output: stableUrl,
+    }).eq("id", jobId);
+
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    await markFailed(msg);
+  }
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
@@ -3329,22 +3475,49 @@ Deno.serve(async (req: Request) => {
 
   const reqUrl = new URL(req.url);
 
-  // ── GET /generate?proxyUrl=... ── proxy a replicate.delivery image
-  if (req.method === "GET" && reqUrl.searchParams.has("proxyUrl")) {
-    const proxyUrl = reqUrl.searchParams.get("proxyUrl")!;
-    console.log("[PROXY] fetching:", proxyUrl.substring(0, 80));
-    return proxyImage(proxyUrl);
+  // ── GET ?jobId=  — poll an async OpenAI job from generation_jobs table ──
+  if (req.method === "GET" && reqUrl.searchParams.has("jobId")) {
+    const jobId = reqUrl.searchParams.get("jobId")!;
+    console.log("[JOB POLL] jobId:", jobId);
+
+    try {
+      const { data: job, error: dbErr } = await supabase
+        .from("generation_jobs")
+        .select("status, output, error")
+        .eq("id", jobId)
+        .maybeSingle();
+
+      if (dbErr) {
+        console.error("[JOB POLL] db error:", dbErr.message);
+        return jsonResponse({ provider: "openai", status: "processing" });
+      }
+      if (!job) {
+        return jsonResponse({ provider: "openai", status: "failed", error: "Job not found" });
+      }
+
+      console.log("[JOB POLL] status:", job.status, "output:", String(job.output ?? "").substring(0, 80));
+
+      if (job.status === "succeeded") {
+        return jsonResponse({ provider: "openai", status: "succeeded", output: job.output, functionVersion: FUNCTION_VERSION });
+      }
+      if (job.status === "failed") {
+        return jsonResponse({ provider: "openai", status: "failed", error: job.error ?? "Unknown error" });
+      }
+      // pending or processing
+      return jsonResponse({ provider: "openai", status: "processing" });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error("[JOB POLL ERROR]", msg);
+      return jsonResponse({ provider: "openai", status: "processing" });
+    }
   }
 
-  // ── GET /generate?id=... ── poll prediction status
+  // ── GET ?id=  — poll a Replicate prediction ──
   if (req.method === "GET" && reqUrl.searchParams.has("id")) {
     const predictionId = reqUrl.searchParams.get("id")!;
     const replicateApiKey = Deno.env.get("REPLICATE_API_KEY");
     if (!replicateApiKey) {
-      return new Response(JSON.stringify({ error: "REPLICATE_API_KEY not configured" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return jsonResponse({ provider: "replicate", status: "failed", error: "REPLICATE_API_KEY not configured" });
     }
 
     try {
@@ -3354,21 +3527,17 @@ Deno.serve(async (req: Request) => {
 
       if (!res.ok) {
         const text = await res.text();
-        return new Response(JSON.stringify({ error: `Replicate status check failed (${res.status}): ${text.substring(0, 200)}` }), {
-          status: 502,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        console.error("[REPLICATE POLL] error status:", res.status, text.substring(0, 200));
+        return jsonResponse({ provider: "replicate", status: "processing" });
       }
 
       const prediction = await res.json() as Record<string, unknown>;
       const status = prediction.status as string;
-
-      console.log(`[STATUS] id=${predictionId} status=${status}`);
+      console.log("[REPLICATE POLL] id:", predictionId, "status:", status);
 
       if (status === "succeeded") {
-        console.log("REPLICATE OUTPUT:", JSON.stringify(prediction.output)?.substring(0, 300));
         const outputUrl = extractOutputUrl(prediction.output);
-        console.log("PARSED IMAGE URL:", outputUrl?.substring(0, 200) ?? "(none)");
+        console.log("[REPLICATE POLL] outputUrl:", outputUrl?.substring(0, 100) ?? "(none)");
         if (!outputUrl) {
           return jsonResponse({ provider: "replicate", status: "failed", error: "Output URL could not be extracted" });
         }
@@ -3377,23 +3546,19 @@ Deno.serve(async (req: Request) => {
 
       if (status === "failed" || status === "canceled") {
         const errDetail = JSON.stringify(prediction.error ?? prediction.logs ?? status);
-        console.error(`[STATUS] prediction ${status}:`, errDetail);
+        console.error("[REPLICATE POLL] prediction", status, errDetail);
         return jsonResponse({ provider: "replicate", status: "failed", error: errDetail });
       }
 
-      // starting / processing
       return jsonResponse({ provider: "replicate", status: "processing" });
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Unknown error";
-      console.error("[STATUS ERROR]", msg);
-      return new Response(JSON.stringify({ error: msg }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error("[REPLICATE POLL ERROR]", msg);
+      return jsonResponse({ provider: "replicate", status: "processing" });
     }
   }
 
-  // ── POST /generate ── start a new prediction and return its ID immediately
+  // ── POST /generate ── validate, route to provider, return job/prediction ID immediately ──
   if (req.method === "POST") {
     try {
       const formData = await req.formData();
@@ -3405,37 +3570,25 @@ Deno.serve(async (req: Request) => {
       const person2 = formData.get("person2") as File | null;
       const person2b = formData.get("person2b") as File | null;
 
-      if (!reference) {
-        return new Response(
-          JSON.stringify({ error: "Missing required field: reference" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+      if (!reference || reference.size === 0) {
+        return jsonResponse({ error: "Missing or empty reference file" } as unknown as GenerateResponse, 400);
       }
-      if (!person1 || !person2) {
-        return new Response(
-          JSON.stringify({ error: "Missing required fields: person1, person2" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+      if (!person1 || person1.size === 0 || !person2 || person2.size === 0) {
+        return jsonResponse({ error: "Missing or empty person1/person2 files" } as unknown as GenerateResponse, 400);
       }
-      if (reference.size === 0) {
-        return new Response(
-          JSON.stringify({ error: "reference file is empty" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+
+      const config = STYLE_CONFIG[referenceId as string];
+      if (!config) {
+        return jsonResponse({ error: `Unknown referenceId: ${referenceId}` } as unknown as GenerateResponse, 400);
       }
-      for (const [label, file] of [["person1", person1], ["person2", person2]] as [string, File][]) {
-        if (file.size === 0) {
-          return new Response(
-            JSON.stringify({ error: `${label} file is empty` }),
-            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-          );
-        }
-      }
+
+      console.log("[VERSION]", FUNCTION_VERSION);
+      console.log("[PROVIDER]", config.provider);
+      console.log("[MODEL]", config.model);
+      console.log("[REFERENCE_ID]", referenceId);
 
       const hasMan2 = !!person1b && person1b.size > 0;
       const hasWoman2 = !!person2b && person2b.size > 0;
-
-      const replicateApiKey = Deno.env.get("REPLICATE_API_KEY");
 
       // ── IMAGE ROLE MAPPING ──
       const manCount = hasMan2 ? 2 : 1;
@@ -3444,7 +3597,6 @@ Deno.serve(async (req: Request) => {
       const idxManStart = 1;
       const idxManEnd = idxManStart + manCount - 1;
       const idxWomanStart = idxManEnd + 1;
-      const idxWomanEnd = idxWomanStart + womanCount - 1;
       const totalImages = 1 + manCount + womanCount;
 
       const manIdxList = manCount === 1
@@ -3452,7 +3604,7 @@ Deno.serve(async (req: Request) => {
         : `image_input[${idxManStart}] and image_input[${idxManEnd}]`;
       const womanIdxList = womanCount === 1
         ? `image_input[${idxWomanStart}]`
-        : `image_input[${idxWomanStart}] and image_input[${idxWomanEnd}]`;
+        : `image_input[${idxWomanStart}] and image_input[${idxWomanStart + womanCount - 1}]`;
 
       const roleMappingBlock = `IMAGE ROLE MAPPING (${totalImages} images total):
 - image_input[${idxScene}] = base scene (pose, expression, lighting, composition source)
@@ -3464,397 +3616,124 @@ The woman in the scene must look like the person in ${womanIdxList}.
 Do NOT mix man and woman identity sources.
 Do NOT use image_input[${idxScene}] as an identity source.`;
 
-      const config = STYLE_CONFIG[referenceId as string];
-
-if (!config) {
-  throw new Error(`Unknown referenceId: ${referenceId}`);
-}
-
-const finalPrompt = config.locked
-  ? roleMappingBlock + "\n\n" + config.prompt
-  : roleMappingBlock + "\n\n" + UNIVERSAL_PROMPT;
-
-// ── Build image array ──
-const personDataUrls = await Promise.all([
-  fileToDataUrl(person1),
-  ...(hasMan2 ? [fileToDataUrl(person1b!)] : []),
-  fileToDataUrl(person2),
-  ...(hasWoman2 ? [fileToDataUrl(person2b!)] : []),
-]);
-
-const referenceDataUrl = await fileToDataUrl(reference);
-
-const images = [
-  referenceDataUrl,
-  ...personDataUrls,
-];
-
-if (images.length !== totalImages) {
-  throw new Error(
-    `Image count mismatch: expected ${totalImages}, got ${images.length}`
-  );
-}
-
-// Per-image size guard
-for (let i = 0; i < images.length; i++) {
-
-  const rawBytes =
-    base64ByteSize(images[i]);
-
-  if (rawBytes > IMAGE_SIZE_LIMIT_BYTES) {
-
-    throw new Error(
-      `Image ${i} is ${(rawBytes / 1024 / 1024).toFixed(2)}MB — exceeds the 6MB per-image limit. Please use a smaller or more compressed photo.`
-    );
-  }
-}
-
-const imageSummary = images.map((img, i) => ({
-  index: i,
-
-  mime: img.startsWith("data:")
-    ? img.substring(5, img.indexOf(";"))
-    : "unknown",
-
-  bytes: base64ByteSize(img),
-}));
-
-// ── Debug logging ──
-console.log("[VERSION]", FUNCTION_VERSION);
-console.log("[PROVIDER]", config.provider);
-console.log("[MODEL]", config.model);
-console.log("[REFERENCE_ID]", referenceId);
-console.log("[INPUT_IMAGES]", images.length);
-
-console.log(
-  "[PROMPT_SOURCE]",
-  config.locked ? "locked" : "universal"
-);
-
-console.log(
-  "[PROMPT_LENGTH]",
-  finalPrompt.length
-);
-
-console.log(
-  "[IMAGE_SUMMARY]",
-  JSON.stringify(imageSummary)
-);
-
-console.log(
-  "[TOTAL_MB]",
-  (
-    imageSummary.reduce((s, x) => s + x.bytes, 0) /
-    1024 /
-    1024
-  ).toFixed(2)
-);
-
-// ── Provider routing ──
-if (config.provider === "replicate") {
-
-  if (!replicateApiKey) {
-    throw new Error(
-      "REPLICATE_API_KEY not configured"
-    );
-  }
-
-  console.log(
-    "[REQUEST_BODY_SHAPE]",
-    JSON.stringify({
-      version: config.model,
-
-      input: {
-        image_input:
-          `[${images.length} base64 data URLs]`,
-
-        prompt:
-          `[${finalPrompt.length} chars]`,
-      },
-    })
-  );
-
-  const createRes = await fetch(
-    "https://api.replicate.com/v1/predictions",
-    {
-      method: "POST",
-
-      headers: {
-        "Authorization":
-          `Bearer ${replicateApiKey}`,
-
-        "Content-Type":
-          "application/json",
-      },
-
-      body: JSON.stringify({
-        version: config.model,
-
-        input: {
-          prompt: finalPrompt,
-          image_input: images,
-        },
-      }),
-    }
-  );
-
-  const createText =
-    await createRes.text();
-
-  console.log(
-    "[CREATE] status:",
-    createRes.status,
-    "body:",
-    createText.substring(0, 500)
-  );
-
-  if (!createRes.ok) {
-
-    throw new Error(
-      `Replicate prediction creation failed (${createRes.status}): ${createText.substring(0, 400)}`
-    );
-  }
-
-  let prediction:
-    Record<string, unknown>;
-
-  try {
-    prediction =
-      JSON.parse(createText);
-
-  } catch {
-
-    throw new Error(
-      `Replicate create response non-JSON: ${createText.substring(0, 300)}`
-    );
-  }
-
-  const predictionId =
-    prediction.id as string | undefined;
-
-  if (!predictionId) {
-
-    throw new Error(
-      `Replicate prediction has no ID: ${JSON.stringify(prediction).substring(0, 300)}`
-    );
-  }
-
-  console.log(
-    "[CREATE] prediction started id=" +
-      predictionId +
-      " status=" +
-      prediction.status
-  );
-
-  return jsonResponse({
-    provider: "replicate",
-    status: "processing",
-    predictionId,
-    model: config.model,
-    referenceId: referenceId as string,
-    functionVersion: FUNCTION_VERSION,
-  }, 201);
-}
-
-if (config.provider === "openai") {
-
-  const openaiApiKey =
-    Deno.env.get("OPENAI_API_KEY");
-
-  if (!openaiApiKey) {
-    throw new Error(
-      "OPENAI_API_KEY not configured"
-    );
-  }
-
-  // Validate formats
-  validateOpenAIImages(images);
-
-  console.log(
-    "[OPENAI] building multipart request, images:",
-    images.length
-  );
-
-  const openaiForm = new FormData();
-
-  openaiForm.append(
-    "model",
-    config.model
-  );
-
-  openaiForm.append(
-    "prompt",
-    finalPrompt
-  );
-
-  openaiForm.append("n", "1");
-
-  openaiForm.append(
-    "size",
-    "1024x1024"
-  );
-
-  openaiForm.append(
-    "quality",
-    "medium"
-  );
-
-  openaiForm.append(
-    "output_format",
-    "jpeg"
-  );
-
-  openaiForm.append(
-    "output_compression",
-    "85"
-  );
-
-
-  // Attach images
-  for (let i = 0; i < images.length; i++) {
-
-    const dataUrl = images[i];
-
-    const commaIdx =
-      dataUrl.indexOf(",");
-
-    const meta =
-      dataUrl.substring(
-        5,
-        dataUrl.indexOf(";")
-      );
-
-    const b64 =
-      dataUrl.substring(commaIdx + 1);
-
-    const binaryStr = atob(b64);
-
-    const bytes =
-      new Uint8Array(binaryStr.length);
-
-    for (
-      let j = 0;
-      j < binaryStr.length;
-      j++
-    ) {
-      bytes[j] =
-        binaryStr.charCodeAt(j);
-    }
-
-    const ext =
-      meta.split("/")[1] ?? "jpg";
-
-    openaiForm.append(
-      "image[]",
-
-      new Blob(
-        [bytes],
-        { type: meta }
-      ),
-
-      `image_${i}.${ext}`
-    );
-  }
-
-  const openaiRes = await fetch(
-    "https://api.openai.com/v1/images/edits",
-    {
-      method: "POST",
-
-      headers: {
-        "Authorization":
-          `Bearer ${openaiApiKey}`,
-      },
-
-      body: openaiForm,
-    }
-  );
-
-
-  const openaiContentType = openaiRes.headers.get("content-type") ?? "";
-  console.log("[OPENAI] status:", openaiRes.status, "content-type:", openaiContentType);
-
-  if (!openaiRes.ok) {
-    let errMsg = `OpenAI image generation failed (${openaiRes.status})`;
-    try {
-      const errData = await openaiRes.json() as Record<string, unknown>;
-      console.log("[OPENAI] error body:", JSON.stringify(errData).substring(0, 400));
-      errMsg += ": " + (errData?.error ? JSON.stringify(errData.error) : JSON.stringify(errData).substring(0, 300));
-    } catch {
-      errMsg += ": (non-JSON error body)";
-    }
-    throw new Error(errMsg);
-  }
-
-  const openaiData = await openaiRes.json() as Record<string, unknown>;
-  console.log("[OPENAI] response keys:", Object.keys(openaiData).join(", "));
-
-  const dataArr = openaiData.data as Array<Record<string, unknown>> | undefined;
-  const first = dataArr?.[0];
-  const outputUrl = first?.url as string | undefined;
-  const b64 = first?.b64_json as string | undefined;
-
-  // URL response — return immediately with normalized shape
-  if (outputUrl) {
-    console.log("[OPENAI] URL response, length:", outputUrl.length);
-    return jsonResponse({
-      provider: "openai",
-      status: "succeeded",
-      output: outputUrl,
-      model: config.model,
-      referenceId: referenceId as string,
-      functionVersion: FUNCTION_VERSION,
-    });
-  }
-
-  // BASE64 response — decode, upload to storage, return public URL
-  if (b64) {
-    const binaryStr = atob(b64);
-    const bytes = new Uint8Array(binaryStr.length);
-    for (let i = 0; i < binaryStr.length; i++) {
-      bytes[i] = binaryStr.charCodeAt(i);
-    }
-
-    const fileName = `generated/${crypto.randomUUID()}.jpg`;
-    console.log("[OPENAI] uploading b64 image to storage, fileName:", fileName);
-
-    const { error: uploadError } = await supabase.storage
-      .from("generated-images")
-      .upload(fileName, bytes, {
-        contentType: "image/jpeg",
-        cacheControl: "60",
-        upsert: false,
-      });
-
-    if (uploadError) {
-      console.error("[OPENAI] storage upload error:", uploadError.message);
-      throw uploadError;
-    }
-
-    const { data: publicUrlData } = supabase.storage
-      .from("generated-images")
-      .getPublicUrl(fileName);
-
-    console.log("[OPENAI] b64 uploaded, public url:", publicUrlData.publicUrl.substring(0, 100));
-
-    return jsonResponse({
-      provider: "openai",
-      status: "succeeded",
-      output: publicUrlData.publicUrl,
-      model: config.model,
-      referenceId: referenceId as string,
-      functionVersion: FUNCTION_VERSION,
-    });
-  }
-
-  throw new Error(
-    `OpenAI response missing output image: ${JSON.stringify(openaiData).substring(0, 300)}`
-  );
-}
-
-throw new Error(
-  `Unknown provider: ${(config as { provider: string }).provider}`
-);
+      const finalPrompt = config.locked
+        ? roleMappingBlock + "\n\n" + config.prompt
+        : roleMappingBlock + "\n\n" + UNIVERSAL_PROMPT;
+
+      // ── Build image data URLs ──
+      const personDataUrls = await Promise.all([
+        fileToDataUrl(person1),
+        ...(hasMan2 ? [fileToDataUrl(person1b!)] : []),
+        fileToDataUrl(person2),
+        ...(hasWoman2 ? [fileToDataUrl(person2b!)] : []),
+      ]);
+      const referenceDataUrl = await fileToDataUrl(reference);
+      const images = [referenceDataUrl, ...personDataUrls];
+
+      if (images.length !== totalImages) {
+        throw new Error(`Image count mismatch: expected ${totalImages}, got ${images.length}`);
+      }
+
+      // Per-image size guard
+      for (let i = 0; i < images.length; i++) {
+        const rawBytes = base64ByteSize(images[i]);
+        if (rawBytes > IMAGE_SIZE_LIMIT_BYTES) {
+          throw new Error(
+            `Image ${i} is ${(rawBytes / 1024 / 1024).toFixed(2)}MB — exceeds the 6MB per-image limit.`
+          );
+        }
+      }
+
+      const imageSummary = images.map((img, i) => ({
+        index: i,
+        mime: img.startsWith("data:") ? img.substring(5, img.indexOf(";")) : "unknown",
+        bytes: base64ByteSize(img),
+      }));
+      console.log("[INPUT_IMAGES]", images.length, JSON.stringify(imageSummary));
+      console.log("[TOTAL_MB]", (imageSummary.reduce((s, x) => s + x.bytes, 0) / 1024 / 1024).toFixed(2));
+
+      // ── REPLICATE ──
+      if (config.provider === "replicate") {
+        const replicateApiKey = Deno.env.get("REPLICATE_API_KEY");
+        if (!replicateApiKey) throw new Error("REPLICATE_API_KEY not configured");
+
+        const createRes = await fetch("https://api.replicate.com/v1/predictions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${replicateApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            version: config.model,
+            input: { prompt: finalPrompt, image_input: images },
+          }),
+        });
+
+        const createText = await createRes.text();
+        console.log("[REPLICATE CREATE] status:", createRes.status, "body:", createText.substring(0, 300));
+
+        if (!createRes.ok) {
+          throw new Error(`Replicate prediction creation failed (${createRes.status}): ${createText.substring(0, 400)}`);
+        }
+
+        let prediction: Record<string, unknown>;
+        try {
+          prediction = JSON.parse(createText);
+        } catch {
+          throw new Error(`Replicate create response non-JSON: ${createText.substring(0, 300)}`);
+        }
+
+        const predictionId = prediction.id as string | undefined;
+        if (!predictionId) {
+          throw new Error(`Replicate prediction has no ID: ${JSON.stringify(prediction).substring(0, 300)}`);
+        }
+
+        console.log("[REPLICATE CREATE] prediction started id=" + predictionId);
+
+        return jsonResponse({
+          provider: "replicate",
+          status: "processing",
+          predictionId,
+          model: config.model,
+          referenceId: referenceId as string,
+          functionVersion: FUNCTION_VERSION,
+        }, 201);
+      }
+
+      // ── OPENAI (async via waitUntil) ──
+      if (config.provider === "openai") {
+        validateOpenAIImages(images);
+
+        // Insert a pending job row — returns immediately (< 100ms)
+        const { data: jobRow, error: insertErr } = await supabase
+          .from("generation_jobs")
+          .insert({ provider: "openai", status: "pending" })
+          .select("id")
+          .single();
+
+        if (insertErr || !jobRow) {
+          throw new Error(`Failed to create generation job: ${insertErr?.message ?? "no row returned"}`);
+        }
+
+        const jobId = jobRow.id as string;
+        console.log("[OPENAI] job created jobId:", jobId, "referenceId:", referenceId);
+
+        // Process OpenAI in background — response is already sent when this runs
+        EdgeRuntime.waitUntil(
+          runOpenAIJob(jobId, images, finalPrompt, config.model, referenceId as string)
+        );
+
+        return jsonResponse({
+          provider: "openai",
+          status: "processing",
+          predictionId: jobId,   // reuse predictionId field so frontend poll logic is uniform
+          model: config.model,
+          referenceId: referenceId as string,
+          functionVersion: FUNCTION_VERSION,
+        }, 201);
+      }
+
+      throw new Error(`Unknown provider: ${(config as { provider: string }).provider}`);
 
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);

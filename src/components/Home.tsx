@@ -41,29 +41,6 @@ const faqItems = [
 ];
 
 /* Tiny inline SVG decorative elements */
-function CurvedArrow({ className = '' }: { className?: string }) {
-  return (
-    <svg className={className} width="52" height="36" viewBox="0 0 52 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path
-        d="M4 28 C12 8, 36 2, 46 14"
-        stroke="#c4a8e8"
-        strokeWidth="2"
-        strokeLinecap="round"
-        fill="none"
-        className="animate-draw-arrow"
-      />
-      <path
-        d="M43 10 L46 14 L41 16"
-        stroke="#c4a8e8"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-    </svg>
-  );
-}
-
 function DoodleStar({ className = '' }: { className?: string }) {
   return (
     <svg className={className} width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
@@ -80,15 +57,6 @@ function DoodleCircle({ className = '' }: { className?: string }) {
   );
 }
 
-function DoodleDots({ className = '' }: { className?: string }) {
-  return (
-    <svg className={className} width="30" height="12" viewBox="0 0 30 12" fill="none" aria-hidden="true">
-      <circle cx="3" cy="6" r="2.5" fill="#d4bef0" opacity="0.7" />
-      <circle cx="15" cy="6" r="2.5" fill="#e2c8f5" opacity="0.55" />
-      <circle cx="27" cy="6" r="2.5" fill="#d4bef0" opacity="0.4" />
-    </svg>
-  );
-}
 
 export default function Home({ onImageSelect, initialCategory }: HomeProps) {
   const [headerScrolled, setHeaderScrolled] = useState(false);
@@ -364,7 +332,6 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
                 <div className="w-1.5 h-8 rounded-full" style={{ background: 'linear-gradient(180deg, #c4a8e8, #e2b8d8)' }} />
                 <div>
                   <h3 className="font-display font-bold text-[#3a2f52] text-xl">{activeCat.name}</h3>
-                  <p className="font-handwrite text-[#b49cdb] text-base">{activeCat.description}</p>
                 </div>
                 <span className="category-tag ml-auto">{activeCat.tag}</span>
               </div>
