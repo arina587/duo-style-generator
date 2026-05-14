@@ -3963,12 +3963,22 @@ else if (b64) {
         bytes,
         {
           contentType: "image/jpeg",
+          cacheControl: "60",
           upsert: false,
         }
       );
 
   if (uploadError) {
     throw uploadError;
+  }
+
+  const { error: downloadError } =
+  await supabase.storage
+    .from("generated-images")
+    .download(fileName);
+  
+  if (downloadError) {
+    throw downloadError;
   }
 
   const {
