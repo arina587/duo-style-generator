@@ -512,63 +512,94 @@ High-resolution, sharp, natural skin texture, correct lighting.
 OUTPUT:
 Same scene, same composition — only identities replaced.`;
 
-const EUPHORIA_1 = `Use the reference image as a composition and scene template.
+const EUPHORIA_1 = `Use the reference image only as a scene and composition template.
 
-Remove all original people from the scene completely. Keep the hallway, lockers, lighting, framing, perspective, and background intact.
+Keep the hallway environment, lockers, lighting, framing, perspective, background students, and cinematic atmosphere intact.
 
-REPLACEMENT:
-— left female position → woman from uploaded female reference photo
-— right male position → man from uploaded male reference photo
-Do NOT swap roles or genders.
+Replace the original people completely with the uploaded people.
 
-RECONSTRUCTION:
-Rebuild both characters from scratch using the uploaded references.
-Do NOT perform face-swap, morphing, or partial blending with the original people.
-Generate entirely new full-body subjects matching the reference identities.
+Positioning:
+- uploaded female → left side
+- uploaded male → right side
 
-IDENTITY:
+Do not change their positions or interaction.
+
+Create entirely new realistic subjects based on the uploaded people.
+Do not blend with the original people from the reference image.
+
+Preserve the uploaded people’s recognizable appearance, including:
+
+- facial structure
+- eyes
+- nose
+- lips
+- jawline
+- hairstyle
+- hair texture
+- skin tone
+- body proportions
+- silhouette
+- natural anatomy
+
+The people must remain clearly recognizable as the uploaded individuals.
+
+Preserve the original scene composition:
+
+- exact camera angle
+- hallway perspective
+- body orientation
+- distance between characters
+- eye-line interaction
+- framing
+- environmental depth
+
+Adapt clothing naturally for a realistic modern school hallway scene.
+
+Lighting and rendering must match the environment:
+
+- indoor fluorescent lighting
+- soft realistic shadows
+- cinematic color grading
+- shallow depth of field
+- realistic skin shading
+- subtle film grain
+
+Ensure realistic full-body integration with coherent:
+
+- necks
+- shoulders
+- arms
+- hands
+- posture
+- clothing folds
+- body proportions
+
+Faces and bodies must inherit the hallway lighting naturally and consistently.
+
+The final image should look like an authentic cinematic photograph captured in-camera, not edited, pasted, or artificially composited.
+
 Preserve:
-— facial structure
-— eyes, nose, lips, jawline
-— hairstyle and hair texture
-— skin tone
-— body proportions and silhouette
 
-Both people must remain clearly recognizable as the uploaded individuals.
+- hallway realism
+- locker details
+- background students
+- blur intensity
+- environmental depth
+- cinematic mood
 
-POSE & COMPOSITION:
-Preserve:
-— exact camera angle
-— body orientation
-— relative distance between characters
-— framing and perspective
-— eye-line interaction
-— hallway positioning
+Avoid:
 
-Match the scene composition precisely, but use the anatomy and proportions of the uploaded people.
+- face swap appearance
+- distorted anatomy
+- unrealistic hands
+- disconnected body parts
+- warped clothing
+- synthetic skin
+- plastic-looking faces
+- inconsistent lighting
+- overprocessed details
 
-CLOTHING:
-Adapt outfits naturally to the environment and cinematic tone of the scene.
-Clothing should feel realistic for a modern high-school hallway scene.
-Avoid copying the original outfits exactly unless requested.
-
-LIGHTING & INTEGRATION:
-Match:
-— indoor fluorescent lighting
-— shadow direction and softness
-— cinematic color grading
-— shallow depth of field
-— lens characteristics
-— image grain/noise
-
-Faces and bodies must inherit the scene lighting naturally.
-The final image must look like a real photograph captured in-camera, not composited or pasted.
-
-BACKGROUND:
-Preserve lockers, hallway depth, students in the background, blur intensity, and environmental realism.
-
-STYLE:
-Cinematic, realistic, emotionally tense school hallway scene, natural skin texture, high realism, subtle film look.`;
+All people in the photo are over 18 years old.`;
 
 const EUPHORIA_2 = `Use the reference image as a STRICT shot blueprint.
 
