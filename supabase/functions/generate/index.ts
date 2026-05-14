@@ -3039,7 +3039,7 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   "cinderella-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: CINDERELLA_PROMPT },
   "cinderella-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: CINDERELLA_PROMPT },
   // ── Euphoria ──
-  "euphoria-1": { provider: "openai", model: "gpt-image-1.5", locked: true, prompt: EUPHORIA_1 },
+  "euphoria-1": { provider: "openai", model: "gpt-image-1", locked: true, prompt: EUPHORIA_1 },
   "euphoria-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: EUPHORIA_2 },
   "euphoria-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: EUPHORIA_3 },
   // ── Titanic ──
