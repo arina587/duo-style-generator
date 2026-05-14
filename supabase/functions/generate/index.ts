@@ -512,22 +512,29 @@ High-resolution, sharp, natural skin texture, correct lighting.
 OUTPUT:
 Same scene, same composition — only identities replaced.`;
 
-const EUPHORIA_1 = `Use the reference image only as a scene and composition template.
+const EUPHORIA_1 = `Use the reference image only for hallway environment, framing, camera angle, perspective, lighting, pose layout, and cinematic atmosphere.
 
-Keep the hallway environment, lockers, lighting, framing, perspective, background students, and cinematic atmosphere intact.
+IMPORTANT:
+Remove BOTH original people completely from the image before generating the new subjects.
 
-Replace the original people completely with the uploaded people.
+Do NOT preserve any part of the original male or female:
+- no original face
+- no original hair
+- no original body
+- no original hands
+- no original skin
+- no original clothing
+- no original silhouette
 
-Positioning:
-- uploaded female → left side
-- uploaded male → right side
+Generate TWO entirely new full-body people using ONLY the uploaded references.
 
-Do not change their positions or interaction.
+Replacement mapping:
+- uploaded female → left side position
+- uploaded male → right side position
 
-Create entirely new realistic subjects based on the uploaded people.
-Do not blend with the original people from the reference image.
+The generated people must fully replace the original subjects in the scene.
 
-Preserve the uploaded people’s recognizable appearance, including:
+Preserve the uploaded people’s recognizable appearance:
 
 - facial structure
 - eyes
@@ -541,61 +548,67 @@ Preserve the uploaded people’s recognizable appearance, including:
 - silhouette
 - natural anatomy
 
-The people must remain clearly recognizable as the uploaded individuals.
+Both people must remain clearly recognizable as the uploaded individuals across the entire body, not only the face.
 
 Preserve the original scene composition:
 
 - exact camera angle
-- hallway perspective
+- hallway framing
 - body orientation
-- distance between characters
+- relative distance
 - eye-line interaction
-- framing
+- perspective
 - environmental depth
 
-Adapt clothing naturally for a realistic modern school hallway scene.
-
-Lighting and rendering must match the environment:
-
-- indoor fluorescent lighting
-- soft realistic shadows
-- cinematic color grading
-- shallow depth of field
-- realistic skin shading
-- subtle film grain
-
-Ensure realistic full-body integration with coherent:
+Create realistic complete bodies with coherent:
 
 - necks
 - shoulders
+- torso
 - arms
 - hands
+- legs
 - posture
 - clothing folds
 - body proportions
 
-Faces and bodies must inherit the hallway lighting naturally and consistently.
+Do NOT morph or blend the uploaded people with the original people from the reference image.
 
-The final image should look like an authentic cinematic photograph captured in-camera, not edited, pasted, or artificially composited.
+Do NOT perform partial replacement.
+
+The uploaded people must appear as fully reconstructed realistic humans naturally standing in the hallway scene.
+
+Adapt clothing naturally to the cinematic school hallway environment while keeping the uploaded people visually recognizable.
+
+Match the original scene lighting:
+
+- indoor fluorescent lighting
+- soft realistic shadows
+- cinematic contrast
+- realistic skin shading
+- shallow depth of field
+- subtle film grain
 
 Preserve:
-
-- hallway realism
-- locker details
+- lockers
+- hallway depth
 - background students
 - blur intensity
-- environmental depth
-- cinematic mood
+- environmental realism
+
+The result should look like a real cinematic photograph captured in-camera, not a face swap, pasted composite, morph, or AI edit.
 
 Avoid:
 
-- face swap appearance
+- partial replacement
+- keeping original bodies
+- keeping original hairstyles
+- blended identities
 - distorted anatomy
 - unrealistic hands
 - disconnected body parts
 - warped clothing
-- synthetic skin
-- plastic-looking faces
+- plastic-looking skin
 - inconsistent lighting
 - overprocessed details
 
