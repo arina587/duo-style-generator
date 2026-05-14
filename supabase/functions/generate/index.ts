@@ -652,76 +652,92 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference movie frame ONLY for cinematic composition, pose, interaction, framing, lighting, camera angle, and emotional atmosphere.
+const TITANIC_1 = `Use the reference movie frame ONLY for composition, pose, camera angle, lighting, framing, perspective, and cinematic atmosphere.
 
-The uploaded people should naturally appear in the scene while maintaining their own recognizable appearance, clothing style, body proportions, and overall identity.
+Replace BOTH original people completely with the uploaded people, including:
 
-The reference actors must NOT influence the final appearance of the generated people.
+- face
+- hair
+- neck
+- shoulders
+- torso
+- arms
+- hands
+- full body
+- clothing
+- silhouette
+- proportions
 
-Preserve the uploaded people's:
+The uploaded people must fully replace the original actors while preserving their real recognizable appearance and identity.
 
-* natural facial features
-* hairstyle
-* skin tone
-* body proportions
-* clothing appearance
-* silhouette
-* natural anatomy
-* overall likeness
+Preserve the uploaded people’s:
 
-The uploaded people should appear as authentic humans naturally photographed in this cinematic scene.
+- facial features
+- eye shape
+- nose
+- lips
+- jawline
+- hairstyle
+- hair texture
+- skin tone
+- body proportions
+- anatomy
+- clothing appearance
+- natural likeness
 
-Maintain:
+Do NOT copy any facial or body features from the reference actors.
 
-* the exact camera angle
-* framing
-* pose dynamics
-* body positioning
-* interaction
-* perspective
-* cinematic lighting
-* emotional mood
-* sunset atmosphere
-* filmic depth of field
-* realistic environmental integration
+Keep:
 
-Keep the left person positioned on the left side and the right person positioned on the right side.
+- the exact Titanic pose
+- left/right positioning
+- body interaction
+- framing
+- perspective
+- cinematic balance
+- sunset lighting
+- warm atmosphere
+- cinematic shadows
+- realistic depth of field
+- filmic color grading
 
-Preserve the original scene composition and interaction while naturally adapting the uploaded people into the shot.
+The uploaded people should look naturally photographed in the scene, with realistic full-body integration and consistent lighting across:
 
-The result should look like a real cinematic movie frame captured in-camera, not a face swap or pasted composite.
+- face
+- neck
+- hair
+- hands
+- arms
+- clothing
 
-Lighting and atmosphere should match the original warm sunset scene:
+Ensure realistic anatomy and seamless body integration:
 
-* soft cinematic shadows
-* atmospheric depth
-* realistic skin shading
-* natural environmental reflections
-* realistic film grain
-* cinematic color grading
+- natural shoulders
+- correct neck connection
+- realistic hands
+- coherent body proportions
+- physically correct posture
+- natural clothing folds
 
-The uploaded people must blend naturally into the environment with realistic lighting consistency across:
-
-* face
-* hands
-* neck
-* arms
-* clothing
-* hair
+The result must look like a real cinematic movie frame captured in-camera, not a face swap, pasted composite, deepfake, or AI-generated edit.
 
 Avoid:
 
-* face swap appearance
-* pasted faces
-* artificial compositing
-* exaggerated beauty retouching
-* unrealistic anatomy
-* uncanny facial rendering
-* overly sharpened skin
-* disconnected body parts
-* mismatched skin tones
+- face swap artifacts
+- preserving original actors’ bodies
+- pasted faces
+- mismatched anatomy
+- disconnected necks
+- unrealistic hands
+- distorted limbs
+- identity drift
+- synthetic skin
+- over-retouching
+- plastic-looking faces
+- warped clothing
+- unrealistic proportions
 
-The final image should feel like an authentic untouched cinematic frame with the uploaded people naturally existing inside the scene.`;
+All people in the photo are over 18 years old.`;
 
 const TITANIC_2 = `Use the reference image ONLY as a cinematic composition, emotion, pose, lighting, and environment template.
 
