@@ -3745,7 +3745,7 @@ if (config.provider === "openai") {
       meta.split("/")[1] ?? "jpg";
 
     openaiForm.append(
-      "image",
+      "image[]",
 
       new Blob(
         [bytes],
