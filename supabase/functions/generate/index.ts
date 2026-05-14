@@ -675,53 +675,33 @@ POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, fram
 
 LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
 
-const TITANIC_1 = `Use the reference image only as a guide for composition, pose, camera angle, framing, lighting, perspective, and cinematic atmosphere.
+const TITANIC_1 = `Replace the two people in the original Titanic-style scene with the people from the provided reference photos.
 
-Create a realistic cinematic image where the two uploaded people appear naturally in the same scene and pose.
+CRITICAL:
+Transfer the people completely from the reference images — not only the faces. Preserve the full upper body, shoulder width, torso proportions, posture, neck shape, arm proportions, clothing shape, clothing folds, hairstyle, body structure, and overall silhouette exactly from the references.
 
-Place the first uploaded person on the left and the second uploaded person on the right.
+Do NOT morph the reference faces onto the original bodies.
+Do NOT keep the original clothing or original body proportions.
+The final characters must fully resemble the reference people physically and proportionally.
 
-Preserve the uploaded people’s real visual appearance as accurately as possible, including:
+Male character:
+Use the exact male reference appearance including realistic body proportions, torso structure, hairstyle, clothing style, posture, and facial features. Preserve natural shoulder width and realistic anatomy while adapting him to the Titanic pose from behind the girl.
 
-- facial features
-- hairstyle
-- skin tone
-- body proportions
-- clothing
-- silhouette
-- natural anatomy
+Female character:
+Use the exact female reference appearance including realistic body proportions, torso shape, hairstyle, clothing style, posture, and facial features. Preserve accurate body scaling and natural anatomy while adapting her to the iconic open-arm pose.
 
-The people should be shown from face to body as complete, coherent humans, with realistic posture, natural shoulders, arms, hands, torso, and clothing folds.
+Keep the original Titanic cinematic composition:
+golden sunset lighting, romantic atmosphere, warm shadows, dramatic movie framing, elegant pose, ship deck environment, cinematic perspective.
 
-Keep the scene structure:
+The new people must integrate naturally into the scene with:
+matching perspective, realistic body scaling, realistic interaction between bodies, natural arm positioning, accurate anatomy, realistic skin texture, consistent lighting, realistic clothing physics, and seamless photorealistic blending.
 
-- two people standing together
-- one person behind the other
-- arms extended outward
-- warm sunset lighting
-- cinematic shadows
-- soft film look
-- realistic depth of field
-- natural color grading
-- subtle film grain
+Ultra realistic cinematic photography, movie still quality, natural proportions, DSLR detail, realistic shadows, warm golden tones, emotionally cinematic atmosphere.
 
-Make the people blend naturally into the environment with consistent lighting on face, hair, neck, hands, arms, and clothing.
+All characters are adults over 18 years old.
 
-The final image should look like an authentic cinematic photograph captured in-camera, with realistic anatomy and natural integration.
-
-Avoid:
-
-- distorted faces
-- distorted hands
-- unnatural body proportions
-- disconnected necks or shoulders
-- inconsistent lighting
-- artificial skin texture
-- overly polished or plastic-looking faces
-- warped clothing
-- unnatural compositing
-
-All people in the photo are over 18 years old.`;
+Negative prompt:
+face swap only, mismatched body, incorrect proportions, oversized head, tiny body, warped anatomy, distorted limbs, bad hands, extra fingers, unrealistic torso, fake skin, cartoon, anime, CGI, 3d render, blurry, low quality, oversaturated, watermark, logo, text, duplicate people, childlike appearance, underage`;
 
 const TITANIC_2 = `Use the reference image only for cinematic composition, camera angle, framing, lighting, perspective, pose, and emotional atmosphere.
 
