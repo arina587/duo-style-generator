@@ -31,7 +31,7 @@ export default function Result({
   isGenerating,
   generationError,
 }: ResultProps) {
-  const hasRetried = useRef(false);
+  const retryCount = useRef(0);
   const [retryKey, setRetryKey] = useState(0);
   const [debugInfo, setDebugInfo] = useState<DebugInfo | null>(null);
   const [debugFetching, setDebugFetching] = useState(false);
@@ -59,7 +59,7 @@ export default function Result({
     if (displaySrc !== prevUrl.current) {
       prevUrl.current = displaySrc;
 
-      hasRetried.current = false;
+      retryCount.current = 0;
       setRetryKey(0);
       setDebugInfo(null);
       setImgLoaded(false);
@@ -89,23 +89,38 @@ export default function Result({
   }, [imgLoadFailed, displaySrc]);
 
   const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const src = (e.target as HTMLImageElement).src;
-    console.log('[IMG ERROR]', src, Date.now());
+  const src = (e.target as HTMLImageElement).src;
 
-    if (!hasRetried.current) {
-      hasRetried.current = true;
-      console.log('[IMG RETRY]', displaySrc.substring(0, 100));
-      setTimeout(() => {
-        setRetryKey(k => k + 1);
-      }, 4000);
-    } else {
-      console.log('[IMG RETRY EXHAUSTED] marking imgLoadFailed');
-      onImgError(src);
-    }
-  };
+  console.log('[IMG ERROR]', src, Date.now());
+
+  if (retryCount.current < 6) {
+    retryCount.current += 1;
+
+    const delay =
+      retryCount.current * 3000;
+
+    console.log(
+      '[IMG RETRY]',
+      retryCount.current,
+      'delay=',
+      delay,
+      displaySrc.substring(0, 100)
+    );
+
+    setTimeout(() => {
+      setRetryKey(k => k + 1);
+    }, delay);
+
+    return;
+  }
+
+  console.log('[IMG RETRY EXHAUSTED] marking imgLoadFailed');
+
+  onImgError(src);
+};
 
   const handleRetry = () => {
-    hasRetried.current = false;
+    retryCount.current = 0;
     setDebugInfo(null);
     setRetryKey(k => k + 1);
   };
@@ -294,11 +309,9 @@ export default function Result({
               <img
                 key={retryKey}
                 src={
-                `${displaySrc}${
-                  displaySrc.includes('?')
-                  ? '&'
-                  : '?'
-                }t=${retryKey}`
+                  displaySrc.startsWith('http')
+                    ? `${displaySrc}${displaySrc.includes('?') ? '&' : '?'}t=${retryKey}`
+                    : displaySrc
                 }
                 alt="Generated fusion result"
                 loading="eager"
