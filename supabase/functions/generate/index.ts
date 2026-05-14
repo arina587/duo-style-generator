@@ -3579,21 +3579,21 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   "cinderella-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: CINDERELLA_PROMPT },
   "cinderella-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: CINDERELLA_PROMPT },
   // ── Euphoria ──
-  "euphoria-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: EUPHORIA_1 },
-  "euphoria-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: EUPHORIA_2 },
-  "euphoria-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: EUPHORIA_3 },
+  "euphoria-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: EUPHORIA_1 },
+  "euphoria-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: EUPHORIA_2 },
+  "euphoria-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: EUPHORIA_3 },
   // ── Titanic ──
   "titanic-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TITANIC_1 },
-  "titanic-2": { provider: "openai", model: "gpt-image-1.5", locked: true, prompt: TITANIC_2 },
-  "titanic-3": { provider: "openai", model: "gpt-image-1.5", locked: true, prompt: TITANIC_3 },
+  "titanic-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TITANIC_2 },
+  "titanic-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TITANIC_3 },
   // ── Terabithia ──
-  "terabithia-1": { provider: "openai", model: "gpt-image-1.5", locked: true, prompt: TERABITHIA_1 },
-  "terabithia-2": { provider: "openai", model: "gpt-image-1.5", locked: true, prompt: TERABITHIA_2 },
-  "terabithia-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: false },
+  "terabithia-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TERABITHIA_1 },
+  "terabithia-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TERABITHIA_2 },
+  "terabithia-3": { provider: "openai", model: "gpt-image-2", locked: false },
   // ── Stranger Things ──
-  "stranger-things-1": { provider: "openai", model: "gpt-image-1.5", locked: true, prompt: STRANGER_1 },
+  "stranger-things-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_1 },
   "stranger-things-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_2 },
-  "stranger-things-3": { provider: "openai", model: "gpt-image-1.5", locked: true, prompt: STRANGER_3 },
+  "stranger-things-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_3 },
   // ── The End of the F***ing World ──
   "end-of-the-fucking-world-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: WORLD_1 },
   "end-of-the-fucking-world-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: WORLD_2 },
