@@ -210,7 +210,13 @@ export default function Result({
     }
   };
 
-  const isNetworkTimeout = !isGenerating && !generationSucceeded && generationError.toLowerCase().includes('connection timed out');
+  const errorLo = generationError.toLowerCase();
+  const isTimeoutError = !isGenerating && !generationSucceeded &&
+    (errorLo.includes('taking longer') || errorLo.includes('timeout') || errorLo.includes('timed out'));
+  const isNetworkError = !isGenerating && !generationSucceeded &&
+    (errorLo.includes('connection issue') || errorLo.includes('network error'));
+  const isModerationError = !isGenerating && !generationSucceeded &&
+    (errorLo.includes('moderation') || errorLo.includes('content check'));
 
   let heading = 'Your Styled Fusion';
   let subtitle = 'Your AI-generated fusion is ready to download';
@@ -220,12 +226,18 @@ export default function Result({
   } else if (generationSucceeded && imgLoadFailed) {
     heading = 'Image Generated';
     subtitle = 'Your image was created — tap below to open it';
-  } else if (isNetworkTimeout) {
-    heading = 'Taking Longer Than Usual';
-    subtitle = 'The connection dropped but generation may still be running';
+  } else if (isTimeoutError) {
+    heading = 'Taking Longer Than Expected';
+    subtitle = 'Please try again in a moment';
+  } else if (isNetworkError) {
+    heading = 'Connection Issue';
+    subtitle = 'Please check your connection and try again';
+  } else if (isModerationError) {
+    heading = 'Image Not Allowed';
+    subtitle = 'Your image did not pass content checks';
   } else if (generationError) {
     heading = 'Generation Failed';
-    subtitle = 'Something went wrong during generation';
+    subtitle = 'Please try again';
   }
 
   // Hide heading section once the image is successfully showing — let the image speak
@@ -456,7 +468,7 @@ export default function Result({
             {/* ── State 4: API/generation error ── */}
             {!isGenerating && !generationSucceeded && generationError && (
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-10 animate-fade-in">
-                {isNetworkTimeout ? (
+                {isTimeoutError ? (
                   <>
                     <div className="relative w-16 h-16 mb-5">
                       <div className="absolute inset-0 rounded-full border-2" style={{ borderColor: '#d8ccea' }} />
@@ -465,9 +477,29 @@ export default function Result({
                         <Loader2 className="w-6 h-6 text-amber-400 animate-spin" />
                       </div>
                     </div>
-                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Still Working...</p>
+                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Taking Longer Than Expected</p>
                     <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">
-                      The connection dropped but the AI may still be generating. Please wait a moment, then try again if nothing appears.
+                      Generation is still in progress. Tap "Create Another" to try again.
+                    </p>
+                  </>
+                ) : isNetworkError ? (
+                  <>
+                    <div className="mx-auto mb-5 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
+                      <AlertCircle className="w-8 h-8 text-amber-400" />
+                    </div>
+                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Connection Issue</p>
+                    <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">
+                      Please check your connection and tap "Create Another" to try again.
+                    </p>
+                  </>
+                ) : isModerationError ? (
+                  <>
+                    <div className="mx-auto mb-5 rounded-xl border-2 border-orange-200 bg-orange-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
+                      <AlertCircle className="w-8 h-8 text-orange-400" />
+                    </div>
+                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Image Not Allowed</p>
+                    <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">
+                      This image did not pass content moderation. Please try different photos.
                     </p>
                   </>
                 ) : (
@@ -475,7 +507,7 @@ export default function Result({
                     <div className="mx-auto mb-5 rounded-xl border-2 border-red-200 bg-red-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
                       <AlertCircle className="w-8 h-8 text-red-400" />
                     </div>
-                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Generation Error</p>
+                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Generation Failed</p>
                     <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">{generationError}</p>
                   </>
                 )}

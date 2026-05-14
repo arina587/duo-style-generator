@@ -55,6 +55,72 @@ function preloadImage(url: string): Promise<void> {
   });
 }
 
+function normalizeGenerationError(error: unknown): string {
+  const raw = error instanceof Error ? error.message : String(error ?? '');
+  const lo = raw.toLowerCase();
+
+  // Moderation / content policy — wins over everything else
+  if (
+    lo.includes('moderation') ||
+    lo.includes('policy') ||
+    lo.includes('unsafe') ||
+    lo.includes('blocked') ||
+    lo.includes('content_violation') ||
+    lo.includes('flagged')
+  ) {
+    return 'This image could not be generated because it did not pass moderation checks.';
+  }
+
+  // Timeout / aborted — specific message before generic network catch
+  if (lo.includes('timeout') || lo.includes('aborted') || lo.includes('timed out')) {
+    return 'Generation is taking longer than expected. Please try again.';
+  }
+
+  // Browser-level fetch/network failures — never reached the server
+  if (
+    lo.includes('load failed') ||
+    lo.includes('failed to fetch') ||
+    lo.includes('networkerror') ||
+    lo.includes('network error') ||
+    lo.includes('fetch failed') ||
+    lo.includes('econnreset') ||
+    lo.includes('__post_network_failure__') ||
+    (lo.includes('typeerror') && lo.includes('fetch'))
+  ) {
+    return 'Connection issue detected. Please try again.';
+  }
+
+  // Server / backend failures
+  if (
+    lo.includes('500') ||
+    lo.includes('internal server error') ||
+    lo.includes('edge function') ||
+    lo.includes('storage upload') ||
+    lo.includes('database')
+  ) {
+    return 'Server issue detected. Please try again in a moment.';
+  }
+
+  // Internal shape / validation errors — never show raw internals
+  if (
+    lo.includes('unexpected response') ||
+    lo.includes('unexpected content-type') ||
+    lo.includes('no output url') ||
+    lo.includes('not a valid https') ||
+    lo.includes('temporary openai url') ||
+    lo.includes('generation succeeded but no output')
+  ) {
+    return 'Server issue detected. Please try again in a moment.';
+  }
+
+  // Short, readable backend string with no stack trace — pass through
+  if (raw.length > 0 && raw.length < 200 && !raw.includes('\n') && !raw.includes(' at ')) {
+    return raw;
+  }
+
+  return 'Generation failed. Please try again.';
+}
+
 function validateOutputUrl(url: string | undefined): string {
   if (!url) {
     throw new Error('Generation succeeded but no output URL was returned');
@@ -236,10 +302,9 @@ function App() {
           try {
             validatedUrl = validateOutputUrl(rawUrl);
           } catch (validateErr) {
-            const msg = validateErr instanceof Error ? validateErr.message : String(validateErr);
-            console.error('[POLL FAILURE] URL validation failed:', { requestId, predictionId, provider, msg });
+            console.error('[POLL FAILURE] URL validation failed:', { requestId, predictionId, provider, msg: validateErr instanceof Error ? validateErr.message : validateErr });
             pollTimeoutRef.current = null;
-            setGenerationError(msg);
+            setGenerationError(normalizeGenerationError(validateErr));
             setIsGenerating(false);
             isGeneratingRef.current = false;
             return;
@@ -271,7 +336,7 @@ function App() {
         if (data.status === 'failed' || data.status === 'canceled') {
           console.error('[POLL FAILURE]', { requestId, predictionId, provider, status: data.status, error: data.error });
           pollTimeoutRef.current = null;
-          setGenerationError(data.error || 'Generation failed. Please try again.');
+          setGenerationError(normalizeGenerationError(data.error ?? 'Generation failed. Please try again.'));
           setIsGenerating(false);
           isGeneratingRef.current = false;
           return;
@@ -300,9 +365,7 @@ function App() {
         if (consecutiveFailures >= MAX_CONSECUTIVE_POLL_FAILURES) {
           console.error('[POLL FAILURE] max consecutive network failures', { requestId, predictionId, provider, consecutiveFailures });
           pollTimeoutRef.current = null;
-          setGenerationError(
-            'Network error while waiting for the result. Please try again.'
-          );
+          setGenerationError('Connection issue detected. Please try again.');
           setIsGenerating(false);
           isGeneratingRef.current = false;
           return;
@@ -470,9 +533,8 @@ function App() {
         try {
           response = await doPost();
         } catch (retryErr) {
-          const retryErrMsg = retryErr instanceof Error ? retryErr.message : String(retryErr);
-          console.error('[POST NETWORK ERROR] retry also failed', { message: retryErrMsg, userAgent: navigator.userAgent });
-          throw new Error('Network error starting generation. Please check your connection and try again.');
+          console.error('[POST NETWORK ERROR] retry also failed', { message: retryErr instanceof Error ? retryErr.message : retryErr, userAgent: navigator.userAgent });
+          throw new Error('__post_network_failure__');
         }
       }
 
@@ -547,16 +609,9 @@ function App() {
         return;
       }
 
-      const msg =
-        err instanceof Error
-          ? err.message
-          : String(err);
+      console.error('[GENERATE ERROR] requestId=' + requestId, err instanceof Error ? err.message : err);
 
-      console.error('[GENERATE ERROR] requestId=' + requestId, msg);
-
-      setGenerationError(
-        msg || 'Generation failed. Please try again.'
-      );
+      setGenerationError(normalizeGenerationError(err));
       setIsGenerating(false);
       isGeneratingRef.current = false;
     }
