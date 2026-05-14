@@ -72,7 +72,9 @@ export default function Result({
     setDebugFetching(true);
     setDebugInfo(null);
 
-    fetch(displaySrc)
+    fetch(displaySrc, {
+      cache: 'no-store',
+    })
       .then(async (res) => {
         const blob = await res.blob();
         const info: DebugInfo = { status: res.status, type: blob.type, size: blob.size };
@@ -93,7 +95,9 @@ export default function Result({
     if (!hasRetried.current) {
       hasRetried.current = true;
       console.log('[IMG RETRY]', displaySrc.substring(0, 100));
-      setTimeout(() => setRetryKey(k => k + 1), 1500);
+      setTimeout(() => {
+        setRetryKey(k => k + 1);
+      }, 4000);
     } else {
       console.log('[IMG RETRY EXHAUSTED] marking imgLoadFailed');
       onImgError(src);
@@ -289,7 +293,13 @@ export default function Result({
             {!isGenerating && showImage && (
               <img
                 key={retryKey}
-                src={displaySrc}
+                src={
+                `${displaySrc}${
+                  displaySrc.includes('?')
+                  ? '&'
+                  : '?'
+                }t=${retryKey}`
+                }
                 alt="Generated fusion result"
                 loading="eager"
                 className="absolute inset-0 z-10 w-full h-full object-contain object-center block animate-scale-in"
