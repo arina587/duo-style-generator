@@ -2786,13 +2786,13 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   "terabithia-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TERABITHIA_2 },
   "terabithia-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TERABITHIA_3 },
   // ── Stranger Things ──
-  "stranger-things-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_1 },
-  "stranger-things-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_2 },
-  "stranger-things-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: STRANGER_3 },
+  "stranger-things-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: STRANGER_1 },
+  "stranger-things-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: STRANGER_2 },
+  "stranger-things-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: STRANGER_3 },
   // ── The End of the F***ing World ──
-  "end-of-the-fucking-world-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: WORLD_1 },
-  "end-of-the-fucking-world-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: WORLD_2 },
-  "end-of-the-fucking-world-3": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: WORLD_3 },
+  "end-of-the-fucking-world-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: WORLD_1 },
+  "end-of-the-fucking-world-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: WORLD_2 },
+  "end-of-the-fucking-world-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: WORLD_3 },
 };
 
 function uint8ToBase64(bytes: Uint8Array): string {
