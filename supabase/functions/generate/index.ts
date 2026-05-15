@@ -770,146 +770,163 @@ const WORLD_2 = `Replace the two original characters in the cinematic car interi
 
 const WORLD_3 = `Use the original diner frame as the immutable master shot. Perform only a precise photorealistic identity replacement of the two seated characters using the provided real-person references. The final image must look like a real DSLR cinematic still from an indie coming-of-age film. Keep the diner scene completely unchanged: same framing same camera angle same lens perspective same table geometry same background same warm diner lighting same depth of field same cinematic atmosphere The transferred people must look like they physically performed the exact original scene themselves, not pasted into it. IDENTITY PRESERVATION: Preserve accurate real facial identity and anatomy: facial structure eye shape and spacing jawline lips skin texture pores asymmetry natural imperfections Do not stylize, beautify, smooth skin, or make faces generic. MALE CHARACTER: Match the original diner pose exactly: same seated posture same head angle same shoulder position same torso orientation same hand placement same awkward stillness Preserve the emotional tone from the male reference: tired introspective eyes subtle sadness withdrawn energy natural mouth tension Use the oversized black hoodie from the reference with realistic fabric folds and weight. FEMALE CHARACTER: Match the original diner pose exactly: same posture same head tilt same eye direction same restrained body language Preserve the emotional tone from the female reference: restrained vulnerability detached observational gaze quiet melancholy natural candid realism Use the fitted white short-sleeve shirt and layered silver necklaces from the reference with realistic fabric tension and folds. HANDS — CRITICAL: Show exactly TWO visible hands on the table. Each visible hand must have: exactly FIVE anatomically correct fingers one correct thumb realistic knuckles and tendons natural wrist anatomy believable finger overlap physically correct contact pressure The touching interaction must feel subtle and real. Absolutely no: extra fingers missing fingers fused fingers duplicated fingers warped palms broken wrists malformed anatomy AI-looking hands REALISM: photorealistic skin shading invisible compositing natural film grain coherent warm lighting realistic DSLR texture subtle cinematic grading no CGI appearance NEGATIVE PROMPT: generic AI face, weak resemblance, identity drift, glamour face, plastic skin, overprocessed grading, CGI, synthetic lighting, extra fingers, missing fingers, fused fingers, duplicated hands, broken wrists, malformed anatomy, emotionless expression, uncanny valley, artificial posing`;
 
-const STRANGER_1 = `Use the reference image ONLY as a cinematography and staging template.
+const STRANGER_1 = `Use the original frame as an immutable master plate. Perform an ultra-precise photorealistic identity transfer of the two standing characters using the provided real-person references. The result must preserve the exact cinematic shot while replacing ONLY the human identities with maximum facial fidelity and anatomical realism. The final frame must look indistinguishable from a real on-set DSLR still captured during production of a grounded indie sci-fi drama.
 
-DO NOT use the original actors as appearance references in ANY way.
+CRITICAL PRIORITY:
+The generated people MUST strongly and unmistakably resemble the supplied reference individuals with near face-swap-level identity accuracy. Identity fidelity is more important than beauty, stylization, or aesthetic enhancement.
 
-The original people are ONLY placeholders for:
-— pose
-— framing
-— interaction
-— body placement
-— camera angle
-— lighting
-— scene composition
+DO NOT reinterpret the characters.
+DO NOT create “inspired by” faces.
+DO NOT average or generalize facial traits.
+The result must look like the actual real people physically acted in the original scene.
 
-Completely remove the original identities from the final result.
+LOCK ALL ORIGINAL CINEMATIC ELEMENTS:
 
-ABSOLUTELY NO blending between uploaded people and original actors.
+exact framing
+exact composition
+exact camera position
+exact focal length and lens distortion
+exact body proportions
+exact room geometry
+exact background objects
+exact warm tungsten practical lighting
+exact shadows and falloff
+exact cinematic grading
+exact depth of field
+exact emotional atmosphere
+exact pose geometry
+exact body language
 
-Do NOT inherit from the original actors:
-— face shape
-— eyes
-— jawline
-— nose
-— lips
-— skin texture
-— hairstyle
-— body type
-— silhouette
-— facial expressions
-— age appearance
+Only replace the identities of the two characters.
 
-CRITICAL:
-Do NOT perform face-swapping onto the original actors.
+LEFT CHARACTER — STRICT IDENTITY MATCH:
+Replace the left character with the young male from the provided carousel reference.
 
-Fully replace the original people with the uploaded people as entirely different real humans naturally existing in the scene.
+MANDATORY FACIAL FEATURES:
 
-The uploaded people must remain IDENTICAL to their source photos.
+narrow elongated face
+soft angular jawline
+thin pale lips
+sleepy hooded eyes
+large dark eyes with melancholic expression
+delicate nose bridge
+youthful and slightly gaunt facial structure
+pale natural skin texture
+subtle under-eye shadows
+messy medium-length dark brown hair with soft layered volume
+realistic uneven fringe placement
+no beautification
+no model-like glamour enhancements
 
-Preserve EXACTLY:
-— facial structure
-— bone structure
-— jawline
-— eye shape
-— eyelids
-— eyebrows
-— nose shape
-— lip shape
-— cheek structure
-— forehead proportions
-— chin structure
-— ears
-— natural asymmetry
-— skin texture
-— skin undertone
-— hairstyle
-— hairline
-— body proportions
-— shoulder width
-— silhouette
-— physique
+Expression must remain emotionally restrained, detached, introspective, slightly distant.
 
-Do NOT:
-— beautify faces
-— stylize anatomy
-— smooth skin unnaturally
-— sharpen jawlines
-— enlarge eyes
-— slim the body
-— make them prettier
-— change ethnicity
-— change age appearance
-— make them cinematic/glamorous
+Preserve EXACT original pose:
 
-The uploaded people must look like authentic photographed humans physically present in the room.
+identical shoulder angle
+identical neck rotation
+identical gaze direction
+identical arm crossing position
+identical torso orientation
+identical posture tension
 
-They must NOT look:
-— pasted
-— composited
-— face-swapped
-— blended with original actors
-— AI-generated
-— plastic
-— uncanny
-— over-retouched
+Maintain the oversized pale blue collared sweatshirt exactly as in the master shot:
 
-IMPORTANT SCENE STRUCTURE:
+realistic heavy fabric weight
+natural cloth compression
+accurate sleeve folds
+soft cotton texture
+physically believable draping
 
-Maintain the exact composition and interaction:
-— taller person remains in front on the left
-— second person remains slightly behind on the right
-— right person holds onto the left person's arm
-— preserve exact body closeness
-— preserve exact emotional tension
-— preserve exact head positioning and eye-lines
+RIGHT CHARACTER — STRICT IDENTITY MATCH:
+Replace the right character with the young girl from the provided outdoor reference.
 
-Do NOT separate the characters.
-Do NOT rotate faces toward camera differently.
-Do NOT alter pose dynamics.
+MANDATORY FACIAL FEATURES:
 
-Keep:
-— exact camera angle
-— exact framing
-— exact crop
-— exact perspective
-— exact lens feel
-— exact hand placement
-— exact body spacing
-— exact scene geometry
+youthful round facial structure
+soft cheeks
+large expressive eyes
+subtle vulnerable gaze
+natural pale skin with realistic pores
+small natural lips
+delicate jawline
+realistic teenage proportions
+long light brown hair
+naturally thin eyebrows
+authentic candid appearance
+absolutely no glamorization or adultification
 
-Camera position is LOCKED.
-Perspective is LOCKED.
-Composition is LOCKED.
+Hair must preserve:
 
-NATURAL SCENE ADAPTATION:
+natural long flowing texture
+realistic strand separation
+subtle waviness
+physically correct shadowing in warm indoor light
 
-Adapt the uploaded people naturally to the scene WITHOUT changing identity.
+Expression must remain:
 
-Scene adaptation may affect ONLY:
-— lighting integration
-— environmental shadows
-— color grading
-— atmospheric depth
-— depth of field
-— film grain
-— ambient warm light response
+cautious
+emotionally vulnerable
+quietly tense
+intimate and protective
 
-Identity and anatomy must remain untouched.
+Preserve EXACT original pose:
 
-SKIN CONSISTENCY:
-Hands, neck, arms, ears, and visible body skin must perfectly match facial skin tone and undertone.
+same leaning posture
+same head placement
+same eye direction
+same shoulder compression
+same physical closeness
+same hand placement on arm
 
-No mismatched skin color.
-No separate face/body lighting.
-No artificial skin smoothing.
+HANDS — HIGHEST PRIORITY:
+Hands must be anatomically perfect and photorealistic.
 
-LIGHTING:
-Match the original warm indoor cinematic lighting, soft shadows, environmental bounce light, realistic skin shading, atmospheric darkness, depth of field, and film grain.
+Requirements:
 
-Faces, bodies, clothes, and hair must inherit identical scene lighting naturally.
+exactly five fingers per hand
+correct thumb placement
+realistic knuckles
+natural tendons
+proper nail anatomy
+believable skin compression
+physically accurate wrist joints
+correct finger lengths
+natural relaxed curvature
+accurate interaction with clothing fabric
 
-Blend the uploaded people seamlessly into the environment so they appear originally photographed in this exact shot without any identity mixing from the original actors.`;
+NO:
+
+extra fingers
+fused fingers
+duplicated hands
+warped anatomy
+melted palms
+floating wrists
+malformed joints
+AI hand artifacts
+
+PHOTOREALISM REQUIREMENTS:
+
+invisible compositing
+true DSLR texture
+realistic optical softness
+subtle sensor grain
+organic skin detail
+accurate pore structure
+physically correct subsurface scattering
+coherent warm indoor lighting
+realistic shadow integration
+natural fabric behavior
+cinematic tungsten color response
+authentic filmic contrast
+no CGI appearance
+no digital painting look
+no overprocessing
+no beauty retouching
+no artificial sharpening
+
+NEGATIVE PROMPT:
+weak resemblance, identity drift, generic AI face, face averaging, beautified face, fashion model appearance, glamour skin, plastic skin, porcelain skin, symmetry correction, CGI, fake cinematic look, synthetic rendering, overprocessed texture, uncanny valley, inaccurate facial structure, incorrect eye shape, wrong jawline, wrong nose, emotionless face, pose mismatch, incorrect body proportions, compositing artifacts, bad lighting integration, extra fingers, fused fingers, missing fingers, duplicated limbs, malformed wrists, floating hands, distorted anatomy, cartoon texture, fake shadows, over-sharpened skin, stylized face, anime influence, de-aged appearance, artificial perfection`;
 
 const STRANGER_2 = `Use the reference image ONLY as a cinematography, composition, pose, and interaction template.
 
