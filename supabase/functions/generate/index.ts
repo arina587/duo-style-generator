@@ -760,49 +760,9 @@ face swap only, mismatched body, oversized head, tiny body, warped anatomy, dist
 
 const TERABITHIA_1 = `Replace the two original characters in the forest photo with the exact people from the provided reference images using complete identity transfer and seamless cinematic integration. The final result must preserve the same emotions, smile intensity, facial mood, eye expression, and natural human warmth from the reference photos. Both people must have the same authentic emotional feeling as in the references — including subtle smiling eyes, relaxed facial muscles, natural mouth shape, and realistic emotional presence. Left side — female replacement: Completely replace the original girl with the woman from the female reference image. Transfer exactly: face structure eyes and eye expression natural soft smile / neutral emotion from the reference lips and mouth shape hairstyle and hair flow hair color skin texture and tone body proportions posture energy clothing jewelry and accessories overall identity and presence Keep the original pose from the forest photo: she must naturally hold the fluffy white dog in the same position and interaction. Adapt her naturally into the forest scene with: matching shoulder angle natural neck rotation realistic head tilt correct torso perspective physically accurate arm placement realistic body balance and weight distribution Right side — male replacement: Completely replace the original boy with the man from the male reference image. Transfer exactly: face structure hairstyle and hair texture eyes and eye direction authentic smile and expression from the reference relaxed facial emotion skin tone clothing posture vibe proportions natural body language overall identity Keep the original standing position from the forest scene while adapting his posture naturally to the environment and camera angle. Critical realism requirements: The two new people must look naturally photographed together inside the forest scene. Perfectly match: lighting direction shadow softness outdoor daylight color ambient forest bounce light camera perspective depth of field cinematic grading lens characteristics realistic scale and proportions Faces must preserve the exact emotional realism from the references: natural smile, realistic cheeks, authentic eyes, relaxed mouth tension, believable human expression. Extremely important anatomy requirements: correct number of fingers anatomically correct hands no extra fingers no fused fingers no duplicated arms no malformed hands no distorted limbs realistic wrist anatomy physically correct arm positioning natural finger bending and grip on the dog Ensure: seamless compositing realistic contact shadows accurate head perspective realistic neck connection proper shoulder anatomy realistic fabric folds natural skin pores invisible edit quality natural integration into the forest atmosphere Preserve completely: forest environment tree trunk green foliage fluffy white dog cinematic framing shallow depth of field natural outdoor atmosphere Ultra photorealistic DSLR photo, cinematic realism, highly detailed skin texture, natural outdoor lighting, realistic anatomy, seamless environmental integration, invisible compositing quality. Negative prompt: extra fingers, extra hands, duplicated limbs, malformed hands, broken anatomy, distorted fingers, fused fingers, warped arms, unnatural pose, stiff body, fake smile, artificial emotion, mismatched expression, incorrect gaze, pasted subject, floating body parts, bad anatomy, CGI, 3D render, cartoon, anime, painting, illustration, blurry details, oversaturated colors, poor compositing, distorted perspective, unrealistic lighting, low quality, watermark, text, logo`;
 
-const TERABITHIA_2 = `Replace the two people in the original image with the people from the provided reference photos while preserving the original composition, pose, lighting, and emotional atmosphere.
+const TERABITHIA_2 = ``;
 
-Left side:
-Replace the girl with the female reference person. Preserve her exact facial features, hairstyle, hair color, skin tone, expression, clothing style, and natural proportions.
-
-Right side:
-Replace the boy with the male reference person. Preserve his exact facial features, hairstyle, hair texture, skin tone, expression, clothing style, and natural proportions.
-
-Keep the original pose and interaction unchanged:
-the boy gently leaning toward the girl, soft affectionate moment, seated close together indoors with warm lighting.
-
-Maintain the original environment, camera angle, shadows, framing, and cinematic mood. Make the replacement seamless and photorealistic with realistic skin texture, natural anatomy, realistic hands, and accurate lighting consistency.
-
-Ultra realistic photo, cinematic lighting, soft warm tones, shallow depth of field, natural expressions, DSLR quality, highly detailed.
-
-All characters are adults over 18 years old.
-
-Negative prompt:
-cartoon, anime, illustration, CGI, 3d render, fake skin, blurry, distorted anatomy, extra fingers, bad hands, deformed face, unrealistic proportions, oversaturated, watermark, text, logo, duplicate people, childlike appearance, underage`;
-
-const TERABITHIA_3 = `Replace the two people in the original car scene with the people from the provided reference photos.
-
-IMPORTANT:
-Transfer the people completely and proportionally from the reference images — preserve accurate face shape, head size, body proportions, shoulder width, posture, neck length, hairstyle, hair texture, skin tone, facial expression, and natural anatomy. Do not stylize or reinterpret their appearance.
-
-Left side:
-Replace the boy with the male reference person while preserving the original seated pose, body angle, gaze direction, and relaxed expression. Keep realistic proportions relative to the car interior.
-
-Right side:
-Replace the girl with the female reference person while preserving the leaning pose, arm placement, facial angle, smile, and natural proportions.
-
-Keep the original scene unchanged:
-inside of a moving car, warm daylight, blurred outdoor landscape through the windows, cinematic framing, soft natural lighting, shallow depth of field, emotional atmosphere.
-
-The replacement must look seamless and photorealistic:
-accurate anatomy, realistic skin texture, natural shadows, matching perspective, matching focal length, correct body scaling, realistic interaction with the environment, and believable positioning inside the car.
-
-Ultra realistic cinematic photography, DSLR quality, natural colors, soft lighting, highly detailed, authentic human proportions.
-
-All characters are adults over 18 years old.
-
-Negative prompt:
-cartoon, anime, illustration, painting, CGI, 3d render, distorted anatomy, oversized head, incorrect proportions, warped face, bad hands, extra fingers, blurry, low quality, fake skin, oversaturated, watermark, text, logo, duplicate people, childlike appearance, underage`
+const TERABITHIA_3 = `Replace the two original people in the cinematic car scene with the two real people from the uploaded reference photos while preserving the original composition, framing, lighting, mood, and camera perspective. Use the uploaded reference photos as the primary visual reference for both individuals: * preserve recognizable facial features * preserve hairstyle and natural hair texture * preserve approximate body proportions * preserve clothing style and accessories * maintain natural expressions and realistic eye contact LEFT PERSON: Replace the person on the left with the male from the uploaded reference image. * preserve recognizable hairstyle and facial structure * preserve the dark hoodie outfit style * maintain a relaxed seated posture * naturally integrate him into the seat position and camera perspective RIGHT PERSON: Replace the person on the right with the female from the uploaded reference image. * preserve recognizable hairstyle, facial features, and jewelry * preserve the white fitted shirt outfit style * maintain the leaning pose toward the other person * naturally integrate her posture and arm placement with the car seat Scene requirements: * photorealistic cinematic integration * realistic skin texture and natural daylight lighting * matching warm window light and shadows * shallow depth of field * believable perspective and proportions * seamless compositing * natural interaction between both people * preserve the nostalgic cinematic atmosphere Keep the original: * car interior * blurred outdoor background * composition and framing * emotional tone * cinematic lighting Quality requirements: * realistic anatomy * correct hands and fingers * no duplicated limbs * natural posture * realistic clothing folds * accurate neck and shoulder alignment * invisible editing quality * DSLR cinematic realism Negative prompt: low quality, blurry face, distorted anatomy, extra fingers, duplicated limbs, malformed hands, incorrect perspective, warped body, unrealistic skin, overprocessed face, CGI look, cartoon, anime, painting, artificial facial features, floating body parts, bad lighting, mismatched proportions, poor compositing, text, watermark, logo`
 
 const WORLD_1 = `Use the reference image ONLY as a cinematography, composition, pose, and interaction template.
 
