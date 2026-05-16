@@ -700,24 +700,141 @@ face swap artifacts
 altered facial structure
 exaggerated emotions`;
 
-const EUPHORIA_3 = `Use the reference image as a composition and scene template.
+const EUPHORIA_3 = `Use the reference scene ONLY for:
+— composition
+— framing
+— lens perspective
+— camera angle
+— blocking
+— pose logic
+— emotional interaction
+— lighting direction
 
-Erase all original people. Their positions are empty slots — fill them with the people from the uploaded photos.
+Completely remove the original actors.
 
-REPLACEMENT:
-— woman slot → woman from uploaded female photo
-— man slot → man from uploaded male photo
-Do NOT swap genders or roles.
+Rebuild both characters entirely from the uploaded identity photos.
 
-RECONSTRUCTION: Rebuild each person fully — full body, face, proportions, silhouette. Do NOT face-swap or blend with original characters.
+DO NOT:
+— face swap
+— morph with original actors
+— average faces
+— stylize
+— beautify
+— reinterpret anatomy
+— generate “similar-looking” people
 
-IDENTITY: Preserve facial structure, features, skin tone, hair, proportions. Must remain recognizable.
+IDENTITY TRANSFER PRIORITY:
+The final result must preserve the uploaded people with near-photographic identity accuracy.
 
-CLOTHING: Adapt naturally to the scene — match style and environment.
+For BOTH characters preserve exactly:
+— facial bone structure
+— eye shape, size, spacing, and eyelids
+— nose bridge, nostrils, and tip anatomy
+— lip contour and natural asymmetry
+— jawline geometry
+— cheek volume
+— forehead proportions
+— chin shape
+— ear placement
+— skin tone and undertones
+— hair density
+— hairline shape
+— hairstyle texture
+— neck thickness and proportions
+— body proportions
+— apparent age
 
-POSE & COMPOSITION: Preserve camera angle, pose, body orientation, spacing, framing. Match placement, not original anatomy.
+The generated people must look unmistakably identical to the uploaded photos under cinematic lighting conditions.
 
-LIGHTING: Match lighting direction, shadows, color grading, depth of field, grain. Faces inherit scene lighting. Result must not look pasted or composited.`;
+CRITICAL:
+Identity consistency is more important than cinematic stylization.
+
+Use the uploaded photos as the ONLY source of facial identity and anatomy.
+
+Do not inherit:
+— facial proportions
+— facial lighting
+— skin texture
+— eye shape
+— expressions
+from the original actors.
+
+EXPRESSION TRANSFER:
+Recreate ONLY the emotional behavior from the reference scene:
+— same eye direction
+— same conversational focus
+— same subtle smirk intensity
+— same eyelid openness
+— same eyebrow tension
+— same relaxed intimacy
+— same natural mouth tension
+
+Expressions must feel candid and unposed.
+
+BODY & POSE:
+Preserve:
+— exact body positioning
+— distance between characters
+— head tilt
+— shoulder angles
+— arm placement
+— torso orientation
+— framing on the bed
+
+But rebuild anatomy using ONLY the uploaded people.
+
+CLOTHING:
+Use realistic casual bedroom clothing inspired by each uploaded person’s style and silhouette.
+Avoid costume-like adaptation.
+
+LIGHTING FIX — VERY IMPORTANT:
+The generated faces must be fully integrated into the scene lighting naturally.
+
+Avoid:
+— blown highlights
+— overexposed skin
+— glowing foreheads
+— white patches
+— beauty-light skin
+— HDR look
+— artificial skin smoothing
+— waxy skin
+— hot spots from tungsten lighting
+— mismatched color temperature
+— pasted-on faces
+
+Lighting must follow:
+— soft warm tungsten practical lighting
+— smooth cinematic shadow gradients
+— physically realistic exposure
+— low-light indoor contrast
+— subtle ambient bounce light
+— natural skin reflectivity only
+— soft rolloff in highlights
+— preserved shadow detail
+— realistic occlusion around eyes, nose, jaw, and hair
+
+SKIN TEXTURE:
+Preserve:
+— pores
+— small asymmetries
+— natural under-eye texture
+— realistic teenage skin
+— subtle imperfections
+
+Do NOT retouch faces.
+
+IMAGE STYLE:
+Photorealistic cinematic still frame.
+Natural indie-drama aesthetic.
+Shallow depth of field.
+Authentic film-grain feel.
+No AI glamour look.
+No hyper-detailing.
+No uncanny symmetry.
+No synthetic beauty filtering.
+
+The final image must look like a real frame captured on a cinema camera with the uploaded people physically present in the room.`;
 
 const TITANIC_1 = `Replace the two people in the original Titanic-style scene with the people from the provided reference photos.
 
