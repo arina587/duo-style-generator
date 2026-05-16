@@ -1031,163 +1031,228 @@ const WORLD_2 = `Replace the two original characters in the cinematic car interi
 
 const WORLD_3 = `Use the original diner frame as the immutable master shot. Perform only a precise photorealistic identity replacement of the two seated characters using the provided real-person references. The final image must look like a real DSLR cinematic still from an indie coming-of-age film. Keep the diner scene completely unchanged: same framing same camera angle same lens perspective same table geometry same background same warm diner lighting same depth of field same cinematic atmosphere The transferred people must look like they physically performed the exact original scene themselves, not pasted into it. IDENTITY PRESERVATION: Preserve accurate real facial identity and anatomy: facial structure eye shape and spacing jawline lips skin texture pores asymmetry natural imperfections Do not stylize, beautify, smooth skin, or make faces generic. MALE CHARACTER: Match the original diner pose exactly: same seated posture same head angle same shoulder position same torso orientation same hand placement same awkward stillness Preserve the emotional tone from the male reference: tired introspective eyes subtle sadness withdrawn energy natural mouth tension Use the oversized black hoodie from the reference with realistic fabric folds and weight. FEMALE CHARACTER: Match the original diner pose exactly: same posture same head tilt same eye direction same restrained body language Preserve the emotional tone from the female reference: restrained vulnerability detached observational gaze quiet melancholy natural candid realism Use the fitted white short-sleeve shirt and layered silver necklaces from the reference with realistic fabric tension and folds. HANDS — CRITICAL: Show exactly TWO visible hands on the table. Each visible hand must have: exactly FIVE anatomically correct fingers one correct thumb realistic knuckles and tendons natural wrist anatomy believable finger overlap physically correct contact pressure The touching interaction must feel subtle and real. Absolutely no: extra fingers missing fingers fused fingers duplicated fingers warped palms broken wrists malformed anatomy AI-looking hands REALISM: photorealistic skin shading invisible compositing natural film grain coherent warm lighting realistic DSLR texture subtle cinematic grading no CGI appearance NEGATIVE PROMPT: generic AI face, weak resemblance, identity drift, glamour face, plastic skin, overprocessed grading, CGI, synthetic lighting, extra fingers, missing fingers, fused fingers, duplicated hands, broken wrists, malformed anatomy, emotionless expression, uncanny valley, artificial posing`;
 
-const STRANGER_1 = `Use the original frame as an immutable master plate. Perform an ultra-precise photorealistic identity transfer of the two standing characters using the provided real-person references. The result must preserve the exact cinematic shot while replacing ONLY the human identities with maximum facial fidelity and anatomical realism. The final frame must look indistinguishable from a real on-set DSLR still captured during production of a grounded indie sci-fi drama.
+const STRANGER_1 = `Use the original frame as an immutable master plate. Perform a forensic-grade photorealistic identity replacement of the two standing characters using the supplied real-person references. Preserve 100% of the original cinematography, blocking, lighting, wardrobe behavior, lens characteristics, and emotional tone. Replace ONLY the identities of the humans while maintaining the exact physical performance captured in the source frame.
 
-CRITICAL PRIORITY:
-The generated people MUST strongly and unmistakably resemble the supplied reference individuals with near face-swap-level identity accuracy. Identity fidelity is more important than beauty, stylization, or aesthetic enhancement.
+PRIMARY OBJECTIVE:
+The final image must look as if the referenced real individuals were physically present on set during filming. Identity fidelity is the absolute highest priority.
 
-DO NOT reinterpret the characters.
-DO NOT create “inspired by” faces.
-DO NOT average or generalize facial traits.
-The result must look like the actual real people physically acted in the original scene.
+The result must NOT resemble:
 
-LOCK ALL ORIGINAL CINEMATIC ELEMENTS:
+AI-generated “inspired by” faces
+averaged facial features
+beautified reinterpretations
+glamourized actors
+fashion-editorial versions
+synthetic CGI humans
+
+The generated people must immediately and unmistakably match the exact individuals from the references at first glance.
+
+LOCKED MASTER FRAME — DO NOT CHANGE:
 
 exact framing
 exact composition
-exact camera position
-exact focal length and lens distortion
-exact body proportions
-exact room geometry
-exact background objects
-exact warm tungsten practical lighting
-exact shadows and falloff
-exact cinematic grading
+exact camera placement
+exact focal length
+exact lens distortion
 exact depth of field
+exact cinematic grain
+exact warm tungsten lighting
+exact room geometry
+exact shadows and bounce light
+exact body proportions
+exact posture tension
+exact clothing silhouette
 exact emotional atmosphere
-exact pose geometry
-exact body language
+exact physical interaction between characters
 
-Only replace the identities of the two characters.
+DO NOT:
 
-LEFT CHARACTER — STRICT IDENTITY MATCH:
-Replace the left character with the young male from the provided carousel reference.
+alter pose
+alter body language
+alter wardrobe
+alter perspective
+alter lighting direction
+alter facial expression intensity
+stylize the scene
 
-MANDATORY FACIAL FEATURES:
+LEFT CHARACTER — EXTREME IDENTITY ACCURACY
 
-narrow elongated face
-soft angular jawline
-thin pale lips
-sleepy hooded eyes
-large dark eyes with melancholic expression
-delicate nose bridge
-youthful and slightly gaunt facial structure
-pale natural skin texture
-subtle under-eye shadows
-messy medium-length dark brown hair with soft layered volume
-realistic uneven fringe placement
-no beautification
-no model-like glamour enhancements
+Replace the left character ONLY with the young male from the carousel reference.
 
-Expression must remain emotionally restrained, detached, introspective, slightly distant.
+CRITICAL FACIAL MATCHING REQUIREMENTS:
 
-Preserve EXACT original pose:
+very narrow vertically elongated face
+slim bone structure
+youthful slightly gaunt appearance
+soft angular jawline without sharp masculinity
+thin pale lips with naturally flattened upper lip
+large sleepy hooded eyes
+melancholic heavy-lidded gaze
+dark brown eyes
+subtle under-eye darkness
+delicate narrow nose bridge
+soft cheek structure with low facial fat
+pale realistic skin
+authentic uneven skin texture
+no makeup appearance
+naturally asymmetrical facial structure
+realistic teenage/young adult proportions
 
-identical shoulder angle
-identical neck rotation
-identical gaze direction
-identical arm crossing position
-identical torso orientation
-identical posture tension
+HAIR — MUST MATCH REFERENCE EXACTLY:
 
-Maintain the oversized pale blue collared sweatshirt exactly as in the master shot:
-
-realistic heavy fabric weight
-natural cloth compression
-accurate sleeve folds
-soft cotton texture
-physically believable draping
-
-RIGHT CHARACTER — STRICT IDENTITY MATCH:
-Replace the right character with the young girl from the provided outdoor reference.
-
-MANDATORY FACIAL FEATURES:
-
-youthful round facial structure
-soft cheeks
-large expressive eyes
-subtle vulnerable gaze
-natural pale skin with realistic pores
-small natural lips
-delicate jawline
-realistic teenage proportions
-long light brown hair
-naturally thin eyebrows
-authentic candid appearance
-absolutely no glamorization or adultification
-
-Hair must preserve:
-
-natural long flowing texture
+messy medium-length dark brown hair
+soft layered texture
+slightly overgrown silhouette
+uneven natural fringe
+loose volume around ears and crown
 realistic strand separation
+non-stylized haircut
+slightly oily natural texture
+no polished salon appearance
+
+EXPRESSION:
+
+emotionally detached
+introspective
+restrained sadness
+distant gaze
+quiet tension
+subtle emotional fatigue
+
+PRESERVE EXACT ORIGINAL PERFORMANCE:
+
+identical neck rotation
+identical eye direction
+identical shoulder angle
+identical crossed-arm placement
+identical torso orientation
+identical body compression
+identical silhouette
+
+WARDROBE:
+Maintain the oversized pale blue collared sweatshirt EXACTLY:
+
+heavy cotton behavior
+realistic fold physics
+sleeve compression
+fabric thickness
+natural draping tension
+authentic cloth shadows
+
+RIGHT CHARACTER — EXTREME IDENTITY ACCURACY
+
+Replace the right character ONLY with the young girl from the outdoor reference.
+
+CRITICAL FACIAL MATCHING REQUIREMENTS:
+
+youthful rounded facial structure
+soft cheeks
+realistic teenage proportions
+large expressive slightly sad eyes
+subtle vulnerable gaze
+naturally thin eyebrows
+delicate small lips
+soft narrow jawline
+pale natural skin tone
+visible realistic pores
+candid non-model appearance
+authentic adolescent facial anatomy
+no beautification
+no adultification
+no glamorization
+
+HAIR — MUST MATCH REFERENCE EXACTLY:
+
+long light-brown hair
+naturally fine hair texture
 subtle waviness
-physically correct shadowing in warm indoor light
+realistic strand separation
+soft natural volume
+physically accurate warm indoor highlights
+natural imperfect placement
+authentic casual appearance
 
-Expression must remain:
+EXPRESSION:
 
-cautious
 emotionally vulnerable
+cautious
+protective
 quietly tense
-intimate and protective
+intimate and emotionally dependent
 
-Preserve EXACT original pose:
+PRESERVE EXACT ORIGINAL PERFORMANCE:
 
-same leaning posture
-same head placement
-same eye direction
-same shoulder compression
-same physical closeness
-same hand placement on arm
+identical leaning posture
+identical shoulder compression
+identical head position
+identical gaze direction
+identical arm placement
+identical hand placement on sleeve
+identical physical closeness
 
-HANDS — HIGHEST PRIORITY:
-Hands must be anatomically perfect and photorealistic.
+HANDS — MAXIMUM REALISM PRIORITY
 
-Requirements:
+All hands must be anatomically flawless and physically coherent.
+
+MANDATORY:
 
 exactly five fingers per hand
-correct thumb placement
+correct thumb articulation
+accurate finger lengths
 realistic knuckles
-natural tendons
-proper nail anatomy
+visible tendon structure
+natural nail anatomy
+proper wrist alignment
 believable skin compression
-physically accurate wrist joints
-correct finger lengths
-natural relaxed curvature
-accurate interaction with clothing fabric
+realistic interaction with fabric
+physically accurate grip pressure
 
-NO:
+STRICTLY FORBIDDEN:
 
-extra fingers
 fused fingers
-duplicated hands
-warped anatomy
+duplicated fingers
+extra fingers
+malformed joints
 melted palms
 floating wrists
-malformed joints
+warped anatomy
 AI hand artifacts
+rubber-like skin
 
 PHOTOREALISM REQUIREMENTS:
 
 invisible compositing
-true DSLR texture
-realistic optical softness
-subtle sensor grain
-organic skin detail
-accurate pore structure
-physically correct subsurface scattering
-coherent warm indoor lighting
-realistic shadow integration
-natural fabric behavior
-cinematic tungsten color response
-authentic filmic contrast
-no CGI appearance
-no digital painting look
-no overprocessing
-no beauty retouching
-no artificial sharpening
+DSLR-level realism
+natural sensor grain
+cinematic optical softness
+authentic pore detail
+realistic subsurface scattering
+coherent tungsten lighting
+physically correct skin reflections
+accurate shadow integration
+realistic eye moisture
+natural sclera texture
+physically accurate hair shading
+believable cloth interaction
+filmic contrast response
+subtle cinematic color grading
+absolutely no digital painting appearance
+
+FACE INTEGRATION REQUIREMENTS:
+The replacement faces must inherit:
+
+original scene lighting
+original shadow direction
+original lens softness
+original skin exposure
+original depth-of-field falloff
+original facial perspective
+original head geometry
+
+The identities must feel organically photographed in-camera, not composited afterward.
 
 NEGATIVE PROMPT:
-weak resemblance, identity drift, generic AI face, face averaging, beautified face, fashion model appearance, glamour skin, plastic skin, porcelain skin, symmetry correction, CGI, fake cinematic look, synthetic rendering, overprocessed texture, uncanny valley, inaccurate facial structure, incorrect eye shape, wrong jawline, wrong nose, emotionless face, pose mismatch, incorrect body proportions, compositing artifacts, bad lighting integration, extra fingers, fused fingers, missing fingers, duplicated limbs, malformed wrists, floating hands, distorted anatomy, cartoon texture, fake shadows, over-sharpened skin, stylized face, anime influence, de-aged appearance, artificial perfection`;
+weak resemblance, identity drift, face averaging, generic AI face, beautified face, fashion model look, influencer appearance, symmetry correction, glamour skin, plastic skin, porcelain skin, over-retouched face, CGI, fake cinematic look, synthetic rendering, stylized humans, uncanny valley, wrong eye shape, wrong jawline, wrong nose bridge, wrong facial proportions, incorrect hairline, incorrect hairstyle, inaccurate expression, pose mismatch, body mismatch, lighting mismatch, compositing artifacts, fake shadows, over-sharpening, artificial detail, anime influence, digital painting texture, malformed anatomy, extra fingers, fused fingers, duplicated limbs, warped wrists, floating hands, melted hands, unrealistic skin, de-aged appearance, artificial perfection`;
 
 const STRANGER_2 = `Use the reference image ONLY as a cinematography, composition, pose, and interaction template.
 
