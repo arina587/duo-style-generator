@@ -953,36 +953,71 @@ All characters are adults over 18 years old.
 Negative prompt:
 generic face, inaccurate likeness, weak resemblance, face swap only, different facial structure, altered identity, beautified face, unrealistic anatomy, oversized head, mismatched body, warped limbs, distorted proportions, bad hands, extra fingers, fake skin, smooth plastic skin, cartoon, anime, CGI, 3d render, doll face, blurry, low quality, oversaturated, watermark, logo, duplicate people, childlike appearance, underage`;
 
-const TITANIC_3 = `Replace the two people in the original cinematic ship-deck scene with the people from the provided reference photos.
+const TITANIC_3 = `Create a cinematic romantic scene inspired by the original reference ship-deck atmosphere at sunset. Keep the environment composition, camera angle, lighting direction, framing, ship structure, deck details, ropes, railings, mast placement, background perspective, and overall visual atmosphere very close to the original reference image. Do not significantly alter the background or environment design.
 
-IMPORTANT:
-Transfer the people completely and naturally from the reference images — not only the faces. Preserve full body proportions, torso shape, shoulder width, neck length, posture, arm positioning, hairstyle, clothing structure, silhouette, and overall anatomy exactly from the references.
+Replace the original couple with two adult people based on the provided reference photos.
 
-Do not keep the original bodies underneath the new faces.
-Do not create mismatched proportions or oversized heads.
-The final result must look like the reference people themselves are physically present in the scene.
+Use the reference individuals consistently and naturally throughout the image while preserving their exact recognizable facial structure, eye shape, nose, lips, jawline, hairstyle, hair texture, proportions, silhouette, and overall appearance. Maintain very high facial identity accuracy and realistic resemblance to both reference individuals.
 
-Preserve the original romantic pose exactly:
-the male character standing behind the female character, arms wrapped naturally around her waist, both leaning closely toward each other with soft intimate body language.
+Scene composition:
 
-Male character:
-Use the exact male reference appearance while adapting naturally to the embracing pose. Preserve realistic anatomy, shoulder proportions, hairstyle, clothing style, and natural hand positioning around the female character.
+Adult male standing behind the adult female
+His arms gently wrapped around her waist
+Both leaning slightly toward each other in a calm emotional moment
+Elegant, natural posture and realistic body contact
+Medium close-up cinematic framing identical or very similar to the original reference composition
+Preserve the original ship deck layout and cinematic sunset atmosphere
+Ocean background with warm golden-hour lighting matching the reference image
+Shallow depth of field
+Dramatic romantic cinematic atmosphere
 
-Female character:
-Use the exact female reference appearance while preserving the leaning pose, head angle, torso posture, elegant body proportions, hairstyle, clothing style, and natural interaction with the male character’s arms.
+IMPORTANT BACKGROUND REQUIREMENTS:
 
-Keep the original cinematic environment unchanged:
-ship deck at sunset, warm golden-hour lighting, dramatic movie atmosphere, elegant composition, realistic shadows, ocean-side ambiance, shallow depth of field, cinematic framing.
+Keep the background highly consistent with the original reference image
+Do not redesign the ship or environment
+Maintain similar deck proportions, railing placement, ropes, mast structure, horizon line, and sunset composition
+Preserve the same cinematic color palette and lighting mood
+Background should feel like the same scene as the original reference, only with the new people replacing the original couple
 
-The characters must blend seamlessly into the environment with:
-matching lighting direction, realistic body scaling, accurate perspective, realistic skin texture, believable interaction between bodies, natural clothing folds, realistic hands, and photorealistic detail.
+Male:
 
-Ultra realistic cinematic photography, movie still quality, natural proportions, warm sunset tones, DSLR detail, highly detailed, emotionally cinematic atmosphere.
+Match the male reference precisely and naturally
+Realistic proportions, shoulder width, neck anatomy, and posture
+Natural hairstyle, facial structure, and expression matching the reference
+Accurate hand anatomy with realistic wrists, palms, knuckles, fingernails, and exactly five fingers on each hand
+Believable arm placement and natural interaction with the female character
+Clothing adapted subtly and naturally to the original cinematic setting
 
-All characters are adults over 18 years old.
+Female:
+
+Match the female reference precisely and naturally
+Preserve realistic proportions, hairstyle, facial features, expression, and posture
+Elegant pose with believable interaction and physically accurate anatomy
+Accurate hand anatomy with realistic finger spacing, fingernails, joints, and exactly five fingers on each hand
+Natural lighting and realistic skin texture
+Clothing adapted subtly and naturally to the original cinematic setting
+
+Critical anatomy requirements:
+
+Perfect human hand anatomy
+Exactly five fingers per hand
+No fused fingers
+No extra fingers
+No missing fingers
+Correct finger length and proportions
+Natural thumb placement
+Realistic joints, tendons, fingernails, and palm structure
+Anatomically correct wrists and arm positioning
+Symmetrical believable hands
+Natural body proportions and realistic skeletal structure
+
+Visual style:
+
+ultra realistic cinematic photography, movie still aesthetic, preserve original Titanic-like cinematic composition, photorealistic skin texture, DSLR-quality detail, natural cinematic color grading, subtle film grain, realistic shadows, shallow depth of field, emotionally cinematic atmosphere, highly detailed, physically accurate anatomy, realistic human proportions
 
 Negative prompt:
-face swap only, mismatched body, oversized head, tiny body, warped anatomy, distorted limbs, bad hands, extra fingers, unrealistic proportions, fake skin, cartoon, anime, CGI, 3d render, blurry, low quality, oversaturated, watermark, logo, text, duplicate people, childlike appearance, underage`;
+
+changed background, different ship design, altered environment, incorrect deck structure, unrealistic scenery, low quality, blurry face, distorted anatomy, malformed hands, bad hands, deformed fingers, fused fingers, extra fingers, missing fingers, six fingers, duplicate fingers, warped limbs, broken anatomy, unrealistic proportions, asymmetrical hands, plastic skin, cartoon, anime, CGI, 3D render, oversaturated colors, watermark, logo, text, poorly drawn hands, mutated hands, distorted wrists, unnatural pose`;
 
 const TERABITHIA_1 = `Replace the two original characters in the forest photo with the exact people from the provided reference images using complete identity transfer and seamless cinematic integration. The final result must preserve the same emotions, smile intensity, facial mood, eye expression, and natural human warmth from the reference photos. Both people must have the same authentic emotional feeling as in the references — including subtle smiling eyes, relaxed facial muscles, natural mouth shape, and realistic emotional presence. Left side — female replacement: Completely replace the original girl with the woman from the female reference image. Transfer exactly: face structure eyes and eye expression natural soft smile / neutral emotion from the reference lips and mouth shape hairstyle and hair flow hair color skin texture and tone body proportions posture energy clothing jewelry and accessories overall identity and presence Keep the original pose from the forest photo: she must naturally hold the fluffy white dog in the same position and interaction. Adapt her naturally into the forest scene with: matching shoulder angle natural neck rotation realistic head tilt correct torso perspective physically accurate arm placement realistic body balance and weight distribution Right side — male replacement: Completely replace the original boy with the man from the male reference image. Transfer exactly: face structure hairstyle and hair texture eyes and eye direction authentic smile and expression from the reference relaxed facial emotion skin tone clothing posture vibe proportions natural body language overall identity Keep the original standing position from the forest scene while adapting his posture naturally to the environment and camera angle. Critical realism requirements: The two new people must look naturally photographed together inside the forest scene. Perfectly match: lighting direction shadow softness outdoor daylight color ambient forest bounce light camera perspective depth of field cinematic grading lens characteristics realistic scale and proportions Faces must preserve the exact emotional realism from the references: natural smile, realistic cheeks, authentic eyes, relaxed mouth tension, believable human expression. Extremely important anatomy requirements: correct number of fingers anatomically correct hands no extra fingers no fused fingers no duplicated arms no malformed hands no distorted limbs realistic wrist anatomy physically correct arm positioning natural finger bending and grip on the dog Ensure: seamless compositing realistic contact shadows accurate head perspective realistic neck connection proper shoulder anatomy realistic fabric folds natural skin pores invisible edit quality natural integration into the forest atmosphere Preserve completely: forest environment tree trunk green foliage fluffy white dog cinematic framing shallow depth of field natural outdoor atmosphere Ultra photorealistic DSLR photo, cinematic realism, highly detailed skin texture, natural outdoor lighting, realistic anatomy, seamless environmental integration, invisible compositing quality. Negative prompt: extra fingers, extra hands, duplicated limbs, malformed hands, broken anatomy, distorted fingers, fused fingers, warped arms, unnatural pose, stiff body, fake smile, artificial emotion, mismatched expression, incorrect gaze, pasted subject, floating body parts, bad anatomy, CGI, 3D render, cartoon, anime, painting, illustration, blurry details, oversaturated colors, poor compositing, distorted perspective, unrealistic lighting, low quality, watermark, text, logo`;
 
