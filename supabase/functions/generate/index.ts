@@ -553,108 +553,152 @@ Negative prompt:
 cartoon, anime, illustration, painting, CGI, 3d render, fake skin, blurry face, distorted anatomy, extra fingers, bad hands, low quality, overexposed, oversaturated, watermark, text, logo, duplicate person, deformed face, unrealistic proportions`;
 
 const EUPHORIA_2 = `Use the reference image ONLY for:
-- composition
-- camera angle
-- framing
-- perspective
-- pose interaction
-- lighting
-- depth of field
-- cinematic atmosphere
 
-Completely remove the original man and woman from the scene.
+exact composition
+exact body positioning
+exact head tilt
+exact torso rotation
+exact shoulder angle
+exact couch placement
+exact eye-line direction
+exact framing
+exact camera angle
+exact perspective
+exact lighting
+exact depth of field
+exact cinematic atmosphere
 
-Generate TWO entirely new people using ONLY the uploaded reference people as the source of appearance.
+Completely remove the original man and woman from the reference scene.
 
-CRITICAL:
-The uploaded people must remain highly recognizable and visually consistent with their reference photos.
+Replace them with TWO entirely new people using ONLY the uploaded male and uploaded female as identity references.
 
-Prioritize identity preservation over cinematic stylization.
+CRITICAL PRIORITY:
+Identity preservation and pose accuracy are MORE IMPORTANT than cinematic stylization.
 
-Do NOT reinterpret, beautify, redesign, or approximate their appearance.
+The generated people must look almost identical to the uploaded references and must keep their real-world appearance.
+
+Do NOT:
+
+beautify
+stylize
+reinterpret
+age up/down
+sharpen features
+glamorize
+change proportions
+make them look like actors/models
 
 Preserve EXACTLY:
-- facial structure
-- eye shape and spacing
-- nose shape
-- lips
-- jawline
-- cheekbones
-- hairstyle
-- hairline
-- hair texture
-- eyebrows
-- skin tone
-- facial proportions
-- body proportions
-- silhouette
-- age appearance
 
-Do NOT inherit ANY facial or body features from the original people in the reference image.
+facial bone structure
+eye shape
+eye spacing
+eyelids
+eyebrows
+nose shape
+lips
+jawline
+cheekbones
+chin
+hairline
+hairstyle
+hair density
+hair texture
+skin tone
+facial proportions
+body proportions
+silhouette
+age appearance
+
+DO NOT inherit ANY facial or body traits from the original people in the cinematic reference image.
+
+The uploaded people must fully replace the original subjects across the ENTIRE body.
 
 Replacement mapping:
-- uploaded male → foreground left position on couch
-- uploaded female → foreground right position facing him
 
-The generated people must fully replace the original subjects across the ENTIRE body.
+uploaded male → left person on couch
+uploaded female → right person facing him
 
-Keep:
-- exact seating positions
-- eye-line interaction
-- couch placement
-- framing
-- perspective
-- emotional tension
-- environmental depth
+POSE ACCURACY IS CRITICAL:
 
-Create complete realistic anatomy with:
-- coherent neck connection
-- realistic shoulders
-- natural arms
-- realistic hands
-- proper body proportions
-- natural posture
-- realistic clothing folds
+The uploaded male must replicate the original male pose EXACTLY:
 
-Do NOT perform:
-- face swap
-- morphing
-- blending
-- partial replacement
-- identity mixing
+same leaning angle into the couch
+same neck bend
+same head tilt
+same eye direction toward the girl
+same shoulder posture
+same torso orientation
+same relaxed body language
+same distance from camera
+same crop framing
+same arm placement perspective
+same seated depth into the couch
 
-The uploaded people must look like naturally photographed real humans existing inside the scene.
+The uploaded female must replicate the original female pose EXACTLY:
 
-Lighting must match the original environment:
-- warm indoor cinematic lighting
-- soft shadows
-- realistic skin shading
-- shallow depth of field
-- subtle film grain
-- realistic environmental reflections
+same partial side-profile visibility
+same shoulder angle
+same head positioning
+same seated orientation
+same proximity to the male
+same framing crop
+same eye-line interaction
+
+The final result must feel like the uploaded people were naturally photographed in the original cinematic scene.
+
+NO face swap look.
+NO morphing.
+NO blended identities.
+NO partial replacement.
+
+Generate:
+
+complete realistic anatomy
+coherent neck attachment
+natural shoulders
+realistic arms
+realistic hands
+accurate body mass
+natural posture
+believable clothing folds
+
+Lighting must perfectly match the environment:
+
+warm cinematic indoor lighting
+soft practical lamp glow
+realistic skin shading
+subtle shadow falloff
+shallow depth of field
+realistic environmental reflections
+slight film grain
 
 Preserve:
-- couch
-- background blur
-- warm room atmosphere
-- cinematic color grading
-- environmental realism
 
-The final image must look like a real cinematic photograph captured in-camera, not composited or AI-generated.
+couch texture
+room composition
+background blur
+environmental depth
+warm cinematic grading
 
-Avoid:
-- identity drift
-- generic faces
-- beauty retouching
-- plastic skin
-- distorted anatomy
-- warped hands
-- inconsistent lighting
-- blended identities
-- remnants of original people
-- face swap appearance
+The image must look like a real in-camera cinematic photograph, not AI-generated or composited.
 
-All people in the photo are over 18 years old.`;
+Strictly avoid:
+
+pose drift
+identity drift
+generic faces
+beautification
+plastic skin
+anatomy distortion
+warped hands
+incorrect perspective
+incorrect body angle
+inconsistent lighting
+remnants of original people
+face swap artifacts
+altered facial structure
+exaggerated emotions`;
 
 const EUPHORIA_3 = `Use the reference image as a composition and scene template.
 
