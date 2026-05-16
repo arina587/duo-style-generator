@@ -864,29 +864,94 @@ All characters are adults over 18 years old.
 Negative prompt:
 face swap only, mismatched body, incorrect proportions, oversized head, tiny body, warped anatomy, distorted limbs, bad hands, extra fingers, unrealistic torso, fake skin, cartoon, anime, CGI, 3d render, blurry, low quality, oversaturated, watermark, logo, text, duplicate people, childlike appearance, underage`;
 
-const TITANIC_2 = `Replace the two people in the original warm cinematic scene with the people from the provided reference photos.
+const TITANIC_2 = `Replace the two original characters in the cinematic scene with the exact two people from the provided reference photos.
 
-IMPORTANT:
-Preserve the full appearance of both reference people — including face, hairstyle, body proportions, shoulder width, posture, clothing structure, natural anatomy, and overall silhouette. Do not perform a simple face swap.
+CRITICAL REQUIREMENT:
+Do NOT reinterpret, stylize, beautify, age-shift, or approximate the reference people. Reconstruct their identities faithfully and photorealistically using the exact facial structure and physical appearance from the references.
+
+The result must preserve:
+
+exact face shape
+exact eye shape and spacing
+exact nose structure
+exact lips and mouth shape
+exact jawline and chin
+exact eyebrow shape
+exact skin tone and texture
+exact hairstyle, hairline, and hair volume
+exact proportions of head, neck, shoulders, torso, and body silhouette
+exact natural asymmetry and facial uniqueness
+
+Avoid generic “pretty face” generation. The final characters must clearly look like the same real people from the reference photos.
 
 Male character:
-Use the exact male reference appearance while keeping the seated pose and natural interaction with the object in his hands. Preserve realistic torso proportions, neck shape, shoulders, hairstyle, expression, and clothing details.
+Use the exact male reference identity and appearance.
+Preserve:
+
+facial proportions
+tired soft eyes
+slim jawline
+messy medium-length dark hair
+realistic neck thickness
+narrow shoulders
+natural expression
+youthful but fully adult anatomy
+exact facial likeness
+
+Keep the original seated pose and interaction with the object in his hands.
+Do not change his body type or make him broader, older, or more masculine than in the reference.
 
 Female character:
-Use the exact female reference appearance while preserving the gentle leaning pose over the male character’s shoulder. Keep accurate body proportions, hairstyle, facial features, posture, and realistic interaction between both characters.
+Use the exact female reference identity and appearance.
+Preserve:
+
+facial anatomy
+soft rounded facial structure
+exact eyes and lips
+long straight brown hair
+slim natural physique
+delicate shoulders and neck
+realistic facial proportions
+exact likeness to the reference
+
+Keep her gentle leaning pose over the male character’s shoulder with natural physical interaction and accurate body positioning.
+
+IMPORTANT:
+This is NOT a face swap.
+The entire people must be reconstructed from the references:
+identity, anatomy, posture, proportions, silhouette, hairstyle, and physical presence.
 
 Maintain the original cinematic environment:
-warm low indoor lighting, elegant vintage atmosphere, soft shadows, intimate composition, dark background, realistic depth of field, movie-style framing.
 
-The characters must blend naturally into the scene with:
-matching lighting direction, realistic skin texture, accurate anatomy, realistic clothing folds, proportional body scaling, natural hand positioning, and seamless photorealistic integration.
+warm amber indoor lighting
+elegant vintage room
+dark background
+soft shadows
+shallow depth of field
+intimate composition
+movie still framing
+realistic optical lens behavior
+photorealistic skin rendering
 
-Ultra realistic cinematic photography, movie still quality, natural warm tones, DSLR detail, soft ambient lighting, highly detailed, emotionally cinematic atmosphere.
+Ensure:
+
+realistic anatomy
+correct body scaling
+natural shoulder width
+realistic hand structure
+seamless lighting integration
+physically correct interaction between characters
+natural clothing folds
+realistic skin pores and texture
+DSLR cinematic detail
+ultra realistic movie still quality
+
+The final image should look like a real photographed scene from a high-budget romantic drama film.
 
 All characters are adults over 18 years old.
 
 Negative prompt:
-face swap only, distorted anatomy, oversized head, mismatched body, unrealistic proportions, warped limbs, bad hands, extra fingers, fake skin, cartoon, anime, CGI, 3d render, blurry, low quality, oversaturated, watermark, logo, text, duplicate people, childlike appearance, underage`;
+generic face, inaccurate likeness, weak resemblance, face swap only, different facial structure, altered identity, beautified face, unrealistic anatomy, oversized head, mismatched body, warped limbs, distorted proportions, bad hands, extra fingers, fake skin, smooth plastic skin, cartoon, anime, CGI, 3d render, doll face, blurry, low quality, oversaturated, watermark, logo, duplicate people, childlike appearance, underage`;
 
 const TITANIC_3 = `Replace the two people in the original cinematic ship-deck scene with the people from the provided reference photos.
 
