@@ -1029,7 +1029,169 @@ const WORLD_1 = `Replace the two original characters in the indoor cinematic sce
 
 const WORLD_2 = `Replace the two original characters in the cinematic car interior scene with the exact real people from the provided reference photos using highly accurate identity transfer and seamless photorealistic compositing. Female on the left: Replace the original blonde girl with the woman from the female reference image. Preserve her exact facial identity: face shape, jawline, cheekbones, eyes, eyebrows, nose, lips, natural expression, skin tone, skin texture, hairline, hairstyle, brunette hair texture, neck proportions, and realistic feminine features. Keep her exact original pose, side-profile angle, head tilt, shoulder position, eye-line, seated posture, and intimate emotional tension. Male on the right: Replace the original male character with the man from the male reference image. Preserve his exact identity: facial structure, jawline, eyes, eyebrows, nose, lips, realistic neutral expression, skin texture, messy dark hairstyle, masculine proportions, and natural facial asymmetry. Keep the exact original pose, leaning posture, arm placement, profile angle, eye contact direction, and cinematic tension. Identity fidelity is the highest priority. The characters must look unmistakably like the real people from the references, not generic AI approximations. Preserve natural asymmetry, realistic facial muscles, authentic eyes, subtle imperfections, and human emotional realism. Avoid beautification or “AI-face” appearance. Preserve the original cinematic composition completely: old car interior, dashboard, rear-view mirror, windshield background, daylight environment, shallow depth of field, realistic reflections, film-like cinematic color grading, soft natural lighting, realistic perspective, and authentic movie still atmosphere. Perfect lighting integration: natural daylight through windows, realistic skin shading, ambient bounce light, soft shadows, accurate exposure, realistic reflections, physically believable compositing. Ultra photorealistic cinematic DSLR movie still, realistic skin pores, natural anatomy, invisible edit quality, seamless integration, emotionally authentic expressions. Negative prompt: generic AI face, weak likeness, low identity accuracy, beautified face, uncanny valley, fake skin, plastic texture, distorted anatomy, extra fingers, fused fingers, duplicated limbs, warped face, asymmetrical eyes, unrealistic expression, bad perspective, mismatched lighting, CGI render, cartoon, blurry details, overprocessed image, unrealistic shadows, deformed hands, stretched anatomy, bad compositing, low quality.`;
 
-const WORLD_3 = `Use the original diner frame as the immutable master shot. Perform only a precise photorealistic identity replacement of the two seated characters using the provided real-person references. The final image must look like a real DSLR cinematic still from an indie coming-of-age film. Keep the diner scene completely unchanged: same framing same camera angle same lens perspective same table geometry same background same warm diner lighting same depth of field same cinematic atmosphere The transferred people must look like they physically performed the exact original scene themselves, not pasted into it. IDENTITY PRESERVATION: Preserve accurate real facial identity and anatomy: facial structure eye shape and spacing jawline lips skin texture pores asymmetry natural imperfections Do not stylize, beautify, smooth skin, or make faces generic. MALE CHARACTER: Match the original diner pose exactly: same seated posture same head angle same shoulder position same torso orientation same hand placement same awkward stillness Preserve the emotional tone from the male reference: tired introspective eyes subtle sadness withdrawn energy natural mouth tension Use the oversized black hoodie from the reference with realistic fabric folds and weight. FEMALE CHARACTER: Match the original diner pose exactly: same posture same head tilt same eye direction same restrained body language Preserve the emotional tone from the female reference: restrained vulnerability detached observational gaze quiet melancholy natural candid realism Use the fitted white short-sleeve shirt and layered silver necklaces from the reference with realistic fabric tension and folds. HANDS — CRITICAL: Show exactly TWO visible hands on the table. Each visible hand must have: exactly FIVE anatomically correct fingers one correct thumb realistic knuckles and tendons natural wrist anatomy believable finger overlap physically correct contact pressure The touching interaction must feel subtle and real. Absolutely no: extra fingers missing fingers fused fingers duplicated fingers warped palms broken wrists malformed anatomy AI-looking hands REALISM: photorealistic skin shading invisible compositing natural film grain coherent warm lighting realistic DSLR texture subtle cinematic grading no CGI appearance NEGATIVE PROMPT: generic AI face, weak resemblance, identity drift, glamour face, plastic skin, overprocessed grading, CGI, synthetic lighting, extra fingers, missing fingers, fused fingers, duplicated hands, broken wrists, malformed anatomy, emotionless expression, uncanny valley, artificial posing`;
+const WORLD_3 = `Use the original diner frame as the immutable master shot. Perform an ultra-precise photorealistic identity transfer of the two seated characters using the supplied real-person references. Preserve exact facial identity with maximum fidelity. The final image must look indistinguishable from a real DSLR cinematic still from an indie coming-of-age film.
+
+CRITICAL RULE:
+Do NOT reinterpret the faces.
+Do NOT stylize.
+Do NOT beautify.
+Do NOT average facial features.
+Do NOT generate “similar-looking” people.
+The generated people must be unmistakably the exact same individuals from the reference photos.
+
+SCENE LOCK:
+Keep the diner scene completely unchanged:
+same framing,
+same composition,
+same camera height,
+same lens perspective,
+same crop,
+same table geometry,
+same wall decorations,
+same lighting,
+same warm tungsten diner atmosphere,
+same depth of field,
+same cinematic grain,
+same shadows,
+same facial lighting direction,
+same body proportions,
+same physical positioning.
+
+Only replace identity and clothing while preserving the original shot exactly.
+
+IDENTITY PRESERVATION — EXTREMELY IMPORTANT:
+Transfer exact real facial anatomy from the references:
+exact skull shape,
+exact jawline,
+exact cheekbone structure,
+exact eye shape,
+exact eye spacing,
+exact eyelid form,
+exact nose bridge and tip,
+exact lip shape,
+exact ear shape,
+exact chin,
+exact brow structure,
+exact hairline,
+exact facial asymmetry,
+exact skin texture,
+exact pores,
+exact natural imperfections,
+exact under-eye structure,
+exact facial proportions.
+
+Preserve realistic age appearance.
+Preserve subtle tiredness and emotional realism.
+Maintain natural human asymmetry.
+Do NOT smooth skin.
+Do NOT sharpen unnaturally.
+Do NOT make faces generic or “Instagram attractive.”
+
+The transferred identities must survive even under close zoom inspection.
+
+MALE CHARACTER:
+Use the exact male identity from the reference photo.
+Preserve his introspective, emotionally withdrawn expression.
+Keep the same tired eyes and subtle sadness.
+Maintain the exact original diner pose:
+same seated posture,
+same shoulder angle,
+same torso orientation,
+same head tilt,
+same gaze direction,
+same arm placement,
+same awkward stillness.
+
+Adapt the oversized black hoodie naturally onto the ORIGINAL untouched body and ORIGINAL untouched hands.
+Do not regenerate or reinterpret the arm geometry.
+Preserve the exact sleeve alignment around the existing wrist and hand position.
+
+FEMALE CHARACTER:
+Use the exact female identity from the reference photo.
+Preserve her detached observational gaze and restrained vulnerability.
+Maintain the exact original diner pose:
+same posture,
+same head tilt,
+same eye direction,
+same body language,
+same subtle emotional distance.
+
+Adapt the fitted white short-sleeve shirt and layered silver necklaces naturally onto the ORIGINAL untouched body and ORIGINAL untouched hands.
+Preserve realistic fabric tension, wrinkles, and cloth deformation while keeping the original arm anatomy unchanged.
+
+HANDS — ABSOLUTE PRIORITY:
+DO NOT regenerate the hands.
+DO NOT modify the hand pose.
+DO NOT reinterpret finger anatomy.
+
+Keep the ORIGINAL diner-frame hands completely untouched:
+same fingers,
+same anatomy,
+same contact,
+same overlap,
+same proportions,
+same skin compression,
+same wrist structure,
+same lighting,
+same positioning.
+
+The original hands from the diner frame must remain preserved exactly as photographed.
+
+Only adapt sleeves/clothing around the existing hands and wrists.
+
+ABSOLUTELY FORBIDDEN:
+new hands,
+extra fingers,
+missing fingers,
+fused fingers,
+duplicated thumbs,
+warped wrists,
+twisted anatomy,
+rubber hands,
+floating fingers,
+AI-looking anatomy,
+modified finger positions,
+changed touching interaction,
+different hand proportions.
+
+REALISM:
+True photorealistic skin shading.
+Natural subsurface scattering.
+Invisible compositing.
+Natural film grain.
+Real DSLR texture.
+Subtle cinematic color grading.
+Authentic tungsten diner lighting.
+No CGI appearance.
+No synthetic sharpness.
+No overprocessed skin.
+No beauty filter.
+No artificial symmetry.
+
+NEGATIVE PROMPT:
+generated hands,
+new fingers,
+modified hands,
+AI hands,
+identity drift,
+face reinterpretation,
+beautified face,
+plastic skin,
+airbrushed skin,
+CGI,
+3D render,
+synthetic lighting,
+uncanny valley,
+fashion editorial look,
+TikTok face,
+Instagram face,
+anime features,
+doll face,
+bad anatomy,
+body distortion,
+unnatural pose,
+fake skin texture,
+AI artifacts`;
 
 const STRANGER_1 = `Use the original frame as an immutable master plate. Perform a forensic-grade photorealistic identity replacement of the two standing characters using the supplied real-person references. Preserve 100% of the original cinematography, blocking, lighting, wardrobe behavior, lens characteristics, and emotional tone. Replace ONLY the identities of the humans while maintaining the exact physical performance captured in the source frame.
 
