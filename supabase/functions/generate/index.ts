@@ -1500,64 +1500,85 @@ Faces, bodies, hands, arms, necks, clothes, and hair must inherit identical scen
 
 Blend the uploaded people seamlessly into the environment so they appear originally photographed in this exact shot without any identity mixing from the original actors.`;
 
-const STRANGER_3 = `Use the reference image ONLY as a cinematography, composition, pose, and interaction template.
-
-DO NOT use the original actors as appearance references in ANY way.
-
-The original people are ONLY placeholders for:
-— body positioning
-— pose
-— interaction
+const STRANGER_3 = `Use the reference image ONLY for:
+— cinematography
 — framing
+— pose
+— body positioning
+— interaction
 — camera angle
 — lighting
-— scene composition
+— composition
+— environment
 
-Completely remove all original identities from the final result.
+The reference actors are NOT appearance references in ANY way.
 
-ABSOLUTELY NO blending between uploaded people and original actors.
+FULL CHARACTER REPLACEMENT REQUIRED
 
-Do NOT inherit from the reference actors:
+Completely remove the original actors’ identities and replace them entirely with the uploaded people as fully coherent real humans.
+
+This is NOT:
+— face swap
+— face blend
+— identity merge
+— actor adaptation
+— resemblance transfer
+
+This IS:
+— complete human replacement
+
+The uploaded people must replace the reference actors from head to toe.
+
+NO IDENTITY LEAKAGE FROM THE REFERENCE ACTORS
+
+Absolutely DO NOT inherit ANY facial or anatomical traits from the reference actors, including:
 — face shape
-— facial proportions
+— skull structure
 — jawline
-— eyes
-— eyebrows
+— cheekbones
+— chin
 — nose
 — lips
+— eyes
+— eyelids
+— eyebrow shape
+— forehead proportions
+— ear shape
 — hairstyle
-— skin texture
-— skin color
-— body type
-— physique
-— silhouette
-— hand shape
-— arm shape
+— hairline
+— skin tone
 — ethnicity
 — age appearance
+— body proportions
+— silhouette
+— physique
+— shoulder width
+— arm structure
+— hand structure
 
-CRITICAL:
-This is NOT a face swap.
+The final people must look EXACTLY like the uploaded people and ZERO like the reference actors.
 
-Do NOT paste uploaded faces onto the original bodies.
+CRITICAL ANTI-BLENDING RULE
 
-Instead:
-fully replace the original actors with the uploaded people as COMPLETE REAL HUMANS naturally existing in the scene.
+Do NOT reinterpret the uploaded people through the reference actors.
 
-CRITICAL FULL HUMAN TRANSFER:
+The uploaded people must remain 100% genetically and anatomically themselves.
 
-Transfer the uploaded people as COMPLETE FULL HUMANS.
+No hybridization allowed.
 
-NOT just faces.
-NOT just heads.
-NOT facial identity only.
+Forbidden:
+— uploaded face + reference jaw
+— uploaded eyes + reference nose
+— uploaded skin + reference bone structure
+— uploaded hair + reference silhouette
+— uploaded identity mixed with cinematic actor features
 
-The ENTIRE PERSON must be transferred together as ONE connected human identity.
+The uploaded identities must remain completely isolated from the reference actors.
 
-This includes:
-— head
+FULL HUMAN CONSISTENCY
+
+Each transferred person must remain a single unified human identity across:
 — face
-— hair
 — neck
 — shoulders
 — torso
@@ -1565,241 +1586,98 @@ This includes:
 — hands
 — fingers
 — body proportions
-— physique
-— silhouette
-— clothing
-— jackets
-— sleeves
-— posture
-— body language
-
-The uploaded person's FULL BODY must replace the original actor's FULL BODY.
-
-Do NOT keep:
-— original hands
-— original arms
-— original body
-— original skin color
-— original physique
-— original clothing fit
-— original body proportions
-
-Do NOT attach the uploaded face onto the original actor’s body.
-
-This is NOT a face swap.
-
-This is a COMPLETE PERSON REPLACEMENT.
-
-The uploaded people must remain physically consistent from head to toe.
-
-Face, hands, arms, neck, and body MUST belong to the SAME uploaded person.
-
-If the uploaded person has:
-— light skin → hands and body must also be light
-— slim physique → body must remain slim
-— specific clothing proportions → preserve them naturally
-
-Do NOT create hybrid humans.
-
-Do NOT mix:
-— uploaded face + original body
-— uploaded face + original hands
-— uploaded face + original skin tone
-
-ZERO identity mixing allowed.
-
-The uploaded person’s:
-— anatomy
-— proportions
-— skin tone
-— body type
-— clothing behavior
-— silhouette
-
-must remain intact across the ENTIRE body.
-
-The uploaded people must remain IDENTICAL to their source photos.
-
-Preserve EXACTLY:
-— facial bone structure
-— jawline
-— eye shape
-— eyelids
-— eyebrows
-— nose shape
-— lip shape
-— cheek structure
-— forehead proportions
-— chin structure
-— ears
-— natural asymmetry
-— hairstyle
-— hairline
-— hair density
 — skin texture
 — skin undertone
-— body proportions
-— shoulder width
-— arm proportions
 — physique
+— clothing fit
 — silhouette
 
-SKIN CONSISTENCY IS CRITICAL:
+Hands MUST belong to the uploaded person.
+Arms MUST belong to the uploaded person.
+Body MUST belong to the uploaded person.
 
-If the uploaded person has light skin on the face:
-— hands must also be light
-— arms must also be light
-— neck must also be light
-— all visible skin must perfectly match
+Do NOT preserve ANY anatomy from the reference actors.
 
-There must be ZERO mismatch between:
-— face and hands
-— face and arms
-— face and neck
-— face and body
+FACIAL ACCURACY IS CRITICAL
 
-Do NOT preserve the original actor’s skin tone or body identity.
+Preserve EXACTLY:
+— facial proportions
+— facial asymmetry
+— eye spacing
+— eye shape
+— eyelids
+— eyebrow thickness and curvature
+— nose bridge and tip
+— nostril shape
+— lips and mouth proportions
+— jawline
+— chin structure
+— cheek fullness
+— forehead height
+— ear shape
+— skin texture
+— skin undertone
+— hair density
+— hairstyle
+— hairline
 
-The uploaded body must FULLY replace the original body.
+Do NOT beautify.
+Do NOT stylize.
+Do NOT make model-like.
+Do NOT sharpen features.
+Do NOT enlarge eyes.
+Do NOT smooth skin unnaturally.
 
-Do NOT create:
-— face/body color mismatch
-— different undertones
-— disconnected body parts
-— hybrid identities
-— face-swapped appearance
-— pasted faces
+REFERENCE ACTORS MUST NOT INFLUENCE ATTRACTIVENESS OR FACIAL STRUCTURE.
 
-Do NOT:
-— beautify faces
-— smooth anatomy unnaturally
-— sharpen jawlines
-— enlarge eyes
-— slim the body
-— glamorize appearance
-— make them prettier
-— make them model-like
-— stylize skin
-— alter ethnicity
-— alter age appearance
+SCENE LOCK
 
-The uploaded people must look like authentic photographed humans physically present in the scene.
+Keep EXACTLY:
+— camera position
+— lens perspective
+— crop
+— framing
+— pose
+— spacing
+— eyelines
+— head direction
+— emotional tension
+— body language
 
-They must NOT look:
-— pasted
-— composited
-— blended with original actors
-— face-swapped
-— AI-generated
-— uncanny
-— plastic
-— over-retouched
+Left person remains left.
+Right person remains right.
 
-IMPORTANT SCENE STRUCTURE:
+Do NOT rotate faces toward camera.
+Do NOT alter the interaction.
 
-Maintain the exact interaction and body positioning:
-— left person remains on the left side looking right
-— right person remains on the right side looking left
-— preserve exact eye-lines
-— preserve exact head angles
-— preserve exact body spacing
-— preserve exact emotional tension
-— preserve exact side-profile orientation
+ENVIRONMENTAL INTEGRATION ONLY
 
-Do NOT rotate faces toward the viewer.
-Do NOT alter pose dynamics.
-Do NOT move the characters.
-
-Keep:
-— exact camera angle
-— exact framing
-— exact crop
-— exact perspective
-— exact lens feel
-— exact scene geometry
-— exact subject spacing
-
-Camera position is LOCKED.
-Perspective is LOCKED.
-Composition is LOCKED.
-
-NATURAL SCENE ADAPTATION:
-
-Adapt the uploaded people naturally to the scene WITHOUT changing identity.
-
-Scene adaptation may affect ONLY:
-— lighting integration
-— sunset light response
-— environmental shadows
-— color grading
-— atmospheric depth
-— depth of field
-— film grain
-— warm sky reflections
-
-Identity and anatomy must remain untouched.
-
-NATURAL INTEGRATION IS CRITICAL:
-
-The uploaded people must look physically present in the scene as if they were originally filmed there in-camera.
-
-They must NOT look:
-— pasted
-— composited
-— overlaid
-— cut out
-— artificially inserted
-— disconnected from the environment
-— too sharp compared to the scene
-— too clean compared to the scene
-— relit separately from the scene
-
-Blend the uploaded people naturally into the cinematography and atmosphere of the shot.
-
-Environmental integration must be realistic:
-— natural shadow interaction
-— natural ambient light bounce
-— realistic skin shading
-— realistic atmospheric depth
-— realistic color contamination from the environment
-— realistic scene grain
-— realistic softness matching the camera lens
-
-The uploaded people must inherit:
-— the exact scene contrast
-— the exact scene softness
-— the exact scene dynamic range
-— the exact scene color grading
-— the exact scene noise/grain
-— the exact scene depth of field
-
-Do NOT make the transferred people cleaner, sharper, or higher quality than the original scene.
-
-Match the imperfections of the original footage naturally.
-
-Skin must react naturally to scene lighting:
-— sunset light
-— ambient bounce light
-— environmental reflections
-— shadow softness
+Only adapt:
+— lighting
 — atmospheric haze
+— scene grain
+— sunset reflections
+— shadow softness
+— depth of field
+— cinematic color grading
 
-Clothing must integrate naturally into the lighting and environment:
-— realistic fabric shadows
-— realistic folds
-— realistic texture softness
-— realistic contact shadows
+Identity must remain untouched.
 
-Hands and faces must have identical lighting behavior and texture quality.
+The uploaded people must look naturally filmed in-camera in the scene, not composited or face-swapped.
 
-The final image must feel like a real untouched movie frame, not an edited composite.
+FINAL REQUIREMENT
 
-LIGHTING:
-Match the original sunset cinematic lighting, soft warm shadows, realistic skin shading, atmospheric depth, pink sky reflections, depth of field, cinematic color grading, and film grain.
+The final frame must look like:
+a real untouched cinematic photograph of the uploaded people in the reference scene.
 
-Faces, bodies, hands, arms, necks, clothes, and hair must inherit identical sunset lighting naturally.
-
-Blend the uploaded people seamlessly into the environment so they appear originally photographed in this exact shot without any identity mixing from the original actors.`;
+NOT:
+— AI blended
+— actor-inspired
+— face swapped
+— identity mixed
+— partially inherited from the reference actors
+— composited
+— synthetic looking`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 // provider: "replicate" | "openai"  — controls which API is called for this reference.
