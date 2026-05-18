@@ -355,18 +355,17 @@ function App() {
     requestId: string,
     provider: 'openai' | 'replicate',
     signal: AbortSignal,
+    generationStartTime: number,
   ) => {
     const POLL_INTERVAL_MS = 5000;
-    const POLL_NETWORK_RETRY_DELAY_MS = 5000;
-    const MAX_CONSECUTIVE_POLL_FAILURES = 8;
+    const POLL_NETWORK_RETRY_DELAY_MS = 7000;
+    const MAX_GENERATION_WAIT_MS = 10 * 60 * 1000; // 10 minutes
 
     const apiBase = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
     const authHeader = { Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` };
     const pollParam = provider === 'openai' ? 'jobId' : 'id';
 
-    let consecutiveFailures = 0;
-
-    console.log('[POLL START]', { requestId, predictionId, provider });
+    console.log('[POLL START]', { requestId, predictionId, provider, generationStartTime });
 
     const schedulePoll = (delayMs: number) => {
       if (pollTimeoutRef.current !== null) {
@@ -430,8 +429,7 @@ function App() {
           return;
         }
 
-        consecutiveFailures = 0;
-        console.log('[POLL]', { requestId, predictionId, provider: data.provider, status: data.status });
+        console.log('[POLL]', { requestId, predictionId, provider: data.provider, status: data.status, elapsedMs: Date.now() - generationStartTime });
 
         if (data.status === 'succeeded') {
           console.log('[POLL SUCCESS]', { requestId, predictionId, provider, url: (data.output ?? '').substring(0, 100) });
@@ -507,18 +505,22 @@ function App() {
           return;
         }
 
-        consecutiveFailures += 1;
-        console.warn('[POLL NETWORK ERROR]', {
+        const elapsedMs = Date.now() - generationStartTime;
+        console.warn('[POLL NETWORK ERROR] retrying — backend job continues independently', {
           phase: 'polling_generation', requestId, predictionId, provider,
-          consecutiveFailures, ...errDetail(err), ua: navigator.userAgent,
+          elapsedMs, ...errDetail(err), ua: navigator.userAgent,
         });
 
-        if (consecutiveFailures >= MAX_CONSECUTIVE_POLL_FAILURES) {
-          console.error('[POLL FAILURE]', {
+        // Only give up when the total generation wall-clock time exceeds the limit.
+        // Temporary network errors (mobile going to background, brief connectivity
+        // loss, edge function cold-start) must NOT terminate a job that is still
+        // running server-side.
+        if (elapsedMs >= MAX_GENERATION_WAIT_MS) {
+          console.error('[POLL TIMEOUT]', {
             phase: 'polling_generation', requestId, predictionId, provider,
-            consecutiveFailures, ...errDetail(err), ua: navigator.userAgent,
+            elapsedMs, ua: navigator.userAgent,
           });
-          finishWithError(normalizeError(err, 'polling_generation'));
+          finishWithError(makeError('polling_generation', 'Generation is taking longer than expected. Please try again.'));
           return;
         }
 
@@ -560,6 +562,7 @@ function App() {
     }
 
     const requestId = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    const generationStartTime = Date.now();
 
     isGeneratingRef.current = true;
     activeRequestId.current = requestId;
@@ -792,7 +795,7 @@ function App() {
         console.log('[POST GENERATE] job started, handing to poll', { requestId, provider, predictionId: jsonData.predictionId });
         cleanupInputFiles(uploadedPaths);
         setGenerationPhase('generating');
-        pollPrediction(jsonData.predictionId, requestId, provider, signal);
+        pollPrediction(jsonData.predictionId, requestId, provider, signal, generationStartTime);
         return;
       }
 
