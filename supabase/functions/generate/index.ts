@@ -2374,23 +2374,127 @@ Deno.serve(async (req: Request) => {
   // ── POST /generate ── validate, route to provider, return job/prediction ID immediately ──
   if (req.method === "POST") {
     try {
-      const formData = await req.formData();
+      // ── Parse request: JSON (preferred, new path) or multipart (legacy fallback) ──
+      const contentType = req.headers.get("content-type") ?? "";
+      const isJson = contentType.includes("application/json");
 
-      const referenceId = formData.get("referenceId");
-      const reference = formData.get("reference") as File | null;
-      const person1 = formData.get("person1") as File | null;
-      const person1b = formData.get("person1b") as File | null;
-      const person2 = formData.get("person2") as File | null;
-      const person2b = formData.get("person2b") as File | null;
+      type ImageSlots = {
+        person1: string;      // data URL
+        person2: string;
+        person1b?: string;
+        person2b?: string;
+        reference: string;
+        referenceId: string;
+        mode?: string;
+      };
 
-      if (!reference || reference.size === 0) {
-        return jsonResponse({ error: "Missing or empty reference file" } as unknown as GenerateResponse, 400);
+      let slots: ImageSlots;
+
+      if (isJson) {
+        // ── JSON path: frontend uploaded images to Storage and sent us signed URLs ──
+        const body = await req.json() as {
+          referenceId?: string;
+          style?: string;
+          mode?: string;
+          images?: Record<string, string>;
+        };
+
+        if (!body.referenceId) {
+          return jsonResponse({ error: "Missing referenceId" } as unknown as GenerateResponse, 400);
+        }
+        if (!body.images?.person1 || !body.images?.person2 || !body.images?.reference) {
+          return jsonResponse({ error: "Missing required image URLs (person1, person2, reference)" } as unknown as GenerateResponse, 400);
+        }
+
+        console.log("[POST] JSON path, fetching images from storage", { referenceId: body.referenceId, keys: Object.keys(body.images) });
+
+        // Download each image URL and convert to data URL
+        const urlToDataUrl = async (url: string, label: string): Promise<string> => {
+          const MAX_FETCH_ATTEMPTS = 2;
+          let lastErr: Error = new Error("Unknown");
+          for (let attempt = 1; attempt <= MAX_FETCH_ATTEMPTS; attempt++) {
+            try {
+              const res = await fetch(url, { headers: { Accept: "image/*" } });
+              if (!res.ok) throw new Error(`Fetch ${label} failed: HTTP ${res.status}`);
+              const buf = await res.arrayBuffer();
+              const bytes = new Uint8Array(buf);
+              const inferredMime = detectImageMime(bytes);
+              const ctHeader = (res.headers.get("content-type") ?? "").split(";")[0].trim();
+              const mime = (ctHeader.startsWith("image/") ? ctHeader : inferredMime);
+              const b64 = uint8ToBase64(bytes);
+              console.log(`[FETCH_IMAGE] ${label} mime=${mime} bytes=${bytes.length}`);
+              return `data:${mime};base64,${b64}`;
+            } catch (err) {
+              lastErr = err instanceof Error ? err : new Error(String(err));
+              console.warn(`[FETCH_IMAGE] ${label} attempt ${attempt} failed: ${lastErr.message}`);
+              if (attempt < MAX_FETCH_ATTEMPTS) await new Promise(r => setTimeout(r, 1000));
+            }
+          }
+          throw lastErr;
+        };
+
+        const [p1, p2, ref, p1b, p2b] = await Promise.all([
+          urlToDataUrl(body.images.person1, "person1"),
+          urlToDataUrl(body.images.person2, "person2"),
+          urlToDataUrl(body.images.reference, "reference"),
+          body.images.person1b ? urlToDataUrl(body.images.person1b, "person1b") : Promise.resolve(undefined),
+          body.images.person2b ? urlToDataUrl(body.images.person2b, "person2b") : Promise.resolve(undefined),
+        ]);
+
+        slots = {
+          person1: p1, person2: p2, reference: ref,
+          ...(p1b ? { person1b: p1b } : {}),
+          ...(p2b ? { person2b: p2b } : {}),
+          referenceId: body.referenceId,
+          ...(body.mode ? { mode: body.mode } : {}),
+        };
+
+      } else {
+        // ── Multipart path: legacy fallback ──
+        const formData = await req.formData();
+
+        const refId = formData.get("referenceId") as string | null;
+        const reference = formData.get("reference") as File | null;
+        const person1 = formData.get("person1") as File | null;
+        const person1b = formData.get("person1b") as File | null;
+        const person2 = formData.get("person2") as File | null;
+        const person2b = formData.get("person2b") as File | null;
+        const mode = formData.get("mode") as string | null;
+
+        if (!reference || reference.size === 0) {
+          return jsonResponse({ error: "Missing or empty reference file" } as unknown as GenerateResponse, 400);
+        }
+        if (!person1 || person1.size === 0 || !person2 || person2.size === 0) {
+          return jsonResponse({ error: "Missing or empty person1/person2 files" } as unknown as GenerateResponse, 400);
+        }
+        if (!refId) {
+          return jsonResponse({ error: "Missing referenceId" } as unknown as GenerateResponse, 400);
+        }
+
+        console.log("[POST] multipart path (legacy)");
+
+        const [p1, p2, ref, p1b, p2b] = await Promise.all([
+          fileToDataUrl(person1),
+          fileToDataUrl(person2),
+          fileToDataUrl(reference),
+          person1b && person1b.size > 0 ? fileToDataUrl(person1b) : Promise.resolve(undefined),
+          person2b && person2b.size > 0 ? fileToDataUrl(person2b) : Promise.resolve(undefined),
+        ]);
+
+        slots = {
+          person1: p1, person2: p2, reference: ref,
+          ...(p1b ? { person1b: p1b } : {}),
+          ...(p2b ? { person2b: p2b } : {}),
+          referenceId: refId,
+          ...(mode ? { mode } : {}),
+        };
       }
-      if (!person1 || person1.size === 0 || !person2 || person2.size === 0) {
-        return jsonResponse({ error: "Missing or empty person1/person2 files" } as unknown as GenerateResponse, 400);
-      }
 
-      const config = STYLE_CONFIG[referenceId as string];
+      // ── Shared provider dispatch (identical for both paths) ──────────────────
+
+      const { referenceId, person1b: slotP1b, person2b: slotP2b } = slots;
+
+      const config = STYLE_CONFIG[referenceId];
       if (!config) {
         return jsonResponse({ error: `Unknown referenceId: ${referenceId}` } as unknown as GenerateResponse, 400);
       }
@@ -2400,10 +2504,9 @@ Deno.serve(async (req: Request) => {
       console.log("[MODEL]", config.model);
       console.log("[REFERENCE_ID]", referenceId);
 
-      const hasMan2 = !!person1b && person1b.size > 0;
-      const hasWoman2 = !!person2b && person2b.size > 0;
+      const hasMan2 = !!slotP1b;
+      const hasWoman2 = !!slotP2b;
 
-      // ── IMAGE ROLE MAPPING ──
       const manCount = hasMan2 ? 2 : 1;
       const womanCount = hasWoman2 ? 2 : 1;
       const idxScene = 0;
@@ -2433,15 +2536,13 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
         ? roleMappingBlock + "\n\n" + config.prompt
         : roleMappingBlock + "\n\n" + UNIVERSAL_PROMPT;
 
-      // ── Build image data URLs ──
-      const personDataUrls = await Promise.all([
-        fileToDataUrl(person1),
-        ...(hasMan2 ? [fileToDataUrl(person1b!)] : []),
-        fileToDataUrl(person2),
-        ...(hasWoman2 ? [fileToDataUrl(person2b!)] : []),
-      ]);
-      const referenceDataUrl = await fileToDataUrl(reference);
-      const images = [referenceDataUrl, ...personDataUrls];
+      const personDataUrls = [
+        slots.person1,
+        ...(hasMan2 ? [slotP1b!] : []),
+        slots.person2,
+        ...(hasWoman2 ? [slotP2b!] : []),
+      ];
+      const images = [slots.reference, ...personDataUrls];
 
       if (images.length !== totalImages) {
         throw new Error(`Image count mismatch: expected ${totalImages}, got ${images.length}`);
@@ -2508,7 +2609,7 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
           status: "processing",
           predictionId,
           model: config.model,
-          referenceId: referenceId as string,
+          referenceId,
           functionVersion: FUNCTION_VERSION,
         }, 201);
       }
@@ -2517,7 +2618,6 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
       if (config.provider === "openai") {
         validateOpenAIImages(images);
 
-        // Insert a pending job row — returns immediately (< 100ms)
         const { data: jobRow, error: insertErr } = await supabase
           .from("generation_jobs")
           .insert({ provider: "openai", status: "pending" })
@@ -2531,17 +2631,16 @@ Do NOT use image_input[${idxScene}] as an identity source.`;
         const jobId = jobRow.id as string;
         console.log("[OPENAI] job created jobId:", jobId, "referenceId:", referenceId);
 
-        // Process OpenAI in background — response is already sent when this runs
         EdgeRuntime.waitUntil(
-          runOpenAIJob(jobId, images, finalPrompt, config.model, referenceId as string)
+          runOpenAIJob(jobId, images, finalPrompt, config.model, referenceId)
         );
 
         return jsonResponse({
           provider: "openai",
           status: "processing",
-          predictionId: jobId,   // reuse predictionId field so frontend poll logic is uniform
+          predictionId: jobId,
           model: config.model,
-          referenceId: referenceId as string,
+          referenceId,
           functionVersion: FUNCTION_VERSION,
         }, 201);
       }

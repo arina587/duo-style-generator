@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Download, ArrowLeft, Sparkles, Loader2, AlertCircle, Wand2, ExternalLink, RefreshCw, Copy, Check } from 'lucide-react';
+import type { GenerationPhase } from '../App';
 
 interface ResultProps {
   onBack: () => void;
@@ -10,6 +11,7 @@ interface ResultProps {
   onImgError: (src: string) => void;
   onImgLoad: () => void;
   isGenerating: boolean;
+  generationPhase: GenerationPhase;
   generationError: string;
 }
 
@@ -29,6 +31,7 @@ export default function Result({
   onImgError,
   onImgLoad,
   isGenerating,
+  generationPhase,
   generationError,
 }: ResultProps) {
   const retryCount = useRef(0);
@@ -218,11 +221,29 @@ export default function Result({
   const isModerationError = !isGenerating && !generationSucceeded &&
     (errorLo.includes('moderation') || errorLo.includes('content check'));
 
+  const phaseLabel: Record<GenerationPhase, { heading: string; subtitle: string; detail: string }> = {
+    uploading: {
+      heading: 'Uploading Images',
+      subtitle: 'Securely uploading your photos',
+      detail: 'Uploading images...',
+    },
+    starting: {
+      heading: 'Starting Generation',
+      subtitle: 'Sending request to the AI',
+      detail: 'Starting generation...',
+    },
+    generating: {
+      heading: 'Creating Your Fusion',
+      subtitle: 'AI is crafting your styled photo — this may take a minute',
+      detail: 'Generating your fusion...',
+    },
+  };
+
   let heading = 'Your Styled Fusion';
   let subtitle = 'Your AI-generated fusion is ready to download';
   if (isGenerating) {
-    heading = 'Creating Your Fusion';
-    subtitle = 'AI is crafting your styled photo — this may take a minute';
+    heading = phaseLabel[generationPhase].heading;
+    subtitle = phaseLabel[generationPhase].subtitle;
   } else if (generationSucceeded && imgLoadFailed) {
     heading = 'Image Generated';
     subtitle = 'Your image was created — tap below to open it';
@@ -300,8 +321,8 @@ export default function Result({
                     <Loader2 className="w-6 h-6 text-[#9b7dd4] animate-spin" />
                   </div>
                 </div>
-                <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Generating your fusion...</p>
-                <p className="text-[#7a6f96] text-sm font-body">Usually takes under a minute</p>
+                <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">{phaseLabel[generationPhase].detail}</p>
+                <p className="text-[#7a6f96] text-sm font-body">{generationPhase === 'generating' ? 'Usually takes under a minute' : 'Please wait...'}</p>
                 <div className="mt-4 flex justify-center gap-1.5">
                   {[0, 1, 2].map((i) => (
                     <div

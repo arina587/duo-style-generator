@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
 import Home from './components/Home';
 import Upload from './components/Upload';
 import Result from './components/Result';
@@ -7,7 +8,17 @@ import type { ReferenceItem } from './data/references';
 
 type View = 'home' | 'upload' | 'result';
 
-// ─── HEIC conversion ────────────────────────────────────────────────────────
+// Generation phase drives the progress copy shown in Result.tsx
+export type GenerationPhase = 'uploading' | 'starting' | 'generating';
+
+// ─── Supabase client (singleton) ─────────────────────────────────────────────
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY,
+);
+
+// ─── HEIC conversion ──────────────────────────────────────────────────────────
 
 async function convertHeicToJpeg(file: File): Promise<File> {
   const { default: heic2any } = await import('heic2any');
@@ -25,12 +36,7 @@ async function normalizeFile(file: File): Promise<File> {
   return file;
 }
 
-// ─── Image preload with decode() + timeout ───────────────────────────────────
-// Uses Image.decode() when available (avoids "Load failed" on Safari by waiting
-// for the full decode pipeline rather than just the load event).
-// Falls back to onload if decode() is not supported.
-// A 15s timeout prevents the preload from blocking forever on a slow connection.
-// Preload failure is non-fatal — the image is still shown via the <img> tag.
+// ─── Image preload with decode() + timeout ────────────────────────────────────
 
 function preloadImage(url: string, signal: AbortSignal): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -41,48 +47,28 @@ function preloadImage(url: string, signal: AbortSignal): Promise<void> {
       return;
     }
 
-    const timer = setTimeout(() => {
-      reject(new Error('Preload timeout'));
-    }, PRELOAD_TIMEOUT_MS);
-
+    const timer = setTimeout(() => reject(new Error('Preload timeout')), PRELOAD_TIMEOUT_MS);
     const cleanup = () => clearTimeout(timer);
 
     const tryDecode = (img: HTMLImageElement) => {
       if (typeof img.decode === 'function') {
         img.decode()
           .then(() => { cleanup(); resolve(); })
-          .catch(() => {
-            // decode() can fail on some browsers for valid images — treat as success
-            cleanup();
-            resolve();
-          });
+          .catch(() => { cleanup(); resolve(); }); // decode failure is non-fatal
       } else {
-        cleanup();
-        resolve();
+        cleanup(); resolve();
       }
     };
 
-    const onAbort = () => {
-      cleanup();
-      reject(new DOMException('Preload aborted', 'AbortError'));
-    };
-
+    const onAbort = () => { cleanup(); reject(new DOMException('Preload aborted', 'AbortError')); };
     signal.addEventListener('abort', onAbort, { once: true });
 
-    // Attempt 1: with crossOrigin (needed for Supabase storage CORS)
     const img = new window.Image();
     img.crossOrigin = 'anonymous';
-    img.onload = () => {
-      signal.removeEventListener('abort', onAbort);
-      tryDecode(img);
-    };
+    img.onload = () => { signal.removeEventListener('abort', onAbort); tryDecode(img); };
     img.onerror = () => {
-      // Attempt 2: without crossOrigin (some CDNs reject credentialed requests)
       const img2 = new window.Image();
-      img2.onload = () => {
-        signal.removeEventListener('abort', onAbort);
-        tryDecode(img2);
-      };
+      img2.onload = () => { signal.removeEventListener('abort', onAbort); tryDecode(img2); };
       img2.onerror = () => {
         signal.removeEventListener('abort', onAbort);
         cleanup();
@@ -94,72 +80,50 @@ function preloadImage(url: string, signal: AbortSignal): Promise<void> {
   });
 }
 
-// ─── Error normalization ─────────────────────────────────────────────────────
+// ─── Error normalization ──────────────────────────────────────────────────────
 
 function normalizeGenerationError(error: unknown): string {
-  const raw = error instanceof Error ? error.message : String(error ?? '');
-  const lo = raw.toLowerCase();
-
-  // Aborted by our own cleanup — not a real error, caller should check requestId first
   if (error instanceof DOMException && error.name === 'AbortError') {
     return 'Generation cancelled.';
   }
 
-  // Moderation / content policy — wins over everything else
-  if (
-    lo.includes('moderation') ||
-    lo.includes('policy') ||
-    lo.includes('unsafe') ||
-    lo.includes('blocked') ||
-    lo.includes('content_violation') ||
-    lo.includes('flagged')
-  ) {
+  const raw = error instanceof Error ? error.message : String(error ?? '');
+  const lo = raw.toLowerCase();
+
+  if (lo.includes('moderation') || lo.includes('policy') || lo.includes('unsafe') ||
+      lo.includes('blocked') || lo.includes('content_violation') || lo.includes('flagged')) {
     return 'This image could not be generated because it did not pass moderation checks.';
   }
 
-  // Timeout / aborted — specific message before generic network catch
   if (lo.includes('timeout') || lo.includes('timed out')) {
     return 'Generation is taking longer than expected. Please try again.';
   }
 
-  // Browser-level fetch/network failures — never reached the server
-  if (
-    lo.includes('load failed') ||
-    lo.includes('failed to fetch') ||
-    lo.includes('networkerror') ||
-    lo.includes('network error') ||
-    lo.includes('fetch failed') ||
-    lo.includes('econnreset') ||
-    lo.includes('__post_network_failure__') ||
-    (lo.includes('typeerror') && lo.includes('fetch'))
-  ) {
+  if (lo.includes('upload') && (lo.includes('connection') || lo.includes('network') ||
+      lo.includes('failed') || lo.includes('fail'))) {
+    return 'Connection issue while uploading images. Please try again.';
+  }
+
+  if (lo.includes('load failed') || lo.includes('failed to fetch') ||
+      lo.includes('networkerror') || lo.includes('network error') ||
+      lo.includes('fetch failed') || lo.includes('econnreset') ||
+      lo.includes('__post_network_failure__') ||
+      (lo.includes('typeerror') && lo.includes('fetch'))) {
     return 'Connection issue detected. Please try again.';
   }
 
-  // Server / backend failures
-  if (
-    lo.includes('500') ||
-    lo.includes('internal server error') ||
-    lo.includes('edge function') ||
-    lo.includes('storage upload') ||
-    lo.includes('database')
-  ) {
+  if (lo.includes('500') || lo.includes('internal server error') ||
+      lo.includes('edge function') || lo.includes('storage upload') ||
+      lo.includes('database')) {
     return 'Server issue detected. Please try again in a moment.';
   }
 
-  // Internal shape / validation errors — never show raw internals
-  if (
-    lo.includes('unexpected response') ||
-    lo.includes('unexpected content-type') ||
-    lo.includes('no output url') ||
-    lo.includes('not a valid https') ||
-    lo.includes('temporary openai url') ||
-    lo.includes('generation succeeded but no output')
-  ) {
+  if (lo.includes('unexpected response') || lo.includes('unexpected content-type') ||
+      lo.includes('no output url') || lo.includes('not a valid https') ||
+      lo.includes('temporary openai url') || lo.includes('generation succeeded but no output')) {
     return 'Server issue detected. Please try again in a moment.';
   }
 
-  // Short, readable backend string with no stack trace — pass through
   if (raw.length > 0 && raw.length < 200 && !raw.includes('\n') && !raw.includes(' at ')) {
     return raw;
   }
@@ -170,24 +134,83 @@ function normalizeGenerationError(error: unknown): string {
 // ─── URL validation ───────────────────────────────────────────────────────────
 
 function validateOutputUrl(url: string | undefined): string {
-  if (!url) {
-    throw new Error('Generation succeeded but no output URL was returned');
-  }
+  if (!url) throw new Error('Generation succeeded but no output URL was returned');
   if (!url.startsWith('https://')) {
-    throw new Error(
-      `Output URL is not a valid HTTPS URL: "${url.substring(0, 80)}"`
-    );
+    throw new Error(`Output URL is not a valid HTTPS URL: "${url.substring(0, 80)}"`);
   }
   if (url.includes('oaidalleapiprodscus.blob.core.windows.net') ||
       url.includes('openai.com/files/')) {
-    throw new Error(
-      'Received temporary OpenAI URL — backend must upload to storage first'
-    );
+    throw new Error('Received temporary OpenAI URL — backend must upload to storage first');
   }
   return url;
 }
 
-// ─── App ─────────────────────────────────────────────────────────────────────
+// ─── Storage upload helper ────────────────────────────────────────────────────
+// Uploads a single file to the generation-inputs bucket with up to 2 retries.
+// Returns the signed URL the backend will use to download it.
+
+async function uploadInputImage(
+  file: File,
+  path: string,
+  signal: AbortSignal,
+): Promise<string> {
+  const MAX_ATTEMPTS = 3;
+  const RETRY_DELAY_MS = 2000;
+
+  let lastErr: Error = new Error('Upload failed');
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    if (signal.aborted) throw new DOMException('Upload aborted', 'AbortError');
+
+    console.log(`[UPLOAD] attempt ${attempt}/${MAX_ATTEMPTS} path=${path} size=${file.size} type=${file.type}`);
+
+    try {
+      const { error } = await supabase.storage
+        .from('generation-inputs')
+        .upload(path, file, {
+          contentType: file.type || 'image/jpeg',
+          upsert: true,
+        });
+
+      if (error) throw new Error(error.message);
+
+      // Generate a signed URL valid for 30 minutes (enough for any generation job)
+      const { data: signedData, error: signErr } = await supabase.storage
+        .from('generation-inputs')
+        .createSignedUrl(path, 1800);
+
+      if (signErr || !signedData?.signedUrl) {
+        throw new Error(`Failed to create signed URL: ${signErr?.message ?? 'no URL returned'}`);
+      }
+
+      console.log(`[UPLOAD] success path=${path} url=${signedData.signedUrl.substring(0, 80)}`);
+      return signedData.signedUrl;
+
+    } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') throw err;
+
+      lastErr = err instanceof Error ? err : new Error(String(err));
+      console.warn(`[UPLOAD] attempt ${attempt} failed: ${lastErr.message}`);
+
+      if (attempt < MAX_ATTEMPTS) {
+        await new Promise<void>(r => setTimeout(r, RETRY_DELAY_MS));
+        if (signal.aborted) throw new DOMException('Upload aborted', 'AbortError');
+      }
+    }
+  }
+
+  throw lastErr;
+}
+
+// Delete uploaded input files after the job starts — best effort, non-blocking
+function cleanupInputFiles(paths: string[]): void {
+  if (paths.length === 0) return;
+  supabase.storage.from('generation-inputs').remove(paths)
+    .then(() => console.log('[CLEANUP] removed input files:', paths.join(', ')))
+    .catch(e => console.warn('[CLEANUP] failed to remove input files:', e));
+}
+
+// ─── App ──────────────────────────────────────────────────────────────────────
 
 function App() {
   const [currentView, setCurrentView] = useState<View>('home');
@@ -197,42 +220,28 @@ function App() {
   const [rawImageUrl, setRawImageUrl] = useState<string>('');
   const [imgLoadFailed, setImgLoadFailed] = useState(false);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [generationPhase, setGenerationPhase] = useState<GenerationPhase>('uploading');
   const [generationError, setGenerationError] = useState<string>('');
 
-  // Primary photos
+  // Photos
   const [photo1, setPhoto1] = useState<File | null>(null);
   const [photo2, setPhoto2] = useState<File | null>(null);
   const [preview1, setPreview1] = useState<string>('');
   const [preview2, setPreview2] = useState<string>('');
-
-  // Secondary photos
   const [photo1b, setPhoto1b] = useState<File | null>(null);
   const [photo2b, setPhoto2b] = useState<File | null>(null);
   const [preview1b, setPreview1b] = useState<string>('');
   const [preview2b, setPreview2b] = useState<string>('');
 
-  // ── Lifecycle refs ────────────────────────────────────────────────────────
-  // activeRequestId: opaque token for the current generation; every async
-  // callback checks this before touching state.
+  // ── Lifecycle refs ──────────────────────────────────────────────────────────
   const activeRequestId = useRef<string>('');
-
-  // Single AbortController for the entire active generation lifecycle
-  // (covers POST, poll fetches, and preloadImage). Replaced on every start.
   const abortControllerRef = useRef<AbortController | null>(null);
-
-  // Scheduled poll timer
   const pollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Prevents a second poll fetch from starting while one is already in flight
   const pollInFlightRef = useRef(false);
-
-  // Ref mirror of isGenerating — readable synchronously inside async callbacks
   const isGeneratingRef = useRef(false);
-
-  // Earliest timestamp at which the next generation may begin (cooldown)
   const cooldownUntilRef = useRef<number>(0);
 
-  // ── Cleanup helpers ───────────────────────────────────────────────────────
+  // ── Cleanup helpers ─────────────────────────────────────────────────────────
 
   const abortActive = (reason: string) => {
     if (pollTimeoutRef.current !== null) {
@@ -253,15 +262,12 @@ function App() {
     isGeneratingRef.current = false;
   };
 
-  // Unmount cleanup
   useEffect(() => {
-    return () => {
-      fullCleanup('unmount');
-    };
+    return () => { fullCleanup('unmount'); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Navigation handlers ───────────────────────────────────────────────────
+  // ── Navigation ──────────────────────────────────────────────────────────────
 
   const handleImageSelect = (ref: ReferenceItem) => {
     setSelectedCategory(ref.style);
@@ -280,14 +286,10 @@ function App() {
     setRawImageUrl('');
     setImgLoadFailed(false);
     setGenerationError('');
-    setPhoto1(null);
-    setPhoto2(null);
-    setPreview1('');
-    setPreview2('');
-    setPhoto1b(null);
-    setPhoto2b(null);
-    setPreview1b('');
-    setPreview2b('');
+    setPhoto1(null); setPhoto2(null);
+    setPreview1(''); setPreview2('');
+    setPhoto1b(null); setPhoto2b(null);
+    setPreview1b(''); setPreview2b('');
   };
 
   const handleBackFromUpload = () => {
@@ -310,7 +312,7 @@ function App() {
     setGenerationError('');
   };
 
-  // ── Poll ──────────────────────────────────────────────────────────────────
+  // ── Poll ────────────────────────────────────────────────────────────────────
 
   const pollPrediction = (
     predictionId: string,
@@ -345,23 +347,17 @@ function App() {
       setIsGenerating(false);
       isGeneratingRef.current = false;
       cooldownUntilRef.current = Date.now() + 1000;
-      console.log('[GENERATION READY] after failure');
+      console.log('[GENERATION READY] after poll failure');
     };
 
     const poll = async () => {
-      if (activeRequestId.current !== requestId) {
+      if (activeRequestId.current !== requestId || signal.aborted) {
         console.log('[POLL CANCELLED]', { requestId, predictionId, provider });
         return;
       }
 
-      if (signal.aborted) {
-        console.log('[POLL CANCELLED] signal aborted', { requestId });
-        return;
-      }
-
-      // Prevent a second poll from firing before the previous one completes
       if (pollInFlightRef.current) {
-        console.log('[POLL SKIPPED] poll already in flight', { requestId, predictionId });
+        console.log('[POLL SKIPPED] in flight', { requestId, predictionId });
         schedulePoll(POLL_INTERVAL_MS);
         return;
       }
@@ -377,15 +373,13 @@ function App() {
         pollInFlightRef.current = false;
 
         if (activeRequestId.current !== requestId) {
-          console.log('[POLL IGNORED STALE] after fetch', { requestId, predictionId, provider });
+          console.log('[POLL IGNORED STALE] after fetch', { requestId });
           return;
         }
 
         const ct = res.headers.get('content-type') ?? '';
         if (!ct.includes('application/json')) {
-          throw new Error(
-            `Poll response has unexpected content-type "${ct}" — expected application/json`
-          );
+          throw new Error(`Poll response unexpected content-type "${ct}"`);
         }
 
         const data = await res.json() as {
@@ -396,7 +390,7 @@ function App() {
         };
 
         if (activeRequestId.current !== requestId) {
-          console.log('[POLL IGNORED STALE] after json', { requestId, predictionId, provider, status: data.status });
+          console.log('[POLL IGNORED STALE] after json', { requestId, status: data.status });
           return;
         }
 
@@ -404,34 +398,31 @@ function App() {
         console.log('[POLL]', { requestId, predictionId, provider: data.provider, status: data.status });
 
         if (data.status === 'succeeded') {
-          const rawUrl = data.output ?? '';
-          console.log('[POLL SUCCESS]', { requestId, predictionId, provider, url: rawUrl.substring(0, 100) });
+          console.log('[POLL SUCCESS]', { requestId, predictionId, provider, url: (data.output ?? '').substring(0, 100) });
 
           let validatedUrl: string;
           try {
-            validatedUrl = validateOutputUrl(rawUrl);
+            validatedUrl = validateOutputUrl(data.output);
           } catch (validateErr) {
-            console.error('[POLL FAILURE] URL validation failed:', { requestId, predictionId, provider, msg: validateErr instanceof Error ? validateErr.message : validateErr });
+            console.error('[POLL FAILURE] URL validation:', { requestId, msg: validateErr instanceof Error ? validateErr.message : validateErr });
             finishWithError(normalizeGenerationError(validateErr));
             return;
           }
 
-          // Preload — non-fatal; image still renders via <img> tag
-          console.log('[PRELOAD START]', { requestId, url: validatedUrl.substring(0, 80) });
+          console.log('[PRELOAD START]', { requestId });
           try {
             await preloadImage(validatedUrl, signal);
             console.log('[PRELOAD SUCCESS]', { requestId });
           } catch (preloadErr) {
-            // AbortError means a new generation started — bail silently
             if (preloadErr instanceof DOMException && preloadErr.name === 'AbortError') {
               console.log('[PRELOAD CANCELLED]', { requestId });
               return;
             }
-            console.warn('[PRELOAD FAILURE] will still attempt render:', preloadErr instanceof Error ? preloadErr.message : preloadErr);
+            console.warn('[PRELOAD FAILURE] continuing anyway:', preloadErr instanceof Error ? preloadErr.message : preloadErr);
           }
 
           if (activeRequestId.current !== requestId) {
-            console.log('[POLL IGNORED STALE] after preload', { requestId, predictionId, provider });
+            console.log('[POLL IGNORED STALE] after preload', { requestId });
             return;
           }
 
@@ -449,37 +440,34 @@ function App() {
         }
 
         if (data.status === 'failed' || data.status === 'canceled') {
-          console.error('[POLL FAILURE]', { requestId, predictionId, provider, status: data.status, error: data.error });
+          console.error('[POLL FAILURE]', { requestId, predictionId, status: data.status, error: data.error });
           finishWithError(normalizeGenerationError(data.error ?? 'Generation failed. Please try again.'));
           return;
         }
 
-        // Still processing — schedule next poll
         schedulePoll(POLL_INTERVAL_MS);
 
       } catch (err) {
         pollInFlightRef.current = false;
 
-        // AbortError = cleanup from our side, not a real network failure
         if (err instanceof DOMException && err.name === 'AbortError') {
-          console.log('[POLL CANCELLED] fetch aborted', { requestId, predictionId, provider });
+          console.log('[POLL CANCELLED] fetch aborted', { requestId });
           return;
         }
-
         if (activeRequestId.current !== requestId) {
-          console.log('[POLL IGNORED STALE] in catch', { requestId, predictionId, provider });
+          console.log('[POLL IGNORED STALE] in catch', { requestId });
           return;
         }
 
         consecutiveFailures += 1;
         console.warn('[POLL NETWORK ERROR]', {
-          provider, predictionId, requestId, consecutiveFailures,
+          requestId, predictionId, provider, consecutiveFailures,
           message: err instanceof Error ? err.message : err,
-          userAgent: navigator.userAgent,
+          ua: navigator.userAgent.substring(0, 80),
         });
 
         if (consecutiveFailures >= MAX_CONSECUTIVE_POLL_FAILURES) {
-          console.error('[POLL FAILURE] max consecutive network failures', { requestId, predictionId, provider, consecutiveFailures });
+          console.error('[POLL FAILURE] max consecutive failures', { requestId, consecutiveFailures });
           finishWithError('Connection issue detected. Please try again.');
           return;
         }
@@ -491,7 +479,7 @@ function App() {
     poll();
   };
 
-  // ── Generate ──────────────────────────────────────────────────────────────
+  // ── Generate ────────────────────────────────────────────────────────────────
 
   const handleGenerate = async (
     photo1: File,
@@ -501,20 +489,17 @@ function App() {
     photo1b?: File | null,
     photo2b?: File | null,
   ) => {
-    // Single-flight guard — synchronous ref check prevents race on double-tap
     if (isGeneratingRef.current) {
       console.log('[GENERATION LOCKED] already generating');
       return;
     }
 
-    // Cooldown between generations (1s after success/failure)
     const now = Date.now();
     if (now < cooldownUntilRef.current) {
-      console.log('[GENERATION LOCKED] cooldown active, ms remaining:', cooldownUntilRef.current - now);
+      console.log('[GENERATION LOCKED] cooldown', cooldownUntilRef.current - now, 'ms remaining');
       return;
     }
 
-    // Abort and cancel everything from the previous generation
     abortActive('new generation starting');
 
     if (generatedImageUrl.startsWith('blob:')) URL.revokeObjectURL(generatedImageUrl);
@@ -526,11 +511,9 @@ function App() {
 
     const requestId = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 
-    // Lock synchronously before any await
     isGeneratingRef.current = true;
     activeRequestId.current = requestId;
 
-    // Fresh AbortController for this entire generation lifecycle
     const ac = new AbortController();
     abortControllerRef.current = ac;
     const { signal } = ac;
@@ -538,31 +521,22 @@ function App() {
     console.log('[GENERATION START]', { requestId, referenceId: selectedRef.id, ua: navigator.userAgent.substring(0, 80) });
 
     setIsGenerating(true);
+    setGenerationPhase('uploading');
     setGenerationError('');
     setGeneratedImageUrl('');
     setRawImageUrl('');
     setImgLoadFailed(false);
     setCurrentView('result');
 
-    // Log file info
-    console.log('[UPLOAD FILE] photo1:', photo1.name, photo1.type, photo1.size);
-    console.log('[UPLOAD FILE] photo2:', photo2.name, photo2.type, photo2.size);
-    if (photo1b) console.log('[UPLOAD FILE] photo1b:', photo1b.name, photo1b.type, photo1b.size);
-    if (photo2b) console.log('[UPLOAD FILE] photo2b:', photo2b.name, photo2b.type, photo2b.size);
+    // ── Step 1: Normalize HEIC files ──────────────────────────────────────────
 
-    // HEIC normalization
-    let normalizedPhoto1 = photo1;
-    let normalizedPhoto2 = photo2;
-    let normalizedPhoto1b = photo1b ?? null;
-    let normalizedPhoto2b = photo2b ?? null;
+    let p1 = photo1, p2 = photo2;
+    let p1b = photo1b ?? null, p2b = photo2b ?? null;
 
     try {
-      [normalizedPhoto1, normalizedPhoto2] = await Promise.all([
-        normalizeFile(photo1),
-        normalizeFile(photo2),
-      ]);
-      if (photo1b) normalizedPhoto1b = await normalizeFile(photo1b);
-      if (photo2b) normalizedPhoto2b = await normalizeFile(photo2b);
+      [p1, p2] = await Promise.all([normalizeFile(photo1), normalizeFile(photo2)]);
+      if (photo1b) p1b = await normalizeFile(photo1b);
+      if (photo2b) p2b = await normalizeFile(photo2b);
     } catch (normalizeErr) {
       console.error('[HEIC CONVERT ERROR]', normalizeErr instanceof Error ? normalizeErr.message : normalizeErr);
       if (activeRequestId.current !== requestId) return;
@@ -573,57 +547,123 @@ function App() {
       return;
     }
 
-    if (activeRequestId.current !== requestId) return;
+    if (activeRequestId.current !== requestId || signal.aborted) return;
 
-    console.log('[NORMALIZED] photo1:', normalizedPhoto1.name, normalizedPhoto1.type, normalizedPhoto1.size);
-    console.log('[NORMALIZED] photo2:', normalizedPhoto2.name, normalizedPhoto2.type, normalizedPhoto2.size);
+    // ── Step 2: Upload each image to Supabase Storage ─────────────────────────
+    // Individual uploads via the JS client are far more reliable on mobile
+    // than a single large multipart POST.
 
-    const formData = new FormData();
-    formData.append('person1', normalizedPhoto1);
-    if (normalizedPhoto1b) formData.append('person1b', normalizedPhoto1b);
-    formData.append('person2', normalizedPhoto2);
-    if (normalizedPhoto2b) formData.append('person2b', normalizedPhoto2b);
-    formData.append('reference', referenceFile);
-    formData.append('style', selectedRef.style);
-    formData.append('referenceId', selectedRef.id);
-    if (mode) formData.append('mode', mode);
+    const prefix = `inputs/${requestId}`;
+    const uploadedPaths: string[] = [];
+
+    const imagesToUpload: Array<{ key: string; file: File }> = [
+      { key: 'person1', file: p1 },
+      { key: 'person2', file: p2 },
+      { key: 'reference', file: referenceFile },
+    ];
+    if (p1b) imagesToUpload.push({ key: 'person1b', file: p1b });
+    if (p2b) imagesToUpload.push({ key: 'person2b', file: p2b });
+
+    const imageUrls: Record<string, string> = {};
+
+    for (const { key, file } of imagesToUpload) {
+      if (signal.aborted || activeRequestId.current !== requestId) return;
+
+      const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
+      const path = `${prefix}/${key}.${ext}`;
+
+      console.log(`[UPLOAD] uploading ${key}: ${file.name} ${file.type} ${file.size}b`);
+
+      try {
+        const url = await uploadInputImage(file, path, signal);
+        imageUrls[key] = url;
+        uploadedPaths.push(path);
+      } catch (uploadErr) {
+        if (uploadErr instanceof DOMException && uploadErr.name === 'AbortError') return;
+        if (activeRequestId.current !== requestId) return;
+
+        console.error(`[UPLOAD FAILURE] ${key}:`, uploadErr instanceof Error ? uploadErr.message : uploadErr);
+        // Clean up any files we already uploaded
+        cleanupInputFiles(uploadedPaths);
+
+        setGenerationError('Connection issue while uploading images. Please try again.');
+        setIsGenerating(false);
+        isGeneratingRef.current = false;
+        cooldownUntilRef.current = Date.now() + 1000;
+        console.log('[GENERATION READY] after upload failure');
+        return;
+      }
+    }
+
+    if (activeRequestId.current !== requestId || signal.aborted) {
+      cleanupInputFiles(uploadedPaths);
+      return;
+    }
+
+    console.log('[UPLOAD] all images uploaded', Object.keys(imageUrls));
+
+    // ── Step 3: POST small JSON to /generate ──────────────────────────────────
+
+    setGenerationPhase('starting');
 
     const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
     const POST_RETRY_DELAY_MS = 3000;
 
+    const payload = {
+      referenceId: selectedRef.id,
+      style: selectedRef.style,
+      ...(mode ? { mode } : {}),
+      images: imageUrls,
+    };
+
     const doPost = (sig: AbortSignal) => fetch(apiUrl, {
       method: 'POST',
-      headers: { Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
-      body: formData,
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
       signal: sig,
     });
 
     try {
-      console.log('[POST START]', { requestId, url: apiUrl.substring(0, 60) });
+      console.log('[POST START]', { requestId, referenceId: selectedRef.id });
 
       let response: Response;
       try {
         response = await doPost(signal);
       } catch (postErr) {
-        if (postErr instanceof DOMException && postErr.name === 'AbortError') return;
-        console.warn('[POST FAILURE] first attempt, retrying in', POST_RETRY_DELAY_MS, 'ms', {
+        if (postErr instanceof DOMException && postErr.name === 'AbortError') {
+          cleanupInputFiles(uploadedPaths);
+          return;
+        }
+        console.warn('[POST FAILURE] first attempt, retrying', {
           message: postErr instanceof Error ? postErr.message : postErr,
           requestId,
-          userAgent: navigator.userAgent,
+          ua: navigator.userAgent.substring(0, 80),
         });
         await new Promise<void>(r => setTimeout(r, POST_RETRY_DELAY_MS));
-        if (activeRequestId.current !== requestId || signal.aborted) return;
+        if (activeRequestId.current !== requestId || signal.aborted) {
+          cleanupInputFiles(uploadedPaths);
+          return;
+        }
         console.log('[POST START] retry', { requestId });
         try {
           response = await doPost(signal);
         } catch (retryErr) {
-          if (retryErr instanceof DOMException && retryErr.name === 'AbortError') return;
-          console.error('[POST FAILURE] retry also failed', { message: retryErr instanceof Error ? retryErr.message : retryErr, requestId });
+          if (retryErr instanceof DOMException && retryErr.name === 'AbortError') {
+            cleanupInputFiles(uploadedPaths);
+            return;
+          }
+          console.error('[POST FAILURE] retry failed', { message: retryErr instanceof Error ? retryErr.message : retryErr });
           throw new Error('__post_network_failure__');
         }
       }
 
-      if (activeRequestId.current !== requestId || signal.aborted) return;
+      if (activeRequestId.current !== requestId || signal.aborted) {
+        cleanupInputFiles(uploadedPaths);
+        return;
+      }
 
       console.log('[POST SUCCESS]', { requestId, status: response.status });
 
@@ -658,7 +698,10 @@ function App() {
         httpStatus: response.status,
       });
 
-      if (activeRequestId.current !== requestId || signal.aborted) return;
+      if (activeRequestId.current !== requestId || signal.aborted) {
+        cleanupInputFiles(uploadedPaths);
+        return;
+      }
 
       if (!response.ok) {
         const message = typeof jsonData?.error === 'string'
@@ -673,7 +716,12 @@ function App() {
         (jsonData.provider === 'openai' || jsonData.provider === 'replicate')
       ) {
         const provider = jsonData.provider;
-        console.log('[GENERATE] job started, handing off to poll', { requestId, provider, predictionId: jsonData.predictionId });
+        console.log('[GENERATE] job started, polling', { requestId, provider, predictionId: jsonData.predictionId });
+
+        // Clean up uploads now that the backend has the signed URLs it needs
+        cleanupInputFiles(uploadedPaths);
+
+        setGenerationPhase('generating');
         pollPrediction(jsonData.predictionId, requestId, provider, signal);
         return;
       }
@@ -684,9 +732,16 @@ function App() {
       );
 
     } catch (err) {
-      if (err instanceof DOMException && err.name === 'AbortError') return;
-      if (activeRequestId.current !== requestId) return;
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        cleanupInputFiles(uploadedPaths);
+        return;
+      }
+      if (activeRequestId.current !== requestId) {
+        cleanupInputFiles(uploadedPaths);
+        return;
+      }
 
+      cleanupInputFiles(uploadedPaths);
       console.error('[GENERATE ERROR]', { requestId, message: err instanceof Error ? err.message : err });
 
       setGenerationError(normalizeGenerationError(err));
@@ -748,6 +803,7 @@ function App() {
             console.log('[IMG LOADED cb]', generatedImageUrl?.substring(0, 80));
           }}
           isGenerating={isGenerating}
+          generationPhase={generationPhase}
           generationError={generationError}
         />
       )}
