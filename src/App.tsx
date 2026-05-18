@@ -8,8 +8,21 @@ import type { ReferenceItem } from './data/references';
 
 type View = 'home' | 'upload' | 'result';
 
-// Generation phase drives the progress copy shown in Result.tsx
+// Active progress phase (shown while isGenerating is true)
 export type GenerationPhase = 'uploading' | 'starting' | 'generating';
+
+// Which pipeline stage produced the error — drives phase-specific user copy
+export type GenerationErrorPhase =
+  | 'uploading_inputs'
+  | 'starting_generation'
+  | 'polling_generation'
+  | 'preloading_result'
+  | 'other';
+
+export interface GenerationError {
+  phase: GenerationErrorPhase;
+  message: string;
+}
 
 // ─── Supabase client (singleton) ─────────────────────────────────────────────
 
@@ -82,9 +95,13 @@ function preloadImage(url: string, signal: AbortSignal): Promise<void> {
 
 // ─── Error normalization ──────────────────────────────────────────────────────
 
-function normalizeGenerationError(error: unknown): string {
+function makeError(phase: GenerationErrorPhase, message: string): GenerationError {
+  return { phase, message };
+}
+
+function normalizeError(error: unknown, phase: GenerationErrorPhase): GenerationError {
   if (error instanceof DOMException && error.name === 'AbortError') {
-    return 'Generation cancelled.';
+    return makeError(phase, 'Generation cancelled.');
   }
 
   const raw = error instanceof Error ? error.message : String(error ?? '');
@@ -92,43 +109,51 @@ function normalizeGenerationError(error: unknown): string {
 
   if (lo.includes('moderation') || lo.includes('policy') || lo.includes('unsafe') ||
       lo.includes('blocked') || lo.includes('content_violation') || lo.includes('flagged')) {
-    return 'This image could not be generated because it did not pass moderation checks.';
+    return makeError(phase, 'This image could not be generated because it did not pass moderation checks.');
   }
 
   if (lo.includes('timeout') || lo.includes('timed out')) {
-    return 'Generation is taking longer than expected. Please try again.';
+    return makeError(phase, 'Generation is taking longer than expected. Please try again.');
   }
 
-  if (lo.includes('upload') && (lo.includes('connection') || lo.includes('network') ||
-      lo.includes('failed') || lo.includes('fail'))) {
-    return 'Connection issue while uploading images. Please try again.';
+  // Phase-specific network messages
+  if (phase === 'uploading_inputs') {
+    return makeError(phase, 'Connection issue while uploading images. Please try again.');
   }
-
-  if (lo.includes('load failed') || lo.includes('failed to fetch') ||
-      lo.includes('networkerror') || lo.includes('network error') ||
-      lo.includes('fetch failed') || lo.includes('econnreset') ||
-      lo.includes('__post_network_failure__') ||
-      (lo.includes('typeerror') && lo.includes('fetch'))) {
-    return 'Connection issue detected. Please try again.';
+  if (phase === 'starting_generation') {
+    return makeError(phase, 'Connection issue while starting generation. Please try again.');
+  }
+  if (phase === 'polling_generation') {
+    return makeError(phase, 'Connection issue while waiting for the result. Please try again.');
+  }
+  if (phase === 'preloading_result') {
+    return makeError(phase, 'Generated image could not be loaded. Please try again.');
   }
 
   if (lo.includes('500') || lo.includes('internal server error') ||
       lo.includes('edge function') || lo.includes('storage upload') ||
       lo.includes('database')) {
-    return 'Server issue detected. Please try again in a moment.';
+    return makeError(phase, 'Server issue detected. Please try again in a moment.');
   }
 
   if (lo.includes('unexpected response') || lo.includes('unexpected content-type') ||
       lo.includes('no output url') || lo.includes('not a valid https') ||
       lo.includes('temporary openai url') || lo.includes('generation succeeded but no output')) {
-    return 'Server issue detected. Please try again in a moment.';
+    return makeError(phase, 'Server issue detected. Please try again in a moment.');
   }
 
   if (raw.length > 0 && raw.length < 200 && !raw.includes('\n') && !raw.includes(' at ')) {
-    return raw;
+    return makeError(phase, raw);
   }
 
-  return 'Generation failed. Please try again.';
+  return makeError(phase, 'Generation failed. Please try again.');
+}
+
+function errDetail(err: unknown): Record<string, string> {
+  if (err instanceof Error) {
+    return { name: err.name, message: err.message, stack: (err.stack ?? '').substring(0, 400) };
+  }
+  return { name: 'unknown', message: String(err) };
 }
 
 // ─── URL validation ───────────────────────────────────────────────────────────
@@ -152,6 +177,8 @@ function validateOutputUrl(url: string | undefined): string {
 async function uploadInputImage(
   file: File,
   path: string,
+  fieldName: string,
+  requestId: string,
   signal: AbortSignal,
 ): Promise<string> {
   const MAX_ATTEMPTS = 3;
@@ -162,19 +189,19 @@ async function uploadInputImage(
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     if (signal.aborted) throw new DOMException('Upload aborted', 'AbortError');
 
-    console.log(`[UPLOAD] attempt ${attempt}/${MAX_ATTEMPTS} path=${path} size=${file.size} type=${file.type}`);
+    const t0 = Date.now();
+    console.log('[UPLOAD INPUT START]', {
+      requestId, field: fieldName, attempt, maxAttempts: MAX_ATTEMPTS,
+      fileName: file.name, fileSize: file.size, mimeType: file.type, path,
+    });
 
     try {
       const { error } = await supabase.storage
         .from('generation-inputs')
-        .upload(path, file, {
-          contentType: file.type || 'image/jpeg',
-          upsert: true,
-        });
+        .upload(path, file, { contentType: file.type || 'image/jpeg', upsert: true });
 
       if (error) throw new Error(error.message);
 
-      // Generate a signed URL valid for 30 minutes (enough for any generation job)
       const { data: signedData, error: signErr } = await supabase.storage
         .from('generation-inputs')
         .createSignedUrl(path, 1800);
@@ -183,14 +210,23 @@ async function uploadInputImage(
         throw new Error(`Failed to create signed URL: ${signErr?.message ?? 'no URL returned'}`);
       }
 
-      console.log(`[UPLOAD] success path=${path} url=${signedData.signedUrl.substring(0, 80)}`);
+      console.log('[UPLOAD INPUT SUCCESS]', {
+        requestId, field: fieldName, attempt, durationMs: Date.now() - t0,
+        fileName: file.name, fileSize: file.size, path,
+        signedUrl: signedData.signedUrl.substring(0, 80),
+      });
       return signedData.signedUrl;
 
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') throw err;
 
       lastErr = err instanceof Error ? err : new Error(String(err));
-      console.warn(`[UPLOAD] attempt ${attempt} failed: ${lastErr.message}`);
+      console.error('[UPLOAD INPUT FAILURE]', {
+        requestId, field: fieldName, attempt, durationMs: Date.now() - t0,
+        fileName: file.name, fileSize: file.size, mimeType: file.type, path,
+        ...errDetail(lastErr),
+        ua: navigator.userAgent,
+      });
 
       if (attempt < MAX_ATTEMPTS) {
         await new Promise<void>(r => setTimeout(r, RETRY_DELAY_MS));
@@ -221,7 +257,7 @@ function App() {
   const [imgLoadFailed, setImgLoadFailed] = useState(false);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [generationPhase, setGenerationPhase] = useState<GenerationPhase>('uploading');
-  const [generationError, setGenerationError] = useState<string>('');
+  const [generationError, setGenerationError] = useState<GenerationError | null>(null);
 
   // Photos
   const [photo1, setPhoto1] = useState<File | null>(null);
@@ -285,7 +321,7 @@ function App() {
     setGeneratedImageUrl('');
     setRawImageUrl('');
     setImgLoadFailed(false);
-    setGenerationError('');
+    setGenerationError(null);
     setPhoto1(null); setPhoto2(null);
     setPreview1(''); setPreview2('');
     setPhoto1b(null); setPhoto2b(null);
@@ -299,7 +335,7 @@ function App() {
     setGeneratedImageUrl('');
     setRawImageUrl('');
     setImgLoadFailed(false);
-    setGenerationError('');
+    setGenerationError(null);
   };
 
   const handleBackToUpload = () => {
@@ -309,7 +345,7 @@ function App() {
     setGeneratedImageUrl('');
     setRawImageUrl('');
     setImgLoadFailed(false);
-    setGenerationError('');
+    setGenerationError(null);
   };
 
   // ── Poll ────────────────────────────────────────────────────────────────────
@@ -340,14 +376,14 @@ function App() {
       pollTimeoutRef.current = setTimeout(poll, delayMs);
     };
 
-    const finishWithError = (msg: string) => {
+    const finishWithError = (ge: GenerationError) => {
       pollTimeoutRef.current = null;
       pollInFlightRef.current = false;
-      setGenerationError(msg);
+      setGenerationError(ge);
       setIsGenerating(false);
       isGeneratingRef.current = false;
       cooldownUntilRef.current = Date.now() + 1000;
-      console.log('[GENERATION READY] after poll failure');
+      console.log('[GENERATION READY] after poll failure phase=' + ge.phase);
     };
 
     const poll = async () => {
@@ -404,21 +440,30 @@ function App() {
           try {
             validatedUrl = validateOutputUrl(data.output);
           } catch (validateErr) {
-            console.error('[POLL FAILURE] URL validation:', { requestId, msg: validateErr instanceof Error ? validateErr.message : validateErr });
-            finishWithError(normalizeGenerationError(validateErr));
+            console.error('[POLL FAILURE]', {
+              phase: 'polling_generation', requestId, predictionId, provider,
+              ...errDetail(validateErr), ua: navigator.userAgent,
+            });
+            finishWithError(normalizeError(validateErr, 'polling_generation'));
             return;
           }
 
-          console.log('[PRELOAD START]', { requestId });
+          const preloadT0 = Date.now();
+          console.log('[PRELOAD RESULT START]', { requestId, url: validatedUrl.substring(0, 100) });
           try {
             await preloadImage(validatedUrl, signal);
-            console.log('[PRELOAD SUCCESS]', { requestId });
+            console.log('[PRELOAD RESULT SUCCESS]', { requestId, durationMs: Date.now() - preloadT0 });
           } catch (preloadErr) {
             if (preloadErr instanceof DOMException && preloadErr.name === 'AbortError') {
-              console.log('[PRELOAD CANCELLED]', { requestId });
+              console.log('[PRELOAD RESULT CANCELLED]', { requestId });
               return;
             }
-            console.warn('[PRELOAD FAILURE] continuing anyway:', preloadErr instanceof Error ? preloadErr.message : preloadErr);
+            // Non-fatal: image may still render via the <img> tag
+            console.warn('[PRELOAD RESULT FAILURE]', {
+              phase: 'preloading_result', requestId, url: validatedUrl.substring(0, 100),
+              durationMs: Date.now() - preloadT0,
+              ...errDetail(preloadErr), ua: navigator.userAgent,
+            });
           }
 
           if (activeRequestId.current !== requestId) {
@@ -428,7 +473,7 @@ function App() {
 
           pollTimeoutRef.current = null;
           pollInFlightRef.current = false;
-          setGenerationError('');
+          setGenerationError(null);
           setImgLoadFailed(false);
           setRawImageUrl(validatedUrl);
           setGeneratedImageUrl(validatedUrl);
@@ -440,8 +485,11 @@ function App() {
         }
 
         if (data.status === 'failed' || data.status === 'canceled') {
-          console.error('[POLL FAILURE]', { requestId, predictionId, status: data.status, error: data.error });
-          finishWithError(normalizeGenerationError(data.error ?? 'Generation failed. Please try again.'));
+          console.error('[POLL FAILURE]', {
+            phase: 'polling_generation', requestId, predictionId, provider,
+            status: data.status, backendError: data.error, ua: navigator.userAgent,
+          });
+          finishWithError(normalizeError(data.error ?? 'Generation failed. Please try again.', 'polling_generation'));
           return;
         }
 
@@ -461,14 +509,16 @@ function App() {
 
         consecutiveFailures += 1;
         console.warn('[POLL NETWORK ERROR]', {
-          requestId, predictionId, provider, consecutiveFailures,
-          message: err instanceof Error ? err.message : err,
-          ua: navigator.userAgent.substring(0, 80),
+          phase: 'polling_generation', requestId, predictionId, provider,
+          consecutiveFailures, ...errDetail(err), ua: navigator.userAgent,
         });
 
         if (consecutiveFailures >= MAX_CONSECUTIVE_POLL_FAILURES) {
-          console.error('[POLL FAILURE] max consecutive failures', { requestId, consecutiveFailures });
-          finishWithError('Connection issue detected. Please try again.');
+          console.error('[POLL FAILURE]', {
+            phase: 'polling_generation', requestId, predictionId, provider,
+            consecutiveFailures, ...errDetail(err), ua: navigator.userAgent,
+          });
+          finishWithError(normalizeError(err, 'polling_generation'));
           return;
         }
 
@@ -505,7 +555,7 @@ function App() {
     if (generatedImageUrl.startsWith('blob:')) URL.revokeObjectURL(generatedImageUrl);
 
     if (!photo1 || !photo2 || !referenceFile || !selectedRef) {
-      setGenerationError('Missing required data. Please try again.');
+      setGenerationError(makeError('other', 'Missing required data. Please try again.'));
       return;
     }
 
@@ -522,7 +572,7 @@ function App() {
 
     setIsGenerating(true);
     setGenerationPhase('uploading');
-    setGenerationError('');
+    setGenerationError(null);
     setGeneratedImageUrl('');
     setRawImageUrl('');
     setImgLoadFailed(false);
@@ -538,9 +588,9 @@ function App() {
       if (photo1b) p1b = await normalizeFile(photo1b);
       if (photo2b) p2b = await normalizeFile(photo2b);
     } catch (normalizeErr) {
-      console.error('[HEIC CONVERT ERROR]', normalizeErr instanceof Error ? normalizeErr.message : normalizeErr);
+      console.error('[HEIC CONVERT ERROR]', { requestId, ...errDetail(normalizeErr) });
       if (activeRequestId.current !== requestId) return;
-      setGenerationError('Failed to convert image format. Please use JPEG or PNG.');
+      setGenerationError(makeError('other', 'Failed to convert image format. Please use JPEG or PNG.'));
       setIsGenerating(false);
       isGeneratingRef.current = false;
       cooldownUntilRef.current = Date.now() + 1000;
@@ -572,21 +622,17 @@ function App() {
       const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
       const path = `${prefix}/${key}.${ext}`;
 
-      console.log(`[UPLOAD] uploading ${key}: ${file.name} ${file.type} ${file.size}b`);
-
       try {
-        const url = await uploadInputImage(file, path, signal);
+        const url = await uploadInputImage(file, path, key, requestId, signal);
         imageUrls[key] = url;
         uploadedPaths.push(path);
       } catch (uploadErr) {
         if (uploadErr instanceof DOMException && uploadErr.name === 'AbortError') return;
         if (activeRequestId.current !== requestId) return;
 
-        console.error(`[UPLOAD FAILURE] ${key}:`, uploadErr instanceof Error ? uploadErr.message : uploadErr);
-        // Clean up any files we already uploaded
+        // uploadInputImage already logged [UPLOAD INPUT FAILURE] — just finalize
         cleanupInputFiles(uploadedPaths);
-
-        setGenerationError('Connection issue while uploading images. Please try again.');
+        setGenerationError(normalizeError(uploadErr, 'uploading_inputs'));
         setIsGenerating(false);
         isGeneratingRef.current = false;
         cooldownUntilRef.current = Date.now() + 1000;
@@ -615,6 +661,7 @@ function App() {
       ...(mode ? { mode } : {}),
       images: imageUrls,
     };
+    const payloadJson = JSON.stringify(payload);
 
     const doPost = (sig: AbortSignal) => fetch(apiUrl, {
       method: 'POST',
@@ -622,59 +669,77 @@ function App() {
         Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(payload),
+      body: payloadJson,
       signal: sig,
     });
 
     try {
-      console.log('[POST START]', { requestId, referenceId: selectedRef.id });
+      const postT0 = Date.now();
+      console.log('[POST GENERATE START]', {
+        requestId, referenceId: selectedRef.id, payloadBytes: payloadJson.length,
+        imageKeys: Object.keys(imageUrls),
+      });
 
       let response: Response;
       try {
         response = await doPost(signal);
       } catch (postErr) {
         if (postErr instanceof DOMException && postErr.name === 'AbortError') {
-          cleanupInputFiles(uploadedPaths);
-          return;
+          cleanupInputFiles(uploadedPaths); return;
         }
-        console.warn('[POST FAILURE] first attempt, retrying', {
-          message: postErr instanceof Error ? postErr.message : postErr,
-          requestId,
-          ua: navigator.userAgent.substring(0, 80),
+        console.warn('[POST GENERATE FAILURE] first attempt, retrying', {
+          phase: 'starting_generation', requestId, durationMs: Date.now() - postT0,
+          ...errDetail(postErr), ua: navigator.userAgent,
         });
         await new Promise<void>(r => setTimeout(r, POST_RETRY_DELAY_MS));
         if (activeRequestId.current !== requestId || signal.aborted) {
-          cleanupInputFiles(uploadedPaths);
-          return;
+          cleanupInputFiles(uploadedPaths); return;
         }
-        console.log('[POST START] retry', { requestId });
+        console.log('[POST GENERATE START] retry', { requestId });
         try {
           response = await doPost(signal);
         } catch (retryErr) {
           if (retryErr instanceof DOMException && retryErr.name === 'AbortError') {
-            cleanupInputFiles(uploadedPaths);
-            return;
+            cleanupInputFiles(uploadedPaths); return;
           }
-          console.error('[POST FAILURE] retry failed', { message: retryErr instanceof Error ? retryErr.message : retryErr });
-          throw new Error('__post_network_failure__');
+          console.error('[POST GENERATE FAILURE] retry also failed', {
+            phase: 'starting_generation', requestId, durationMs: Date.now() - postT0,
+            ...errDetail(retryErr), ua: navigator.userAgent,
+          });
+          cleanupInputFiles(uploadedPaths);
+          setGenerationError(normalizeError(retryErr, 'starting_generation'));
+          setIsGenerating(false);
+          isGeneratingRef.current = false;
+          cooldownUntilRef.current = Date.now() + 1000;
+          console.log('[GENERATION READY] after POST retry failure');
+          return;
         }
       }
 
       if (activeRequestId.current !== requestId || signal.aborted) {
-        cleanupInputFiles(uploadedPaths);
-        return;
+        cleanupInputFiles(uploadedPaths); return;
       }
 
-      console.log('[POST SUCCESS]', { requestId, status: response.status });
-
+      const postDuration = Date.now() - postT0;
       const ct = response.headers.get('content-type') ?? '';
+      console.log('[POST GENERATE SUCCESS]', {
+        requestId, status: response.status, contentType: ct, durationMs: postDuration,
+      });
+
       if (!ct.includes('application/json')) {
         let body = '';
         try { body = await response.text(); } catch { /* ignore */ }
-        throw new Error(
-          `Server returned unexpected content-type "${ct}" (status ${response.status}). ` +
-          (body ? `Body: ${body.substring(0, 200)}` : '')
-        );
+        const msg = `Server returned unexpected content-type "${ct}" (status ${response.status}). ` +
+          (body ? `Body: ${body.substring(0, 200)}` : '');
+        console.error('[POST GENERATE FAILURE]', {
+          phase: 'starting_generation', requestId, status: response.status, contentType: ct, body: body.substring(0, 200), durationMs: postDuration,
+        });
+        cleanupInputFiles(uploadedPaths);
+        setGenerationError(normalizeError(new Error(msg), 'starting_generation'));
+        setIsGenerating(false);
+        isGeneratingRef.current = false;
+        cooldownUntilRef.current = Date.now() + 1000;
+        return;
       }
 
       const jsonData = await response.json() as {
@@ -688,7 +753,7 @@ function App() {
         functionVersion?: string;
       };
 
-      console.log('[GENERATE RESPONSE]', {
+      console.log('[POST GENERATE RESPONSE]', {
         requestId,
         provider: jsonData.provider,
         status: jsonData.status,
@@ -696,18 +761,26 @@ function App() {
         output: jsonData.output?.substring(0, 80),
         functionVersion: jsonData.functionVersion,
         httpStatus: response.status,
+        durationMs: postDuration,
       });
 
       if (activeRequestId.current !== requestId || signal.aborted) {
-        cleanupInputFiles(uploadedPaths);
-        return;
+        cleanupInputFiles(uploadedPaths); return;
       }
 
       if (!response.ok) {
         const message = typeof jsonData?.error === 'string'
-          ? jsonData.error
-          : JSON.stringify(jsonData);
-        throw new Error(message || `Server error ${response.status}`);
+          ? jsonData.error : JSON.stringify(jsonData);
+        console.error('[POST GENERATE FAILURE]', {
+          phase: 'starting_generation', requestId, httpStatus: response.status,
+          backendError: message, durationMs: postDuration, ua: navigator.userAgent,
+        });
+        cleanupInputFiles(uploadedPaths);
+        setGenerationError(normalizeError(new Error(message || `Server error ${response.status}`), 'starting_generation'));
+        setIsGenerating(false);
+        isGeneratingRef.current = false;
+        cooldownUntilRef.current = Date.now() + 1000;
+        return;
       }
 
       if (
@@ -716,35 +789,35 @@ function App() {
         (jsonData.provider === 'openai' || jsonData.provider === 'replicate')
       ) {
         const provider = jsonData.provider;
-        console.log('[GENERATE] job started, polling', { requestId, provider, predictionId: jsonData.predictionId });
-
-        // Clean up uploads now that the backend has the signed URLs it needs
+        console.log('[POST GENERATE] job started, handing to poll', { requestId, provider, predictionId: jsonData.predictionId });
         cleanupInputFiles(uploadedPaths);
-
         setGenerationPhase('generating');
         pollPrediction(jsonData.predictionId, requestId, provider, signal);
         return;
       }
 
-      throw new Error(
-        `Unexpected response: provider=${jsonData.provider} status=${jsonData.status} ` +
-        `predictionId=${jsonData.predictionId ?? 'none'}`
-      );
+      const unexpectedMsg = `Unexpected response: provider=${jsonData.provider} status=${jsonData.status} predictionId=${jsonData.predictionId ?? 'none'}`;
+      console.error('[POST GENERATE FAILURE]', {
+        phase: 'starting_generation', requestId, unexpectedMsg, durationMs: postDuration,
+      });
+      cleanupInputFiles(uploadedPaths);
+      setGenerationError(normalizeError(new Error(unexpectedMsg), 'starting_generation'));
+      setIsGenerating(false);
+      isGeneratingRef.current = false;
+      cooldownUntilRef.current = Date.now() + 1000;
 
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') {
-        cleanupInputFiles(uploadedPaths);
-        return;
+        cleanupInputFiles(uploadedPaths); return;
       }
       if (activeRequestId.current !== requestId) {
-        cleanupInputFiles(uploadedPaths);
-        return;
+        cleanupInputFiles(uploadedPaths); return;
       }
-
       cleanupInputFiles(uploadedPaths);
-      console.error('[GENERATE ERROR]', { requestId, message: err instanceof Error ? err.message : err });
-
-      setGenerationError(normalizeGenerationError(err));
+      console.error('[POST GENERATE FAILURE]', {
+        phase: 'starting_generation', requestId, ...errDetail(err), ua: navigator.userAgent,
+      });
+      setGenerationError(normalizeError(err, 'starting_generation'));
       setIsGenerating(false);
       isGeneratingRef.current = false;
       cooldownUntilRef.current = Date.now() + 1000;

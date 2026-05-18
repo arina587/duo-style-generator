@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Download, ArrowLeft, Sparkles, Loader2, AlertCircle, Wand2, ExternalLink, RefreshCw, Copy, Check } from 'lucide-react';
-import type { GenerationPhase } from '../App';
+import type { GenerationPhase, GenerationError } from '../App';
 
 interface ResultProps {
   onBack: () => void;
@@ -12,7 +12,7 @@ interface ResultProps {
   onImgLoad: () => void;
   isGenerating: boolean;
   generationPhase: GenerationPhase;
-  generationError: string;
+  generationError: GenerationError | null;
 }
 
 interface DebugInfo {
@@ -47,6 +47,9 @@ export default function Result({
   const generationSucceeded =
     !!displaySrc &&
     !generationError;
+
+  const errorMessage = generationError?.message ?? '';
+  const errorPhase = generationError?.phase ?? 'other';
 
   const showImage =
     !!displaySrc &&
@@ -213,13 +216,13 @@ export default function Result({
     }
   };
 
-  const errorLo = generationError.toLowerCase();
-  const isTimeoutError = !isGenerating && !generationSucceeded &&
-    (errorLo.includes('taking longer') || errorLo.includes('timeout') || errorLo.includes('timed out'));
-  const isNetworkError = !isGenerating && !generationSucceeded &&
-    (errorLo.includes('connection issue') || errorLo.includes('network error'));
-  const isModerationError = !isGenerating && !generationSucceeded &&
-    (errorLo.includes('moderation') || errorLo.includes('content check'));
+  const isTimeoutError = !isGenerating && !!generationError &&
+    (errorMessage.includes('taking longer') || errorMessage.includes('timeout') || errorMessage.includes('timed out'));
+  const isModerationError = !isGenerating && !!generationError &&
+    errorMessage.includes('moderation');
+  const isUploadError = !isGenerating && errorPhase === 'uploading_inputs';
+  const isPostError = !isGenerating && errorPhase === 'starting_generation';
+  const isPollError = !isGenerating && errorPhase === 'polling_generation';
 
   const phaseLabel: Record<GenerationPhase, { heading: string; subtitle: string; detail: string }> = {
     uploading: {
@@ -250,12 +253,18 @@ export default function Result({
   } else if (isTimeoutError) {
     heading = 'Taking Longer Than Expected';
     subtitle = 'Please try again in a moment';
-  } else if (isNetworkError) {
-    heading = 'Connection Issue';
-    subtitle = 'Please check your connection and try again';
   } else if (isModerationError) {
     heading = 'Image Not Allowed';
     subtitle = 'Your image did not pass content checks';
+  } else if (isUploadError) {
+    heading = 'Upload Failed';
+    subtitle = 'Could not upload your photos — please check your connection';
+  } else if (isPostError) {
+    heading = 'Could Not Start Generation';
+    subtitle = 'Please check your connection and try again';
+  } else if (isPollError) {
+    heading = 'Lost Connection';
+    subtitle = 'Could not reach the server while waiting for your result';
   } else if (generationError) {
     heading = 'Generation Failed';
     subtitle = 'Please try again';
@@ -503,16 +512,6 @@ export default function Result({
                       Generation is still in progress. Tap "Create Another" to try again.
                     </p>
                   </>
-                ) : isNetworkError ? (
-                  <>
-                    <div className="mx-auto mb-5 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
-                      <AlertCircle className="w-8 h-8 text-amber-400" />
-                    </div>
-                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Connection Issue</p>
-                    <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">
-                      Please check your connection and tap "Create Another" to try again.
-                    </p>
-                  </>
                 ) : isModerationError ? (
                   <>
                     <div className="mx-auto mb-5 rounded-xl border-2 border-orange-200 bg-orange-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
@@ -523,13 +522,43 @@ export default function Result({
                       This image did not pass content moderation. Please try different photos.
                     </p>
                   </>
+                ) : isUploadError ? (
+                  <>
+                    <div className="mx-auto mb-5 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
+                      <AlertCircle className="w-8 h-8 text-amber-400" />
+                    </div>
+                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Upload Failed</p>
+                    <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">
+                      {errorMessage}
+                    </p>
+                  </>
+                ) : isPostError ? (
+                  <>
+                    <div className="mx-auto mb-5 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
+                      <AlertCircle className="w-8 h-8 text-amber-400" />
+                    </div>
+                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Could Not Start Generation</p>
+                    <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">
+                      {errorMessage}
+                    </p>
+                  </>
+                ) : isPollError ? (
+                  <>
+                    <div className="mx-auto mb-5 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
+                      <AlertCircle className="w-8 h-8 text-amber-400" />
+                    </div>
+                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Lost Connection</p>
+                    <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">
+                      {errorMessage}
+                    </p>
+                  </>
                 ) : (
                   <>
                     <div className="mx-auto mb-5 rounded-xl border-2 border-red-200 bg-red-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
                       <AlertCircle className="w-8 h-8 text-red-400" />
                     </div>
                     <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Generation Failed</p>
-                    <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">{generationError}</p>
+                    <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">{errorMessage}</p>
                   </>
                 )}
               </div>
@@ -540,7 +569,7 @@ export default function Result({
                 not generating. Once any image URL is set this state disappears. */}
             {!isGenerating &&
              !displaySrc &&
-             !generationError && (
+             !generationError && !errorMessage && (
               <div className="absolute inset-0 flex flex-col items-center justify-center animate-fade-in">
                 <div className="mb-5 rounded-xl border-2 flex items-center justify-center" style={{ width: 64, height: 64, background: '#f3eefa', borderColor: '#d8ccea' }}>
                   <Sparkles className="w-8 h-8 text-[#b49cdb]" />
