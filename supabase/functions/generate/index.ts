@@ -1946,6 +1946,291 @@ NOT:
 — composited
 — synthetic looking`;
 
+const LALALAND_1 = ``;
+
+const LALALAND_2 = `Use the reference cinema image STRICTLY AND ONLY for:
+
+— shot composition
+— framing
+— seating geometry
+— camera placement
+— lens compression
+— focal distance
+— pose choreography
+— eye-line interaction
+— lighting direction
+— atmospheric depth
+— cinema environment
+
+The cinema reference image is a PURE STAGING TEMPLATE.
+
+It contributes ZERO identity information.
+
+REMOVE the original actors completely.
+
+NEVER inherit from the cinema actors:
+— face structure
+— attractiveness
+— facial proportions
+— skin
+— ethnicity
+— expressions
+— hairstyle
+— cinematic beauty traits
+— body proportions
+— jawline design
+— eye shape
+— nose shape
+— lips
+— actor aesthetics
+
+==================================================
+PRIMARY OBJECTIVE: EXACT IDENTITY REPLICATION
+==================================================
+
+The uploaded identity photos are NOT inspiration.
+
+They are STRICT BIOMETRIC SOURCES.
+
+The final image must depict EXACTLY the SAME REAL PEOPLE.
+
+NOT:
+— reinterpretations
+— approximations
+— “similar-looking”
+— AI replacements
+— stylized versions
+— cinematic adaptations
+— beauty-enhanced variants
+— generated substitutes
+
+The faces must be INSTANTLY recognizable as the uploaded individuals.
+
+IDENTITY ACCURACY IS MORE IMPORTANT THAN:
+— realism
+— cinematic quality
+— beauty
+— composition
+— mood
+— lighting aesthetics
+
+==================================================
+HARD FACE LOCK — NO DEVIATION
+==================================================
+
+Preserve EXACTLY:
+
+HEAD / SKULL:
+— cranial shape
+— skull dimensions
+— head aspect ratio
+— forehead height
+— forehead curvature
+— temple width
+— occipital contour
+— facial width-to-height ratio
+
+FACE STRUCTURE:
+— cheekbone placement
+— cheek volume
+— jawline geometry
+— mandibular angle
+— chin width
+— chin projection
+— chin curvature
+— neck thickness
+— facial asymmetry
+— natural imbalance
+
+EYES:
+— eye size
+— eye spacing
+— eye depth
+— eye corner angles
+— eyelid anatomy
+— eyelid folds
+— upper lid heaviness
+— lower lid structure
+— iris visibility
+— gaze intensity
+
+EYEBROWS:
+— density
+— thickness
+— spacing
+— asymmetry
+— curvature
+— eyebrow-to-eye distance
+
+NOSE:
+— bridge topology
+— bridge width
+— nose length
+— nose projection
+— nostril anatomy
+— nose tip shape
+— alar geometry
+
+MOUTH:
+— lip volume
+— lip asymmetry
+— cupid bow
+— mouth width
+— philtrum depth
+— natural mouth tension
+
+SKIN:
+— real skin texture
+— pores
+— acne
+— under-eye texture
+— redness
+— natural imperfections
+— skin undertones
+— uneven texture
+
+HAIR:
+— exact hairline
+— density
+— strand direction
+— hairstyle structure
+— texture
+— flyaways
+— natural randomness
+
+EARS:
+— ear size
+— ear angle
+— ear anatomy
+
+==================================================
+STRICT ANTI-BEAUTIFICATION
+==================================================
+
+ABSOLUTELY FORBIDDEN:
+— beautification
+— glamourization
+— face enhancement
+— symmetry correction
+— skin smoothing
+— pore cleanup
+— jaw sharpening
+— eye enlargement
+— lip enhancement
+— nose refinement
+— “cinematic attractiveness”
+— model aesthetics
+— actor aesthetics
+— Instagram-face rendering
+— AI-perfect skin
+— latent face averaging
+— identity blending
+— face morphing
+
+The image must preserve REAL HUMAN imperfections.
+
+==================================================
+IDENTITY SOURCE ISOLATION
+==================================================
+
+Use uploaded photos as the ONLY source for:
+— face
+— anatomy
+— skin
+— ethnicity
+— age
+— proportions
+— hair
+— natural asymmetry
+
+The cinema reference contributes ONLY:
+— composition
+— environment
+— seating layout
+— camera angle
+— lighting setup
+
+NO identity leakage from cinema actors is allowed.
+
+==================================================
+EXPRESSION TRANSFER ONLY
+==================================================
+
+Transfer ONLY:
+— gaze direction
+— conversational tension
+— subtle intimacy
+— head tilt
+— body orientation
+— posture interaction
+
+WITHOUT changing facial anatomy.
+
+Expressions must NEVER distort identity.
+
+==================================================
+REAL PHOTOGRAPHY REQUIREMENT
+==================================================
+
+The final result must look like:
+
+A REAL candid cinema photograph
+of the EXACT uploaded people.
+
+NOT:
+— AI art
+— glamour photography
+— movie poster
+— actor recreation
+— synthetic faces
+— stylized rendering
+
+Natural.
+Unpolished.
+Authentic.
+
+==================================================
+CRITICAL FACE FIDELITY RULE
+==================================================
+
+Even under:
+— shallow DOF
+— cinematic shadows
+— blue ambient lighting
+— partial occlusion
+— perspective distortion
+
+the identities MUST remain fully stable and recognizable.
+
+DO NOT let lighting alter:
+— jaw shape
+— cheek structure
+— eye geometry
+— nose topology
+— facial proportions
+— skin tone
+
+==================================================
+HIGH PRIORITY TECHNICAL DIRECTIVE
+==================================================
+
+Maintain MAXIMUM facial consistency with uploaded references.
+
+Use ultra-high identity preservation.
+
+Avoid:
+— generative reinterpretation
+— latent identity drift
+— automatic beautification
+— cinematic face replacement
+— anatomy hallucination
+
+The uploaded people must remain visually unchanged.
+
+IDENTITY FIDELITY = ABSOLUTE MAXIMUM PRIORITY.`;
+
+const LALALAND_3 = ``;
+
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 // provider: "replicate" | "openai"  — controls which API is called for this reference.
 // model: the version/model string passed to the chosen provider.
