@@ -836,47 +836,138 @@ No synthetic beauty filtering.
 
 The final image must look like a real frame captured on a cinema camera with the uploaded people physically present in the room.`;
 
-const TITANIC_1 = `Replace the couple in the famous romantic ship-deck sunset scene with the two people from the provided reference photos, recreating the composition in an original cinematic way inspired by classic ocean-liner romance imagery.
+const TITANIC_1 = `Replace all original people in the reference image with the exact adult individuals from the provided reference photos while preserving the original composition, pose dynamics, camera perspective, environment, lighting direction, framing, and cinematic atmosphere of the source image.
 
-Use both reference people as complete character references — not only facial likeness. Preserve their natural appearance consistently, including:
+CRITICAL IDENTITY REQUIREMENT:
 
-hairstyle
-facial structure
-realistic body proportions
-shoulder width
-torso shape
-posture
-silhouette
-clothing style influence
-natural anatomy
+Do NOT reinterpret, beautify, stylize, age-shift, idealize, or loosely approximate the reference individuals.
 
-The final image must look like these two real people are genuinely standing together in the scene themselves.
+Reconstruct the people photorealistically using the exact identity and anatomy from the reference photos.
+
+Preserve with high precision:
+
+exact facial structure
+exact skull shape and proportions
+exact eye shape, spacing, and eyelids
+exact nose bridge, nostrils, and tip structure
+exact lips, mouth shape, and smile line geometry
+exact jawline, chin, and cheekbone structure
+exact eyebrow shape and density
+exact skin tone, pores, and texture
+exact hairstyle, hairline, hair thickness, and natural flyaway strands
+exact neck thickness and shoulder proportions
+exact body silhouette and posture
+exact natural asymmetry and identity-specific facial details
+
+Avoid generic AI-generated beauty enhancement.
+The final characters must clearly and unmistakably resemble the real people from the references.
+
+BACKGROUND PRESERVATION REQUIREMENT:
+
+Keep the original background nearly identical to the source image.
+
+Do NOT redesign or heavily modify:
+
+environment layout
+object placement
+architecture
+furniture
+street elements
+room geometry
+camera angle
+perspective
+lighting setup
+depth of field
+scene composition
+
+The result should feel like the same photograph with only the people replaced.
+
+CHARACTER REQUIREMENTS:
 
 Male character:
-Use the male reference appearance with natural proportions, soft casual clothing, realistic hairstyle, and subtle romantic body language. Place him slightly behind the girl with his arms around her waist in a protective affectionate pose.
+
+Use the exact male reference identity. Preserve:
+
+natural face proportions
+realistic masculine anatomy
+exact hairstyle and facial structure
+natural neck and shoulder width
+accurate posture and body proportions
+realistic hands with anatomically correct fingers
+natural expression matching the scene mood
+
+Do not make him unnaturally muscular, older, broader, or more stylized than in the references.
 
 Female character:
-Use the female reference appearance with realistic anatomy, hairstyle, facial features, body structure, and modern casual clothing adapted naturally to the cinematic setting. She is standing at the front with arms extended outward, enjoying the ocean wind.
 
-Scene requirements:
+Use the exact female reference identity. Preserve:
 
-large passenger ship deck at sunset
-warm golden-orange cinematic lighting
-emotional romantic atmosphere
-dramatic movie-style framing
-ocean horizon in background
+soft realistic facial anatomy
+exact facial proportions
+exact eyes, lips, and jawline
+natural hairstyle and hair texture
+slim realistic physique
+accurate shoulder and neck proportions
+natural expression and body posture
+realistic hand anatomy
+
+Do not alter her appearance into a glamorized or artificial version.
+
+IMPORTANT:
+
+This is NOT a simple face swap.
+
+The entire human subjects must be reconstructed from the references:
+identity, anatomy, proportions, silhouette, hairstyle, posture, body language, and physical presence.
+
+Maintain:
+
 realistic interaction between characters
-seamless photorealistic integration
-accurate scale and perspective
-natural skin texture
-realistic fabric folds and hair movement
-DSLR cinematic quality
+physically correct body positioning
+accurate contact shadows
+natural clothing folds
+realistic fabric tension
+proper body scaling
+natural skeletal proportions
+cinematic optical realism
 
-Style:
-ultra realistic cinematic photography, emotional movie still, photorealistic, natural anatomy, realistic shadows, subtle film grain, warm tones, high detail
+VISUAL DIRECTION CHANGE:
 
-Negative prompt:
-bad anatomy, distorted limbs, unrealistic proportions, oversized head, blurry face, low quality, extra fingers, warped body, duplicate people, cartoon, anime, CGI, 3D render, fake skin, waxy texture, watermark, text, oversaturated colors`;
+Both characters must look forward toward the horizon exactly like in the original Titanic reference composition.
+Do NOT make either character look into the camera.
+Preserve the natural gaze direction and emotional focus of the original scene.
+
+VISUAL STYLE:
+
+ultra realistic cinematic photography
+photorealistic skin rendering
+DSLR movie still quality
+subtle film grain
+realistic dynamic range
+soft natural shadows
+high-detail skin pores
+shallow depth of field
+realistic lens compression
+natural color grading
+high-budget film still aesthetic
+emotionally believable cinematic atmosphere
+
+ANATOMY REQUIREMENTS:
+
+perfect human anatomy
+exactly five fingers per hand
+correct finger proportions
+realistic wrists and joints
+no fused fingers
+no extra limbs
+no distorted body parts
+accurate skeletal structure
+natural posture balance
+physically plausible interaction between characters
+
+All characters are adults over 18 years old.
+
+Negative prompt: inaccurate likeness, eye contact with camera, looking at viewer, weak resemblance, generic face, beautified AI face, altered identity, face swap only, malformed anatomy, deformed hands, extra fingers, fused fingers, missing fingers, distorted limbs, oversized head, asymmetrical eyes, unrealistic proportions, plastic skin, fake texture, CGI, 3D render, cartoon, anime, doll face, blurry image, low detail, oversharpening, oversaturated colors, warped anatomy, duplicate people, incorrect perspective, unrealistic lighting, bad composition, watermark, logo, text, childlike appearance, underage`;
 
 const TITANIC_2 = `Replace the two original characters in the cinematic scene with the exact two people from the provided reference photos.
 
