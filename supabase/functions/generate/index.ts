@@ -1946,7 +1946,282 @@ NOT:
 — composited
 — synthetic looking`;
 
-const LALALAND_1 = ``;
+const LALALAND_1 = `Use the reference scene ONLY for:
+— composition
+— framing
+— lens perspective
+— camera angle
+— blocking
+— pose logic
+— emotional interaction blueprint
+— lighting direction
+— depth of field
+— color atmosphere
+
+ABSOLUTE IDENTITY REPLACEMENT REQUIRED.
+
+The original actors must be FULLY removed and replaced with the uploaded individuals at 1:1 biometric fidelity.
+
+The uploaded identity photos are NOT inspiration.
+They are the ONLY valid source of facial anatomy, emotional anatomy, and physical appearance.
+
+NO:
+— face swap look
+— actor residue
+— identity blending
+— beautification
+— cinematic reinterpretation
+— “similar-looking” recreation
+— glamour enhancement
+— idealization
+— stylized reconstruction
+— AI prettification
+— symmetry correction
+— aesthetic optimization
+
+IDENTITY FIDELITY IS THE HIGHEST PRIORITY.
+
+If cinematic beauty conflicts with identity accuracy:
+ALWAYS choose identity accuracy.
+
+━━━━━━━━━━━━━━━━━━
+CRITICAL FACIAL ACCURACY
+━━━━━━━━━━━━━━━━━━
+
+Reconstruct BOTH uploaded people with near-photographic biometric fidelity.
+
+Preserve EXACTLY:
+— skull structure
+— cranial proportions
+— forehead height and curvature
+— facial width-to-height ratio
+— facial asymmetry
+— cheek volume
+— cheekbone placement
+— jaw width and geometry
+— chin projection and shape
+— neck thickness and proportions
+— shoulder proportions
+— body proportions
+— eye socket depth
+— eyelid anatomy
+— canthal tilt
+— eye spacing
+— iris size
+— eyebrow thickness and placement
+— eyebrow asymmetry
+— nose bridge width
+— nostril shape
+— philtrum structure
+— lip contour
+— lip thickness
+— mouth asymmetry
+— ear shape and placement
+— skin undertone
+— skin reflectivity
+— pores
+— natural blemishes
+— under-eye texture
+— lip texture
+— facial texture transitions
+— apparent age
+— hairline shape
+— hair density
+— strand breakup
+— flyaways
+— natural hair behavior
+
+Do NOT:
+— sharpen jawlines
+— enlarge eyes
+— beautify lips
+— smooth skin
+— stylize noses
+— improve symmetry
+— apply influencer aesthetics
+— create “AI attractive” faces
+
+Faces must look like REAL photographs of the uploaded people.
+
+━━━━━━━━━━━━━━━━━━
+EXPRESSION TRANSFER — EXTREMELY IMPORTANT
+━━━━━━━━━━━━━━━━━━
+
+The emotional expression must match the reference scene with very high precision.
+
+Preserve EXACTLY from the reference:
+— eye direction
+— eye focus
+— gaze intensity
+— emotional restraint
+— subtle vulnerability
+— eyelid openness
+— eyelid tension
+— eyebrow tension
+— mouth tension
+— lip compression
+— cheek tension
+— jaw relaxation
+— romantic hesitation
+— intimate stillness
+— breathing calmness
+— head angle
+— micro-expression balance
+
+Expressions must feel:
+— candid
+— physically believable
+— emotionally restrained
+— natural
+— non-performative
+— captured mid-moment
+
+Avoid:
+— smiling interpretation
+— exaggerated romance
+— dramatic acting
+— fashion editorial emotion
+— “model face”
+— seductive expression
+— artificial emotional enhancement
+
+The emotional anatomy of the uploaded people must remain intact while reproducing the emotional state of the reference scene.
+
+━━━━━━━━━━━━━━━━━━
+BODY AND POSE RECONSTRUCTION
+━━━━━━━━━━━━━━━━━━
+
+Keep ONLY:
+— pose logic
+— body distance
+— embrace structure
+— arm placement
+— torso orientation
+— head tilt
+— crop
+— framing
+
+But anatomy must come ONLY from the uploaded people.
+
+Maintain realistic proportions and natural posture.
+
+━━━━━━━━━━━━━━━━━━
+LIGHTING INTEGRATION — CRITICAL
+━━━━━━━━━━━━━━━━━━
+
+Faces must integrate physically and naturally into the cinematic lighting.
+
+Lighting behavior must obey:
+— warm tungsten practical lighting
+— realistic falloff
+— soft cinematic shadow gradients
+— physically correct facial occlusion
+— realistic eye socket shadowing
+— natural nose shadows
+— jaw occlusion
+— low-light realism
+— analog highlight rolloff
+— subtle bounce light
+— preserved dark detail
+— realistic skin reflectance
+
+Avoid:
+— pasted-on faces
+— beauty relighting
+— HDR skin
+— glowing highlights
+— flattened shadows
+— fake rim light
+— CG skin
+— artificial contrast
+— overexposed skin
+— synthetic sharpness
+
+━━━━━━━━━━━━━━━━━━
+SKIN TEXTURE
+━━━━━━━━━━━━━━━━━━
+
+Maintain:
+— pores
+— fine grain
+— natural tonal variation
+— subtle imperfections
+— realistic under-eye texture
+— realistic lip texture
+— natural skin softness
+
+NO:
+— skin smoothing
+— retouching
+— porcelain skin
+— hyper-detailing
+— over-sharpening
+— beauty filtering
+
+━━━━━━━━━━━━━━━━━━
+HAIR REALISM
+━━━━━━━━━━━━━━━━━━
+
+Hair must remain physically believable:
+— natural strand separation
+— realistic density
+— believable flyaways
+— edge softness
+— no helmet-hair
+— no synthetic symmetry
+— no waxy texture
+
+━━━━━━━━━━━━━━━━━━
+WARDROBE
+━━━━━━━━━━━━━━━━━━
+
+Keep the grounded cozy autumn wardrobe logic from the reference scene.
+
+No:
+— fashion editorial styling
+— luxury reinterpretation
+— glamorization
+— overly clean fabric rendering
+
+━━━━━━━━━━━━━━━━━━
+IMAGE STYLE
+━━━━━━━━━━━━━━━━━━
+
+Photorealistic cinematic still frame.
+Authentic in-camera realism.
+Organic indie romance mood.
+Natural analog rendering.
+Soft film grain.
+Shallow depth of field.
+Realistic lens behavior.
+Subtle cinematic softness.
+
+Avoid:
+— AI glamour look
+— overprocessing
+— synthetic HDR
+— hyper-detailing
+— fake cinematic sharpness
+— plastic rendering
+— stylized beauty rendering
+— unreal skin response
+
+The final image must look indistinguishable from a real cinema-camera photograph with the uploaded people physically present in the scene.
+
+━━━━━━━━━━━━━━━━━━
+FINAL HARD REQUIREMENT
+━━━━━━━━━━━━━━━━━━
+
+NO DNA, facial structure, expression anatomy, or beauty traits from the original actors may remain.
+
+The uploaded identity photos are the ONLY source of:
+— identity
+— anatomy
+— facial structure
+— emotional anatomy
+— skin behavior
+— proportions
+— realism`;
 
 const LALALAND_2 = `Use the reference cinema image STRICTLY AND ONLY for:
 
