@@ -3,6 +3,7 @@ export interface ReferenceItem {
   image: string;
   style: string;
   label: string;
+  promptKey?: string;
 }
 
 export interface Category {
@@ -16,6 +17,7 @@ export const categories: Category[] = [
   { id: 'zootopia',                  name: 'Zootopia',                       tag: 'Animated',   cover: '/styles/zootopia/zootopia1.jpg' },
   { id: 'euphoria',                  name: 'Euphoria',                       tag: 'TV Series',  cover: '/styles/euphoria/euphoria1.jpg' },
   { id: 'titanic',                   name: 'Titanic',                        tag: 'Film',       cover: '/styles/titanic/titanic1.jpg' },
+  { id: 'lalaland',                  name: 'La La Land',                     tag: 'Film',       cover: '/styles/lalaland/lalaland1.jpg' },
   { id: 'tangled',                   name: 'Tangled',                        tag: 'Animated',   cover: '/styles/tangled/tangled1.jpg' },
   { id: 'terabithia',                name: 'Bridge to Terabithia',           tag: 'Film',       cover: '/styles/terabithia/terabithia1.jpg' },
   { id: 'cinderella',                name: 'Cinderella',                     tag: 'Animated',   cover: '/styles/cinderella/cinderella1.jpg' },
@@ -42,6 +44,11 @@ export const references: ReferenceItem[] = [
   { id: 'titanic-1', style: 'titanic', label: 'Titanic', image: '/styles/titanic/titanic1.jpg' },
   { id: 'titanic-2', style: 'titanic', label: 'Titanic', image: '/styles/titanic/titanic2.jpg' },
   { id: 'titanic-3', style: 'titanic', label: 'Titanic', image: '/styles/titanic/titanic3.jpg' },
+
+  // ── La La Land ──
+  { id: 'lalaland-1', style: 'lalaland', label: 'La La Land', image: '/styles/lalaland/lalaland1.jpg', promptKey: 'LALALAND_1' },
+  { id: 'lalaland-2', style: 'lalaland', label: 'La La Land', image: '/styles/lalaland/lalaland2.jpg', promptKey: 'LALALAND_2' },
+  { id: 'lalaland-3', style: 'lalaland', label: 'La La Land', image: '/styles/lalaland/lalaland3.jpg', promptKey: 'LALALAND_3' },
 
   // ── Tangled ──
   { id: 'tangled-1', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled1.jpg' },
