@@ -1983,11 +1983,6 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   "end-of-the-fucking-world-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: WORLD_2 },
   "end-of-the-fucking-world-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: WORLD_3 },
 };
-// ── Lalaland ──
-  "lalaland-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: LALALAND_1 },
-  "lalaland-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: LALALAND_2 },
-  "lalaland-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: LALALAND_3 },
-};
 
 function uint8ToBase64(bytes: Uint8Array): string {
   let binary = "";
