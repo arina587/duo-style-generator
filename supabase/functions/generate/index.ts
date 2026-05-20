@@ -86,22 +86,75 @@ STYLE: Full Pixar/Disney 3D — soft shading, clean skin, expressive eyes. Plain
 
 HANDS: Human, anatomically correct, exactly five fingers, correct selfie grip perspective.`;
 
-const ZOOTOPIA_2 = `Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman as stylized Pixar/Disney 3D CGI humans.
+const ZOOTOPIA_2 = `Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate both as fully human Pixar/Disney-style 3D CGI characters while preserving the exact composition and energy of the original selfie scene.
 
-IDENTITY: Faces fully recognizable — facial structure, features, proportions, hair.
+IDENTITY:
+Faces must remain highly recognizable from the uploaded photos:
+— facial proportions
+— bone structure
+— eye shape and spacing
+— eyebrows
+— nose and lips
+— jawline and cheeks
+— skin tone
+— hairstyle, hair color, and hair length
+Do NOT genericize, beautify excessively, or blend identities.
 
 POSE (ABSOLUTE):
-— woman (right) leans hard into the man's face, cheek pressing into his cheek
-— man's head tilts slightly away from the pressure
-— woman holds camera at arm's length, very tight selfie framing
-Do NOT loosen contact. Do NOT reposition heads.
+— preserve the exact selfie framing from the reference image
+— woman (right) closest to camera in foreground
+— man (left) slightly behind her shoulder
+— woman extends arm toward camera holding phone in selfie position
+— preserve original head tilt, shoulder angles, spacing, and perspective exactly
+— both characters looking directly into camera
+Do NOT change camera angle, lens perspective, framing, or character placement.
 
-EXPRESSION: woman — playful, wide smile. Man — slightly uncomfortable, compressed expression.
-CONTACT: Visible cheek compression and skin contact must be maintained.
+EXPRESSION:
+Man — relaxed confident smirk.
+Woman — cheerful playful smile with bright expressive eyes.
 
-STYLE: High-end Pixar/Disney 3D rendering. Background and lighting identical to reference.
+BODY:
+Both characters must be fully human adults with realistic anatomy and proportions.
+Remove ALL animal anatomy completely:
+— no fur
+— no rabbit ears
+— no fox ears
+— no tails
+— no whiskers
+— no paws or claws
+— no animal body proportions
 
-HANDS: Human, exactly five fingers, no distortion, correct selfie perspective.`;
+STYLE:
+High-end Pixar/Disney cinematic 3D CGI render:
+— stylized but realistic human faces
+— expressive animated-film eyes
+— soft cinematic skin shading
+— realistic hair grooming
+— subtle subsurface scattering
+— polished animated movie quality
+
+LIGHTING:
+Preserve the original colorful futuristic city lighting exactly:
+— pink, orange, cyan, and purple neon reflections
+— soft ambient glow from billboards
+— cinematic contrast
+— realistic reflected light on skin and clothing
+— shallow depth of field
+— soft bloom and atmospheric haze
+
+SCENE:
+Keep the futuristic Zootopia-like city environment unchanged:
+— same billboards
+— same background architecture
+— same lighting layout
+— same depth and composition
+Only replace the two characters.
+
+HANDS:
+Human hands only with anatomically correct structure.
+Exactly five fingers on each hand.
+Natural selfie-camera grip and perspective.
+No finger deformation, duplication, fusion, or cartoon paw anatomy.`;
 
 const ZOOTOPIA_3 = `Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman as fully human Pixar-style 3D CGI characters integrated into the scene.
 
