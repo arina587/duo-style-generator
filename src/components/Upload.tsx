@@ -130,6 +130,25 @@ export default function Upload({
     });
   };
 
+  // Convert HEIC/HEIF to JPEG before passing to resizeImage.
+  // On iPhone Safari, new Image() cannot decode HEIC natively, so we must
+  // convert before ever touching URL.createObjectURL for canvas decode.
+  const normalizeUploadFile = async (file: File): Promise<File> => {
+    const isHeic =
+      file.type === 'image/heic' || file.type === 'image/heif' ||
+      /\.heic$/i.test(file.name) || /\.heif$/i.test(file.name);
+
+    if (!isHeic) return file;
+
+    console.log('[UPLOAD] HEIC detected — converting before resize:', file.name, file.size, file.type);
+    const heic2any = (await import('heic2any')).default;
+    const result = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.85 });
+    const blob = Array.isArray(result) ? result[0] : result;
+    const converted = new File([blob], file.name.replace(/\.hei[cf]$/i, '.jpg'), { type: 'image/jpeg' });
+    console.log('[UPLOAD] HEIC conversion done:', converted.name, converted.size, converted.type);
+    return converted;
+  };
+
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     setPhoto: (file: File | null) => void,
@@ -138,13 +157,15 @@ export default function Upload({
     const file = e.target.files?.[0];
     if (!file) return;
     setError('');
-    resizeImage(file).then(({ file: resized, dataUrl }) => {
-      setPhoto(resized);
-      setPreview(dataUrl);
-    }).catch((err: unknown) => {
-      console.error('[UPLOAD] resizeImage error:', err);
-      setError(err instanceof Error ? err.message : 'Failed to process image. Please try a different photo.');
-    });
+    normalizeUploadFile(file)
+      .then((normalized) => resizeImage(normalized))
+      .then(({ file: resized, dataUrl }) => {
+        setPhoto(resized);
+        setPreview(dataUrl);
+      }).catch((err: unknown) => {
+        console.error('[UPLOAD] file processing error:', err);
+        setError(err instanceof Error ? err.message : 'Failed to process image. Please try a different photo.');
+      });
   };
 
   const removeSecondary = (

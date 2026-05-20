@@ -107,8 +107,13 @@ function normalizeError(error: unknown, phase: GenerationErrorPhase): Generation
   const raw = error instanceof Error ? error.message : String(error ?? '');
   const lo = raw.toLowerCase();
 
-  if (lo.includes('moderation') || lo.includes('policy') || lo.includes('unsafe') ||
-      lo.includes('blocked') || lo.includes('content_violation') || lo.includes('flagged')) {
+  // Only explicit provider content-violation strings trigger moderation UI.
+  // Generic words like "policy", "blocked", "unsafe" intentionally omitted —
+  // they match RLS/storage/CORS/browser errors and must NOT show moderation UI.
+  if (lo.includes('content_policy_violation') || lo.includes('content policy violation') ||
+      lo.includes('moderation failed') || lo.includes('did not pass moderation') ||
+      lo.includes('unsafe image content') || lo.includes('flagged by moderation') ||
+      lo.includes('safety system blocked')) {
     return makeError(phase, 'This image could not be generated because it did not pass moderation checks.');
   }
 
