@@ -139,7 +139,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
             ))}
           </nav>
           <button
-            onClick={() => scrollToSection('styles')}
+            onClick={() => scrollToSection('pricing')}
             className="btn-accent px-5 py-2 text-sm"
           >
             Get Started
@@ -379,7 +379,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
 
       {/* ── PRICING ── */}
       <section id="pricing" className="py-20 relative overflow-hidden" style={{ background: 'rgba(250,246,255,0.55)', position: 'relative', zIndex: 1 }}>
-        <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-10">
+        <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-12">
             <p className="section-eyebrow mb-1">pricing</p>
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#3a2f52] mb-3">
@@ -394,11 +394,11 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
             <p className="font-handwrite text-[#b49cdb] text-lg">no commitments · cancel anytime</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {pricingPlans.map((plan) => (
               <div
                 key={plan.name}
-                className={`${plan.featured ? 'pricing-card-featured' : 'pricing-card'} p-8`}
+                className={`${plan.featured ? 'pricing-card-featured' : 'pricing-card'} p-8 lg:p-10`}
               >
                 {plan.featured && (
                   <div className="badge-accent inline-flex items-center gap-1.5 mb-5">
@@ -499,6 +499,35 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
               <div className="flex items-center gap-1.5 text-xs font-body" style={{ color: 'rgba(255,255,255,0.45)' }}>
                 <Shield className="w-3 h-3 text-[#c4a8e8]" />
                 Your privacy is protected
+              </div>
+              {/* Social links */}
+              <div className="flex items-center gap-3">
+                {/* Instagram */}
+                <a href="#" aria-label="Instagram" className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200" style={{ background: 'rgba(196,168,232,0.10)', color: 'rgba(255,255,255,0.45)' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#c4a8e8')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                    <circle cx="12" cy="12" r="4"/>
+                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+                  </svg>
+                </a>
+                {/* TikTok */}
+                <a href="#" aria-label="TikTok" className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200" style={{ background: 'rgba(196,168,232,0.10)', color: 'rgba(255,255,255,0.45)' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#c4a8e8')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.73a4.85 4.85 0 0 1-1.01-.04z"/>
+                  </svg>
+                </a>
+                {/* Facebook */}
+                <a href="#" aria-label="Facebook" className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200" style={{ background: 'rgba(196,168,232,0.10)', color: 'rgba(255,255,255,0.45)' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#c4a8e8')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                  </svg>
+                </a>
               </div>
               <p className="text-xs font-body" style={{ color: 'rgba(255,255,255,0.26)' }}>2025 DuoStyle. All rights reserved.</p>
               <div className="flex gap-6">
