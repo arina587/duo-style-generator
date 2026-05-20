@@ -463,7 +463,145 @@ Faces, hair, skin, and clothing must inherit the exact lighting and atmosphere o
 
 The final result should look like a genuine stylized animated movie frame featuring recognizable animated versions of the uploaded people naturally integrated into the fantasy royal scene — not a face swap, pasted composite, or edited original image.`;
 
-const CINDERELLA_PROMPT = `Use the original scene image as the base.
+const CINDERELLA_1 = `Use the original scene image as the base.
+
+PRIMARY TASK:
+Replace both character identities using the reference photos.
+
+CHARACTER MAPPING:
+- female → woman from female reference
+- male → man from male reference
+
+PRIORITY ORDER:
+1. Identity replacement (highest priority)
+2. Pose, body position, head angle, visibility, interaction
+3. Scene, lighting, camera, background, clothing, style
+
+IDENTITY RULES:
+Completely remove the original identities.
+Use only the reference identities.
+Do NOT mix original and new identity.
+Do NOT keep any original facial features, hair identity, or recognizable traits.
+
+Perform full character replacement, not face swapping.
+
+SCENE PRESERVATION:
+Keep unchanged:
+- pose and body alignment
+- head angle and face direction
+- camera, framing, perspective
+- lighting, shadows, color grading
+- background and all objects
+- clothing and accessories
+
+Recreate each person naturally in the same position, adapting identity to fit perspective, lighting, and body.
+
+IDENTITY ACCURACY:
+Preserve:
+- facial structure and proportions
+- skin tone and texture
+- eyes, nose, lips, bone structure
+- hair shape, color, length
+Keep the person clearly recognizable.
+
+Do not paste or overlay faces.
+Ensure seamless head–body integration.
+
+STYLE ADAPTATION:
+Match the original style:
+- animated → same stylized/cartoon form
+- realistic → photorealistic detail
+Do not over-stylize.
+
+HEAD ANGLE & VISIBILITY:
+Keep original head angle, direction, and visibility.
+No rotation, no frontalization.
+Do not reveal hidden faces.
+Respect gaze direction and perspective.
+
+ANATOMY:
+Preserve body anatomy.
+Hands: 5 fingers, correct proportions, no distortion.
+
+Respect occlusions (hair, objects, motion blur).
+Do not generate hidden parts.
+
+QUALITY:
+High-resolution, sharp, natural skin texture, correct lighting.
+
+OUTPUT:
+Same scene, same composition — only identities replaced.`;
+
+const CINDERELLA_2 = `Use the original scene image as the base.
+
+PRIMARY TASK:
+Replace both character identities using the reference photos.
+
+CHARACTER MAPPING:
+- female → woman from female reference
+- male → man from male reference
+
+PRIORITY ORDER:
+1. Identity replacement (highest priority)
+2. Pose, body position, head angle, visibility, interaction
+3. Scene, lighting, camera, background, clothing, style
+
+IDENTITY RULES:
+Completely remove the original identities.
+Use only the reference identities.
+Do NOT mix original and new identity.
+Do NOT keep any original facial features, hair identity, or recognizable traits.
+
+Perform full character replacement, not face swapping.
+
+SCENE PRESERVATION:
+Keep unchanged:
+- pose and body alignment
+- head angle and face direction
+- camera, framing, perspective
+- lighting, shadows, color grading
+- background and all objects
+- clothing and accessories
+
+Recreate each person naturally in the same position, adapting identity to fit perspective, lighting, and body.
+
+IDENTITY ACCURACY:
+Preserve:
+- facial structure and proportions
+- skin tone and texture
+- eyes, nose, lips, bone structure
+- hair shape, color, length
+Keep the person clearly recognizable.
+
+Do not paste or overlay faces.
+Ensure seamless head–body integration.
+
+STYLE ADAPTATION:
+Match the original style:
+- animated → same stylized/cartoon form
+- realistic → photorealistic detail
+Do not over-stylize.
+
+HEAD ANGLE & VISIBILITY:
+Keep original head angle, direction, and visibility.
+No rotation, no frontalization.
+Do not reveal hidden faces.
+Respect gaze direction and perspective.
+
+ANATOMY:
+Preserve body anatomy.
+Hands: 5 fingers, correct proportions, no distortion.
+
+Respect occlusions (hair, objects, motion blur).
+Do not generate hidden parts.
+
+QUALITY:
+High-resolution, sharp, natural skin texture, correct lighting.
+
+OUTPUT:
+Same scene, same composition — only identities replaced.`;
+
+const CINDERELLA_3 = `Use the original scene image as the base.
 
 PRIMARY TASK:
 Replace both character identities using the reference photos.
