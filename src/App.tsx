@@ -196,11 +196,23 @@ async function uploadInputImage(
     });
 
     try {
-      const { error } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('generation-inputs')
         .upload(path, file, { contentType: file.type || 'image/jpeg', upsert: true });
 
-      if (error) throw new Error(error.message);
+      if (uploadError) {
+        // Log the raw storage error object before normalising
+        console.error('[UPLOAD INPUT STORAGE ERROR]', {
+          requestId, field: fieldName, attempt, path,
+          fileName: file.name, fileSize: file.size, mimeType: file.type,
+          statusCode: (uploadError as { statusCode?: string | number }).statusCode,
+          message: uploadError.message,
+          error: (uploadError as { error?: string }).error,
+          cause: (uploadError as { cause?: unknown }).cause,
+          ua: navigator.userAgent,
+        });
+        throw new Error(`Storage upload error (${(uploadError as { statusCode?: string | number }).statusCode ?? 'unknown'}): ${uploadError.message}`);
+      }
 
       const { data: signedData, error: signErr } = await supabase.storage
         .from('generation-inputs')
@@ -221,12 +233,15 @@ async function uploadInputImage(
       if (err instanceof DOMException && err.name === 'AbortError') throw err;
 
       lastErr = err instanceof Error ? err : new Error(String(err));
-      console.error('[UPLOAD INPUT FAILURE]', {
-        requestId, field: fieldName, attempt, durationMs: Date.now() - t0,
-        fileName: file.name, fileSize: file.size, mimeType: file.type, path,
-        ...errDetail(lastErr),
-        ua: navigator.userAgent,
-      });
+      // Only log here if it wasn't already logged as a storage error above
+      if (!lastErr.message.startsWith('Storage upload error')) {
+        console.error('[UPLOAD INPUT FAILURE]', {
+          requestId, field: fieldName, attempt, durationMs: Date.now() - t0,
+          fileName: file.name, fileSize: file.size, mimeType: file.type, path,
+          ...errDetail(lastErr),
+          ua: navigator.userAgent,
+        });
+      }
 
       if (attempt < MAX_ATTEMPTS) {
         await new Promise<void>(r => setTimeout(r, RETRY_DELAY_MS));

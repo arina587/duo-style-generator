@@ -218,8 +218,14 @@ export default function Result({
 
   const isTimeoutError = !isGenerating && !!generationError &&
     (errorMessage.includes('taking longer') || errorMessage.includes('timeout') || errorMessage.includes('timed out'));
+  // Only flag as moderation if it's a real provider content violation — never storage/RLS errors
   const isModerationError = !isGenerating && !!generationError &&
-    errorMessage.includes('moderation');
+    errorPhase !== 'uploading_inputs' &&
+    errorPhase !== 'starting_generation' &&
+    (errorMessage.includes('moderation') || errorMessage.includes('content check') ||
+     errorMessage.includes('policy') || errorMessage.includes('content_violation') ||
+     errorMessage.includes('flagged') || errorMessage.includes('not allowed') ||
+     errorMessage.includes('unsafe'));
   const isUploadError = !isGenerating && errorPhase === 'uploading_inputs';
   const isPostError = !isGenerating && errorPhase === 'starting_generation';
   const isPollError = !isGenerating && errorPhase === 'polling_generation';
@@ -317,8 +323,8 @@ export default function Result({
             nothing can push or pull the container size. The single <img> path
             with absolute inset-0 + object-cover is used for every provider and
             URL type (base64, blob, CDN) — there is no provider-specific branch. */}
-        <div className="card-premium overflow-hidden mb-6" style={{ transition: 'box-shadow 0.3s' }}>
-          <div className="relative w-full overflow-hidden" style={{ aspectRatio: '2 / 3', background: 'linear-gradient(145deg, #f3eefa, #ede6f6)' }}>
+        <div className="card-premium overflow-hidden mb-6 mx-auto" style={{ transition: 'box-shadow 0.3s', maxWidth: '480px' }}>
+          <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1 / 1', background: 'linear-gradient(145deg, #f3eefa, #ede6f6)' }}>
 
             {/* ── State 1: Generating ── */}
             {isGenerating && (
@@ -356,7 +362,7 @@ export default function Result({
                 loading="eager"
                 decoding="async"
                 referrerPolicy="no-referrer"
-                className="absolute inset-0 z-10 w-full h-full object-contain object-center block animate-scale-in"
+                className="absolute inset-0 z-10 w-full h-full object-cover object-center block animate-scale-in"
                 onLoad={() => {
                   console.log('[IMG LOADED] retry=' + retryCount.current + ' url=' + displaySrc.substring(0, 80));
                   setIsRetrying(false);
