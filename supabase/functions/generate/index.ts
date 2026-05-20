@@ -86,75 +86,117 @@ STYLE: Full Pixar/Disney 3D — soft shading, clean skin, expressive eyes. Plain
 
 HANDS: Human, anatomically correct, exactly five fingers, correct selfie grip perspective.`;
 
-const ZOOTOPIA_2 = `Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate both as fully human Pixar/Disney-style 3D CGI characters while preserving the exact composition and energy of the original selfie scene.
+const ZOOTOPIA_2 = `Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman. Recreate both as fully human Pixar/Disney-style 3D CGI characters while preserving the exact composition, pose, lighting, and cinematic atmosphere of the original selfie scene.
 
-IDENTITY:
-Faces must remain highly recognizable from the uploaded photos:
-— facial proportions
-— bone structure
-— eye shape and spacing
-— eyebrows
-— nose and lips
-— jawline and cheeks
-— skin tone
-— hairstyle, hair color, and hair length
-Do NOT genericize, beautify excessively, or blend identities.
+PRIORITY:
+
+Exact identity preservation from uploaded photos
+Original selfie pose and composition
+Accurate scene lighting and environment
+High-end Pixar/Disney cinematic rendering
+
+IDENTITY (MAXIMUM ACCURACY):
+Faces must remain extremely recognizable from the uploaded photos with very high identity fidelity.
+
+Precisely preserve:
+— exact eye color with matching hue, saturation, and brightness
+— iris details, limbal ring, and pupil proportions
+— eye shape, eyelid shape, eye spacing, and gaze direction
+— eyebrow shape, thickness, density, and positioning
+— nose bridge, nose width, nostril shape, and tip structure
+— lip contour, lip volume, cupid’s bow, and smile lines
+— jawline, cheekbones, chin shape, and facial proportions
+— forehead proportions and face silhouette
+— skin tone, undertone, and natural complexion
+— hairstyle, hairline, hair texture, hair density, color, and length
+— facial asymmetry and all unique identifying traits
+
+Do NOT:
+— change eye color
+— beautify or idealize faces
+— genericize features
+— mix identities
+— alter ethnicity or age appearance
+
+Avoid generic Pixar faces. The characters must clearly look like the uploaded people while rendered in Pixar/Disney CGI style.
 
 POSE (ABSOLUTE):
-— preserve the exact selfie framing from the reference image
+— preserve the exact selfie composition from the reference image
 — woman (right) closest to camera in foreground
-— man (left) slightly behind her shoulder
+— man (left) positioned slightly behind her shoulder
 — woman extends arm toward camera holding phone in selfie position
-— preserve original head tilt, shoulder angles, spacing, and perspective exactly
+— preserve exact head tilt, shoulder angles, spacing, and body orientation
 — both characters looking directly into camera
-Do NOT change camera angle, lens perspective, framing, or character placement.
+— preserve original lens perspective and framing exactly
+
+Do NOT:
+— change camera angle
+— reposition characters
+— alter framing
+— change distance between subjects
+— modify perspective
 
 EXPRESSION:
-Man — relaxed confident smirk.
+Man — relaxed confident smirk with subtle playful attitude.
 Woman — cheerful playful smile with bright expressive eyes.
 
 BODY:
 Both characters must be fully human adults with realistic anatomy and proportions.
+
 Remove ALL animal anatomy completely:
 — no fur
 — no rabbit ears
 — no fox ears
 — no tails
 — no whiskers
-— no paws or claws
-— no animal body proportions
+— no paws
+— no claws
+— no animal body structure
+
+Arms, shoulders, neck, hands, and facial anatomy must be fully human and physically correct.
 
 STYLE:
-High-end Pixar/Disney cinematic 3D CGI render:
-— stylized but realistic human faces
+Ultra high-end Pixar/Disney cinematic 3D CGI render:
+— realistic stylized human faces
 — expressive animated-film eyes
 — soft cinematic skin shading
-— realistic hair grooming
+— detailed realistic hair grooming
 — subtle subsurface scattering
-— polished animated movie quality
+— film-quality rendering
+— polished Disney/Pixar visual fidelity
+— soft global illumination
+— cinematic depth of field
+— realistic material response
 
 LIGHTING:
-Preserve the original colorful futuristic city lighting exactly:
-— pink, orange, cyan, and purple neon reflections
-— soft ambient glow from billboards
+Preserve the original futuristic neon city lighting exactly:
+— pink, cyan, orange, and purple neon reflections
+— billboard light spill
+— soft ambient glow
 — cinematic contrast
 — realistic reflected light on skin and clothing
-— shallow depth of field
 — soft bloom and atmospheric haze
+— natural shadow direction matching original scene
+
+Faces and skin must fully inherit environmental lighting and color reflections naturally.
 
 SCENE:
-Keep the futuristic Zootopia-like city environment unchanged:
+Keep the futuristic Zootopia-style city environment unchanged:
 — same billboards
-— same background architecture
-— same lighting layout
-— same depth and composition
+— same architecture
+— same background composition
+— same atmosphere
+— same depth and blur
+— same cinematic framing
+
 Only replace the two characters.
 
 HANDS:
 Human hands only with anatomically correct structure.
 Exactly five fingers on each hand.
-Natural selfie-camera grip and perspective.
-No finger deformation, duplication, fusion, or cartoon paw anatomy.`;
+Correct joint placement and finger proportions.
+Natural selfie-camera grip and realistic perspective.
+No finger deformation, duplication, fusion, extra fingers, missing fingers, or cartoon paw anatomy.`;
 
 const ZOOTOPIA_3 = `Replace the fox (left) with the uploaded man and the rabbit (right) with the uploaded woman as fully human Pixar-style 3D CGI characters integrated into the scene.
 
