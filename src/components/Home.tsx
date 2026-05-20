@@ -281,7 +281,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
 
           {/* Category grid */}
           {!openCategory && (
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 animate-fade-in">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-5 animate-fade-in">
               {categories.map((cat, idx) => (
                 <button
                   key={cat.id}

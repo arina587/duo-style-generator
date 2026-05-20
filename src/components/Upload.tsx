@@ -356,13 +356,18 @@ export default function Upload({
               {/* Angle hint */}
               <div className="flex items-start gap-2 px-3 py-2.5 rounded-xl border font-body" style={{ background: 'rgba(155,125,212,0.08)', borderColor: 'rgba(155,125,212,0.35)' }}>
                 <svg className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#9b7dd4' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-                <p className="text-[12px] leading-relaxed text-[#4a3f6b]">
-                  {hint.split(/(profile|3\/4 angle|best results)/g).map((part, i) =>
-                    ['profile', '3/4 angle', 'best results'].includes(part)
-                      ? <strong key={i} className="font-extrabold text-[#2d2642]">{part}</strong>
-                      : part
-                  )}
-                </p>
+                <div>
+                  <p className="text-[12px] leading-relaxed text-[#4a3f6b]">
+                    {hint.split(/(profile|3\/4 angle|best results)/g).map((part, i) =>
+                      ['profile', '3/4 angle', 'best results'].includes(part)
+                        ? <strong key={i} className="font-extrabold text-[#2d2642]">{part}</strong>
+                        : part
+                    )}
+                  </p>
+                  <p className="text-[11px] leading-relaxed text-[#6a5f8a] mt-1.5 pt-1.5 border-t" style={{ borderColor: 'rgba(155,125,212,0.2)' }}>
+                    If the character in the reference is shown <strong className="font-extrabold text-[#2d2642]">full body</strong>, your photo should also be full body for the best result.
+                  </p>
+                </div>
               </div>
 
               {/* Primary upload */}
