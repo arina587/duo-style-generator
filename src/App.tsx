@@ -19,8 +19,17 @@ export type GenerationErrorPhase =
   | 'preloading_result'
   | 'other';
 
+export type GenerationErrorType =
+  | 'upload'
+  | 'network'
+  | 'moderation'
+  | 'server'
+  | 'timeout'
+  | 'unknown';
+
 export interface GenerationError {
   phase: GenerationErrorPhase;
+  type: GenerationErrorType;
   message: string;
 }
 
@@ -95,63 +104,69 @@ function preloadImage(url: string, signal: AbortSignal): Promise<void> {
 
 // ─── Error normalization ──────────────────────────────────────────────────────
 
-function makeError(phase: GenerationErrorPhase, message: string): GenerationError {
-  return { phase, message };
+function makeError(phase: GenerationErrorPhase, type: GenerationErrorType, message: string): GenerationError {
+  return { phase, type, message };
 }
 
+// Phase-first: the pipeline stage determines the error category before any
+// text matching runs. Moderation can only happen during backend/provider phases
+// (polling_generation, starting_generation) — never during upload or preload.
 function normalizeError(error: unknown, phase: GenerationErrorPhase): GenerationError {
   if (error instanceof DOMException && error.name === 'AbortError') {
-    return makeError(phase, 'Generation cancelled.');
+    return makeError(phase, 'unknown', 'Generation cancelled.');
   }
 
+  // ── Phase-first gates ────────────────────────────────────────────────────────
+  // If we haven't even reached the provider yet, it cannot be a moderation error.
+  if (phase === 'uploading_inputs') {
+    return makeError(phase, 'upload', 'Could not upload images. Please try again.');
+  }
+  if (phase === 'preloading_result') {
+    return makeError(phase, 'network', 'Generated image could not be loaded. Please try again.');
+  }
+
+  // ── Backend/provider phases: text-match is safe here ─────────────────────────
   const raw = error instanceof Error ? error.message : String(error ?? '');
   const lo = raw.toLowerCase();
 
-  // Only explicit provider content-violation strings trigger moderation UI.
-  // Generic words like "policy", "blocked", "unsafe" intentionally omitted —
-  // they match RLS/storage/CORS/browser errors and must NOT show moderation UI.
+  if (lo.includes('timeout') || lo.includes('timed out')) {
+    return makeError(phase, 'timeout', 'Generation is taking longer than expected. Please try again.');
+  }
+
+  // Only explicit provider content-violation strings. Generic words like
+  // "policy", "blocked", "unsafe" are intentionally excluded — they appear in
+  // RLS / storage / CORS / browser errors which can never reach this branch now.
   if (lo.includes('content_policy_violation') || lo.includes('content policy violation') ||
       lo.includes('moderation failed') || lo.includes('did not pass moderation') ||
       lo.includes('unsafe image content') || lo.includes('flagged by moderation') ||
       lo.includes('safety system blocked')) {
-    return makeError(phase, 'This image could not be generated because it did not pass moderation checks.');
+    return makeError(phase, 'moderation', 'This image did not pass content moderation. Please try different photos.');
   }
 
-  if (lo.includes('timeout') || lo.includes('timed out')) {
-    return makeError(phase, 'Generation is taking longer than expected. Please try again.');
-  }
-
-  // Phase-specific network messages
-  if (phase === 'uploading_inputs') {
-    return makeError(phase, 'Connection issue while uploading images. Please try again.');
-  }
   if (phase === 'starting_generation') {
-    return makeError(phase, 'Connection issue while starting generation. Please try again.');
+    if (lo.includes('500') || lo.includes('internal server error') ||
+        lo.includes('edge function') || lo.includes('database') ||
+        lo.includes('unexpected response') || lo.includes('unexpected content-type') ||
+        lo.includes('no output url') || lo.includes('not a valid https') ||
+        lo.includes('temporary openai url') || lo.includes('generation succeeded but no output')) {
+      return makeError(phase, 'server', 'Server issue detected. Please try again in a moment.');
+    }
+    return makeError(phase, 'network', 'Connection issue while starting generation. Please try again.');
   }
+
   if (phase === 'polling_generation') {
-    return makeError(phase, 'Connection issue while waiting for the result. Please try again.');
-  }
-  if (phase === 'preloading_result') {
-    return makeError(phase, 'Generated image could not be loaded. Please try again.');
-  }
-
-  if (lo.includes('500') || lo.includes('internal server error') ||
-      lo.includes('edge function') || lo.includes('storage upload') ||
-      lo.includes('database')) {
-    return makeError(phase, 'Server issue detected. Please try again in a moment.');
-  }
-
-  if (lo.includes('unexpected response') || lo.includes('unexpected content-type') ||
-      lo.includes('no output url') || lo.includes('not a valid https') ||
-      lo.includes('temporary openai url') || lo.includes('generation succeeded but no output')) {
-    return makeError(phase, 'Server issue detected. Please try again in a moment.');
+    if (lo.includes('500') || lo.includes('internal server error') ||
+        lo.includes('edge function') || lo.includes('database')) {
+      return makeError(phase, 'server', 'Server issue detected. Please try again in a moment.');
+    }
+    return makeError(phase, 'network', 'Connection issue while waiting for the result. Please try again.');
   }
 
   if (raw.length > 0 && raw.length < 200 && !raw.includes('\n') && !raw.includes(' at ')) {
-    return makeError(phase, raw);
+    return makeError(phase, 'unknown', raw);
   }
 
-  return makeError(phase, 'Generation failed. Please try again.');
+  return makeError(phase, 'unknown', 'Generation failed. Please try again.');
 }
 
 function errDetail(err: unknown): Record<string, string> {
@@ -540,7 +555,7 @@ function App() {
             phase: 'polling_generation', requestId, predictionId, provider,
             elapsedMs, ua: navigator.userAgent,
           });
-          finishWithError(makeError('polling_generation', 'Generation is taking longer than expected. Please try again.'));
+          finishWithError(makeError('polling_generation', 'timeout', 'Generation is taking longer than expected. Please try again.'));
           return;
         }
 
@@ -577,7 +592,7 @@ function App() {
     if (generatedImageUrl.startsWith('blob:')) URL.revokeObjectURL(generatedImageUrl);
 
     if (!photo1 || !photo2 || !referenceFile || !selectedRef) {
-      setGenerationError(makeError('other', 'Missing required data. Please try again.'));
+      setGenerationError(makeError('other', 'unknown', 'Missing required data. Please try again.'));
       return;
     }
 
@@ -613,7 +628,7 @@ function App() {
     } catch (normalizeErr) {
       console.error('[HEIC CONVERT ERROR]', { requestId, ...errDetail(normalizeErr) });
       if (activeRequestId.current !== requestId) return;
-      setGenerationError(makeError('other', 'Failed to convert image format. Please use JPEG or PNG.'));
+      setGenerationError(makeError('other', 'upload', 'Failed to convert image format. Please use JPEG or PNG.'));
       setIsGenerating(false);
       isGeneratingRef.current = false;
       cooldownUntilRef.current = Date.now() + 1000;

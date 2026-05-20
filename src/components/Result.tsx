@@ -216,19 +216,12 @@ export default function Result({
     }
   };
 
-  const isTimeoutError = !isGenerating && !!generationError &&
-    (errorMessage.includes('taking longer') || errorMessage.includes('timeout') || errorMessage.includes('timed out'));
-  // Only flag as moderation if it's a real provider content violation — never storage/RLS errors
-  const isModerationError = !isGenerating && !!generationError &&
-    errorPhase !== 'uploading_inputs' &&
-    errorPhase !== 'starting_generation' &&
-    (errorMessage.includes('moderation') || errorMessage.includes('content check') ||
-     errorMessage.includes('policy') || errorMessage.includes('content_violation') ||
-     errorMessage.includes('flagged') || errorMessage.includes('not allowed') ||
-     errorMessage.includes('unsafe'));
-  const isUploadError = !isGenerating && errorPhase === 'uploading_inputs';
-  const isPostError = !isGenerating && errorPhase === 'starting_generation';
-  const isPollError = !isGenerating && errorPhase === 'polling_generation';
+  const errorType = generationError?.type ?? 'unknown';
+  const isTimeoutError = !isGenerating && !!generationError && errorType === 'timeout';
+  const isModerationError = !isGenerating && !!generationError && errorType === 'moderation';
+  const isUploadError = !isGenerating && !!generationError && errorType === 'upload';
+  const isPostError = !isGenerating && errorPhase === 'starting_generation' && errorType !== 'moderation';
+  const isPollError = !isGenerating && errorPhase === 'polling_generation' && errorType !== 'moderation' && errorType !== 'timeout';
 
   const phaseLabel: Record<GenerationPhase, { heading: string; subtitle: string; detail: string }> = {
     uploading: {
