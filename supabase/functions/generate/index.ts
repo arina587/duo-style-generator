@@ -2179,7 +2179,168 @@ NOT:
 — composited
 — synthetic looking`;
 
-const LALALAND_1 = `Use the reference scene ONLY for: — composition — framing — lens perspective — camera angle — blocking — pose logic — body distance — embrace structure — arm placement — torso orientation — head tilt — crop — lighting direction — depth of field — color atmosphere — emotional timing The reference image is NOT a style reference. It is NOT an identity reference. It is NOT a facial reference. Emotion replication and biometric identity fidelity have higher priority than cinematic aesthetics. If realism conflicts with cinematic beauty: ALWAYS choose realism. ━━━━━━━━━━━━━━━━━━ REFERENCE IS COMPOSITION-ONLY ━━━━━━━━━━━━━━━━━━ The reference image must be used ONLY for: — pose — framing — camera angle — body positioning — lighting direction — composition — emotional timing The reference image must NOT influence: — facial anatomy — facial attractiveness — identity — skin — expression geometry — facial proportions — beauty traits — facial structure ━━━━━━━━━━━━━━━━━━ ABSOLUTE IDENTITY REPLACEMENT REQUIRED ━━━━━━━━━━━━━━━━━━ The original actors must be fully removed and replaced with the uploaded individuals at near-photographic biometric fidelity. The uploaded identity photos are NOT inspiration. They are the ONLY valid source of: — identity — facial anatomy — emotional anatomy — physical appearance — proportions — skin behavior — realism NO: — face swap look — actor residue — identity blending — beautification — cinematic reinterpretation — similar-looking recreation — glamour enhancement — idealization — stylized reconstruction — AI prettification — symmetry correction — aesthetic optimization ━━━━━━━━━━━━━━━━━━ ABSOLUTE ACTOR REMOVAL ━━━━━━━━━━━━━━━━━━ The original actors from the reference image must not influence the generated faces in any way. Remove completely: — actor facial anatomy — actor skull structure — actor eye shape — actor mouth shape — actor jawline — actor nose structure — actor attractiveness patterns — actor expression anatomy — actor facial proportions The uploaded identity images are the ONLY valid source of: — facial anatomy — cranial structure — proportions — skin texture — age — asymmetry — facial muscle behavior — identity This is NOT a face swap. This is NOT actor replacement. This is full biometric identity reconstruction inside the reference composition. No blending between uploaded identities and reference actors is allowed. ━━━━━━━━━━━━━━━━━━ CRITICAL FACIAL ACCURACY ━━━━━━━━━━━━━━━━━━ Reconstruct BOTH uploaded people with near-photographic biometric fidelity. Preserve EXACTLY: — skull structure — cranial proportions — forehead height and curvature — facial width-to-height ratio — facial asymmetry — cheek volume — cheekbone placement — jaw width and geometry — chin projection and shape — neck thickness and proportions — shoulder proportions — body proportions — eye socket depth — eyelid anatomy — canthal tilt — eye spacing — iris size — eyebrow thickness and placement — eyebrow asymmetry — nose bridge width — nostril shape — philtrum structure — lip contour — lip thickness — mouth asymmetry — ear shape and placement — skin undertone — skin reflectivity — pores — natural blemishes — under-eye texture — lip texture — facial texture transitions — apparent age — hairline shape — hair density — strand breakup — flyaways — natural hair behavior ━━━━━━━━━━━━━━━━━━ FACE GEOMETRY PRESERVATION ━━━━━━━━━━━━━━━━━━ Preserve exact: — interpupillary distance — eye depth — cranial silhouette — forehead height — jaw width — chin shape — mouth width — nose bridge width — nostril geometry — lip asymmetry — eyelid fold structure — cheekbone placement — temporal bone width — neck thickness Do not reinterpret facial geometry for cinematic appeal. ━━━━━━━━━━━━━━━━━━ ANTI-BEAUTIFICATION CONSTRAINT ━━━━━━━━━━━━━━━━━━ Do not improve facial aesthetics. Preserve: — natural asymmetry — imperfect skin — realistic eye size — natural lip proportions — authentic jaw structure — realistic facial fat distribution — subtle skin texture — under-eye texture — natural facial irregularities Do not: — beautify — glamorize — stylize — sharpen jawlines — enlarge eyes — smooth skin — create symmetry — apply cinematic attractiveness — make faces more photogenic — enhance beauty Faces must look like unretouched real photographs. ━━━━━━━━━━━━━━━━━━ EXACT MICRO-EXPRESSION LOCK ━━━━━━━━━━━━━━━━━━ Replicate the facial expressions from the reference frame with expression-level fidelity. Do not reinterpret the emotion. Do not dramatize the interaction. Do not increase emotional readability. The emotional state must remain emotionally restrained, partially suppressed, and internally held. Preserve exactly: — eye fixation distance — gaze angle — eyelid openness — lower eyelid tension — orbicularis oculi activation — eyebrow compression — lip seal pressure — mouth corner displacement — cheek tension — jaw relaxation — neck muscle relaxation — breathing stillness The expressions must remain: — subtle — involuntary — partially suppressed — low-amplitude — psychologically ambiguous — non-performative — candid — mid-thought Both characters must preserve the exact restrained near-smile behavior visible in the reference image. The near-smile must remain extremely weak and subconscious: — mouth corners lifted less than a natural conversational smile — lips mostly closed — no visible teeth — no cheek raising associated with smiling — no laugh lines — no performative happiness The emotional warmth must appear only as microscopic tension changes around: — mouth corners — lower eyelids — eye focus The characters must preserve an extremely subtle restrained near-smile. This is NOT a neutral face. This is NOT a visible smile. The emotional warmth exists only as: — microscopic mouth corner tension — faint eye softness — delicate lower eyelid relaxation The near-smile must remain emotionally suppressed and barely perceptible. Avoid: — cinematic romance acting — expressive smiling — flirtation — emotional amplification — visible happiness — posed affection — beauty-editorial emotion — Hallmark-style romance — emotional idealization — movie-poster chemistry — romantic overperformance Captured accidentally during a real emotional moment, not performed for camera. ━━━━━━━━━━━━━━━━━━ FACIAL MUSCLE BEHAVIOR ━━━━━━━━━━━━━━━━━━ Facial muscles must behave naturally and asymmetrically. Preserve: — natural asymmetry — tiny imbalance in eyelids — uneven lip tension — subtle nostril asymmetry — authentic cheek compression — realistic eye moisture — natural eye focus imperfections — non-symmetrical emotional tension — real under-eye tension — natural mouth corners — believable jaw relaxation NO: — expression cleanup — beautified emotion — balanced eyes — perfect lips — idealized emotional geometry — actor-style posing — symmetrical expression correction — romantic overacting ━━━━━━━━━━━━━━━━━━ BODY AND POSE RECONSTRUCTION ━━━━━━━━━━━━━━━━━━ Keep ONLY from the reference: — pose logic — body distance — embrace structure — arm placement — torso orientation — head tilt — crop — framing — physical interaction rhythm But anatomy must come ONLY from the uploaded people. Maintain realistic proportions and natural posture. The embrace must feel: — physically possible — quiet — restrained — intimate — not theatrical — not staged — not fashion-like ━━━━━━━━━━━━━━━━━━ LIGHTING INTEGRATION ━━━━━━━━━━━━━━━━━━ Faces must integrate physically and naturally into the cinematic lighting. Lighting behavior must obey: — warm tungsten practical lighting — realistic falloff — soft cinematic shadow gradients — physically correct facial occlusion — realistic eye socket shadowing — natural nose shadows — jaw occlusion — low-light realism — analog highlight rolloff — subtle bounce light — preserved dark detail — realistic skin reflectance Avoid: — pasted-on faces — beauty relighting — HDR skin — glowing highlights — flattened shadows — fake rim light — CG skin — artificial contrast — overexposed skin — synthetic sharpness ━━━━━━━━━━━━━━━━━━ SKIN TEXTURE ━━━━━━━━━━━━━━━━━━ Maintain: — pores — fine grain — natural tonal variation — subtle imperfections — realistic under-eye texture — realistic lip texture — natural skin softness — realistic facial texture transitions NO: — skin smoothing — retouching — porcelain skin — hyper-detailing — over-sharpening — beauty filtering ━━━━━━━━━━━━━━━━━━ HAIR REALISM ━━━━━━━━━━━━━━━━━━ Hair must remain physically believable: — natural strand separation — realistic density — believable flyaways — edge softness — natural hairline — natural hair behavior — no helmet hair — no synthetic symmetry — no waxy texture ━━━━━━━━━━━━━━━━━━ WARDROBE ━━━━━━━━━━━━━━━━━━ Keep the grounded cozy autumn wardrobe logic from the reference scene. Preserve: — warm knitted textures — plaid outerwear logic — casual worn fabric — believable folds — tactile material response No: — fashion editorial styling — luxury reinterpretation — glamorization — overly clean fabric rendering — costume-like styling ━━━━━━━━━━━━━━━━━━ IMAGE STYLE ━━━━━━━━━━━━━━━━━━ Photorealistic cinematic still frame. Authentic in-camera realism. Organic indie romance mood. Natural analog rendering. Soft film grain. Shallow depth of field. Realistic lens behavior. Subtle cinematic softness. Warm low-light atmosphere. Natural optical imperfections. Real cinema-camera photograph. Avoid: — AI glamour look — overprocessing — synthetic HDR — hyper-detailing — fake cinematic sharpness — plastic rendering — stylized beauty rendering — unreal skin response — overly perfect faces — editorial polish — fashion photography energy — editorial posing — movie-poster romance ━━━━━━━━━━━━━━━━━━ FINAL HARD REQUIREMENT ━━━━━━━━━━━━━━━━━━ NO DNA, facial structure, expression anatomy, beauty traits, or emotional residue from the original actors may remain. The uploaded identity photos are the ONLY valid source of: — identity — anatomy — facial structure — emotional anatomy — skin behavior — proportions — realism The final image must look indistinguishable from a real cinema-camera photograph of the uploaded people physically present in the exact emotional and compositional moment of the reference scene.`;
+const LALALAND_1 = `Use the reference scene ONLY for:
+— composition
+— framing
+— lens perspective
+— camera angle
+— blocking
+— pose logic
+— emotional interaction
+— lighting direction
+— cinematic intimacy
+— environmental depth
+
+Completely remove the original actors.
+
+Rebuild both characters entirely from the uploaded identity photos.
+
+DO NOT:
+— face swap
+— morph with original actors
+— blend identities
+— average faces
+— stylize
+— beautify
+— reinterpret anatomy
+— generate “similar-looking” people
+— inherit facial traits from the reference actors
+
+IDENTITY TRANSFER PRIORITY:
+The final result must preserve the uploaded people with near-photographic identity accuracy.
+
+For BOTH characters preserve exactly:
+— facial bone structure
+— eye shape, size, spacing, and eyelids
+— nose bridge, nostrils, and tip anatomy
+— lip contour and natural asymmetry
+— jawline geometry
+— cheek volume
+— forehead proportions
+— chin shape
+— ear placement
+— skin tone and undertones
+— hair density
+— hairline shape
+— hairstyle texture
+— neck thickness and proportions
+— body proportions
+— apparent age
+
+The generated people must look unmistakably identical to the uploaded photos under cinematic lighting conditions.
+
+CRITICAL:
+Identity consistency is more important than cinematic stylization.
+
+Use the uploaded photos as the ONLY source of facial identity and anatomy.
+
+Do not inherit from the original actors:
+— facial proportions
+— face shape
+— skin texture
+— eye anatomy
+— expressions
+— ethnicity cues
+— facial lighting response
+
+EXPRESSION TRANSFER:
+Recreate ONLY the emotional behavior from the reference scene:
+— same eye direction
+— same conversational focus
+— same subtle intimacy
+— same eyelid openness
+— same eyebrow tension
+— same calm emotional restraint
+— same natural mouth tension
+— same quiet romantic atmosphere
+
+Expressions must feel candid and unposed.
+
+BODY & POSE:
+Preserve:
+— exact body positioning
+— distance between characters
+— head tilt
+— shoulder angles
+— arm placement
+— torso orientation
+— hand interaction
+— body proximity
+— exact framing and crop
+
+But rebuild anatomy using ONLY the uploaded people.
+
+CLOTHING:
+Preserve the elegant cinematic aesthetic of the scene.
+
+Male character:
+— beige tailored jacket
+— white shirt
+— black tie
+— realistic fabric texture
+
+Female character:
+— deep emerald green elegant dress
+— natural fabric folds
+— realistic material response to light
+
+Clothing must fit the uploaded people naturally.
+
+LIGHTING FIX — VERY IMPORTANT:
+The generated faces must be fully integrated into the scene lighting naturally.
+
+Avoid:
+— blown highlights
+— overexposed skin
+— glowing foreheads
+— white patches
+— beauty-light skin
+— HDR look
+— artificial skin smoothing
+— waxy skin
+— hot spots from tungsten lighting
+— mismatched color temperature
+— pasted-on faces
+— synthetic cinematic glow
+
+Lighting must follow:
+— soft warm tungsten practical lighting
+— smooth cinematic shadow gradients
+— physically realistic exposure
+— low-light indoor contrast
+— subtle ambient bounce light
+— natural skin reflectivity only
+— soft rolloff in highlights
+— preserved shadow detail
+— realistic occlusion around eyes, nose, jaw, ears, and hair
+— realistic falloff toward shadow areas
+
+SKIN TEXTURE:
+Preserve:
+— pores
+— small asymmetries
+— natural under-eye texture
+— realistic skin response to warm indoor lighting
+— subtle imperfections
+— authentic skin micro-contrast
+
+Do NOT retouch faces.
+
+IMAGE STYLE:
+Photorealistic cinematic still frame.
+Luxury romantic-drama aesthetic.
+Natural filmic color grading.
+Authentic cinema-camera rendering.
+Shallow depth of field.
+Soft background separation.
+Subtle organic film grain.
+No AI glamour look.
+No hyper-detailing.
+No uncanny symmetry.
+No synthetic beauty filtering.
+No over-sharpening.
+
+The final image must look like a real frame captured on a high-end cinema camera with the uploaded people physically present in the environment.`;
 
 const LALALAND_2 = `Use the reference cinema image STRICTLY AND ONLY for:
 
