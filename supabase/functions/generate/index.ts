@@ -2623,7 +2623,163 @@ The uploaded people must remain visually unchanged.
 
 IDENTITY FIDELITY = ABSOLUTE MAXIMUM PRIORITY.`;
 
-const LALALAND_3 = ``;
+const LALALAND_3 = `Use the reference scene ONLY for:
+— composition
+— framing
+— lens perspective
+— camera angle
+— blocking
+— pose logic
+— emotional interaction
+— lighting direction
+— environmental depth and background scale
+
+Completely remove the original actors.
+
+Rebuild both characters entirely from the uploaded identity photos.
+
+DO NOT:
+— face swap
+— morph with original actors
+— blend facial traits
+— average faces
+— stylize identities
+— beautify faces
+— reinterpret anatomy
+— generate “similar-looking” people
+
+IDENTITY TRANSFER PRIORITY:
+The final image must preserve the uploaded people with near-photographic identity accuracy.
+
+For BOTH characters preserve exactly:
+— facial bone structure
+— eye shape, spacing, eyelids, and gaze geometry
+— nose bridge, nostril shape, and nasal tip anatomy
+— lip contour and natural asymmetry
+— jawline structure
+— cheek volume
+— forehead proportions
+— chin anatomy
+— ear position and proportions
+— natural skin tone and undertones
+— hair density and hairline
+— hairstyle texture and falloff
+— neck proportions
+— body proportions
+— apparent age and realism
+
+The generated people must look unmistakably identical to the uploaded identity photos under cinematic low-light conditions.
+
+CRITICAL:
+Identity consistency is more important than cinematic stylization.
+
+Use the uploaded photos as the ONLY source of facial identity and anatomy.
+
+Do not inherit from the original actors:
+— facial proportions
+— skin texture
+— eye anatomy
+— facial lighting
+— ethnicity cues
+— expressions
+— attractiveness stylization
+
+EXPRESSION TRANSFER:
+Recreate ONLY the emotional behavior from the reference:
+— same eye direction
+— same conversational focus
+— same subtle smile intensity
+— same eyelid openness
+— same eyebrow tension
+— same relaxed intimacy
+— same natural mouth tension
+
+Expressions must feel candid and unposed.
+
+BODY & POSE:
+Preserve:
+— exact sitting positions
+— exact distance between characters
+— exact head tilt angles
+— shoulder alignment
+— arm placement
+— torso orientation
+— hand positioning
+— lower body posture
+— overall framing on the bench
+
+But rebuild anatomy using ONLY the uploaded people.
+
+WARDROBE:
+Keep the same overall silhouette logic and color contrast from the reference:
+— masculine character in minimalist smart-casual evening clothing
+— feminine character in a bright cinematic yellow dress with elegant natural folds
+
+Clothing must look physically real and naturally worn.
+Avoid cosplay aesthetics or fashion-editorial exaggeration.
+
+ENVIRONMENT:
+Preserve:
+— nighttime overlook atmosphere
+— distant city bokeh lights
+— mountain silhouettes
+— dusk sky gradient
+— concrete bench geometry
+— cinematic outdoor depth
+— realistic urban haze
+
+LIGHTING FIX — VERY IMPORTANT:
+The generated faces must integrate naturally into the scene lighting.
+
+Avoid:
+— blown highlights
+— overexposed skin
+— glowing foreheads
+— artificial HDR contrast
+— beauty-light skin
+— waxy skin
+— plastic texture
+— oversharpened pores
+— tungsten hot spots
+— mismatched color temperatures
+— pasted-on faces
+— AI skin smoothing
+
+Lighting must follow:
+— soft cinematic dusk lighting
+— realistic city ambient bounce light
+— smooth shadow gradients
+— physically accurate exposure
+— low-light natural contrast
+— realistic skin reflectivity
+— subtle highlight rolloff
+— preserved shadow detail
+— natural occlusion around eyes, nose, jaw, ears, and hair
+
+SKIN TEXTURE:
+Preserve:
+— pores
+— subtle asymmetries
+— natural under-eye texture
+— realistic skin variation
+— small imperfections
+— authentic low-light texture retention
+
+Do NOT retouch faces.
+
+IMAGE STYLE:
+Photorealistic cinematic still frame.
+Natural indie-film aesthetic.
+Shallow depth of field.
+Authentic film-grain texture.
+Realistic optical falloff.
+No AI glamour look.
+No hyper-detailing.
+No uncanny symmetry.
+No synthetic beauty filtering.
+No fashion-magazine retouching.
+
+The final image must look like a real cinema frame captured on a professional digital cinema camera with the uploaded people physically present in the environment.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 // provider: "replicate" | "openai"  — controls which API is called for this reference.
