@@ -1754,7 +1754,7 @@ The identities must feel organically photographed in-camera, not composited afte
 NEGATIVE PROMPT:
 weak resemblance, identity drift, face averaging, generic AI face, beautified face, fashion model look, influencer appearance, symmetry correction, glamour skin, plastic skin, porcelain skin, over-retouched face, CGI, fake cinematic look, synthetic rendering, stylized humans, uncanny valley, wrong eye shape, wrong jawline, wrong nose bridge, wrong facial proportions, incorrect hairline, incorrect hairstyle, inaccurate expression, pose mismatch, body mismatch, lighting mismatch, compositing artifacts, fake shadows, over-sharpening, artificial detail, anime influence, digital painting texture, malformed anatomy, extra fingers, fused fingers, duplicated limbs, warped wrists, floating hands, melted hands, unrealistic skin, de-aged appearance, artificial perfection`;
 
-const STRANGER_2 = `Use the reference image  as a cinematography, composition, pose, and interaction template.
+const STRANGER_2 = `Use the reference image ONLY as a cinematography, composition, pose, and interaction template.
 
 DO NOT use the original actors as appearance references in ANY way.
 
