@@ -63,6 +63,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
   const [headerVisible, setHeaderVisible] = useState(true);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [openCategory, setOpenCategory] = useState<string | null>(initialCategory ?? null);
+  const [styleFilter, setStyleFilter] = useState<'all' | 'cartoon'>('all');
   const lastScrollY = useRef(0);
   const categoryRef = useRef<HTMLDivElement>(null);
 
@@ -279,10 +280,38 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
             </p>
           </div>
 
+          {/* Filter pills */}
+          {!openCategory && (
+            <div className="flex justify-center gap-2 mb-8">
+              {(['all', 'cartoon'] as const).map((f) => {
+                const label = f === 'all' ? 'All' : 'Cartoons';
+                const active = styleFilter === f;
+                return (
+                  <button
+                    key={f}
+                    onClick={() => setStyleFilter(f)}
+                    className="px-5 py-1.5 rounded-full text-xs font-bold font-body transition-all duration-200"
+                    style={active ? {
+                      background: 'linear-gradient(135deg, #c4a8e8, #d4bef0)',
+                      color: '#fff',
+                      boxShadow: '0 3px 12px rgba(180,156,219,0.30)',
+                    } : {
+                      background: 'rgba(255,255,255,0.75)',
+                      color: '#9080b0',
+                      border: '1.5px solid #e4d9f5',
+                    }}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
           {/* Category grid */}
           {!openCategory && (
             <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-5 animate-fade-in">
-              {categories.map((cat, idx) => (
+              {categories.filter((cat) => styleFilter === 'all' || cat.category === styleFilter).map((cat, idx) => (
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryClick(cat.id)}
