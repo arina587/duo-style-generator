@@ -19,10 +19,10 @@ export const categories: Category[] = [
   { id: 'zootopia',                  name: 'Zootopia',                       tag: 'Animated',   cover: '/styles/zootopia/zootopia1.jpg',                                                          category: 'cartoon' },
   { id: 'euphoria',                  name: 'Euphoria',                       tag: 'TV Series',  cover: '/styles/euphoria/euphoria1.jpg',                                                          category: 'other'   },
   { id: 'titanic',                   name: 'Titanic',                        tag: 'Film',       cover: '/styles/titanic/titanic1.jpg',                                                            category: 'other'   },
-  // Row 2 (col 1→3): Tangled | La La Land | Terabithia
+  // Row 2 (col 1→3): Tangled | La La Land | Wolf of Wall Street
   { id: 'tangled',                   name: 'Tangled',                        tag: 'Animated',   cover: '/styles/tangled/tangled1.jpg',                                                            category: 'cartoon' },
   { id: 'lalaland',                  name: 'La La Land',                     tag: 'Film',       cover: '/styles/lalaland/lalaland1.jpg',                                                         category: 'other'   },
-  { id: 'terabithia',                name: 'Bridge to Terabithia',           tag: 'Film',       cover: '/styles/terabithia/terabithia1.jpg',                                                     category: 'other'   },
+  { id: 'wallstreet',                name: 'The Wolf of Wall Street',        tag: 'Film',       cover: '/styles/wallstreet/wallstreet1.jpg',                                                     category: 'other'   },
   // Row 3 (col 1→3): Cinderella | Stranger Things | TEOTFW
   { id: 'cinderella',                name: 'Cinderella',                     tag: 'Animated',   cover: '/styles/cinderella/cinderella1.jpg',                                                     category: 'cartoon' },
   { id: 'stranger-things',           name: 'Stranger Things',                tag: 'TV Series',  cover: '/styles/stranger-things/stranger-things1.jpg',                                           category: 'other'   },
@@ -59,10 +59,10 @@ export const references: ReferenceItem[] = [
   { id: 'tangled-2', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled2.jpg' },
   { id: 'tangled-3', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled3.jpg' },
 
-  // ── Terabithia ──
-  { id: 'terabithia-1', style: 'terabithia', label: 'Terabithia', image: '/styles/terabithia/terabithia1.jpg' },
-  { id: 'terabithia-2', style: 'terabithia', label: 'Terabithia', image: '/styles/terabithia/terabithia2.jpg' },
-  { id: 'terabithia-3', style: 'terabithia', label: 'Terabithia', image: '/styles/terabithia/terabithia3.jpg' },
+  // ── The Wolf of Wall Street ──
+  { id: 'wallstreet-1', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet1.jpg' },
+  { id: 'wallstreet-2', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet2.jpg' },
+  { id: 'wallstreet-3', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet3.jpg' },
 
   // ── Cinderella ──
   { id: 'cinderella-1', style: 'cinderella', label: 'Cinderella', image: '/styles/cinderella/cinderella1.jpg' },
