@@ -282,7 +282,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
 
           {/* Filter pills */}
           {!openCategory && (
-            <div className="flex justify-center gap-2 mb-8">
+            <div className="flex justify-center gap-3 mb-10">
               {(['all', 'cartoon'] as const).map((f) => {
                 const label = f === 'all' ? 'All' : 'Cartoons';
                 const active = styleFilter === f;
@@ -290,15 +290,17 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
                   <button
                     key={f}
                     onClick={() => setStyleFilter(f)}
-                    className="px-5 py-1.5 rounded-full text-xs font-bold font-body transition-all duration-200"
+                    className="px-8 py-3 rounded-full text-sm font-extrabold font-body tracking-wide transition-all duration-200"
                     style={active ? {
                       background: 'linear-gradient(135deg, #c4a8e8, #d4bef0)',
                       color: '#fff',
-                      boxShadow: '0 3px 12px rgba(180,156,219,0.30)',
+                      boxShadow: '0 4px 18px rgba(180,156,219,0.40)',
+                      fontSize: '0.95rem',
                     } : {
-                      background: 'rgba(255,255,255,0.75)',
-                      color: '#9080b0',
-                      border: '1.5px solid #e4d9f5',
+                      background: 'rgba(255,255,255,0.85)',
+                      color: '#7a5fa0',
+                      border: '2px solid #e4d9f5',
+                      fontSize: '0.95rem',
                     }}
                   >
                     {label}
