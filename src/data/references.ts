@@ -27,6 +27,8 @@ export const categories: Category[] = [
   { id: 'cinderella',                name: 'Cinderella',                     tag: 'Animated',   cover: '/styles/cinderella/cinderella1.jpg',                                                     category: 'cartoon' },
   { id: 'stranger-things',           name: 'Stranger Things',                tag: 'TV Series',  cover: '/styles/stranger-things/stranger-things1.jpg',                                           category: 'other'   },
   { id: 'end-of-the-fucking-world',  name: 'The End of the F***ing World',   tag: 'TV Series',  cover: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.jpg',                         category: 'other'   },
+  // Row 4: Collages
+  { id: 'collage',                   name: 'Collages',                       tag: 'Collage',    cover: '/styles/collage/collage1.jpg',                                                           category: 'other'   },
 ];
 
 export function getRefsForCategory(categoryId: string): ReferenceItem[] {
@@ -78,4 +80,12 @@ export const references: ReferenceItem[] = [
   { id: 'end-of-the-fucking-world-1', style: 'end-of-the-fucking-world', label: 'The End of the F***ing World', image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.jpg' },
   { id: 'end-of-the-fucking-world-2', style: 'end-of-the-fucking-world', label: 'The End of the F***ing World', image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world2.jpg' },
   { id: 'end-of-the-fucking-world-3', style: 'end-of-the-fucking-world', label: 'The End of the F***ing World', image: '/styles/end-of-the-fucking-world/end-of-the-fucking-world3.jpg' },
+
+  // ── Collages ──
+  { id: 'collage-1', style: 'collage', label: 'The Notebook',      image: '/styles/collage/collage1.jpg' },
+  { id: 'collage-2', style: 'collage', label: 'The Notebook',      image: '/styles/collage/collage2.jpg' },
+  { id: 'collage-3', style: 'collage', label: '500 Days of Summer', image: '/styles/collage/collage3.jpg' },
+  { id: 'collage-4', style: 'collage', label: 'Me Before You',     image: '/styles/collage/collage4.jpg' },
+  { id: 'collage-5', style: 'collage', label: 'Mr. & Mrs. Smith',  image: '/styles/collage/collage5.jpg' },
+  { id: 'collage-6', style: 'collage', label: 'Spider-Man',        image: '/styles/collage/collage6.jpg' },
 ];
