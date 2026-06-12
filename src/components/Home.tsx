@@ -63,7 +63,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
   const [headerVisible, setHeaderVisible] = useState(true);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [openCategory, setOpenCategory] = useState<string | null>(initialCategory ?? null);
-  const [styleFilter, setStyleFilter] = useState<'all' | 'cartoon'>('all');
+  const [styleFilter, setStyleFilter] = useState<'all' | 'cartoon' | 'collage'>('all');
   const lastScrollY = useRef(0);
   const categoryRef = useRef<HTMLDivElement>(null);
 
@@ -283,8 +283,8 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
           {/* Filter pills */}
           {!openCategory && (
             <div className="flex justify-center gap-3 mb-10">
-              {(['all', 'cartoon'] as const).map((f) => {
-                const label = f === 'all' ? 'All' : 'Cartoons';
+              {(['all', 'cartoon', 'collage'] as const).map((f) => {
+                const label = f === 'all' ? 'All' : f === 'cartoon' ? 'Cartoons' : 'Collages';
                 const active = styleFilter === f;
                 return (
                   <button

@@ -11,7 +11,7 @@ export interface Category {
   name: string;
   tag: string;
   cover: string;
-  category: 'cartoon' | 'other';
+  category: 'cartoon' | 'other' | 'collage';
 }
 
 export const categories: Category[] = [
@@ -28,7 +28,7 @@ export const categories: Category[] = [
   { id: 'stranger-things',           name: 'Stranger Things',                tag: 'TV Series',  cover: '/styles/stranger-things/stranger-things1.jpg',                                           category: 'other'   },
   { id: 'end-of-the-fucking-world',  name: 'The End of the F***ing World',   tag: 'TV Series',  cover: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.jpg',                         category: 'other'   },
   // Row 4: Collages
-  { id: 'collage',                   name: 'Collages',                       tag: 'Collage',    cover: '/styles/collage/collage1.jpg',                                                           category: 'other'   },
+  { id: 'collage',                   name: 'Collages',                       tag: 'Collage',    cover: '/styles/collage/collage1.jpg',                                                           category: 'collage' },
 ];
 
 export function getRefsForCategory(categoryId: string): ReferenceItem[] {
