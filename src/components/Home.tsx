@@ -311,7 +311,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
           )}
 
           {/* Category grid */}
-          {!openCategory && (
+          {!openCategory && styleFilter !== 'collage' && (
             <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-5 animate-fade-in">
               {categories.filter((cat) => styleFilter === 'all' || cat.category === styleFilter).map((cat, idx) => (
                 <button
@@ -342,6 +342,39 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
                   <div className="p-3 bg-white">
                     <p className="text-[12px] font-bold text-[#3a2f52] font-body">{cat.name}</p>
                     <p className="font-handwrite text-[13px] text-[#b49cdb] mt-0.5">3 scenes · {cat.tag}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Collage direct view */}
+          {!openCategory && styleFilter === 'collage' && (
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-5 animate-fade-in">
+              {getRefsForCategory('collage').map((ref, idx) => (
+                <button
+                  key={ref.id}
+                  onClick={() => onImageSelect(ref)}
+                  className="ref-card group text-left animate-scale-in focus:outline-none"
+                  style={{ animationDelay: `${idx * 0.05}s` }}
+                >
+                  <div className="relative overflow-hidden aspect-square">
+                    <img
+                      src={ref.image}
+                      alt={ref.label}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#3a2f52]/50 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span className="text-[#3a2f52] text-[11px] font-bold font-body px-3 py-1.5 rounded-full flex items-center gap-1.5" style={{ background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(8px)', boxShadow: '0 2px 10px rgba(140,105,200,0.15)' }}>
+                        <Sparkles className="w-3 h-3 text-[#b49cdb]" />
+                        Select Scene
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-3 bg-white">
+                    <p className="text-[12px] font-bold text-[#3a2f52] font-body">{ref.label}</p>
+                    <p className="font-handwrite text-[13px] text-[#b49cdb] mt-0.5">tap to select ↗</p>
                   </div>
                 </button>
               ))}
@@ -397,7 +430,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
                       </div>
                     </div>
                     <div className="p-3 bg-white">
-                      <p className="text-[12px] font-bold text-[#3a2f52] font-body">Scene {idx + 1}</p>
+                      <p className="text-[12px] font-bold text-[#3a2f52] font-body">{openCategory === 'collage' ? ref.label : `Scene ${idx + 1}`}</p>
                       <p className="font-handwrite text-[13px] text-[#b49cdb] mt-0.5">tap to select ↗</p>
                     </div>
                   </button>
