@@ -41,6 +41,8 @@ export default function Upload({
   photo1b, setPhoto1b, photo2b, setPhoto2b,
   preview1b, setPreview1b, preview2b, setPreview2b,
 }: UploadProps) {
+  const isWallStreet = selectedRef.style === 'wallstreet';
+
   // isGeneratingFromParent is the authoritative generating state.
   // Local isGenerating is only used to disable the button between click and parent state update.
   const [isGenerating, setIsGenerating] = useState(false);
@@ -183,22 +185,22 @@ export default function Upload({
     e.stopPropagation();
     if (isGenerating || isGeneratingFromParent) return;
 
-    if (!photo1 || !photo2) { setError('Please upload both photos before generating'); return; }
+    if (!photo1 || (!isWallStreet && !photo2)) { setError('Please upload both photos before generating'); return; }
     if (!referenceFile) { setError('Reference image still loading. Please wait.'); return; }
 
     // Set local state briefly; App.tsx will navigate away to the result view immediately
     setIsGenerating(true);
     setError('');
-    onGenerate(photo1, photo2, referenceFile, undefined, photo1b, photo2b);
+    onGenerate(photo1, isWallStreet ? photo1 : photo2!, referenceFile, undefined, photo1b, photo2b);
     // Reset local state after tick so if user navigates back, button is re-enabled
     setTimeout(() => setIsGenerating(false), 500);
   };
 
   const effectivelyGenerating = isGenerating || isGeneratingFromParent;
-  const canGenerate = !effectivelyGenerating && !!photo1 && !!photo2 && !!referenceFile;
+  const canGenerate = !effectivelyGenerating && !!photo1 && (isWallStreet || !!photo2) && !!referenceFile;
 
   const steps = [
-    { n: 1, label: 'Upload Photos', done: !!(photo1 && photo2) },
+    { n: 1, label: 'Upload Photos', done: isWallStreet ? !!photo1 : !!(photo1 && photo2) },
     { n: 2, label: 'Generate', done: false },
   ];
 
@@ -282,7 +284,7 @@ export default function Upload({
         {/* Page title */}
         <div className="text-center mb-6">
           <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#2d2642] mb-1.5">Upload Your Photos</h2>
-          <p className="text-[#7a6f96] text-sm font-body">Upload two photos, then generate your fusion.</p>
+          <p className="text-[#7a6f96] text-sm font-body">{isWallStreet ? 'Upload one photo, then generate your fusion.' : 'Upload two photos, then generate your fusion.'}</p>
         </div>
 
         {/* Progress steps */}
@@ -337,7 +339,7 @@ export default function Upload({
 
         {/* Photo uploads */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          {persons.map(({
+          {persons.filter((p) => !isWallStreet || p.id === 1).map(({
             letter, label, hint, secondaryHint,
             primaryPreview, setPrimaryPhoto, setPrimaryPreview,
             secondaryPreview, setSecondaryPhoto, setSecondaryPreview,

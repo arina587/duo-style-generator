@@ -19,16 +19,18 @@ export const categories: Category[] = [
   { id: 'zootopia',                  name: 'Zootopia',                       tag: 'Animated',   cover: '/styles/zootopia/zootopia1.jpg',                                                          category: 'cartoon' },
   { id: 'euphoria',                  name: 'Euphoria',                       tag: 'TV Series',  cover: '/styles/euphoria/euphoria1.jpg',                                                          category: 'other'   },
   { id: 'titanic',                   name: 'Titanic',                        tag: 'Film',       cover: '/styles/titanic/titanic1.jpg',                                                            category: 'other'   },
-  // Row 2 (col 1→3): Tangled | La La Land | Wolf of Wall Street
+  // Row 2 (col 1→3): Tangled | La La Land | Mr. & Mrs. Smith
   { id: 'tangled',                   name: 'Tangled',                        tag: 'Animated',   cover: '/styles/tangled/tangled1.jpg',                                                            category: 'cartoon' },
   { id: 'lalaland',                  name: 'La La Land',                     tag: 'Film',       cover: '/styles/lalaland/lalaland1.jpg',                                                         category: 'other'   },
-  { id: 'wallstreet',                name: 'The Wolf of Wall Street',        tag: 'Film',       cover: '/styles/wallstreet/wallstreet1.jpg',                                                     category: 'other'   },
+  { id: 'smith',                     name: 'Mr. & Mrs. Smith',               tag: 'Film',       cover: '/styles/smith/smith1.jpg',                                                               category: 'other'   },
   // Row 3 (col 1→3): Cinderella | Stranger Things | TEOTFW
   { id: 'cinderella',                name: 'Cinderella',                     tag: 'Animated',   cover: '/styles/cinderella/cinderella1.jpg',                                                     category: 'cartoon' },
   { id: 'stranger-things',           name: 'Stranger Things',                tag: 'TV Series',  cover: '/styles/stranger-things/stranger-things1.jpg',                                           category: 'other'   },
   { id: 'end-of-the-fucking-world',  name: 'The End of the F***ing World',   tag: 'TV Series',  cover: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.jpg',                         category: 'other'   },
   // Row 4: Collages
   { id: 'collage',                   name: 'Collages',                       tag: 'Collage',    cover: '/styles/collage/collage1.jpg',                                                           category: 'collage' },
+  // Row 5: Wolf of Wall Street
+  { id: 'wallstreet',                name: 'The Wolf of Wall Street',        tag: 'Film',       cover: '/styles/wallstreet/wallstreet1.jpg',                                                     category: 'other'   },
 ];
 
 export function getRefsForCategory(categoryId: string): ReferenceItem[] {
@@ -61,10 +63,10 @@ export const references: ReferenceItem[] = [
   { id: 'tangled-2', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled2.jpg' },
   { id: 'tangled-3', style: 'tangled', label: 'Tangled', image: '/styles/tangled/tangled3.jpg' },
 
-  // ── The Wolf of Wall Street ──
-  { id: 'wallstreet-1', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet1.jpg' },
-  { id: 'wallstreet-2', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet2.jpg' },
-  { id: 'wallstreet-3', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet3.jpg' },
+  // ── Mr. & Mrs. Smith ──
+  { id: 'smith-1', style: 'smith', label: 'Mr. & Mrs. Smith', image: '/styles/smith/smith1.jpg' },
+  { id: 'smith-2', style: 'smith', label: 'Mr. & Mrs. Smith', image: '/styles/smith/smith2.jpg' },
+  { id: 'smith-3', style: 'smith', label: 'Mr. & Mrs. Smith', image: '/styles/smith/smith3.jpg' },
 
   // ── Cinderella ──
   { id: 'cinderella-1', style: 'cinderella', label: 'Cinderella', image: '/styles/cinderella/cinderella1.jpg' },
@@ -88,4 +90,9 @@ export const references: ReferenceItem[] = [
   { id: 'collage-4', style: 'collage', label: 'Me Before You',     image: '/styles/collage/collage4.jpg' },
   { id: 'collage-5', style: 'collage', label: 'Mr. & Mrs. Smith',  image: '/styles/collage/collage5.jpg' },
   { id: 'collage-6', style: 'collage', label: 'Spider-Man',        image: '/styles/collage/collage6.jpg' },
+
+  // ── The Wolf of Wall Street ──
+  { id: 'wallstreet-1', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet1.jpg' },
+  { id: 'wallstreet-2', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet2.jpg' },
+  { id: 'wallstreet-3', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet3.jpg' },
 ];
