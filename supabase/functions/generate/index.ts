@@ -1357,7 +1357,25 @@ Negative prompt:
 
 changed background, different ship design, altered environment, incorrect deck structure, unrealistic scenery, low quality, blurry face, distorted anatomy, malformed hands, bad hands, deformed fingers, fused fingers, extra fingers, missing fingers, six fingers, duplicate fingers, warped limbs, broken anatomy, unrealistic proportions, asymmetrical hands, plastic skin, cartoon, anime, CGI, 3D render, oversaturated colors, watermark, logo, text, poorly drawn hands, mutated hands, distorted wrists, unnatural pose`;
 
-const WALLSTREET_1 = ``;
+const WALLSTREET_1 = `Replace the entire main person in the template image with the person from the uploaded reference photo.
+
+Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, arm proportions, hand shape, posture characteristics, and overall appearance.
+
+Preserve the unique facial characteristics of the reference person so the resulting person clearly looks like the same individual.
+
+Recreate the exact facial expression, emotion, smile, gaze direction, eye direction, head rotation, head tilt, posture, pose, body language, hand gestures, arm positions, body orientation, and overall attitude of the main subject in the template image.
+
+Transfer the entire person, including face, head, neck, shoulders, chest, torso, waist, hips, arms, elbows, forearms, wrists, hands, fingers, legs, body shape, proportions, and physique. Adapt the body, arms, hands, shoulders, neck, and overall anatomy to match the reference person rather than the original person in the template.
+
+Do not perform a face swap. Do not keep any facial features, body proportions, anatomy, hands, arms, shoulders, neck, or physique from the original person in the template. Reconstruct the complete person from the reference photo in the exact pose and expression of the template image.
+
+Maintain realistic anatomy, natural proportions, correct perspective, matching lighting, shadows, and seamless integration into the scene.
+
+Keep the camera angle, framing, composition, clothing style, accessories, environment, and all background elements from the template image.
+
+Photorealistic, high detail, realistic skin texture, natural lighting, professional photography.
+
+Do not modify the background, objects, environment, or image composition. Only replace the main person.`;
 
 const WALLSTREET_2 = `Replace the entire person in the template image with the person from the uploaded reference photo. Use the reference photo to capture the person's appearance, including facial features, hairstyle, skin tone, body shape, body proportions, gender presentation, and overall look.
 
