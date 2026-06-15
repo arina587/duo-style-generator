@@ -3308,7 +3308,7 @@ Negative prompt: changed pose, changed head angle, changed face angle, changed g
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 // provider: "replicate" | "openai"  — controls which API is called for this reference.
 // model: the version/model string passed to the chosen provider.
-const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: string; locked: boolean; prompt?: string }> = {
+const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: string; locked: boolean; prompt?: string; inputMode?: "single" | "couple" }> = {
   // ── Zootopia ──
   "zootopia-1": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: ZOOTOPIA_1 },
   "zootopia-2": { provider: "replicate", model: REPLICATE_DEFAULT_MODEL, locked: true, prompt: ZOOTOPIA_2 },
@@ -3330,9 +3330,9 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   "titanic-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TITANIC_2 },
   "titanic-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TITANIC_3 },
   // ── The Wolf of Wall Street ──
-  "wallstreet-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: WALLSTREET_1 },
-  "wallstreet-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: WALLSTREET_2 },
-  "wallstreet-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: WALLSTREET_3 },
+  "wallstreet-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: WALLSTREET_1, inputMode: "single" },
+  "wallstreet-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: WALLSTREET_2, inputMode: "single" },
+  "wallstreet-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: WALLSTREET_3, inputMode: "single" },
   // ── Stranger Things ──
   "stranger-things-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: STRANGER_1 },
   "stranger-things-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: STRANGER_2 },
@@ -3845,7 +3845,7 @@ Deno.serve(async (req: Request) => {
 
       type ImageSlots = {
         person1: string;      // data URL
-        person2: string;
+        person2?: string;     // optional for single-person styles
         person1b?: string;
         person2b?: string;
         reference: string;
@@ -3867,11 +3867,15 @@ Deno.serve(async (req: Request) => {
         if (!body.referenceId) {
           return jsonResponse({ error: "Missing referenceId" } as unknown as GenerateResponse, 400);
         }
-        if (!body.images?.person1 || !body.images?.person2 || !body.images?.reference) {
-          return jsonResponse({ error: "Missing required image URLs (person1, person2, reference)" } as unknown as GenerateResponse, 400);
+
+        const earlyConfig = STYLE_CONFIG[body.referenceId];
+        const isSingleInput = earlyConfig?.inputMode === "single";
+
+        if (!body.images?.person1 || (!isSingleInput && !body.images?.person2) || !body.images?.reference) {
+          return jsonResponse({ error: `Missing required image URLs (person1${isSingleInput ? "" : ", person2"}, reference)` } as unknown as GenerateResponse, 400);
         }
 
-        console.log("[POST] JSON path, fetching images from storage", { referenceId: body.referenceId, keys: Object.keys(body.images) });
+        console.log("[POST] JSON path, fetching images from storage", { referenceId: body.referenceId, keys: Object.keys(body.images), isSingleInput });
 
         // Download each image URL and convert to data URL
         const urlToDataUrl = async (url: string, label: string): Promise<string> => {
@@ -3900,14 +3904,14 @@ Deno.serve(async (req: Request) => {
 
         const [p1, p2, ref, p1b, p2b] = await Promise.all([
           urlToDataUrl(body.images.person1, "person1"),
-          urlToDataUrl(body.images.person2, "person2"),
+          !isSingleInput ? urlToDataUrl(body.images.person2!, "person2") : Promise.resolve(undefined),
           urlToDataUrl(body.images.reference, "reference"),
           body.images.person1b ? urlToDataUrl(body.images.person1b, "person1b") : Promise.resolve(undefined),
           body.images.person2b ? urlToDataUrl(body.images.person2b, "person2b") : Promise.resolve(undefined),
         ]);
 
         slots = {
-          person1: p1, person2: p2, reference: ref,
+          person1: p1, ...(p2 ? { person2: p2 } : {}), reference: ref,
           ...(p1b ? { person1b: p1b } : {}),
           ...(p2b ? { person2b: p2b } : {}),
           referenceId: body.referenceId,
@@ -3969,25 +3973,39 @@ Deno.serve(async (req: Request) => {
       console.log("[MODEL]", config.model);
       console.log("[REFERENCE_ID]", referenceId);
 
-      const hasMan2 = !!slotP1b;
-      const hasWoman2 = !!slotP2b;
+      const isSingle = config.inputMode === "single";
 
-      const manCount = hasMan2 ? 2 : 1;
-      const womanCount = hasWoman2 ? 2 : 1;
-      const idxScene = 0;
-      const idxManStart = 1;
-      const idxManEnd = idxManStart + manCount - 1;
-      const idxWomanStart = idxManEnd + 1;
-      const totalImages = 1 + manCount + womanCount;
+      let roleMappingBlock: string;
+      let images: string[];
 
-      const manIdxList = manCount === 1
-        ? `image_input[${idxManStart}]`
-        : `image_input[${idxManStart}] and image_input[${idxManEnd}]`;
-      const womanIdxList = womanCount === 1
-        ? `image_input[${idxWomanStart}]`
-        : `image_input[${idxWomanStart}] and image_input[${idxWomanStart + womanCount - 1}]`;
+      if (isSingle) {
+        roleMappingBlock = `IMAGE ROLE MAPPING (2 images total):
+- image_input[0] = base scene (pose, expression, lighting, composition source)
+- image_input[1] = identity source
 
-      const roleMappingBlock = `IMAGE ROLE MAPPING (${totalImages} images total):
+The person in the scene must look like the person in image_input[1].
+Do NOT use image_input[0] as an identity source.`;
+        images = [slots.reference, slots.person1];
+      } else {
+        const hasMan2 = !!slotP1b;
+        const hasWoman2 = !!slotP2b;
+
+        const manCount = hasMan2 ? 2 : 1;
+        const womanCount = hasWoman2 ? 2 : 1;
+        const idxScene = 0;
+        const idxManStart = 1;
+        const idxManEnd = idxManStart + manCount - 1;
+        const idxWomanStart = idxManEnd + 1;
+        const totalImages = 1 + manCount + womanCount;
+
+        const manIdxList = manCount === 1
+          ? `image_input[${idxManStart}]`
+          : `image_input[${idxManStart}] and image_input[${idxManEnd}]`;
+        const womanIdxList = womanCount === 1
+          ? `image_input[${idxWomanStart}]`
+          : `image_input[${idxWomanStart}] and image_input[${idxWomanStart + womanCount - 1}]`;
+
+        roleMappingBlock = `IMAGE ROLE MAPPING (${totalImages} images total):
 - image_input[${idxScene}] = base scene (pose, expression, lighting, composition source)
 - ${manIdxList} = MAN identity source${manCount > 1 ? " (same person, merge into one identity)" : ""}
 - ${womanIdxList} = WOMAN identity source${womanCount > 1 ? " (same person, merge into one identity)" : ""}
@@ -3997,21 +4015,22 @@ The woman in the scene must look like the person in ${womanIdxList}.
 Do NOT mix man and woman identity sources.
 Do NOT use image_input[${idxScene}] as an identity source.`;
 
+        const personDataUrls = [
+          slots.person1,
+          ...(hasMan2 ? [slotP1b!] : []),
+          slots.person2!,
+          ...(hasWoman2 ? [slotP2b!] : []),
+        ];
+        images = [slots.reference, ...personDataUrls];
+
+        if (images.length !== totalImages) {
+          throw new Error(`Image count mismatch: expected ${totalImages}, got ${images.length}`);
+        }
+      }
+
       const finalPrompt = config.locked
         ? roleMappingBlock + "\n\n" + config.prompt
         : roleMappingBlock + "\n\n" + UNIVERSAL_PROMPT;
-
-      const personDataUrls = [
-        slots.person1,
-        ...(hasMan2 ? [slotP1b!] : []),
-        slots.person2,
-        ...(hasWoman2 ? [slotP2b!] : []),
-      ];
-      const images = [slots.reference, ...personDataUrls];
-
-      if (images.length !== totalImages) {
-        throw new Error(`Image count mismatch: expected ${totalImages}, got ${images.length}`);
-      }
 
       // Per-image size guard
       for (let i = 0; i < images.length; i++) {

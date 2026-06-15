@@ -570,7 +570,7 @@ function App() {
 
   const handleGenerate = async (
     photo1: File,
-    photo2: File,
+    photo2: File | null,
     referenceFile: File,
     mode?: string,
     photo1b?: File | null,
@@ -591,7 +591,7 @@ function App() {
 
     if (generatedImageUrl.startsWith('blob:')) URL.revokeObjectURL(generatedImageUrl);
 
-    if (!photo1 || !photo2 || !referenceFile || !selectedRef) {
+    if (!photo1 || !referenceFile || !selectedRef) {
       setGenerationError(makeError('other', 'unknown', 'Missing required data. Please try again.'));
       return;
     }
@@ -622,7 +622,8 @@ function App() {
     let p1b = photo1b ?? null, p2b = photo2b ?? null;
 
     try {
-      [p1, p2] = await Promise.all([normalizeFile(photo1), normalizeFile(photo2)]);
+      p1 = await normalizeFile(photo1);
+      if (photo2) p2 = await normalizeFile(photo2);
       if (photo1b) p1b = await normalizeFile(photo1b);
       if (photo2b) p2b = await normalizeFile(photo2b);
     } catch (normalizeErr) {
@@ -646,7 +647,7 @@ function App() {
 
     const imagesToUpload: Array<{ key: string; file: File }> = [
       { key: 'person1', file: p1 },
-      { key: 'person2', file: p2 },
+      ...(p2 ? [{ key: 'person2', file: p2 }] : []),
       { key: 'reference', file: referenceFile },
     ];
     if (p1b) imagesToUpload.push({ key: 'person1b', file: p1b });

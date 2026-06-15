@@ -7,7 +7,7 @@ interface UploadProps {
   onBack: () => void;
   onGenerate: (
     photo1: File,
-    photo2: File,
+    photo2: File | null,
     styleBoard: File,
     mode?: string,
     photo1b?: File | null,
@@ -191,7 +191,7 @@ export default function Upload({
     // Set local state briefly; App.tsx will navigate away to the result view immediately
     setIsGenerating(true);
     setError('');
-    onGenerate(photo1, isWallStreet ? photo1 : photo2!, referenceFile, undefined, photo1b, photo2b);
+    onGenerate(photo1, isWallStreet ? null : photo2!, referenceFile, undefined, photo1b, photo2b);
     // Reset local state after tick so if user navigates back, button is re-enabled
     setTimeout(() => setIsGenerating(false), 500);
   };
@@ -208,7 +208,7 @@ export default function Upload({
     {
       id: 1 as const,
       letter: 'A',
-      label: 'Man Photo',
+      label: isWallStreet ? 'Upload Your Photo' : 'Man Photo',
       hint: 'If the man in the reference is shown in profile or at a 3/4 angle, upload a matching angle for best results.',
       secondaryHint: [
         'For best results, upload a similar photo:',
@@ -338,14 +338,14 @@ export default function Upload({
         </div>
 
         {/* Photo uploads */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div className={isWallStreet ? "flex justify-center mb-4" : "grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"}>
           {persons.filter((p) => !isWallStreet || p.id === 1).map(({
             letter, label, hint, secondaryHint,
             primaryPreview, setPrimaryPhoto, setPrimaryPreview,
             secondaryPreview, setSecondaryPhoto, setSecondaryPreview,
             showSecondary, setShowSecondary,
           }) => (
-            <div key={letter} className="card-premium p-4 flex flex-col gap-3">
+            <div key={letter} className={`card-premium p-4 flex flex-col gap-3${isWallStreet ? ' w-full max-w-md' : ''}`}>
 
               {/* Section label */}
               <div className="flex items-center gap-2">
