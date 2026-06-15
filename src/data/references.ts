@@ -4,6 +4,7 @@ export interface ReferenceItem {
   style: string;
   label: string;
   promptKey?: string;
+  inputMode?: 'single' | 'couple';
 }
 
 export interface Category {
@@ -92,7 +93,7 @@ export const references: ReferenceItem[] = [
   { id: 'collage-6', style: 'collage', label: 'Spider-Man',        image: '/styles/collage/collage6.jpg' },
 
   // ── The Wolf of Wall Street ──
-  { id: 'wallstreet-1', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet1.jpg' },
-  { id: 'wallstreet-2', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet2.jpg' },
-  { id: 'wallstreet-3', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet3.jpg' },
+  { id: 'wallstreet-1', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet1.jpg', inputMode: 'single' },
+  { id: 'wallstreet-2', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet2.jpg', inputMode: 'single' },
+  { id: 'wallstreet-3', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet3.jpg', inputMode: 'single' },
 ];

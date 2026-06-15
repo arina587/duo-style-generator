@@ -41,7 +41,7 @@ export default function Upload({
   photo1b, setPhoto1b, photo2b, setPhoto2b,
   preview1b, setPreview1b, preview2b, setPreview2b,
 }: UploadProps) {
-  const isWallStreet = selectedRef.style === 'wallstreet';
+  const isSingle = selectedRef.inputMode === 'single';
 
   // isGeneratingFromParent is the authoritative generating state.
   // Local isGenerating is only used to disable the button between click and parent state update.
@@ -185,22 +185,22 @@ export default function Upload({
     e.stopPropagation();
     if (isGenerating || isGeneratingFromParent) return;
 
-    if (!photo1 || (!isWallStreet && !photo2)) { setError('Please upload both photos before generating'); return; }
+    if (!photo1 || (!isSingle && !photo2)) { setError('Please upload both photos before generating'); return; }
     if (!referenceFile) { setError('Reference image still loading. Please wait.'); return; }
 
     // Set local state briefly; App.tsx will navigate away to the result view immediately
     setIsGenerating(true);
     setError('');
-    onGenerate(photo1, isWallStreet ? null : photo2!, referenceFile, undefined, photo1b, photo2b);
+    onGenerate(photo1, isSingle ? null : photo2!, referenceFile, undefined, photo1b, photo2b);
     // Reset local state after tick so if user navigates back, button is re-enabled
     setTimeout(() => setIsGenerating(false), 500);
   };
 
   const effectivelyGenerating = isGenerating || isGeneratingFromParent;
-  const canGenerate = !effectivelyGenerating && !!photo1 && (isWallStreet || !!photo2) && !!referenceFile;
+  const canGenerate = !effectivelyGenerating && !!photo1 && (isSingle || !!photo2) && !!referenceFile;
 
   const steps = [
-    { n: 1, label: 'Upload Photos', done: isWallStreet ? !!photo1 : !!(photo1 && photo2) },
+    { n: 1, label: 'Upload Photos', done: isSingle ? !!photo1 : !!(photo1 && photo2) },
     { n: 2, label: 'Generate', done: false },
   ];
 
@@ -208,7 +208,7 @@ export default function Upload({
     {
       id: 1 as const,
       letter: 'A',
-      label: isWallStreet ? 'Upload Your Photo' : 'Man Photo',
+      label: isSingle ? 'Upload Your Photo' : 'Man Photo',
       hint: 'If the man in the reference is shown in profile or at a 3/4 angle, upload a matching angle for best results.',
       secondaryHint: [
         'For best results, upload a similar photo:',
@@ -284,7 +284,7 @@ export default function Upload({
         {/* Page title */}
         <div className="text-center mb-6">
           <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#2d2642] mb-1.5">Upload Your Photos</h2>
-          <p className="text-[#7a6f96] text-sm font-body">{isWallStreet ? 'Upload one photo, then generate your fusion.' : 'Upload two photos, then generate your fusion.'}</p>
+          <p className="text-[#7a6f96] text-sm font-body">{isSingle ? 'Upload one photo, then generate your fusion.' : 'Upload two photos, then generate your fusion.'}</p>
         </div>
 
         {/* Progress steps */}
@@ -338,14 +338,14 @@ export default function Upload({
         </div>
 
         {/* Photo uploads */}
-        <div className={isWallStreet ? "flex justify-center mb-4" : "grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"}>
-          {persons.filter((p) => !isWallStreet || p.id === 1).map(({
+        <div className={isSingle ? "flex justify-center mb-4" : "grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"}>
+          {persons.filter((p) => !isSingle || p.id === 1).map(({
             letter, label, hint, secondaryHint,
             primaryPreview, setPrimaryPhoto, setPrimaryPreview,
             secondaryPreview, setSecondaryPhoto, setSecondaryPreview,
             showSecondary, setShowSecondary,
           }) => (
-            <div key={letter} className={`card-premium p-4 flex flex-col gap-3${isWallStreet ? ' w-full max-w-md' : ''}`}>
+            <div key={letter} className={`card-premium p-4 flex flex-col gap-3${isSingle ? ' w-full max-w-md' : ''}`}>
 
               {/* Section label */}
               <div className="flex items-center gap-2">
