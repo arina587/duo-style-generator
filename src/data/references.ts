@@ -13,6 +13,7 @@ export interface Category {
   tag: string;
   cover: string;
   category: 'cartoon' | 'other' | 'collage';
+  inputMode?: 'single' | 'couple';
 }
 
 export const categories: Category[] = [
@@ -30,8 +31,9 @@ export const categories: Category[] = [
   { id: 'end-of-the-fucking-world',  name: 'The End of the F***ing World',   tag: 'TV Series',  cover: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.jpg',                         category: 'other'   },
   // Row 4: Collages
   { id: 'collage',                   name: 'Collages',                       tag: 'Collage',    cover: '/styles/collage/collage1.jpg',                                                           category: 'collage' },
-  // Row 5: Wolf of Wall Street
-  { id: 'wallstreet',                name: 'The Wolf of Wall Street',        tag: 'Film',       cover: '/styles/wallstreet/wallstreet1.jpg',                                                     category: 'other'   },
+  // Row 5: Wolf of Wall Street | American Psycho
+  { id: 'wallstreet',      name: 'The Wolf of Wall Street', tag: 'Film', cover: '/styles/wallstreet/wallstreet1.jpg',           category: 'other', inputMode: 'single' },
+  { id: 'americanpsycho',  name: 'American Psycho',          tag: 'Film', cover: '/styles/americanpsycho/americanpsycho1.jpg',   category: 'other', inputMode: 'single' },
 ];
 
 export function getRefsForCategory(categoryId: string): ReferenceItem[] {
@@ -96,4 +98,9 @@ export const references: ReferenceItem[] = [
   { id: 'wallstreet-1', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet1.jpg', inputMode: 'single' },
   { id: 'wallstreet-2', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet2.jpg', inputMode: 'single' },
   { id: 'wallstreet-3', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet3.jpg', inputMode: 'single' },
+
+  // ── American Psycho ──
+  { id: 'americanpsycho-1', style: 'americanpsycho', label: 'American Psycho', image: '/styles/americanpsycho/americanpsycho1.jpg', inputMode: 'single' },
+  { id: 'americanpsycho-2', style: 'americanpsycho', label: 'American Psycho', image: '/styles/americanpsycho/americanpsycho2.jpg', inputMode: 'single' },
+  { id: 'americanpsycho-3', style: 'americanpsycho', label: 'American Psycho', image: '/styles/americanpsycho/americanpsycho3.jpg', inputMode: 'single' },
 ];

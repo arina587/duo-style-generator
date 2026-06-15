@@ -63,7 +63,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
   const [headerVisible, setHeaderVisible] = useState(true);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [openCategory, setOpenCategory] = useState<string | null>(initialCategory ?? null);
-  const [styleFilter, setStyleFilter] = useState<'all' | 'cartoon' | 'collage'>('all');
+  const [styleFilter, setStyleFilter] = useState<'all' | 'cartoon' | 'collage' | 'solo'>('all');
   const lastScrollY = useRef(0);
   const categoryRef = useRef<HTMLDivElement>(null);
 
@@ -283,8 +283,8 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
           {/* Filter pills */}
           {!openCategory && (
             <div className="flex justify-center gap-3 mb-10">
-              {(['all', 'cartoon', 'collage'] as const).map((f) => {
-                const label = f === 'all' ? 'All' : f === 'cartoon' ? 'Cartoons' : 'Collages';
+              {(['all', 'cartoon', 'collage', 'solo'] as const).map((f) => {
+                const label = f === 'all' ? 'All' : f === 'cartoon' ? 'Cartoons' : f === 'collage' ? 'Collages' : 'Solo Characters';
                 const active = styleFilter === f;
                 return (
                   <button
@@ -313,7 +313,10 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
           {/* Category grid */}
           {!openCategory && styleFilter !== 'collage' && (
             <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-5 animate-fade-in">
-              {categories.filter((cat) => styleFilter === 'all' || cat.category === styleFilter).map((cat, idx) => (
+              {categories.filter((cat) =>
+                styleFilter === 'all' ||
+                (styleFilter === 'solo' ? cat.inputMode === 'single' : cat.category === styleFilter)
+              ).map((cat, idx) => (
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryClick(cat.id)}

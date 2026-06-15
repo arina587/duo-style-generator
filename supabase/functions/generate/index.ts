@@ -1401,6 +1401,48 @@ Photorealistic, realistic anatomy, natural skin texture, seamless integration, h
 
 Do not modify the background, environment, objects, or image composition. Only replace the person.`
 
+const AMERICANPSYCHO_1 = `Replace the entire main person in the template image with the person from the uploaded reference photo.
+
+Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, arm proportions, hand shape, posture characteristics, and overall appearance.
+
+Preserve the unique facial characteristics of the reference person so the resulting person clearly looks like the same individual.
+
+Recreate the exact facial expression, emotion, gaze direction, head rotation, head tilt, posture, pose, body language, hand gestures, arm positions, body orientation, and overall attitude of the main subject in the template image.
+
+Transfer the entire person, including face, head, neck, shoulders, chest, torso, arms, hands, and body proportions. Adapt the anatomy to match the reference person rather than the original person in the template.
+
+Do not perform a face swap. Do not keep any facial features, body proportions, or anatomy from the original person in the template. Reconstruct the complete person from the reference photo in the exact pose and expression of the template image.
+
+Maintain realistic anatomy, natural proportions, correct perspective, sharp cinematic lighting, and seamless integration into the scene.
+
+Keep the camera angle, framing, composition, clothing style, accessories, environment, and all background elements from the template image.
+
+Photorealistic, high detail, realistic skin texture, sharp corporate lighting, professional photography.
+
+Do not modify the background, objects, environment, or image composition. Only replace the main person.`
+
+const AMERICANPSYCHO_2 = `Replace the entire person in the template image with the person from the uploaded reference photo. Use the reference photo to capture the person's appearance, including facial features, hairstyle, skin tone, body shape, body proportions, and overall look.
+
+Keep the facial expression, gaze direction, head position, pose, body language, hand gesture, clothing style, accessories, camera angle, framing, lighting, shadows, depth of field, and overall composition from the template image.
+
+Transfer the entire person, not just the face. The result should depict the same person from the reference photo naturally occupying the position of the person in the template image, with realistic anatomy, proportions, perspective, and lighting.
+
+Photorealistic, high detail, natural skin texture, realistic lighting, seamless integration, professional cinematic photography.
+
+Do not modify the background, environment, furniture, accessories, camera angle, or image composition. Only replace the entire person.`
+
+const AMERICANPSYCHO_3 = `Replace the entire person in the template image with the person from the uploaded reference photo. Use the reference photo as the source of the person's appearance, including facial features, hairstyle, skin tone, body shape, body proportions, and overall look.
+
+The person should naturally recreate the facial expression, emotion, gaze, head position, pose, body language, hand gestures, and overall attitude shown in the template image while maintaining the appearance of the reference person.
+
+Transfer the entire person, including face, head, torso, arms, hands, body shape, and proportions. Do not perform a simple face swap. The result should depict the person from the reference photo naturally acting and expressing the same emotion as the person in the template image.
+
+Keep the camera angle, framing, clothing style, accessories, lighting, shadows, depth of field, perspective, and overall composition from the template image.
+
+Photorealistic, realistic anatomy, natural skin texture, seamless integration, high detail, professional photography.
+
+Do not modify the background, environment, objects, or image composition. Only replace the person.`
+
 const WORLD_1 = `Replace the two original characters in the indoor cinematic scene with the exact people from the provided reference images using complete identity transfer and seamless photorealistic integration. Preserve the exact composition, framing, emotional tension, body positioning, and intimate face-to-face interaction from the original image. The final result must look like a real cinematic movie still captured naturally in-camera. Left side — male replacement: Completely replace the original young man with the man from the male reference image. Transfer exactly: face structure jawline and cheekbones nose shape lips and mouth structure authentic neutral / emotionally tense expression from the reference eyes and natural eye intensity hairstyle and hair texture hair color skin tone and realistic skin texture neck proportions body proportions posture and subtle body tension clothing style adaptation overall masculine identity and realistic human presence Keep the exact original pose: standing face-to-face with the girl same shoulder angle same head tilt same eye-line direction same body distance and emotional tension same cinematic side profile orientation Right side — female replacement: Completely replace the original young woman with the woman from the female reference image. Transfer exactly: facial structure eyes and authentic emotional gaze eyebrows lips and natural mouth tension realistic neutral cinematic expression from the reference hairstyle and natural hair flow hair color skin tone and skin pores body proportions posture clothing adaptation overall identity and feminine presence Keep the exact original pose: standing directly in front of the male character same body angle same head position same eye contact intensity same relaxed arm placement same cinematic side-profile orientation Critical emotional realism requirements: Both characters must preserve authentic human emotional realism from the reference photos: natural eyes believable facial muscles realistic micro-expressions subtle emotional tension relaxed mouth anatomy authentic cinematic mood natural human presence Scene preservation requirements: Preserve completely: indoor room environment large window background dark forest outside warm cinematic lamp lighting evening atmosphere shallow depth of field cinematic framing realistic indoor reflections ambient warm shadows realistic room perspective moody natural color grading Lighting and integration requirements: Perfectly match: warm indoor tungsten lighting soft cinematic shadows window backlight realistic skin shading facial shadow transitions room ambient bounce light camera perspective focal length compression realistic depth of field film-like cinematic grading natural exposure balance Extremely important anatomy requirements: anatomically correct hands correct number of fingers no extra fingers no fused fingers no duplicated limbs realistic shoulders realistic neck connection natural torso proportions physically correct posture realistic arm placement accurate body balance natural head perspective proper facial symmetry realistic ears and jaw anatomy Ensure: invisible edit quality seamless compositing natural interaction between both people physically believable proximity realistic skin pores natural fabric folds cinematic realism realistic eye reflections natural human anatomy perfect environmental integration Ultra photorealistic cinematic DSLR movie still, highly detailed skin texture, realistic anatomy, emotionally authentic expressions, moody cinematic lighting, natural indoor atmosphere, shallow depth of field, seamless identity replacement, invisible compositing quality. Negative prompt: extra fingers, extra hands, fused fingers, duplicated limbs, malformed anatomy, broken arms, distorted face, asymmetrical eyes, warped jaw, unrealistic expression, fake emotion, artificial smile, dead eyes, incorrect gaze, floating body parts, bad anatomy, stiff posture, unnatural neck, distorted shoulders, bad perspective, mismatched lighting, poor compositing, pasted subject, CGI, 3D render, cartoon, anime, illustration, painting, wax skin, plastic texture, blurry details, low quality, oversaturated colors, unrealistic shadows, distorted proportions, watermark, text, logo`;
 
 const WORLD_2 = `Replace the two original characters in the cinematic car interior scene with the exact real people from the provided reference photos using highly accurate identity transfer and seamless photorealistic compositing. Female on the left: Replace the original blonde girl with the woman from the female reference image. Preserve her exact facial identity: face shape, jawline, cheekbones, eyes, eyebrows, nose, lips, natural expression, skin tone, skin texture, hairline, hairstyle, brunette hair texture, neck proportions, and realistic feminine features. Keep her exact original pose, side-profile angle, head tilt, shoulder position, eye-line, seated posture, and intimate emotional tension. Male on the right: Replace the original male character with the man from the male reference image. Preserve his exact identity: facial structure, jawline, eyes, eyebrows, nose, lips, realistic neutral expression, skin texture, messy dark hairstyle, masculine proportions, and natural facial asymmetry. Keep the exact original pose, leaning posture, arm placement, profile angle, eye contact direction, and cinematic tension. Identity fidelity is the highest priority. The characters must look unmistakably like the real people from the references, not generic AI approximations. Preserve natural asymmetry, realistic facial muscles, authentic eyes, subtle imperfections, and human emotional realism. Avoid beautification or “AI-face” appearance. Preserve the original cinematic composition completely: old car interior, dashboard, rear-view mirror, windshield background, daylight environment, shallow depth of field, realistic reflections, film-like cinematic color grading, soft natural lighting, realistic perspective, and authentic movie still atmosphere. Perfect lighting integration: natural daylight through windows, realistic skin shading, ambient bounce light, soft shadows, accurate exposure, realistic reflections, physically believable compositing. Ultra photorealistic cinematic DSLR movie still, realistic skin pores, natural anatomy, invisible edit quality, seamless integration, emotionally authentic expressions. Negative prompt: generic AI face, weak likeness, low identity accuracy, beautified face, uncanny valley, fake skin, plastic texture, distorted anatomy, extra fingers, fused fingers, duplicated limbs, warped face, asymmetrical eyes, unrealistic expression, bad perspective, mismatched lighting, CGI render, cartoon, blurry details, overprocessed image, unrealistic shadows, deformed hands, stretched anatomy, bad compositing, low quality.`;
@@ -3333,6 +3375,11 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   "wallstreet-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: WALLSTREET_1, inputMode: "single" },
   "wallstreet-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: WALLSTREET_2, inputMode: "single" },
   "wallstreet-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: WALLSTREET_3, inputMode: "single" },
+
+  // ── American Psycho ──
+  "americanpsycho-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: AMERICANPSYCHO_1, inputMode: "single" },
+  "americanpsycho-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: AMERICANPSYCHO_2, inputMode: "single" },
+  "americanpsycho-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: AMERICANPSYCHO_3, inputMode: "single" },
   // ── Stranger Things ──
   "stranger-things-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: STRANGER_1 },
   "stranger-things-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: STRANGER_2 },
