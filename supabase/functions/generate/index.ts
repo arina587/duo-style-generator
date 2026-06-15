@@ -3086,7 +3086,171 @@ The final image must look like two authentic photographs of the uploaded individ
 
 Negative prompt: face-only replacement, partial identity transfer, unchanged background character, unchanged blurred character, original male character remaining anywhere in the image, changed emotion, changed expression, changed gaze direction, changed head angle, changed posture, changed body proportions, changed physique, changed framing, changed composition, identity mixing, weak likeness, inaccurate facial features, distorted face, asymmetrical eyes, crossed eyes, altered hairstyle, altered body type, merged subjects, shared frame, incorrect eye contact, CGI, 3D render, cartoon, anime, illustration, painting, blurry face, low resolution, artifacts, ghosting, double face, duplicated body parts, extra fingers, malformed hands, watermark, logo, text.`;
 
-const COLLAGE_6 = ``;
+const COLLAGE_6 = `Identity replacement only. Preserve the original image structure, composition, continuity, emotional tone, body language, scene layout, facial geometry, and atmosphere exactly. Using the provided split-frame scene image as the master reference and the separately uploaded male and female photos as identity references, completely replace the original subjects with the exact individuals from the uploaded reference photos.
+
+The uploaded photos define ONLY identity, physical appearance, facial structure, body type, skin characteristics, hair, and overall likeness. The original scene defines ALL emotions, expressions, pose, body positioning, posture, gaze direction, head orientation, camera angle, framing, composition, lighting, clothing placement, interaction, and atmosphere.
+
+Critical facial identity preservation requirement:
+
+The uploaded male and female reference photos are the ONLY source of facial identity in the final image.
+
+Do not preserve, copy, blend, inherit, approximate, borrow, retain, reconstruct from, or partially use any facial features from any person visible in the original reference image.
+
+Remove the original identities completely.
+
+Every visible face in the final image must belong exclusively to the uploaded individuals.
+
+The uploaded identities must fully replace the original identities across the entire image.
+
+Identity accuracy has higher priority than resemblance to the original actors.
+
+No face morphing.
+No identity blending.
+No actor resemblance.
+No facial approximation.
+No reconstruction based on the original reference faces.
+
+Only the uploaded identities may appear in the final image.
+
+Critical requirement for lying-down poses:
+
+Both subjects are lying down and viewed from unusual camera angles.
+
+Preserve the exact facial proportions of the uploaded individuals while adapting them to the lying-down position.
+
+Do not distort facial geometry due to head tilt, camera perspective, body position, foreshortening, or rotation.
+
+Do not stretch, compress, widen, narrow, warp, deform, smooth, reshape, stylize, or alter the uploaded facial structure.
+
+Maintain exact:
+- eye spacing
+- eye shape
+- eyebrow shape
+- eyebrow placement
+- nose proportions
+- lip proportions
+- jawline shape
+- cheekbone structure
+- forehead proportions
+- chin shape
+- head shape
+- facial symmetry
+- facial proportions
+
+The lying-down pose must not reduce identity accuracy.
+
+The subjects must look exactly like the uploaded individuals photographed while lying in the positions shown in the reference image.
+
+Generate anatomically correct rotated views of the uploaded faces while preserving full recognizability.
+
+Critical requirement: transfer the uploaded individuals completely, not only their faces. Replace and reconstruct the entire person in every visible appearance throughout the image, including face, head shape, hair, neck, shoulders, torso, arms, hands, body proportions, physique, silhouette, skin details, posture, and overall appearance.
+
+Preserve the exact two-panel stacked layout. The image must remain as two separate frames. Do not merge the subjects into one image. Do not change framing, crop, perspective, camera position, depth of field, scene structure, or composition.
+
+Critical continuity requirement:
+
+Both characters appear multiple times throughout the image.
+
+The female character appears:
+1. As the primary subject in the upper frame.
+2. As the blurred foreground figure visible in the lower-left corner of the lower frame.
+
+The male character appears:
+1. As the primary subject in the lower frame.
+2. As the blurred foreground figure visible in the lower-right corner of the upper frame.
+
+These are not separate people. They are the same two characters shown from different camera angles and at different depths of field.
+
+Replace every visible appearance of both original characters throughout the entire image, including:
+- primary appearances
+- secondary appearances
+- blurred appearances
+- foreground appearances
+- background appearances
+- cropped appearances
+- partially visible appearances
+- silhouettes
+- out-of-focus appearances
+
+The blurred male figure visible in the upper frame must become the uploaded male individual.
+
+The blurred female figure visible in the lower frame must become the uploaded female individual.
+
+Identity consistency must be maintained across all appearances.
+
+Do not leave any part of the original characters visible anywhere in the image.
+
+Upper frame:
+
+Replace the original woman with the exact female identity from the uploaded female reference photo. Preserve her complete appearance and full body characteristics while maintaining the exact emotional state from the reference image: warm affectionate smile, relaxed happiness, playful romantic expression, soft eyes, gentle emotional connection, identical eye direction, identical head angle, identical facial expression intensity, identical posture, identical shoulder position, identical body orientation, identical framing, identical camera distance, and identical body language.
+
+The blurred male figure visible in the lower-right corner of the upper frame must also be replaced with the uploaded male individual while remaining naturally blurred and out of focus according to the original depth of field.
+
+Lower frame:
+
+Replace the original man with the exact male identity from the uploaded male reference photo. Preserve his complete appearance and full body characteristics while maintaining the exact emotional state from the reference image: calm thoughtful expression, subtle romantic attention, relaxed facial muscles, gentle eye contact, identical eye direction, identical head angle, identical neck position, identical posture, identical body orientation, identical framing, identical camera distance, and identical body language.
+
+The blurred female figure visible in the lower-left corner of the lower frame must also be replaced with the uploaded female individual while remaining naturally blurred and out of focus according to the original depth of field.
+
+The model must reconstruct both uploaded individuals in full 3D and generate them from the exact viewing angles shown in the reference image. If the uploaded identity photos contain different expressions, emotions, smiles, poses, hairstyles, body positions, profile views, three-quarter views, camera angles, or head angles, ignore those completely. Preserve only identity and physical appearance. Generate entirely new views matching the original reference scenes exactly.
+
+Transfer and preserve with maximum accuracy:
+- exact facial structure
+- exact facial proportions
+- exact eye shape and spacing
+- exact eyebrow shape
+- exact nose shape
+- exact lips
+- exact jawline
+- exact cheekbones
+- exact ears
+- exact skin tone
+- exact skin texture
+- exact facial details
+- exact hairstyle
+- exact hairline
+- exact hair color
+- exact hair density
+- exact hair volume
+- exact age characteristics
+- exact body type
+- exact physique
+- exact body proportions
+- exact shoulder width
+- exact neck structure
+- exact hand appearance
+- exact overall appearance
+
+Highest priority:
+1. Perfect identity preservation of the uploaded individuals.
+2. Complete removal of all facial characteristics belonging to the original reference subjects.
+3. Full-person transfer, including body, physique, posture, and proportions, not face-only replacement.
+4. Replacement of every appearance of both characters throughout the entire image.
+5. Exact preservation of the original emotions and facial expressions.
+6. Exact preservation of gaze direction, posture, framing, camera angle, composition, and body language.
+7. The final result must look like authentic photographs, not face swaps.
+
+Preserve exactly:
+- split-frame layout
+- upper scene composition
+- lower scene composition
+- outdoor daytime environment
+- warm natural sunlight
+- realistic depth of field
+- foreground blur
+- background blur
+- framing and crop
+- lighting direction
+- color grading
+- natural shadows
+- romantic atmosphere
+- cinematic realism
+- clothing style and placement
+- realistic interaction implied between frames
+
+The final image must look like two authentic photographs of the uploaded individuals captured in these exact moments with identical emotions, expressions, posture, body language, and atmosphere. Ultra photorealistic, premium DSLR photography, realistic skin pores, realistic hair strands, realistic anatomy, realistic hands, realistic body proportions, cinematic realism, seamless identity integration, highly detailed, natural depth of field, flawless compositing.
+
+Negative prompt: face-only replacement, partial identity transfer, original actor facial features, original actor resemblance, identity blending, face morphing, facial distortion, stretched face, compressed face, warped face, altered facial proportions, incorrect facial geometry, changed eye spacing, changed jawline, changed nose shape, changed facial structure, unchanged blurred character, unchanged foreground character, unchanged background character, original characters remaining anywhere in the image, changed emotion, changed expression, changed smile, changed gaze direction, changed head angle, changed posture, changed body proportions, changed physique, changed framing, changed composition, weak likeness, inaccurate facial features, distorted face, asymmetrical eyes, crossed eyes, altered hairstyle, altered body type, merged subjects, shared frame, CGI, 3D render, cartoon, anime, illustration, painting, blurry face, low resolution, artifacts, ghosting, double face, duplicated body parts, extra fingers, malformed hands, watermark, logo, text.`;
 
 const SMITH_1 = `Identity replacement only. Preserve the original scene exactly. Using the provided ballroom scene image as the composition reference and the separately uploaded male and female photos as identity references, completely replace the original couple with the exact individuals from the uploaded reference images while preserving the original photograph in every other aspect. Keep the exact composition, framing, camera angle, crop, body positioning, hand placement, facial proximity, head tilt, gaze direction, near-kiss moment, slow-dance pose, romantic interaction, emotional tension, ballroom environment, blurred guests in the background, shallow depth of field, cinematic bokeh, warm golden lighting, and overall atmosphere. Replace the male subject with the exact man from the male reference image, preserving his recognizable facial identity, facial proportions, hairstyle, skin tone, age characteristics, and overall appearance. Replace the female subject with the exact woman from the female reference image, preserving her recognizable facial identity, facial proportions, hairstyle, skin tone, age characteristics, and overall appearance. Maintain the original elegant formal attire style, including the dark suit and black sleeveless evening dress, adapted naturally to the new identities. The final result must look like an authentic high-end cinematic photograph captured in a luxury ballroom, not a face swap. Perfect identity preservation, seamless photorealistic integration, realistic skin texture, natural facial expressions, realistic anatomy, anatomically correct hands and fingers, natural body proportions, authentic clothing folds, premium DSLR photography, 85mm lens, f/1.8, ultra photorealistic movie still, film-grade color grading, natural shadows, realistic depth, flawless compositing. Negative prompt: altered pose, changed composition, changed framing, changed camera angle, changed lighting, changed background, face morphing, identity mixing, weak likeness, bad face swap, distorted face, asymmetrical eyes, crossed eyes, malformed hands, extra fingers, fused fingers, missing fingers, duplicated fingers, duplicated limbs, broken anatomy, unrealistic skin, plastic skin, CGI, 3D render, cartoon, anime, illustration, painting, blurry face, low resolution, artifacts, ghosting, double face, duplicated body parts, watermark, logo, text.`;
 
