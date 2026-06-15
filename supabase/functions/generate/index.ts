@@ -2861,7 +2861,72 @@ The final image must look like two authentic photographs of the uploaded individ
 
 Negative prompt: changed emotion, changed expression, changed smile, changed laughter, changed gaze direction, changed head angle, changed pose, changed framing, changed composition, face swap look, face-only replacement, identity mixing, weak likeness, inaccurate facial features, distorted face, asymmetrical eyes, crossed eyes, altered hairstyle, altered body type, merged subjects, shared frame, interaction between subjects, CGI, 3D render, cartoon, anime, illustration, painting, blurry face, low resolution, artifacts, ghosting, double face, duplicated body parts, watermark, logo, text.`;
 
-const COLLAGE_3 = `Replace the two original characters in the 500 Days of Summer cinematic scene with the exact people from the provided reference images using complete identity transfer and seamless photorealistic integration. Preserve the exact composition, framing, playful quirky atmosphere, body positioning, and emotional dynamic between the two subjects. The final result must look like a real cinematic indie movie still. Male replacement: Completely replace the original man with the man from the male reference image. Transfer exactly: face structure jawline cheekbones nose lips authentic expression from the reference eyes and natural gaze hairstyle hair texture skin tone body proportions posture casual clothing adaptation overall identity and presence. Keep the exact original pose. Female replacement: Completely replace the original woman with the woman from the female reference image. Transfer exactly: facial structure eyes eyebrows lips natural expression hairstyle hair flow skin tone body proportions posture clothing adaptation overall identity. Keep the exact original pose. Perfectly match: natural daylight or indie cinematic lighting soft color grading shallow depth of field realistic skin texture urban or casual atmosphere. Anatomy requirements: correct number of fingers anatomically correct hands no extra fingers no fused fingers no duplicated limbs natural posture. Preserve completely: original cinematic background framing camera angle indie atmosphere. Ultra photorealistic DSLR movie still, highly detailed skin texture, realistic anatomy, emotionally authentic expressions, indie cinematic lighting, seamless identity replacement. Negative prompt: extra fingers, fused fingers, duplicated limbs, malformed hands, bad anatomy, distorted face, poor compositing, CGI, cartoon, anime, blurry, watermark, text, logo`;
+const COLLAGE_3 = `Identity replacement only. Preserve the original image structure, composition, emotions, interaction dynamics, and atmosphere exactly. Using the provided split-frame portrait collage as the master reference and the separately uploaded male and female photos as identity references, completely replace the original subjects with the exact individuals from the uploaded reference photos.
+
+The uploaded photos define ONLY identity, physical appearance, facial structure, body type, skin characteristics, hair, and overall likeness. The original collage defines ALL emotions, expressions, pose, body positioning, gaze direction, head angle, posture, framing, composition, lighting, and atmosphere.
+
+Critical requirement: preserve the exact two-panel collage layout. The final image must remain two completely separate portrait frames stacked vertically. Do not merge the subjects into one image. Do not place them together in the same frame. Preserve the original separation and layout exactly.
+
+The uploaded individuals must be transferred completely, not only their faces. Replace and reconstruct the entire person in each frame, including head shape, facial structure, hair, neck, shoulders, upper body, body proportions, physique, posture, skin details, and overall appearance. The result must look as if the uploaded individuals themselves were originally photographed in these exact scenes.
+
+Upper frame:
+Replace the original man with the exact male identity from the uploaded male reference photo. Preserve his complete appearance while maintaining the exact expression and emotional state from the reference image: subtle affectionate smile, soft eyes, gentle emotional warmth, slightly emotional and attentive gaze directed toward someone seated opposite him, identical head angle, identical eye direction, identical facial muscle tension, identical posture, identical framing, identical camera distance, and identical body positioning. Preserve the intimate dinner conversation atmosphere exactly.
+
+Lower frame:
+Replace the original woman with the exact female identity from the uploaded female reference photo. Preserve her complete appearance while maintaining the exact expression and emotional state from the reference image: genuine joyful smile, relaxed happiness, open-mouth laughter, bright eyes, natural warmth, identical facial expression intensity, identical eye direction, identical head angle, identical hand position supporting the side of her face, identical arm placement, identical posture, identical framing, identical camera distance, and identical body positioning. Preserve the exact emotional energy of the original image.
+
+The model must reconstruct both uploaded individuals in full 3D and generate them from the exact viewing angles shown in the reference collage. If the uploaded identity photos contain different expressions, emotions, smiles, gaze directions, poses, hairstyles, body positions, profile views, three-quarter views, or head angles, ignore those completely. Preserve only the identity and physical appearance. Generate new views matching the original reference portraits exactly.
+
+Transfer and preserve with maximum accuracy:
+- exact facial structure
+- exact facial proportions
+- exact eye shape
+- exact eyebrow shape
+- exact nose shape
+- exact lips
+- exact jawline
+- exact cheekbones
+- exact ears
+- exact skin tone
+- exact skin texture
+- exact facial details
+- exact hairstyle
+- exact hairline
+- exact hair color
+- exact hair density
+- exact hair volume
+- exact age characteristics
+- exact body type
+- exact physique
+- exact body proportions
+- exact overall appearance
+
+Highest priority:
+1. Perfect identity preservation of the uploaded individuals.
+2. Complete transfer of the uploaded individuals, not face-only replacement.
+3. Exact preservation of the original emotions and facial expressions.
+4. Exact preservation of the original pose, hand placement, gaze direction, framing, and composition.
+5. The final result must look like authentic photographs, not face swaps.
+
+Preserve exactly:
+- split-frame collage layout
+- upper portrait composition
+- lower portrait composition
+- warm restaurant environment
+- romantic dinner atmosphere
+- soft golden ambient lighting
+- warm cinematic color grading
+- shallow depth of field
+- background bokeh lights
+- realistic perspective
+- framing and crop
+- lighting direction
+- natural shadows
+- intimate conversational mood
+
+The final image must look like two authentic photographs of the uploaded individuals captured during the exact moments shown in the reference collage, with identical emotions, expressions, posture, and atmosphere. Ultra photorealistic, premium DSLR photography, realistic skin pores, realistic hair strands, realistic anatomy, cinematic realism, seamless identity integration, highly detailed, natural depth of field, flawless compositing.
+
+Negative prompt: changed emotion, changed expression, changed smile, changed laughter, changed gaze direction, changed head angle, changed pose, changed hand position, changed framing, changed composition, face swap look, face-only replacement, identity mixing, weak likeness, inaccurate facial features, distorted face, asymmetrical eyes, crossed eyes, altered hairstyle, altered body type, merged subjects, shared frame, interaction between subjects, CGI, 3D render, cartoon, anime, illustration, painting, blurry face, low resolution, artifacts, ghosting, double face, duplicated body parts, watermark, logo, text.`;
 
 const COLLAGE_4 = `Replace the two original characters in the Me Before You romantic cinematic scene with the exact people from the provided reference images using complete identity transfer and seamless photorealistic integration. Preserve the exact composition, framing, tender emotional atmosphere, body positioning, and heartfelt connection between the two subjects. The final result must look like a real cinematic movie still. Male replacement: Completely replace the original man with the man from the male reference image. Transfer exactly: face structure jawline cheekbones nose lips tender authentic expression from the reference eyes and gaze hairstyle hair texture skin tone body proportions posture clothing adaptation overall identity. Keep the exact original pose. Female replacement: Completely replace the original woman with the woman from the female reference image. Transfer exactly: facial structure eyes eyebrows lips warm authentic expression hairstyle hair flow skin tone body proportions posture clothing adaptation overall identity. Keep the exact original pose. Perfectly match: soft romantic cinematic lighting warm color grading shallow depth of field realistic skin texture. Anatomy requirements: correct number of fingers anatomically correct hands no extra fingers no fused fingers no duplicated limbs natural posture. Preserve completely: original cinematic background framing camera angle romantic tender atmosphere. Ultra photorealistic DSLR movie still, highly detailed skin texture, realistic anatomy, emotionally authentic expressions, warm cinematic lighting, seamless identity replacement. Negative prompt: extra fingers, fused fingers, duplicated limbs, malformed hands, bad anatomy, distorted face, poor compositing, CGI, cartoon, anime, blurry, watermark, text, logo`;
 
