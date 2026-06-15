@@ -2758,76 +2758,54 @@ const SMITH_1 = `Identity replacement only. Preserve the original scene exactly.
 
 const SMITH_2 = `Identity replacement only. Preserve the original scene exactly. Using the provided kitchen scene image as the composition reference and the separately uploaded male and female photos as identity references, completely replace the original couple with the exact individuals from the uploaded reference images while preserving the original photograph in every other aspect. Keep the exact composition, framing, crop, camera angle, body positions, facial expressions, eye contact, hand placement, distance between subjects, posture, interaction, kitchen environment, countertop, sink, faucet, strawberry in hand, cooking interaction, background details, depth of field, lighting, and overall atmosphere. Replace the male subject with the exact man from the uploaded male reference image, preserving his recognizable facial identity, facial proportions, hairstyle, skin tone, age characteristics, and overall appearance while maintaining the original body position, smile, gaze direction, and white V-neck T-shirt. Replace the female subject with the exact woman from the uploaded female reference image, preserving her recognizable facial identity, facial proportions, hairstyle, skin tone, age characteristics, and overall appearance while maintaining the original body position, smile, gaze direction, hand placement, and oversized white button-up shirt. Preserve the playful romantic domestic interaction, natural chemistry, relaxed body language, intimate everyday moment, warm indoor lighting, soft shadows, shallow depth of field, cinematic realism, and candid lifestyle photography aesthetic. The final image must look like a genuine photograph of the two uploaded individuals naturally sharing a moment together in a modern kitchen, not a face swap. Perfect identity preservation, seamless photorealistic integration, realistic skin texture, natural facial expressions, realistic anatomy, anatomically correct hands and fingers, authentic clothing folds, realistic body proportions, premium DSLR photography, 50mm lens, f/2.0, ultra photorealistic, cinematic lifestyle movie still, natural color grading, realistic depth, flawless compositing. Negative prompt: altered pose, changed composition, changed framing, changed camera angle, changed lighting, changed background, changed clothing style, face morphing, identity mixing, weak likeness, poor face swap, distorted face, asymmetrical eyes, crossed eyes, malformed hands, extra fingers, fused fingers, missing fingers, duplicated fingers, duplicated limbs, broken anatomy, unrealistic skin, plastic skin, CGI, 3D render, cartoon, anime, illustration, painting, blurry face, low resolution, artifacts, ghosting, double face, duplicated body parts, watermark, logo, text.`;
 
-const SMITH_3 = `Identity replacement only. Preserve the original scene exactly. Using the provided tactical action scene image as the composition, pose, body, and camera reference, and the separately uploaded male and female photos as identity references, completely replace the original man and woman with the exact individuals from the uploaded reference images.
+const SMITH_3 = `Identity replacement only. Preserve the original scene exactly. Using the provided tactical scene image as the master reference for composition, camera angle, body positioning, head orientation, gaze direction, posture, perspective, interaction, lighting, and framing, and using the separately uploaded male and female photos strictly as identity references, completely replace the original man and woman with the exact individuals from the uploaded reference photos.
 
-The uploaded reference photos define ONLY the identities of the subjects. The original scene image defines ALL pose, body positioning, head orientation, gaze direction, body angle, camera perspective, composition, interaction, and physical placement.
+The uploaded photos define ONLY identity. They must NOT define pose, head angle, facial angle, body orientation, gaze direction, expression, posture, camera perspective, or composition. Reconstruct both individuals in full 3D and place them into the exact physical positions shown in the scene reference.
 
-Critical instruction: if the uploaded reference photos show different head angles, face angles, profile views, three-quarter views, gaze directions, expressions, posture, or body positions, ignore them completely. Reconstruct the identities from the uploaded references and rotate, reposition, and adapt them so that both subjects match the exact head orientation, neck angle, facial angle, eye direction, shoulder angle, torso rotation, arm position, and body posture from the original scene image.
+Critical requirement: preserve the exact pose of the original scene. The male subject must remain in the same crouched tactical position, torso angled toward the left side of the frame, shoulders leaning forward, head turned toward the female subject, eyes directed toward the female subject, with the exact same neck angle, shoulder angle, arm position, and body orientation as the original image. The female subject must remain in the same crouched tactical position, leaning slightly forward, torso angled toward the left side of the frame, head turned forward-left, eyes looking ahead, with the exact same neck angle, shoulder position, arm placement, and body orientation as the original image.
 
-Preserve the male subject exactly as positioned in the original scene:
-- crouched tactical stance
-- body rotated toward the left side of the frame
-- head turned toward the female subject
-- eyes directed toward the female subject
-- shoulders angled forward
-- left arm extended forward
-- identical neck angle
-- identical torso orientation
-- identical body proportions and placement within the frame
+The model must physically rotate and reconstruct the uploaded faces to match the exact head orientation of the scene reference. If the uploaded identity photos are frontal, profile, three-quarter, looking elsewhere, smiling, or facing another direction, ignore those angles completely. Generate new views of the faces so that the final head rotation, yaw, pitch, roll, neck position, eye direction, and facial angle match the scene reference exactly. Identity must remain fully recognizable after rotation. Do not preserve the original face angle from the uploaded photos.
 
-Preserve the female subject exactly as positioned in the original scene:
-- crouched tactical stance
-- body leaning slightly forward
-- torso angled toward the left side of the frame
-- head facing forward-left
-- eyes looking ahead
-- identical neck position
-- identical shoulder angle
-- identical arm placement
-- identical body proportions and placement within the frame
-
-Transfer the uploaded individuals completely and accurately:
+Transfer and preserve with maximum accuracy:
 - exact facial structure
 - exact facial proportions
-- exact eye shape
+- exact eye shape and spacing
 - exact eyebrow shape
 - exact nose shape
 - exact lips
 - exact jawline
 - exact cheekbones
+- exact ears
 - exact skin tone
 - exact skin texture
 - exact hairstyle
 - exact hairline
 - exact hair color
-- exact hair volume
+- exact hair density and volume
 - exact age characteristics
 - exact body type
-- exact body proportions
 - exact physique
-- exact identity
-
-Do not perform a simple face swap. Fully reconstruct the uploaded individuals in the exact pose and body orientation of the original scene while preserving maximum facial accuracy and recognizability.
+- exact body proportions
+- exact overall appearance
 
 Preserve exactly:
-- tactical body armor
+- tactical armor and equipment
 - yellow protective glasses
-- tactical equipment placement
+- clothing style and placement
 - action scene atmosphere
-- warm indoor lighting
-- camera angle
-- crop
-- framing
-- perspective
-- depth
+- camera perspective
+- crop and framing
 - background structure
-- cinematic action-movie aesthetic
+- lighting direction
+- shadows
+- depth of field
+- cinematic action-movie realism
 
-The final image must look like a genuine photograph of the uploaded individuals participating in the exact action scene shown in the reference image. Perfect identity preservation has the highest priority while maintaining exact pose matching from the original scene.
+The final image must look like a genuine photograph of the uploaded individuals captured from the exact camera position and exact body pose shown in the reference scene. The result must not look like a face swap. It must look as if the uploaded individuals themselves originally performed this exact action scene and were photographed in this exact position.
 
-Ultra photorealistic, cinematic action movie still, premium DSLR photography, realistic skin pores, realistic hair strands, accurate anatomy, realistic body proportions, physically correct lighting, seamless identity integration, high detail, natural shadows, realistic depth of field.
+Ultra photorealistic, premium DSLR photography, realistic skin pores, realistic hair strands, realistic anatomy, natural body proportions, physically correct lighting, seamless identity integration, cinematic action movie still, highly detailed, realistic depth, flawless compositing.
 
-Negative prompt: changed pose, changed head angle, changed face angle, changed gaze direction, changed body orientation, changed shoulder position, changed torso rotation, changed camera angle, changed composition, changed framing, identity mixing, weak likeness, face morphing, inaccurate facial features, bad face swap, distorted face, asymmetrical eyes, crossed eyes, malformed anatomy, extra fingers, fused fingers, missing fingers, duplicated fingers, duplicated limbs, unrealistic body proportions, plastic skin, CGI, 3D render, cartoon, anime, illustration, painting, blurry face, low resolution, artifacts, ghosting, double face, duplicated body parts, watermark, logo, text.`;
+Negative prompt: changed pose, changed head angle, changed face angle, changed gaze direction, changed shoulder angle, changed torso rotation, changed body orientation, changed camera angle, changed framing, changed composition, changed perspective, face morphing, identity mixing, weak likeness, inaccurate facial features, poor identity preservation, bad face swap, distorted face, asymmetrical eyes, crossed eyes, malformed anatomy, extra fingers, fused fingers, missing fingers, duplicated fingers, duplicated limbs, unrealistic body proportions, plastic skin, CGI, 3D render, cartoon, anime, illustration, painting, blurry face, low resolution, artifacts, ghosting, double face, duplicated body parts, watermark, logo, text.`;
 
 // ── All styles. locked: true → use config.prompt. locked: false → use UNIVERSAL_PROMPT. ──
 // provider: "replicate" | "openai"  — controls which API is called for this reference.
