@@ -191,7 +191,7 @@ export default function Upload({
     // Set local state briefly; App.tsx will navigate away to the result view immediately
     setIsGenerating(true);
     setError('');
-    onGenerate(photo1, isSingle ? null : photo2!, referenceFile, undefined, photo1b, photo2b);
+    onGenerate(photo1, isSingle ? null : photo2!, referenceFile, undefined, isSingle ? null : photo1b, isSingle ? null : photo2b);
     // Reset local state after tick so if user navigates back, button is re-enabled
     setTimeout(() => setIsGenerating(false), 500);
   };
@@ -412,8 +412,8 @@ export default function Upload({
                 </label>
               </div>
 
-              {/* Secondary upload */}
-              {!showSecondary ? (
+              {/* Secondary upload — couple styles only */}
+              {!isSingle && (!showSecondary ? (
                 <button
                   type="button"
                   onClick={() => setShowSecondary(true)}
@@ -485,7 +485,7 @@ export default function Upload({
                     </div>
                   </label>
                 </div>
-              )}
+              ))}
 
             </div>
           ))}

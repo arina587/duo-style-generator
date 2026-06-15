@@ -3933,25 +3933,32 @@ Deno.serve(async (req: Request) => {
         if (!reference || reference.size === 0) {
           return jsonResponse({ error: "Missing or empty reference file" } as unknown as GenerateResponse, 400);
         }
-        if (!person1 || person1.size === 0 || !person2 || person2.size === 0) {
-          return jsonResponse({ error: "Missing or empty person1/person2 files" } as unknown as GenerateResponse, 400);
-        }
         if (!refId) {
           return jsonResponse({ error: "Missing referenceId" } as unknown as GenerateResponse, 400);
         }
+        if (!person1 || person1.size === 0) {
+          return jsonResponse({ error: "Missing or empty person1 file" } as unknown as GenerateResponse, 400);
+        }
 
-        console.log("[POST] multipart path (legacy)");
+        const multipartConfig = STYLE_CONFIG[refId];
+        const isMultipartSingle = multipartConfig?.inputMode === "single";
+
+        if (!isMultipartSingle && (!person2 || person2.size === 0)) {
+          return jsonResponse({ error: "Missing or empty person2 file" } as unknown as GenerateResponse, 400);
+        }
+
+        console.log("[POST] multipart path (legacy)", { refId, isMultipartSingle });
 
         const [p1, p2, ref, p1b, p2b] = await Promise.all([
           fileToDataUrl(person1),
-          fileToDataUrl(person2),
+          !isMultipartSingle && person2 ? fileToDataUrl(person2) : Promise.resolve(undefined),
           fileToDataUrl(reference),
           person1b && person1b.size > 0 ? fileToDataUrl(person1b) : Promise.resolve(undefined),
           person2b && person2b.size > 0 ? fileToDataUrl(person2b) : Promise.resolve(undefined),
         ]);
 
         slots = {
-          person1: p1, person2: p2, reference: ref,
+          person1: p1, ...(p2 ? { person2: p2 } : {}), reference: ref,
           ...(p1b ? { person1b: p1b } : {}),
           ...(p2b ? { person2b: p2b } : {}),
           referenceId: refId,
