@@ -12,23 +12,23 @@ export interface Category {
   name: string;
   tag: string;
   cover: string;
-  category: 'cartoon' | 'other' | 'collage';
+  category: 'cartoon' | 'other' | 'collage' | 'movie';
   inputMode?: 'single' | 'couple';
 }
 
 export const categories: Category[] = [
   // Row 1 (col 1→3): Zootopia | Euphoria | Titanic
   { id: 'zootopia',                  name: 'Zootopia',                       tag: 'Animated',   cover: '/styles/zootopia/zootopia1.jpg',                                                          category: 'cartoon' },
-  { id: 'euphoria',                  name: 'Euphoria',                       tag: 'TV Series',  cover: '/styles/euphoria/euphoria1.jpg',                                                          category: 'other'   },
-  { id: 'titanic',                   name: 'Titanic',                        tag: 'Film',       cover: '/styles/titanic/titanic1.jpg',                                                            category: 'other'   },
+  { id: 'euphoria',                  name: 'Euphoria',                       tag: 'TV Series',  cover: '/styles/euphoria/euphoria1.jpg',                                                          category: 'movie'   },
+  { id: 'titanic',                   name: 'Titanic',                        tag: 'Film',       cover: '/styles/titanic/titanic1.jpg',                                                            category: 'movie'   },
   // Row 2 (col 1→3): Tangled | La La Land | Mr. & Mrs. Smith
   { id: 'tangled',                   name: 'Tangled',                        tag: 'Animated',   cover: '/styles/tangled/tangled1.jpg',                                                            category: 'cartoon' },
-  { id: 'lalaland',                  name: 'La La Land',                     tag: 'Film',       cover: '/styles/lalaland/lalaland1.jpg',                                                         category: 'other'   },
-  { id: 'smith',                     name: 'Mr. & Mrs. Smith',               tag: 'Film',       cover: '/styles/smith/smith1.jpg',                                                               category: 'other'   },
+  { id: 'lalaland',                  name: 'La La Land',                     tag: 'Film',       cover: '/styles/lalaland/lalaland1.jpg',                                                         category: 'movie'   },
+  { id: 'smith',                     name: 'Mr. & Mrs. Smith',               tag: 'Film',       cover: '/styles/smith/smith1.jpg',                                                               category: 'movie'   },
   // Row 3 (col 1→3): Cinderella | Stranger Things | TEOTFW
   { id: 'cinderella',                name: 'Cinderella',                     tag: 'Animated',   cover: '/styles/cinderella/cinderella1.jpg',                                                     category: 'cartoon' },
-  { id: 'stranger-things',           name: 'Stranger Things',                tag: 'TV Series',  cover: '/styles/stranger-things/stranger-things1.jpg',                                           category: 'other'   },
-  { id: 'end-of-the-fucking-world',  name: 'The End of the F***ing World',   tag: 'TV Series',  cover: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.jpg',                         category: 'other'   },
+  { id: 'stranger-things',           name: 'Stranger Things',                tag: 'TV Series',  cover: '/styles/stranger-things/stranger-things1.jpg',                                           category: 'movie'   },
+  { id: 'end-of-the-fucking-world',  name: 'The End of the F***ing World',   tag: 'TV Series',  cover: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.jpg',                         category: 'movie'   },
   // Row 4: Collages
   { id: 'collage',                   name: 'Collages',                       tag: 'Collage',    cover: '/styles/collage/collage1.jpg',                                                           category: 'collage' },
   // Row 5: Wolf of Wall Street | American Psycho

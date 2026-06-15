@@ -63,7 +63,7 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
   const [headerVisible, setHeaderVisible] = useState(true);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [openCategory, setOpenCategory] = useState<string | null>(initialCategory ?? null);
-  const [styleFilter, setStyleFilter] = useState<'all' | 'cartoon' | 'collage' | 'solo'>('all');
+  const [styleFilter, setStyleFilter] = useState<'all' | 'cartoon' | 'movie' | 'collage' | 'solo'>('all');
   const lastScrollY = useRef(0);
   const categoryRef = useRef<HTMLDivElement>(null);
 
@@ -282,31 +282,31 @@ export default function Home({ onImageSelect, initialCategory }: HomeProps) {
 
           {/* Filter pills */}
           {!openCategory && (
-            <div className="flex justify-center gap-3 mb-10">
-              {(['all', 'cartoon', 'collage', 'solo'] as const).map((f) => {
-                const label = f === 'all' ? 'All' : f === 'cartoon' ? 'Cartoons' : f === 'collage' ? 'Collages' : 'Solo Characters';
-                const active = styleFilter === f;
-                return (
-                  <button
-                    key={f}
-                    onClick={() => setStyleFilter(f)}
-                    className="px-8 py-3 rounded-full text-sm font-extrabold font-body tracking-wide transition-all duration-200"
-                    style={active ? {
-                      background: 'linear-gradient(135deg, #c4a8e8, #d4bef0)',
-                      color: '#fff',
-                      boxShadow: '0 4px 18px rgba(180,156,219,0.40)',
-                      fontSize: '0.95rem',
-                    } : {
-                      background: 'rgba(255,255,255,0.85)',
-                      color: '#7a5fa0',
-                      border: '2px solid #e4d9f5',
-                      fontSize: '0.95rem',
-                    }}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
+            <div className="flex justify-center mb-10">
+              <div className="flex gap-2 overflow-x-auto max-w-full px-4 pb-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                {(['all', 'cartoon', 'movie', 'collage', 'solo'] as const).map((f) => {
+                  const label = f === 'all' ? 'All' : f === 'cartoon' ? 'Cartoons' : f === 'movie' ? 'Movies' : f === 'collage' ? 'Collages' : 'Solo Characters';
+                  const active = styleFilter === f;
+                  return (
+                    <button
+                      key={f}
+                      onClick={() => setStyleFilter(f)}
+                      className="flex-shrink-0 whitespace-nowrap px-5 sm:px-7 py-2.5 rounded-full text-[13px] sm:text-sm font-extrabold font-body tracking-wide transition-all duration-200"
+                      style={active ? {
+                        background: 'linear-gradient(135deg, #c4a8e8, #d4bef0)',
+                        color: '#fff',
+                        boxShadow: '0 4px 18px rgba(180,156,219,0.40)',
+                      } : {
+                        background: 'rgba(255,255,255,0.85)',
+                        color: '#7a5fa0',
+                        border: '2px solid #e4d9f5',
+                      }}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           )}
 
