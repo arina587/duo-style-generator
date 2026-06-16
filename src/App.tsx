@@ -482,6 +482,7 @@ function App() {
     };
 
     const finishWithError = (ge: GenerationError) => {
+      console.log('[ERROR BEFORE FINISH]', ge, { requestId, predictionId, provider });
       pollTimeoutRef.current = null;
       pollInFlightRef.current = false;
       clearGenSession();
@@ -490,7 +491,7 @@ function App() {
       setIsGenerating(false);
       isGeneratingRef.current = false;
       cooldownUntilRef.current = Date.now() + 1000;
-      console.log('[GENERATION READY] after poll failure phase=' + ge.phase);
+      console.log('[GENERATION READY] after poll failure', { phase: ge.phase, type: ge.type, message: ge.message, requestId, predictionId });
     };
 
     const poll = async () => {
@@ -598,7 +599,7 @@ function App() {
           setIsGenerating(false);
           isGeneratingRef.current = false;
           cooldownUntilRef.current = Date.now() + 1000;
-          console.log('[GENERATION READY] success');
+          console.log('[GENERATION READY] success', { requestId, predictionId, provider, url: validatedUrl.substring(0, 80), generationErrorBeingSet: null });
           return;
         }
 
@@ -796,7 +797,7 @@ function App() {
         setIsGenerating(false);
         isGeneratingRef.current = false;
         cooldownUntilRef.current = Date.now() + 1000;
-        console.log('[GENERATION READY] after upload failure');
+        console.log('[GENERATION READY] after upload failure', { requestId });
         return;
       }
     }
@@ -871,7 +872,7 @@ function App() {
           setIsGenerating(false);
           isGeneratingRef.current = false;
           cooldownUntilRef.current = Date.now() + 1000;
-          console.log('[GENERATION READY] after POST retry failure');
+          console.log('[GENERATION READY] after POST retry failure', { requestId });
           return;
         }
       }
@@ -981,7 +982,7 @@ function App() {
       setIsGenerating(false);
       isGeneratingRef.current = false;
       cooldownUntilRef.current = Date.now() + 1000;
-      console.log('[GENERATION READY] after error');
+      console.log('[GENERATION READY] after error', { requestId });
     }
   };
 

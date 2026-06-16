@@ -289,6 +289,20 @@ export default function Result({
   const hideHeading =
     imgLoaded;
 
+  console.log('[ERROR RENDER]', {
+    generationError,
+    errorType,
+    errorPhase,
+    isPollError,
+    isModerationError,
+    isBackendJobFailed,
+    isValidationFailed,
+    isGenerating,
+    isTimeoutError,
+    isUploadError,
+    isPostError,
+  });
+
   return (
     <div className="min-h-screen" style={{ position: 'relative', zIndex: 1 }}>
 
