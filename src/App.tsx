@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Upload from './components/Upload';
 import Result from './components/Result';
 import AnimatedBackground from './components/AnimatedBackground';
+import { references } from './data/references';
 import type { ReferenceItem } from './data/references';
 
 type View = 'home' | 'upload' | 'result';
@@ -176,6 +177,39 @@ function errDetail(err: unknown): Record<string, string> {
   return { name: 'unknown', message: String(err) };
 }
 
+// ─── Polling constants and session-storage helpers ───────────────────────────
+
+const MAX_POLL_WAIT_MS = 10 * 60 * 1000; // 10 minutes
+const GEN_SESSION_KEY = 'ds_active_gen';
+
+interface SavedGen {
+  predictionId: string;
+  requestId: string;
+  provider: 'openai' | 'replicate';
+  generationStartTime: number;
+  referenceId: string;
+}
+
+function saveGenSession(s: SavedGen): void {
+  try { sessionStorage.setItem(GEN_SESSION_KEY, JSON.stringify(s)); } catch { /* quota / private mode */ }
+}
+
+function loadGenSession(): SavedGen | null {
+  try {
+    const raw = sessionStorage.getItem(GEN_SESSION_KEY);
+    if (!raw) return null;
+    const p = JSON.parse(raw) as Partial<SavedGen>;
+    if (p.predictionId && p.requestId && p.provider && p.generationStartTime && p.referenceId) {
+      return p as SavedGen;
+    }
+  } catch { /* ignore */ }
+  return null;
+}
+
+function clearGenSession(): void {
+  try { sessionStorage.removeItem(GEN_SESSION_KEY); } catch { /* ignore */ }
+}
+
 // ─── URL validation ───────────────────────────────────────────────────────────
 
 function validateOutputUrl(url: string | undefined): string {
@@ -311,6 +345,8 @@ function App() {
   const pollInFlightRef = useRef(false);
   const isGeneratingRef = useRef(false);
   const cooldownUntilRef = useRef<number>(0);
+  const [isPollingRecovering, setIsPollingRecovering] = useState(false);
+  const pollNetworkRetryCountRef = useRef(0);
 
   // ── Cleanup helpers ─────────────────────────────────────────────────────────
 
@@ -335,6 +371,38 @@ function App() {
 
   useEffect(() => {
     return () => { fullCleanup('unmount'); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── Restore active generation after page refresh ────────────────────────────
+  useEffect(() => {
+    const saved = loadGenSession();
+    if (!saved) return;
+
+    const age = Date.now() - saved.generationStartTime;
+    if (age >= MAX_POLL_WAIT_MS) {
+      clearGenSession();
+      return;
+    }
+
+    const ref = references.find(r => r.id === saved.referenceId);
+    console.log('[RESUME] restoring generation from sessionStorage', {
+      requestId: saved.requestId, predictionId: saved.predictionId,
+      provider: saved.provider, ageMs: age, referenceId: saved.referenceId,
+    });
+
+    const requestId = saved.requestId;
+    const ac = new AbortController();
+    activeRequestId.current = requestId;
+    abortControllerRef.current = ac;
+    isGeneratingRef.current = true;
+
+    if (ref) setSelectedRef(ref);
+    setIsGenerating(true);
+    setGenerationPhase('generating');
+    setCurrentView('result');
+
+    pollPrediction(saved.predictionId, requestId, saved.provider, ac.signal, saved.generationStartTime);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -394,13 +462,15 @@ function App() {
   ) => {
     const POLL_INTERVAL_MS = 5000;
     const POLL_NETWORK_RETRY_DELAY_MS = 7000;
-    const MAX_GENERATION_WAIT_MS = 10 * 60 * 1000; // 10 minutes
 
     const apiBase = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate`;
     const authHeader = { Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` };
     const pollParam = provider === 'openai' ? 'jobId' : 'id';
 
     console.log('[POLL START]', { requestId, predictionId, provider, generationStartTime });
+
+    saveGenSession({ predictionId, requestId, provider, generationStartTime, referenceId: selectedRef?.id ?? '' });
+    pollNetworkRetryCountRef.current = 0;
 
     const schedulePoll = (delayMs: number) => {
       if (pollTimeoutRef.current !== null) {
@@ -413,6 +483,8 @@ function App() {
     const finishWithError = (ge: GenerationError) => {
       pollTimeoutRef.current = null;
       pollInFlightRef.current = false;
+      clearGenSession();
+      setIsPollingRecovering(false);
       setGenerationError(ge);
       setIsGenerating(false);
       isGeneratingRef.current = false;
@@ -447,6 +519,12 @@ function App() {
           return;
         }
 
+        // Treat transient server/gateway errors as retryable — do not check
+        // body at all, just throw so the catch block schedules a retry.
+        if (res.status === 429 || res.status === 502 || res.status === 503 || res.status === 504) {
+          throw new Error(`Transient HTTP ${res.status} from poll endpoint`);
+        }
+
         const ct = res.headers.get('content-type') ?? '';
         if (!ct.includes('application/json')) {
           throw new Error(`Poll response unexpected content-type "${ct}"`);
@@ -473,8 +551,9 @@ function App() {
           try {
             validatedUrl = validateOutputUrl(data.output);
           } catch (validateErr) {
-            console.error('[POLL FAILURE]', {
+            console.error('[POLL FAILURE] output URL validation failed', {
               phase: 'polling_generation', requestId, predictionId, provider,
+              elapsedMs: Date.now() - generationStartTime,
               ...errDetail(validateErr), ua: navigator.userAgent,
             });
             finishWithError(normalizeError(validateErr, 'polling_generation'));
@@ -506,6 +585,8 @@ function App() {
 
           pollTimeoutRef.current = null;
           pollInFlightRef.current = false;
+          clearGenSession();
+          setIsPollingRecovering(false);
           setGenerationError(null);
           setImgLoadFailed(false);
           setRawImageUrl(validatedUrl);
@@ -518,9 +599,10 @@ function App() {
         }
 
         if (data.status === 'failed' || data.status === 'canceled') {
-          console.error('[POLL FAILURE]', {
+          console.error('[POLL FAILURE] backend job failed', {
             phase: 'polling_generation', requestId, predictionId, provider,
-            status: data.status, backendError: data.error, ua: navigator.userAgent,
+            jobStatus: data.status, backendError: data.error,
+            elapsedMs: Date.now() - generationStartTime, ua: navigator.userAgent,
           });
           finishWithError(normalizeError(data.error ?? 'Generation failed. Please try again.', 'polling_generation'));
           return;
@@ -541,19 +623,29 @@ function App() {
         }
 
         const elapsedMs = Date.now() - generationStartTime;
+        const retryNum = pollNetworkRetryCountRef.current + 1;
+        pollNetworkRetryCountRef.current = retryNum;
+
         console.warn('[POLL NETWORK ERROR] retrying — backend job continues independently', {
           phase: 'polling_generation', requestId, predictionId, provider,
-          elapsedMs, ...errDetail(err), ua: navigator.userAgent,
+          httpStatus: err instanceof Error && err.message.startsWith('Transient HTTP')
+            ? parseInt(err.message.split(' ')[2], 10) : undefined,
+          errorType: err instanceof Error ? err.name : 'unknown',
+          errorMessage: err instanceof Error ? err.message : String(err),
+          retryCount: retryNum,
+          elapsedMs, ua: navigator.userAgent,
         });
+
+        setIsPollingRecovering(true);
 
         // Only give up when the total generation wall-clock time exceeds the limit.
         // Temporary network errors (mobile going to background, brief connectivity
         // loss, edge function cold-start) must NOT terminate a job that is still
         // running server-side.
-        if (elapsedMs >= MAX_GENERATION_WAIT_MS) {
+        if (elapsedMs >= MAX_POLL_WAIT_MS) {
           console.error('[POLL TIMEOUT]', {
             phase: 'polling_generation', requestId, predictionId, provider,
-            elapsedMs, ua: navigator.userAgent,
+            elapsedMs, retryCount: retryNum, ua: navigator.userAgent,
           });
           finishWithError(makeError('polling_generation', 'timeout', 'Generation is taking longer than expected. Please try again.'));
           return;
@@ -611,6 +703,7 @@ function App() {
     setIsGenerating(true);
     setGenerationPhase('uploading');
     setGenerationError(null);
+    setIsPollingRecovering(false);
     setGeneratedImageUrl('');
     setRawImageUrl('');
     setImgLoadFailed(false);
@@ -917,6 +1010,7 @@ function App() {
           isGenerating={isGenerating}
           generationPhase={generationPhase}
           generationError={generationError}
+          isPollingRecovering={isPollingRecovering}
         />
       )}
     </>

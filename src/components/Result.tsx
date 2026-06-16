@@ -13,6 +13,7 @@ interface ResultProps {
   isGenerating: boolean;
   generationPhase: GenerationPhase;
   generationError: GenerationError | null;
+  isPollingRecovering?: boolean;
 }
 
 interface DebugInfo {
@@ -33,6 +34,7 @@ export default function Result({
   isGenerating,
   generationPhase,
   generationError,
+  isPollingRecovering = false,
 }: ResultProps) {
   const retryCount = useRef(0);
   const [retryKey, setRetryKey] = useState(0);
@@ -243,7 +245,10 @@ export default function Result({
 
   let heading = 'Your Styled Fusion';
   let subtitle = 'Your AI-generated fusion is ready to download';
-  if (isGenerating) {
+  if (isGenerating && isPollingRecovering) {
+    heading = 'Connection Interrupted';
+    subtitle = 'Still trying to retrieve your result — please stay on this page';
+  } else if (isGenerating) {
     heading = phaseLabel[generationPhase].heading;
     subtitle = phaseLabel[generationPhase].subtitle;
   } else if (generationSucceeded && imgLoadFailed) {
@@ -262,7 +267,7 @@ export default function Result({
     heading = 'Could Not Start Generation';
     subtitle = 'Please check your connection and try again';
   } else if (isPollError) {
-    heading = 'Lost Connection';
+    heading = 'Connection Lost';
     subtitle = 'Could not reach the server while waiting for your result';
   } else if (generationError) {
     heading = 'Generation Failed';
@@ -330,7 +335,11 @@ export default function Result({
                   </div>
                 </div>
                 <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">{phaseLabel[generationPhase].detail}</p>
-                <p className="text-[#7a6f96] text-sm font-body">{generationPhase === 'generating' ? 'Usually takes under a minute' : 'Please wait...'}</p>
+                <p className="text-[#7a6f96] text-sm font-body">
+                  {isPollingRecovering
+                    ? 'Connection interrupted — still trying to retrieve your result...'
+                    : generationPhase === 'generating' ? 'Usually takes under a minute' : 'Please wait...'}
+                </p>
                 <div className="mt-4 flex justify-center gap-1.5">
                   {[0, 1, 2].map((i) => (
                     <div
@@ -546,7 +555,7 @@ export default function Result({
                     <div className="mx-auto mb-5 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
                       <AlertCircle className="w-8 h-8 text-amber-400" />
                     </div>
-                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Lost Connection</p>
+                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Connection Lost</p>
                     <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">
                       {errorMessage}
                     </p>
