@@ -31,9 +31,10 @@ export const categories: Category[] = [
   { id: 'end-of-the-fucking-world',  name: 'The End of the F***ing World',   tag: 'TV Series',  cover: '/styles/end-of-the-fucking-world/end-of-the-fucking-world1.jpg',                         category: 'movie'   },
   // Row 4: Collages
   { id: 'collage',                   name: 'Collages',                       tag: 'Collage',    cover: '/styles/collage/collage1.jpg',                                                           category: 'collage' },
-  // Row 5: Wolf of Wall Street | American Psycho
+  // Row 5: Wolf of Wall Street | American Psycho | Fight Club
   { id: 'wallstreet',      name: 'The Wolf of Wall Street', tag: 'Film', cover: '/styles/wallstreet/wallstreet1.jpg',           category: 'other', inputMode: 'single' },
   { id: 'americanpsycho',  name: 'American Psycho',          tag: 'Film', cover: '/styles/americanpsycho/americanpsycho1.jpg',   category: 'other', inputMode: 'single' },
+  { id: 'fightclub',       name: 'Fight Club',               tag: 'Film', cover: '/styles/fightclub/fightclub1.jpg',             category: 'other', inputMode: 'single' },
 ];
 
 export function getRefsForCategory(categoryId: string): ReferenceItem[] {
@@ -103,4 +104,9 @@ export const references: ReferenceItem[] = [
   { id: 'americanpsycho-1', style: 'americanpsycho', label: 'American Psycho', image: '/styles/americanpsycho/americanpsycho1.jpg', inputMode: 'single' },
   { id: 'americanpsycho-2', style: 'americanpsycho', label: 'American Psycho', image: '/styles/americanpsycho/americanpsycho2.jpg', inputMode: 'single' },
   { id: 'americanpsycho-3', style: 'americanpsycho', label: 'American Psycho', image: '/styles/americanpsycho/americanpsycho3.jpg', inputMode: 'single' },
+
+  // ── Fight Club ──
+  { id: 'fightclub-1', style: 'fightclub', label: 'Fight Club', image: '/styles/fightclub/fightclub1.jpg', inputMode: 'single' },
+  { id: 'fightclub-2', style: 'fightclub', label: 'Fight Club', image: '/styles/fightclub/fightclub2.jpg', inputMode: 'single' },
+  { id: 'fightclub-3', style: 'fightclub', label: 'Fight Club', image: '/styles/fightclub/fightclub3.jpg', inputMode: 'single' },
 ];
