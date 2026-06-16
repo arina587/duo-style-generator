@@ -17,6 +17,7 @@ export type GenerationErrorPhase =
   | 'uploading_inputs'
   | 'starting_generation'
   | 'polling_generation'
+  | 'validating_result'
   | 'preloading_result'
   | 'other';
 
@@ -552,11 +553,13 @@ function App() {
             validatedUrl = validateOutputUrl(data.output);
           } catch (validateErr) {
             console.error('[POLL FAILURE] output URL validation failed', {
-              phase: 'polling_generation', requestId, predictionId, provider,
+              phase: 'validating_result', requestId, predictionId, provider,
+              outputUrl: (data.output ?? '').substring(0, 80),
               elapsedMs: Date.now() - generationStartTime,
               ...errDetail(validateErr), ua: navigator.userAgent,
             });
-            finishWithError(normalizeError(validateErr, 'polling_generation'));
+            finishWithError(makeError('validating_result', 'server',
+              'The image was generated, but the result URL could not be processed. Please try again.'));
             return;
           }
 
@@ -599,12 +602,28 @@ function App() {
         }
 
         if (data.status === 'failed' || data.status === 'canceled') {
+          const elapsedMs = Date.now() - generationStartTime;
           console.error('[POLL FAILURE] backend job failed', {
             phase: 'polling_generation', requestId, predictionId, provider,
             jobStatus: data.status, backendError: data.error,
-            elapsedMs: Date.now() - generationStartTime, ua: navigator.userAgent,
+            elapsedMs, ua: navigator.userAgent,
           });
-          finishWithError(normalizeError(data.error ?? 'Generation failed. Please try again.', 'polling_generation'));
+
+          // Moderation can surface here; check before defaulting to server error.
+          const errLo = (data.error ?? '').toLowerCase();
+          let ge: GenerationError;
+          if (errLo.includes('content_policy_violation') || errLo.includes('content policy violation') ||
+              errLo.includes('moderation failed') || errLo.includes('did not pass moderation') ||
+              errLo.includes('unsafe image content') || errLo.includes('flagged by moderation') ||
+              errLo.includes('safety system blocked')) {
+            ge = makeError('polling_generation', 'moderation', 'This image did not pass content moderation. Please try different photos.');
+          } else {
+            const userMsg = (typeof data.error === 'string' && data.error.length > 0 && data.error.length < 300)
+              ? data.error
+              : 'The image generation failed. Please try again.';
+            ge = makeError('polling_generation', 'server', userMsg);
+          }
+          finishWithError(ge);
           return;
         }
 

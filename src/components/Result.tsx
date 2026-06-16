@@ -223,7 +223,12 @@ export default function Result({
   const isModerationError = !isGenerating && !!generationError && errorType === 'moderation';
   const isUploadError = !isGenerating && !!generationError && errorType === 'upload';
   const isPostError = !isGenerating && errorPhase === 'starting_generation' && errorType !== 'moderation';
-  const isPollError = !isGenerating && errorPhase === 'polling_generation' && errorType !== 'moderation' && errorType !== 'timeout';
+  // True connection/network issue during polling — only network type, not backend job failures
+  const isPollError = !isGenerating && errorPhase === 'polling_generation' && errorType === 'network';
+  // Backend provider reported the job as failed/canceled
+  const isBackendJobFailed = !isGenerating && errorPhase === 'polling_generation' && errorType === 'server';
+  // Job succeeded but output URL was invalid or missing
+  const isValidationFailed = !isGenerating && errorPhase === 'validating_result';
 
   const phaseLabel: Record<GenerationPhase, { heading: string; subtitle: string; detail: string }> = {
     uploading: {
@@ -269,6 +274,12 @@ export default function Result({
   } else if (isPollError) {
     heading = 'Connection Lost';
     subtitle = 'Could not reach the server while waiting for your result';
+  } else if (isBackendJobFailed) {
+    heading = 'Generation Failed';
+    subtitle = 'The image generation did not complete — please try again';
+  } else if (isValidationFailed) {
+    heading = 'Result Processing Failed';
+    subtitle = 'The image was generated but the result could not be retrieved';
   } else if (generationError) {
     heading = 'Generation Failed';
     subtitle = 'Please try again';
@@ -556,6 +567,26 @@ export default function Result({
                       <AlertCircle className="w-8 h-8 text-amber-400" />
                     </div>
                     <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Connection Lost</p>
+                    <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">
+                      {errorMessage}
+                    </p>
+                  </>
+                ) : isBackendJobFailed ? (
+                  <>
+                    <div className="mx-auto mb-5 rounded-xl border-2 border-red-200 bg-red-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
+                      <AlertCircle className="w-8 h-8 text-red-400" />
+                    </div>
+                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Generation Failed</p>
+                    <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">
+                      {errorMessage}
+                    </p>
+                  </>
+                ) : isValidationFailed ? (
+                  <>
+                    <div className="mx-auto mb-5 rounded-xl border-2 border-amber-200 bg-amber-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
+                      <AlertCircle className="w-8 h-8 text-amber-400" />
+                    </div>
+                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Result Processing Failed</p>
                     <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">
                       {errorMessage}
                     </p>
