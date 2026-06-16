@@ -135,14 +135,14 @@ function normalizeError(error: unknown, phase: GenerationErrorPhase): Generation
     return makeError(phase, 'timeout', 'Generation is taking longer than expected. Please try again.');
   }
 
-  // Only explicit provider content-violation strings. Generic words like
-  // "policy", "blocked", "unsafe" are intentionally excluded — they appear in
-  // RLS / storage / CORS / browser errors which can never reach this branch now.
-  if (lo.includes('content_policy_violation') || lo.includes('content policy violation') ||
+  // Only explicit provider content-violation strings.
+  if (lo.includes('moderation_blocked') || lo.includes('moderation_details') ||
+      lo.includes('content_policy_violation') || lo.includes('content policy violation') ||
       lo.includes('moderation failed') || lo.includes('did not pass moderation') ||
       lo.includes('unsafe image content') || lo.includes('flagged by moderation') ||
-      lo.includes('safety system blocked')) {
-    return makeError(phase, 'moderation', 'This image did not pass content moderation. Please try different photos.');
+      lo.includes('safety system blocked') || lo.includes('safety system') ||
+      lo.includes('rejected by the safety')) {
+    return makeError(phase, 'moderation', 'The generated image was rejected by the AI safety system. Please try a different photo or reference.');
   }
 
   if (phase === 'starting_generation') {
@@ -560,6 +560,7 @@ function App() {
             });
             finishWithError(makeError('validating_result', 'server',
               'The image was generated, but the result URL could not be processed. Please try again.'));
+            console.log('[POLL ERROR CATEGORY] validation_failed', { requestId, predictionId, provider });
             return;
           }
 
@@ -612,12 +613,18 @@ function App() {
           // Moderation can surface here; check before defaulting to server error.
           const errLo = (data.error ?? '').toLowerCase();
           let ge: GenerationError;
-          if (errLo.includes('content_policy_violation') || errLo.includes('content policy violation') ||
-              errLo.includes('moderation failed') || errLo.includes('did not pass moderation') ||
-              errLo.includes('unsafe image content') || errLo.includes('flagged by moderation') ||
-              errLo.includes('safety system blocked')) {
-            ge = makeError('polling_generation', 'moderation', 'This image did not pass content moderation. Please try different photos.');
+          const isModerationErr =
+            errLo.includes('moderation_blocked') || errLo.includes('moderation_details') ||
+            errLo.includes('content_policy_violation') || errLo.includes('content policy violation') ||
+            errLo.includes('moderation failed') || errLo.includes('did not pass moderation') ||
+            errLo.includes('unsafe image content') || errLo.includes('flagged by moderation') ||
+            errLo.includes('safety system blocked') || errLo.includes('safety system') ||
+            errLo.includes('rejected by the safety');
+          if (isModerationErr) {
+            console.log('[POLL ERROR CATEGORY] moderation', { requestId, predictionId, provider });
+            ge = makeError('polling_generation', 'moderation', 'The generated image was rejected by the AI safety system. Please try a different photo or reference.');
           } else {
+            console.log('[POLL ERROR CATEGORY] generation_failed', { requestId, predictionId, provider });
             const userMsg = (typeof data.error === 'string' && data.error.length > 0 && data.error.length < 300)
               ? data.error
               : 'The image generation failed. Please try again.';
@@ -655,6 +662,7 @@ function App() {
           elapsedMs, ua: navigator.userAgent,
         });
 
+        console.log('[POLL ERROR CATEGORY] network', { requestId, predictionId, provider, retryCount: retryNum, elapsedMs });
         setIsPollingRecovering(true);
 
         // Only give up when the total generation wall-clock time exceeds the limit.
@@ -666,6 +674,7 @@ function App() {
             phase: 'polling_generation', requestId, predictionId, provider,
             elapsedMs, retryCount: retryNum, ua: navigator.userAgent,
           });
+          console.log('[POLL ERROR CATEGORY] timeout', { requestId, predictionId, provider, elapsedMs, retryCount: retryNum });
           finishWithError(makeError('polling_generation', 'timeout', 'Generation is taking longer than expected. Please try again.'));
           return;
         }

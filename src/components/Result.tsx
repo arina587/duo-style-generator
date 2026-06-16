@@ -263,8 +263,8 @@ export default function Result({
     heading = 'Taking Longer Than Expected';
     subtitle = 'Please try again in a moment';
   } else if (isModerationError) {
-    heading = 'Image Not Allowed';
-    subtitle = 'Your image did not pass content checks';
+    heading = 'Generation Blocked';
+    subtitle = 'The generated image was rejected by the AI safety system';
   } else if (isUploadError) {
     heading = 'Upload Failed';
     subtitle = 'Could not upload your photos — please check your connection';
@@ -536,9 +536,9 @@ export default function Result({
                     <div className="mx-auto mb-5 rounded-xl border-2 border-orange-200 bg-orange-50 flex items-center justify-center" style={{ width: 64, height: 64 }}>
                       <AlertCircle className="w-8 h-8 text-orange-400" />
                     </div>
-                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Image Not Allowed</p>
+                    <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">Generation Blocked</p>
                     <p className="text-[#7a6f96] text-sm max-w-sm mx-auto leading-relaxed font-body">
-                      This image did not pass content moderation. Please try different photos.
+                      The generated image was rejected by the AI safety system. Please try a different photo or reference.
                     </p>
                   </>
                 ) : isUploadError ? (

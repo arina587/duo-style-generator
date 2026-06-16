@@ -3776,14 +3776,37 @@ async function runOpenAIJob(
 
     if (!openaiRes.ok) {
       let errMsg = `OpenAI image generation failed (${openaiRes.status})`;
+      let errorCategory = "generation_failed";
       try {
         const errData = await openaiRes.json() as Record<string, unknown>;
         console.log("[OPENAI JOB] error body:", JSON.stringify(errData).substring(0, 400));
-        errMsg += ": " + (errData?.error ? JSON.stringify(errData.error) : JSON.stringify(errData).substring(0, 300));
+        const errObj = errData?.error as Record<string, unknown> | undefined;
+        const errCode = String(errObj?.code ?? "").toLowerCase();
+        const errType = String(errObj?.type ?? "").toLowerCase();
+        const errMessage = String(errObj?.message ?? "").toLowerCase();
+
+        // Detect moderation/safety blocks and store a reliably detectable prefix
+        if (
+          errCode === "moderation_blocked" ||
+          errCode === "content_policy_violation" ||
+          errCode.includes("moderation") ||
+          errMessage.includes("safety system") ||
+          errMessage.includes("rejected by the safety") ||
+          errMessage.includes("moderation") ||
+          (errType === "image_generation_user_error" &&
+            (errMessage.includes("safety") || errMessage.includes("moderation") || errMessage.includes("rejected")))
+        ) {
+          errorCategory = "moderation";
+          errMsg = `moderation_blocked: ${errObj?.message ?? "The request was rejected by the safety system."}`;
+        } else {
+          errMsg += ": " + (errData?.error ? JSON.stringify(errData.error) : JSON.stringify(errData).substring(0, 300));
+        }
       } catch {
         errMsg += ": (non-JSON error body)";
       }
-      await markFailed(errMsg);
+      console.log("[OPENAI JOB ERROR CATEGORY] jobId=" + jobId +
+        " category=" + errorCategory + " httpStatus=" + openaiRes.status);
+      await markFailed(errMsg, { errorCategory, httpStatus: openaiRes.status });
       return;
     }
 
