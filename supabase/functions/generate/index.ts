@@ -3651,28 +3651,46 @@ async function proxyImage(proxyUrl: string): Promise<Response> {
 async function uploadToStorage(imageBytes: Uint8Array, mimeType: string): Promise<string> {
   const ext = mimeType === "image/png" ? "png" : mimeType === "image/webp" ? "webp" : "jpg";
   const fileName = `generated/${crypto.randomUUID()}.${ext}`;
-  console.log("[STORAGE] uploading fileName:", fileName, "mime:", mimeType, "bytes:", imageBytes.byteLength);
+  const MAX_ATTEMPTS = 3;
+  let lastErr: Error = new Error("Storage upload failed");
 
-  const { error: uploadError } = await supabase.storage
-    .from("generated-images")
-    .upload(fileName, imageBytes, {
-      contentType: mimeType,
-      cacheControl: "3600",
-      upsert: false,
-    });
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    console.log("[STORAGE UPLOAD START] attempt=" + attempt + "/" + MAX_ATTEMPTS +
+      " fileName=" + fileName + " mime=" + mimeType + " bytes=" + imageBytes.byteLength);
+    try {
+      const { error: uploadError } = await supabase.storage
+        .from("generated-images")
+        .upload(fileName, imageBytes, {
+          contentType: mimeType,
+          cacheControl: "3600",
+          upsert: false,
+        });
 
-  if (uploadError) {
-    console.error("[STORAGE] upload error:", uploadError.message);
-    throw new Error(`Storage upload failed: ${uploadError.message}`);
+      if (uploadError) {
+        const sc = (uploadError as { statusCode?: string | number }).statusCode;
+        lastErr = new Error(`Storage upload failed (${sc ?? "unknown"}): ${uploadError.message}`);
+        console.error("[STORAGE UPLOAD ERROR] attempt=" + attempt + "/" + MAX_ATTEMPTS +
+          " statusCode=" + sc + " message=" + uploadError.message);
+        if (attempt < MAX_ATTEMPTS) await new Promise(r => setTimeout(r, attempt * 1500));
+        continue;
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from("generated-images")
+        .getPublicUrl(fileName);
+
+      const url = publicUrlData.publicUrl;
+      console.log("[STORAGE UPLOAD SUCCESS] attempt=" + attempt +
+        " url=" + url.substring(0, 100) + " bytes=" + imageBytes.byteLength);
+      return url;
+    } catch (err) {
+      lastErr = err instanceof Error ? err : new Error(String(err));
+      console.error("[STORAGE UPLOAD EXCEPTION] attempt=" + attempt + "/" + MAX_ATTEMPTS +
+        " error=" + lastErr.message);
+      if (attempt < MAX_ATTEMPTS) await new Promise(r => setTimeout(r, attempt * 1500));
+    }
   }
-
-  const { data: publicUrlData } = supabase.storage
-    .from("generated-images")
-    .getPublicUrl(fileName);
-
-  const url = publicUrlData.publicUrl;
-  console.log("[STORAGE] public url:", url.substring(0, 100));
-  return url;
+  throw lastErr;
 }
 
 // ── OpenAI generation: called inside waitUntil so it runs after response is sent ──
@@ -3683,12 +3701,19 @@ async function runOpenAIJob(
   model: string,
   referenceId: string,
 ): Promise<void> {
-  const markFailed = async (msg: string) => {
-    console.error("[OPENAI JOB] failed jobId=" + jobId, msg);
-    await supabase.from("generation_jobs").update({
+  const markFailed = async (msg: string, details?: Record<string, unknown>) => {
+    const safeMsg = (msg && msg.length > 0) ? msg : "Unknown generation error";
+    console.error("[OPENAI JOB FAILED]", {
+      jobId, referenceId, message: safeMsg, ...(details ?? {}),
+    });
+    const { error: dbErr } = await supabase.from("generation_jobs").update({
       status: "failed",
-      error: msg,
+      error: safeMsg,
     }).eq("id", jobId);
+    if (dbErr) {
+      console.error("[OPENAI JOB] markFailed DB write error jobId=" + jobId +
+        " dbError=" + dbErr.message + " originalMsg=" + safeMsg);
+    }
   };
 
   try {
@@ -3726,14 +3751,28 @@ async function runOpenAIJob(
       openaiForm.append("image[]", new Blob([bytes], { type: meta }), `image_${i}.${ext}`);
     }
 
-    const openaiRes = await fetch("https://api.openai.com/v1/images/edits", {
-      method: "POST",
-      headers: { "Authorization": `Bearer ${openaiApiKey}` },
-      body: openaiForm,
-    });
+    const openaiAbort = new AbortController();
+    const openaiTimeout = setTimeout(() => openaiAbort.abort(), 5 * 60 * 1000); // 5-min hard timeout
+    const openaiT0 = Date.now();
+    console.log("[OPENAI REQUEST START] jobId=" + jobId + " referenceId=" + referenceId +
+      " imageCount=" + images.length);
 
+    let openaiRes: Response;
+    try {
+      openaiRes = await fetch("https://api.openai.com/v1/images/edits", {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${openaiApiKey}` },
+        body: openaiForm,
+        signal: openaiAbort.signal,
+      });
+    } finally {
+      clearTimeout(openaiTimeout);
+    }
+
+    const openaiElapsed = Date.now() - openaiT0;
     const openaiContentType = openaiRes.headers.get("content-type") ?? "";
-    console.log("[OPENAI JOB] response status:", openaiRes.status, "content-type:", openaiContentType);
+    console.log("[OPENAI REQUEST END] jobId=" + jobId + " status=" + openaiRes.status +
+      " contentType=" + openaiContentType + " elapsedMs=" + openaiElapsed);
 
     if (!openaiRes.ok) {
       let errMsg = `OpenAI image generation failed (${openaiRes.status})`;
@@ -3759,37 +3798,107 @@ async function runOpenAIJob(
     let stableUrl: string;
 
     if (outputUrl) {
-      // Temporary OpenAI/Azure URL — fetch binary and upload to stable Supabase Storage
-      console.log("[OPENAI JOB] URL response, fetching binary:", outputUrl.substring(0, 80));
-      const imgFetch = await fetch(outputUrl, { headers: { "Accept": "image/*" } });
-      if (!imgFetch.ok) {
-        await markFailed(`Failed to fetch OpenAI image (${imgFetch.status})`);
+      // Temporary OpenAI/Azure URL — fetch binary with retries then upload to stable storage
+      const IMG_FETCH_ATTEMPTS = 3;
+      let imgBytes: Uint8Array | null = null;
+      let imgContentType = "image/jpeg";
+      let lastFetchErr: Error = new Error("Failed to fetch output image");
+
+      for (let attempt = 1; attempt <= IMG_FETCH_ATTEMPTS; attempt++) {
+        console.log("[OPENAI IMAGE DOWNLOAD START] jobId=" + jobId +
+          " attempt=" + attempt + "/" + IMG_FETCH_ATTEMPTS +
+          " url=" + outputUrl.substring(0, 80));
+        try {
+          const imgFetch = await fetch(outputUrl, { headers: { "Accept": "image/*" } });
+          console.log("[OPENAI IMAGE DOWNLOAD] jobId=" + jobId +
+            " attempt=" + attempt + " status=" + imgFetch.status +
+            " contentType=" + (imgFetch.headers.get("content-type") ?? ""));
+
+          if (!imgFetch.ok) {
+            const retryable = [429, 500, 502, 503, 504].includes(imgFetch.status);
+            lastFetchErr = new Error(`Failed to fetch OpenAI output image (HTTP ${imgFetch.status})`);
+            console.warn("[OPENAI IMAGE DOWNLOAD] jobId=" + jobId +
+              " attempt=" + attempt + " status=" + imgFetch.status +
+              " retryable=" + retryable);
+            if (!retryable || attempt === IMG_FETCH_ATTEMPTS) {
+              await markFailed(lastFetchErr.message, {
+                attempt, httpStatus: imgFetch.status, url: outputUrl.substring(0, 80),
+              });
+              return;
+            }
+            await new Promise(r => setTimeout(r, attempt * 2000));
+            continue;
+          }
+
+          imgContentType = (imgFetch.headers.get("content-type") ?? "image/jpeg").split(";")[0].trim();
+          imgBytes = new Uint8Array(await imgFetch.arrayBuffer());
+          console.log("[OPENAI IMAGE DOWNLOAD SUCCESS] jobId=" + jobId +
+            " attempt=" + attempt + " bytes=" + imgBytes.byteLength +
+            " contentType=" + imgContentType);
+          break;
+        } catch (fetchErr) {
+          lastFetchErr = fetchErr instanceof Error ? fetchErr : new Error(String(fetchErr));
+          console.warn("[OPENAI IMAGE DOWNLOAD EXCEPTION] jobId=" + jobId +
+            " attempt=" + attempt + " error=" + lastFetchErr.message);
+          if (attempt < IMG_FETCH_ATTEMPTS) await new Promise(r => setTimeout(r, attempt * 2000));
+        }
+      }
+
+      if (!imgBytes) {
+        await markFailed(
+          `Failed to fetch OpenAI output image after ${IMG_FETCH_ATTEMPTS} attempts: ${lastFetchErr.message}`,
+          { url: outputUrl.substring(0, 80) },
+        );
         return;
       }
-      const imgContentType = (imgFetch.headers.get("content-type") ?? "image/jpeg").split(";")[0].trim();
-      console.log("[OPENAI JOB] fetched content-type:", imgContentType);
-      const imgBytes = new Uint8Array(await imgFetch.arrayBuffer());
+
       stableUrl = await uploadToStorage(imgBytes, imgContentType);
     } else if (b64json) {
-      console.log("[OPENAI JOB] b64_json response, decoding...");
-      const binaryStr = atob(b64json);
-      const bytes = new Uint8Array(binaryStr.length);
-      for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+      console.log("[OPENAI JOB b64] jobId=" + jobId + " decoding b64_json length=" + b64json.length);
+      let bytes: Uint8Array;
+      try {
+        const binaryStr = atob(b64json);
+        bytes = new Uint8Array(binaryStr.length);
+        for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+      } catch (decodeErr) {
+        const msg = decodeErr instanceof Error ? decodeErr.message : String(decodeErr);
+        await markFailed(`Failed to decode b64_json image data: ${msg}`, { b64Len: b64json.length });
+        return;
+      }
+      console.log("[OPENAI JOB b64] jobId=" + jobId + " decoded bytes=" + bytes.byteLength);
       stableUrl = await uploadToStorage(bytes, "image/jpeg");
     } else {
       await markFailed(`OpenAI response missing output image: ${JSON.stringify(openaiData).substring(0, 200)}`);
       return;
     }
 
-    console.log("[OPENAI JOB] succeeded, stableUrl:", stableUrl.substring(0, 100));
-    await supabase.from("generation_jobs").update({
+    console.log("[OPENAI JOB SUCCESS] jobId=" + jobId + " referenceId=" + referenceId +
+      " stableUrl=" + stableUrl.substring(0, 100));
+    const { error: updateErr } = await supabase.from("generation_jobs").update({
       status: "succeeded",
       output: stableUrl,
     }).eq("id", jobId);
 
+    if (updateErr) {
+      console.error("[OPENAI JOB] succeeded DB update failed jobId=" + jobId +
+        " error=" + updateErr.message + " stableUrl=" + stableUrl.substring(0, 100) +
+        " — retrying once");
+      const { error: retryErr } = await supabase.from("generation_jobs").update({
+        status: "succeeded",
+        output: stableUrl,
+      }).eq("id", jobId);
+      if (retryErr) {
+        console.error("[OPENAI JOB] succeeded DB retry also failed jobId=" + jobId +
+          " error=" + retryErr.message + " IMAGE IS STORED AT: " + stableUrl.substring(0, 100));
+      }
+    }
+
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    await markFailed(msg);
+    const stack = err instanceof Error ? (err.stack ?? "").substring(0, 600) : "";
+    console.error("[OPENAI JOB EXCEPTION] jobId=" + jobId + " referenceId=" + referenceId +
+      " error=" + msg + (stack ? " stack=" + stack : ""));
+    await markFailed(msg || "Unexpected error during generation", { stack: stack.substring(0, 200) });
   }
 }
 
