@@ -1485,7 +1485,47 @@ Do not modify the background, environment, objects, atmosphere, lighting setup, 
 
 Photorealistic, seamless integration, realistic anatomy, natural skin texture, realistic shadows, realistic facial structure, cinematic photography, high detail, premium film-quality realism.`
 
-const AMERICANPSYCHO_3 = ``
+const AMERICANPSYCHO_3 = `Replace only the main person in the image with the person from the uploaded reference photo.
+
+Priority 1: Preserve the reference person's facial identity with maximum fidelity.
+Priority 2: Recreate the exact facial expression, smile, gaze, attitude, and emotional presence from the template image.
+Priority 3: Match the lighting, skin rendering, color grading, and cinematic style of the template image.
+
+The reference photo is the only source of facial identity, hair, body, and physical appearance.
+
+Preserve the reference person's face with maximum fidelity. Keep the exact face shape, facial proportions, eye shape, eyelids, eyebrows, nose shape, nostrils, lips, mouth shape, jawline, chin, cheekbones, ears, forehead, skin features, facial symmetry, facial structure, hairline, hairstyle, hair texture, hair volume, and all distinctive facial characteristics.
+
+Preserve the reference person's body with maximum fidelity. Keep the exact body shape, physique, body proportions, shoulder width, neck shape, arm proportions, hand shape, posture characteristics, and overall anatomy.
+
+Do not alter, beautify, stylize, enhance, redesign, reinterpret, age, rejuvenate, or modify the person's identity.
+
+Do not inherit, blend, borrow, copy, or recreate any facial features, facial proportions, facial structure, bone structure, eye shape, nose shape, mouth shape, jaw shape, cheek structure, hairstyle, hairline, body proportions, anatomy, physique, shoulders, neck, arms, hands, or physical characteristics from the template person.
+
+Identity comes exclusively from the reference photo. Expression comes exclusively from the template image.
+
+The facial expression and smile are the highest priority after identity preservation.
+
+Precisely recreate the exact smile from the template image. Match the same mouth shape, lip position, lip curvature, smile intensity, smile asymmetry, cheek movement, cheek tension, eye expression, eyelid position, eyebrow tension, facial muscle activation, jaw position, head angle, gaze direction, emotional presence, confidence, attitude, and psychological state.
+
+Transfer the exact emotion, smile, gaze, facial muscle movement, confidence, attitude, and emotional impact from the template image while preserving the complete facial identity of the reference person.
+
+The resulting face should look entirely like the person from the reference photo while expressing the exact smile and emotional expression of the template subject.
+
+Transfer the entire person, including face, head, hair, neck, shoulders, chest, torso, waist, hips, arms, elbows, forearms, wrists, hands, fingers, body shape, proportions, and physique. Reconstruct the complete person from the reference photo in the exact pose, posture, body language, head position, gaze direction, expression, and attitude of the template subject.
+
+Do not perform a face swap. Rebuild the entire person using the reference person's identity, anatomy, and physical characteristics while preserving the pose and emotion from the template image.
+
+Match the exact lighting, shadows, contrast, facial shading, skin texture, skin tones, facial contours, highlights, depth, facial volume, shadow transitions, color grading, and cinematic look of the template image.
+
+Apply the same skin rendering, skin texture, facial detail, realistic pores, subtle skin imperfections, shadow structure, image texture, contrast curve, color palette, and cinematic grading as the template image. Recreate the same skin appearance, lighting mood, atmosphere, and visual style as the template.
+
+The inserted person should appear naturally photographed in the scene, not composited, pasted, edited onto another body, or look like a Photoshop edit. Preserve realistic facial volume, realistic shadow transitions, realistic skin texture, realistic hair rendering, realistic anatomy, and seamless integration.
+
+Keep all clothing, accessories, objects, hand positions, body posture, camera angle, framing, perspective, depth of field, lighting setup, environment, and composition unchanged.
+
+Do not modify the background, environment, objects, atmosphere, lighting setup, or image composition.
+
+Photorealistic, seamless integration, realistic anatomy, natural skin texture, realistic hair texture, realistic shadows, realistic facial structure, cinematic photography, high detail, premium film-quality realism.`
 
 const FIGHTCLUB_1 = `Replace only the foreground person holding the pink soap bar with the person from the uploaded reference photo.
 
