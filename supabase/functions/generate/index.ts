@@ -1417,47 +1417,45 @@ Photorealistic, realistic anatomy, natural skin texture, seamless integration, h
 
 Do not modify the background, environment, objects, or image composition. Only replace the person.`
 
-const AMERICANPSYCHO_1 = `Replace the entire main person in the template image with the person from the uploaded reference photo.
+const AMERICANPSYCHO_1 = `Replace only the main person in the image with the person from the uploaded reference photo.
 
-Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, arm proportions, hand shape, posture characteristics, and overall appearance.
+Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, posture characteristics, and overall appearance.
 
 Preserve the unique facial characteristics of the reference person so the resulting person clearly looks like the same individual.
 
-Recreate the exact facial expression, emotion, gaze direction, head rotation, head tilt, posture, pose, body language, hand gestures, arm positions, body orientation, and overall attitude of the main subject in the template image.
+The facial expression, eyes, and emotional presence are the highest priority.
 
-Transfer the entire person, including face, head, neck, shoulders, chest, torso, arms, hands, and body proportions. Adapt the anatomy to match the reference person rather than the original person in the template.
+Precisely recreate the exact emotional expression of the template subject. Match the same intense focus, emotional detachment, emotional control, cold confidence, self-discipline, seriousness, concentration, and psychological intensity visible in the template image.
 
-Do not perform a face swap. Do not keep any facial features, body proportions, or anatomy from the original person in the template. Reconstruct the complete person from the reference photo in the exact pose and expression of the template image.
+Match the exact eye direction, gaze intensity, eyelid position, eyebrow tension, forehead tension, facial muscle tension, jaw position, lip position, mouth shape, head angle, head rotation, head tilt, posture, and emotional presence shown in the template image.
 
-Maintain realistic anatomy, natural proportions, correct perspective, sharp cinematic lighting, and seamless integration into the scene.
+The eyes are extremely important. Recreate the same piercing, focused, controlled stare. The person should appear highly concentrated, emotionally restrained, mentally present, and completely in control.
 
-Keep the camera angle, framing, composition, clothing style, accessories, environment, and all background elements from the template image.
+There should be no smile, no friendliness, no happiness, no visible excitement, and no exaggerated expression. The face should remain serious, controlled, disciplined, emotionally distant, and psychologically intense.
 
-Photorealistic, high detail, realistic skin texture, sharp corporate lighting, professional photography.
+Prioritize matching the exact gaze, eye expression, facial tension, emotional state, and psychological presence from the template image over all other facial attributes except identity preservation.
 
-Do not modify the background, objects, environment, or image composition. Only replace the main person.`
+Preserve the identity of the reference person while reproducing the exact emotional expression, eye contact, facial tension, and attitude of the template subject.
 
-const AMERICANPSYCHO_2 = `Replace the entire person in the template image with the person from the uploaded reference photo. Use the reference photo to capture the person's appearance, including facial features, hairstyle, skin tone, body shape, body proportions, and overall look.
+Transfer the entire person, including face, head, hair, neck, shoulders, chest, torso, arms, hands, body shape, proportions, and physique. Adapt the body, shoulders, neck, posture, and overall anatomy to match the reference person rather than the original subject.
 
-Keep the facial expression, gaze direction, head position, pose, body language, hand gesture, clothing style, accessories, camera angle, framing, lighting, shadows, depth of field, and overall composition from the template image.
+Do not perform a face swap. Do not keep any facial features, body proportions, anatomy, shoulders, neck, arms, hands, or physique from the original subject. Reconstruct the complete person from the reference photo in the exact pose, posture, body language, gaze direction, expression, and emotional state of the template subject.
 
-Transfer the entire person, not just the face. The result should depict the same person from the reference photo naturally occupying the position of the person in the template image, with realistic anatomy, proportions, perspective, and lighting.
+Match the exact lighting, shadows, contrast, skin texture, skin tones, facial contours, facial volume, highlights, depth, and cinematic look of the template image.
 
-Photorealistic, high detail, natural skin texture, realistic lighting, seamless integration, professional cinematic photography.
+Apply the same skin rendering, skin texture, facial detail, shadow structure, realistic pores, subtle skin imperfections, contrast curve, image texture, color palette, and cinematic grading as the template image. Recreate the same clean, sharp facial definition, realistic skin appearance, and professional cinematic look.
 
-Do not modify the background, environment, furniture, accessories, camera angle, or image composition. Only replace the entire person.`
+The inserted person should appear naturally photographed in the scene, not composited, pasted, edited onto another body, or look like a Photoshop edit. Preserve realistic facial volume, realistic shadow transitions, realistic skin texture, and seamless integration.
 
-const AMERICANPSYCHO_3 = `Replace the entire person in the template image with the person from the uploaded reference photo. Use the reference photo as the source of the person's appearance, including facial features, hairstyle, skin tone, body shape, body proportions, and overall look.
+Keep the exact suit, tie, headphones, head position, posture, camera angle, framing, perspective, depth of field, background blur, lighting setup, and composition unchanged.
 
-The person should naturally recreate the facial expression, emotion, gaze, head position, pose, body language, hand gestures, and overall attitude shown in the template image while maintaining the appearance of the reference person.
+Do not modify the background, people, environment, objects, atmosphere, lighting setup, or image composition.
 
-Transfer the entire person, including face, head, torso, arms, hands, body shape, and proportions. Do not perform a simple face swap. The result should depict the person from the reference photo naturally acting and expressing the same emotion as the person in the template image.
+Photorealistic, seamless integration, realistic anatomy, natural skin texture, realistic shadows, realistic facial structure, cinematic photography, high detail, premium film-quality realism.`
 
-Keep the camera angle, framing, clothing style, accessories, lighting, shadows, depth of field, perspective, and overall composition from the template image.
+const AMERICANPSYCHO_2 = ``
 
-Photorealistic, realistic anatomy, natural skin texture, seamless integration, high detail, professional photography.
-
-Do not modify the background, environment, objects, or image composition. Only replace the person.`
+const AMERICANPSYCHO_3 = ``
 
 const FIGHTCLUB_1 = `Replace only the foreground person holding the pink soap bar with the person from the uploaded reference photo.
 
