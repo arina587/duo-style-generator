@@ -1459,51 +1459,39 @@ Photorealistic, realistic anatomy, natural skin texture, seamless integration, h
 
 Do not modify the background, environment, objects, or image composition. Only replace the person.`
 
-const FIGHTCLUB_1 = `Replace the entire main person in the template image with the person from the uploaded reference photo.
+const FIGHTCLUB_1 = `Replace only the foreground person holding the pink soap bar with the person from the uploaded reference photo.
 
 Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, arm proportions, hand shape, posture characteristics, and overall appearance.
 
 Preserve the unique facial characteristics of the reference person so the resulting person clearly looks like the same individual.
 
-Recreate the exact facial expression, emotion, gaze direction, head rotation, head tilt, posture, pose, body language, hand gestures, arm positions, body orientation, and overall attitude of the main subject in the template image.
+The person should fully recreate the exact facial expression, emotion, intensity, confidence, eye direction, gaze, eyelid position, head rotation, head tilt, mouth shape, facial tension, jaw position, facial muscle expression, attitude, and overall emotional presence of the foreground person in the template image. The emotional expression is the highest priority and should closely match the foreground person's expression in the template image.
 
-Transfer the entire person, including face, head, neck, shoulders, chest, torso, arms, hands, and body proportions. Do not perform a simple face swap. Adapt the anatomy to match the reference person rather than the original person in the template.
+Transfer the entire person, including face, head, hair, neck, shoulders, chest, torso, waist, hips, arms, elbows, forearms, wrists, hands, fingers, body shape, proportions, and physique. Adapt the body, arms, hands, shoulders, neck, posture, and overall anatomy to match the reference person rather than the original foreground person.
 
-Preserve the gritty cinematic Fight Club aesthetic — raw urban atmosphere, moody shadows, worn textures, visceral realism, underground lighting.
+Do not perform a face swap. Do not keep any facial features, body proportions, anatomy, hands, arms, shoulders, neck, or physique from the original foreground person. Reconstruct the complete person from the reference photo in the exact pose, expression, body language, head position, and gesture of the foreground person in the template image.
 
-Maintain realistic anatomy, natural proportions, correct perspective, gritty cinematic lighting, and seamless integration into the scene.
+Match the exact facial lighting, shadows, contrast, skin shading, facial contours, depth, highlights, color grading, facial volume, shadow transitions, and overall facial structure created by the lighting in the template image.
 
-Keep the camera angle, framing, composition, clothing style, accessories, environment, and all background elements from the template image.
+Apply the same warm yellow cinematic filter, yellow-green color grading, skin rendering, skin texture, contrast curve, shadow depth, highlight rolloff, facial texture, gritty film-like processing, image texture, color palette, and overall visual grading as the template image. Recreate the same yellow-tinted skin appearance, skin tone rendering, lighting mood, atmosphere, and cinematic look as the template.
 
-Photorealistic, high detail, realistic skin texture, gritty cinematic lighting, raw urban atmosphere, professional photography.
+Process the face and skin to match the template: realistic pores, natural imperfections, facial roughness, subtle oily highlights, deep shadows, warm yellow highlights, greenish shadow tint, realistic facial shading, and detailed cinematic skin texture.
 
-Do not modify the background, objects, environment, or image composition. Only replace the main person.`
+The inserted person should look as if they were originally photographed in the same shot with the same camera, lens, yellow cinematic lighting setup, and post-processing.
 
-const FIGHTCLUB_2 = `Replace the entire person in the template image with the person from the uploaded reference photo. Use the reference photo to capture the person's appearance, including facial features, hairstyle, skin tone, body shape, body proportions, and overall look.
+The person should appear naturally photographed in the scene, not composited, pasted, edited onto another body, or look like a Photoshop edit. Preserve realistic facial volume, realistic shadow transitions, natural skin texture, seamless integration, and cinematic realism.
 
-Keep the facial expression, gaze direction, head position, pose, body language, hand gesture, clothing style, accessories, camera angle, framing, lighting, shadows, depth of field, and overall composition from the template image.
+Keep the exact hand position holding the soap bar, grip, arm position, clothing style, camera angle, framing, perspective, lighting, cinematic color grading, depth of field, and composition from the template image.
 
-Transfer the entire person, not just the face. The result should depict the same person from the reference photo naturally occupying the position of the person in the template image, with realistic anatomy, proportions, perspective, and lighting.
+Do not modify, replace, edit, regenerate, or alter the background person. Keep the background person exactly as shown in the template image.
 
-Preserve the raw, gritty Fight Club cinematic atmosphere — moody underground lighting, worn clothing, intense emotional presence.
+Keep the soap bar, background, environment, objects, lighting setup, atmosphere, and image composition unchanged.
 
-Photorealistic, high detail, natural skin texture, realistic lighting, seamless integration, professional cinematic photography.
+Photorealistic, seamless integration, realistic anatomy, natural skin texture, cinematic photography, high detail, realistic shadows, realistic facial structure, natural proportions, premium film-quality realism.`
 
-Do not modify the background, environment, furniture, accessories, camera angle, or image composition. Only replace the entire person.`
+const FIGHTCLUB_2 = ``
 
-const FIGHTCLUB_3 = `Replace the entire person in the template image with the person from the uploaded reference photo. Use the reference photo as the source of the person's appearance, including facial features, hairstyle, skin tone, body shape, body proportions, and overall look.
-
-The person should naturally recreate the facial expression, emotion, gaze, head position, pose, body language, hand gestures, and overall attitude shown in the template image while maintaining the appearance of the reference person.
-
-Transfer the entire person, including face, head, torso, arms, hands, body shape, and proportions. Do not perform a simple face swap. The result should depict the person from the reference photo naturally acting and expressing the same emotion as the person in the template image.
-
-Keep the camera angle, framing, clothing style, accessories, lighting, shadows, depth of field, perspective, and overall composition from the template image.
-
-Preserve the gritty, raw cinematic Fight Club aesthetic — intense underground atmosphere, moody shadows, worn textures, visceral realism.
-
-Photorealistic, realistic anatomy, natural skin texture, seamless integration, high detail, professional photography.
-
-Do not modify the background, environment, objects, or image composition. Only replace the person.`
+const FIGHTCLUB_3 = ``
 
 const WORLD_1 = `Replace the two original characters in the indoor cinematic scene with the exact people from the provided reference images using complete identity transfer and seamless photorealistic integration. Preserve the exact composition, framing, emotional tension, body positioning, and intimate face-to-face interaction from the original image. The final result must look like a real cinematic movie still captured naturally in-camera. Left side — male replacement: Completely replace the original young man with the man from the male reference image. Transfer exactly: face structure jawline and cheekbones nose shape lips and mouth structure authentic neutral / emotionally tense expression from the reference eyes and natural eye intensity hairstyle and hair texture hair color skin tone and realistic skin texture neck proportions body proportions posture and subtle body tension clothing style adaptation overall masculine identity and realistic human presence Keep the exact original pose: standing face-to-face with the girl same shoulder angle same head tilt same eye-line direction same body distance and emotional tension same cinematic side profile orientation Right side — female replacement: Completely replace the original young woman with the woman from the female reference image. Transfer exactly: facial structure eyes and authentic emotional gaze eyebrows lips and natural mouth tension realistic neutral cinematic expression from the reference hairstyle and natural hair flow hair color skin tone and skin pores body proportions posture clothing adaptation overall identity and feminine presence Keep the exact original pose: standing directly in front of the male character same body angle same head position same eye contact intensity same relaxed arm placement same cinematic side-profile orientation Critical emotional realism requirements: Both characters must preserve authentic human emotional realism from the reference photos: natural eyes believable facial muscles realistic micro-expressions subtle emotional tension relaxed mouth anatomy authentic cinematic mood natural human presence Scene preservation requirements: Preserve completely: indoor room environment large window background dark forest outside warm cinematic lamp lighting evening atmosphere shallow depth of field cinematic framing realistic indoor reflections ambient warm shadows realistic room perspective moody natural color grading Lighting and integration requirements: Perfectly match: warm indoor tungsten lighting soft cinematic shadows window backlight realistic skin shading facial shadow transitions room ambient bounce light camera perspective focal length compression realistic depth of field film-like cinematic grading natural exposure balance Extremely important anatomy requirements: anatomically correct hands correct number of fingers no extra fingers no fused fingers no duplicated limbs realistic shoulders realistic neck connection natural torso proportions physically correct posture realistic arm placement accurate body balance natural head perspective proper facial symmetry realistic ears and jaw anatomy Ensure: invisible edit quality seamless compositing natural interaction between both people physically believable proximity realistic skin pores natural fabric folds cinematic realism realistic eye reflections natural human anatomy perfect environmental integration Ultra photorealistic cinematic DSLR movie still, highly detailed skin texture, realistic anatomy, emotionally authentic expressions, moody cinematic lighting, natural indoor atmosphere, shallow depth of field, seamless identity replacement, invisible compositing quality. Negative prompt: extra fingers, extra hands, fused fingers, duplicated limbs, malformed anatomy, broken arms, distorted face, asymmetrical eyes, warped jaw, unrealistic expression, fake emotion, artificial smile, dead eyes, incorrect gaze, floating body parts, bad anatomy, stiff posture, unnatural neck, distorted shoulders, bad perspective, mismatched lighting, poor compositing, pasted subject, CGI, 3D render, cartoon, anime, illustration, painting, wax skin, plastic texture, blurry details, low quality, oversaturated colors, unrealistic shadows, distorted proportions, watermark, text, logo`;
 
