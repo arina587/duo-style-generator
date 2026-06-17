@@ -1489,7 +1489,39 @@ Keep the soap bar, background, environment, objects, lighting setup, atmosphere,
 
 Photorealistic, seamless integration, realistic anatomy, natural skin texture, cinematic photography, high detail, realistic shadows, realistic facial structure, natural proportions, premium film-quality realism.`
 
-const FIGHTCLUB_2 = ``
+const FIGHTCLUB_2 = `Replace only the main person in the image with the person from the uploaded reference photo.
+
+Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, posture characteristics, and overall appearance.
+
+Preserve the unique facial characteristics of the reference person so the resulting person clearly looks like the same individual.
+
+The facial expression is the highest priority.
+
+Precisely recreate the exact emotional state of the template subject. Match the same exhausted, emotionally drained, sleep-deprived, detached, empty, and emotionally numb expression.
+
+Recreate the same tired eyes, heavy eyelids, subtle eye redness, neutral mouth position, relaxed facial muscles, slight facial fatigue, emotional detachment, mental exhaustion, and overall feeling of burnout visible in the template image.
+
+Match the exact gaze direction, eye openness, eyelid position, eye tension, mouth shape, jaw relaxation, facial muscle activity, head position, head angle, head tilt, posture, and emotional atmosphere of the template image.
+
+There should be no smile, no excitement, no confidence, no aggression, no happiness, and no exaggerated expression. The face should remain subtle, restrained, tired, emotionally drained, and psychologically exhausted.
+
+Prioritize matching the exact emotional expression and psychological state from the template image over all other facial attributes except identity preservation.
+
+Transfer the entire person, including face, head, hair, neck, shoulders, chest, torso, arms, hands, body shape, proportions, and physique. Adapt the body, shoulders, neck, posture, and overall anatomy to match the reference person rather than the original subject.
+
+Do not perform a face swap. Do not keep any facial features, body proportions, anatomy, shoulders, neck, or physique from the original subject. Reconstruct the complete person from the reference photo in the exact pose, posture, body language, gaze direction, expression, and emotional state of the template subject.
+
+Match the exact greenish cinematic color grading, cool skin tones, fluorescent office lighting, facial shadows, skin texture, under-eye shadows, contrast, depth, highlights, facial contours, and overall visual atmosphere of the template image.
+
+Apply the same skin rendering, skin texture, facial detail, shadow structure, color palette, image texture, and cinematic grading as the template image. Recreate the same tired skin appearance, under-eye detail, facial shading, realistic pores, and subtle imperfections visible in the template.
+
+The inserted person should appear naturally photographed in the scene, not composited, pasted, edited onto another body, or look like a Photoshop edit. Preserve realistic facial volume, realistic skin texture, realistic shadow transitions, and seamless integration.
+
+Keep the exact shirt, tie, posture, camera angle, framing, perspective, depth of field, background blur, lighting setup, and composition unchanged.
+
+Do not modify the background, environment, objects, atmosphere, lighting setup, or image composition.
+
+Photorealistic, seamless integration, realistic anatomy, natural skin texture, realistic shadows, realistic facial structure, cinematic photography, high detail, premium film-quality realism.`
 
 const FIGHTCLUB_3 = ``
 
