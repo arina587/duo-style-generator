@@ -1453,7 +1453,37 @@ Do not modify the background, people, environment, objects, atmosphere, lighting
 
 Photorealistic, seamless integration, realistic anatomy, natural skin texture, realistic shadows, realistic facial structure, cinematic photography, high detail, premium film-quality realism.`
 
-const AMERICANPSYCHO_2 = ``
+const AMERICANPSYCHO_2 = `Replace only the main person in the image with the person from the uploaded reference photo.
+
+The reference photo is the only source of identity and appearance. Preserve the reference person's face completely, including face shape, facial proportions, eyes, eyelids, eyebrows, nose, lips, jawline, cheekbones, ears, skin features, facial structure, and all distinctive characteristics. Do not inherit, blend, copy, or borrow any facial features, facial structure, facial proportions, bone structure, nose shape, eye shape, mouth shape, jaw shape, or cheek structure from the template person.
+
+Identity comes exclusively from the reference photo. Expression comes exclusively from the template image.
+
+Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, arm proportions, hand shape, posture characteristics, and overall appearance.
+
+The facial expression, smile, gaze, attitude, and emotional presence are the highest priority.
+
+Precisely recreate the exact facial expression from the template image. Match the same smile, mouth shape, lip position, lip curvature, smile intensity, smile asymmetry, cheek movement, cheek tension, eye expression, eyelid position, eyebrow tension, facial muscle activation, jaw position, head angle, head rotation, head tilt, gaze direction, emotional presence, attitude, and psychological state.
+
+Transfer the exact emotion, smile, gaze, facial muscle movement, confidence, attitude, and emotional impact from the template image while preserving the complete facial identity of the reference person.
+
+The resulting face should look entirely like the person from the reference photo while expressing the exact emotion and facial expression of the template subject.
+
+Transfer the entire person, including face, head, hair, neck, shoulders, chest, torso, waist, hips, arms, elbows, forearms, wrists, hands, fingers, body shape, proportions, and physique. Adapt the body, shoulders, neck, arms, hands, posture, and overall anatomy to match the reference person rather than the original subject.
+
+Do not perform a face swap. Do not keep any facial features, body proportions, anatomy, shoulders, neck, arms, hands, or physique from the original subject. Reconstruct the complete person from the reference photo in the exact pose, posture, body language, gaze direction, expression, and attitude of the template subject.
+
+Match the exact lighting, shadows, contrast, facial shading, skin texture, skin tones, facial contours, highlights, depth, facial volume, shadow transitions, color grading, and cinematic look of the template image.
+
+Apply the same skin rendering, skin texture, facial detail, realistic pores, subtle skin imperfections, shadow structure, image texture, contrast curve, color palette, and cinematic grading as the template image. Recreate the same skin appearance, lighting mood, atmosphere, and visual style as the template.
+
+The inserted person should appear naturally photographed in the scene, not composited, pasted, edited onto another body, or look like a Photoshop edit. Preserve realistic facial volume, realistic shadow transitions, realistic skin texture, and seamless integration.
+
+Keep all clothing, accessories, objects, hand positions, body posture, camera angle, framing, perspective, depth of field, lighting setup, environment, and composition unchanged.
+
+Do not modify the background, environment, objects, atmosphere, lighting setup, or image composition.
+
+Photorealistic, seamless integration, realistic anatomy, natural skin texture, realistic shadows, realistic facial structure, cinematic photography, high detail, premium film-quality realism.`
 
 const AMERICANPSYCHO_3 = ``
 
