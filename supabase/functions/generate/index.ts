@@ -1357,6 +1357,126 @@ Negative prompt:
 
 changed background, different ship design, altered environment, incorrect deck structure, unrealistic scenery, low quality, blurry face, distorted anatomy, malformed hands, bad hands, deformed fingers, fused fingers, extra fingers, missing fingers, six fingers, duplicate fingers, warped limbs, broken anatomy, unrealistic proportions, asymmetrical hands, plastic skin, cartoon, anime, CGI, 3D render, oversaturated colors, watermark, logo, text, poorly drawn hands, mutated hands, distorted wrists, unnatural pose`;
 
+const THENOTEBOOK_1 = `Replace the two people in the template image with the two people from the provided reference photos.
+
+Female reference: Replace the woman in the template with the exact woman from the female reference photo. Preserve her complete facial identity, hairstyle, hair color, skin tone, body proportions, facial expression, and overall appearance.
+
+Male reference: Replace the man in the template with the exact man from the male reference photo. Preserve his complete facial identity, hairstyle, hair color, skin tone, body proportions, facial expression, and overall appearance.
+
+Transfer the complete bodies of both people — face, head, hair, torso, arms, hands, body proportions — not just faces. Do not perform a simple face swap.
+
+Maintain the exact pose, body position, physical proximity, and emotional connection between the two people as shown in the template image.
+
+Preserve the scene composition, camera angle, framing, depth of field, lighting setup, color palette, romantic cinematic atmosphere, and all background elements exactly as in the template image.
+
+Photorealistic, high detail, natural skin texture, romantic cinematic lighting, seamless integration.
+
+Do not modify the background, environment, or image composition. Only replace both people.`
+
+const THENOTEBOOK_2 = `Replace both people in the template image with the two individuals from the provided reference photos. Use the reference photos as the exact source of each person's identity, including facial features, hairstyle, hair color, skin tone, body shape, body proportions, and overall appearance.
+
+Each person should naturally recreate the pose, facial expression, emotion, gaze, head position, body language, and overall attitude shown in the template image while maintaining their own appearance from the reference.
+
+Transfer the entire body of each person, including face, head, torso, arms, hands, body shape, and proportions. Do not perform a simple face swap. The result should depict the two reference people naturally occupying the positions of the people in the template image.
+
+Keep the camera angle, framing, clothing style, lighting, shadows, depth of field, perspective, romantic atmosphere, and overall composition from the template image.
+
+Photorealistic, realistic anatomy, natural skin texture, seamless integration, high detail, romantic cinematic photography.
+
+Do not modify the background, environment, or image composition. Only replace both people.`
+
+const THENOTEBOOK_3 = `Perform a precise photorealistic identity replacement of both people in the template image using the two provided reference photos. The final image must look like a real cinematic photograph with the referenced people naturally present in the scene.
+
+Female identity: Replace the woman with the woman from the female reference. Transfer her exact facial features, hairstyle, skin tone, body proportions, and natural expression.
+
+Male identity: Replace the man with the man from the male reference. Transfer his exact facial features, hairstyle, skin tone, body proportions, and natural expression.
+
+Preserve the exact body position, pose, physical proximity, emotional dynamic, and intimate connection between the two people from the template. Keep all original clothing style, lighting, background, scene composition, camera framing, and cinematic atmosphere unchanged.
+
+Photorealistic, high detail, seamless compositing, natural skin texture, realistic anatomy, romantic cinematic mood.
+
+Do not modify the background or environment. Only replace both people.`
+
+const SUMMER500_1 = `Replace the two people in the template image with the two people from the provided reference photos.
+
+Female reference: Replace the woman in the template with the exact woman from the female reference photo. Preserve her complete facial identity, hairstyle, hair color, skin tone, body proportions, facial expression, and overall appearance.
+
+Male reference: Replace the man in the template with the exact man from the male reference photo. Preserve his complete facial identity, hairstyle, hair color, skin tone, body proportions, facial expression, and overall appearance.
+
+Transfer the complete bodies of both people — face, head, hair, torso, arms, hands, body proportions — not just faces. Do not perform a simple face swap.
+
+Maintain the exact pose, body position, physical proximity, and emotional dynamic between the two people as shown in the template image.
+
+Preserve the scene composition, camera angle, framing, depth of field, lighting setup, color palette, indie cinematic atmosphere, and all background elements exactly as in the template image.
+
+Photorealistic, high detail, natural skin texture, indie cinematic lighting, seamless integration.
+
+Do not modify the background, environment, or image composition. Only replace both people.`
+
+const SUMMER500_2 = `Replace both people in the template image with the two individuals from the provided reference photos. Use the reference photos as the exact source of each person's identity, including facial features, hairstyle, hair color, skin tone, body shape, body proportions, and overall appearance.
+
+Each person should naturally recreate the pose, facial expression, emotion, gaze, head position, body language, and overall attitude shown in the template image while maintaining their own appearance from the reference.
+
+Transfer the entire body of each person, including face, head, torso, arms, hands, body shape, and proportions. Do not perform a simple face swap. The result should depict the two reference people naturally occupying the positions of the people in the template image.
+
+Keep the camera angle, framing, clothing style, lighting, shadows, depth of field, perspective, urban indie atmosphere, and overall composition from the template image.
+
+Photorealistic, realistic anatomy, natural skin texture, seamless integration, high detail, indie cinematic photography.
+
+Do not modify the background, environment, or image composition. Only replace both people.`
+
+const SUMMER500_3 = `Perform a precise photorealistic identity replacement of both people in the template image using the two provided reference photos. The final image must look like a real indie cinematic photograph with the referenced people naturally present in the scene.
+
+Female identity: Replace the woman with the woman from the female reference. Transfer her exact facial features, hairstyle, skin tone, body proportions, and natural expression.
+
+Male identity: Replace the man with the man from the male reference. Transfer his exact facial features, hairstyle, skin tone, body proportions, and natural expression.
+
+Preserve the exact body position, pose, physical proximity, emotional dynamic, and interaction between the two people from the template. Keep all original clothing style, lighting, background, scene composition, camera framing, and cinematic atmosphere unchanged.
+
+Photorealistic, high detail, seamless compositing, natural skin texture, realistic anatomy, indie cinematic mood.
+
+Do not modify the background or environment. Only replace both people.`
+
+const TWILIGHT_1 = `Replace the two people in the template image with the two people from the provided reference photos.
+
+Female reference: Replace the woman in the template with the exact woman from the female reference photo. Preserve her complete facial identity, hairstyle, hair color, skin tone, body proportions, facial expression, and overall appearance.
+
+Male reference: Replace the man in the template with the exact man from the male reference photo. Preserve his complete facial identity, hairstyle, skin tone, body proportions, facial expression, and overall appearance.
+
+Transfer the complete bodies of both people — face, head, hair, torso, arms, hands, body proportions — not just faces. Do not perform a simple face swap.
+
+Maintain the exact pose, body position, physical proximity, and intense emotional connection between the two people as shown in the template image.
+
+Preserve the scene composition, camera angle, framing, depth of field, lighting setup, moody color palette, supernatural cinematic atmosphere, and all background elements exactly as in the template image.
+
+Photorealistic, high detail, natural skin texture, moody cinematic lighting, seamless integration.
+
+Do not modify the background, environment, or image composition. Only replace both people.`
+
+const TWILIGHT_2 = `Replace both people in the template image with the two individuals from the provided reference photos. Use the reference photos as the exact source of each person's identity, including facial features, hairstyle, hair color, skin tone, body shape, body proportions, and overall appearance.
+
+Each person should naturally recreate the pose, facial expression, emotion, gaze, head position, body language, and overall attitude shown in the template image while maintaining their own appearance from the reference.
+
+Transfer the entire body of each person, including face, head, torso, arms, hands, body shape, and proportions. Do not perform a simple face swap. The result should depict the two reference people naturally occupying the positions of the people in the template image.
+
+Keep the camera angle, framing, clothing style, lighting, shadows, depth of field, perspective, moody supernatural atmosphere, and overall composition from the template image.
+
+Photorealistic, realistic anatomy, natural skin texture, seamless integration, high detail, moody cinematic photography.
+
+Do not modify the background, environment, or image composition. Only replace both people.`
+
+const TWILIGHT_3 = `Perform a precise photorealistic identity replacement of both people in the template image using the two provided reference photos. The final image must look like a real cinematic photograph with the referenced people naturally present in the scene.
+
+Female identity: Replace the woman with the woman from the female reference. Transfer her exact facial features, hairstyle, skin tone, body proportions, and natural expression.
+
+Male identity: Replace the man with the man from the male reference. Transfer his exact facial features, hairstyle, skin tone, body proportions, and natural expression.
+
+Preserve the exact body position, pose, physical proximity, emotional intensity, and connection between the two people from the template. Keep all original clothing style, lighting, background, scene composition, camera framing, and moody cinematic atmosphere unchanged.
+
+Photorealistic, high detail, seamless compositing, natural skin texture, realistic anatomy, supernatural cinematic mood.
+
+Do not modify the background or environment. Only replace both people.`
+
 const WALLSTREET_1 = `Replace only the main person in the center of the image with the person from the uploaded reference photo.
 
 Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, arm proportions, hand shape, posture characteristics, and overall appearance.
@@ -3589,6 +3709,18 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   "smith-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: SMITH_1 },
   "smith-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: SMITH_2 },
   "smith-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: SMITH_3 },
+  // ── The Notebook ──
+  "thenotebook-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: THENOTEBOOK_1 },
+  "thenotebook-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: THENOTEBOOK_2 },
+  "thenotebook-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: THENOTEBOOK_3 },
+  // ── 500 Days of Summer ──
+  "500daysofsummer-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: SUMMER500_1 },
+  "500daysofsummer-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: SUMMER500_2 },
+  "500daysofsummer-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: SUMMER500_3 },
+  // ── Twilight ──
+  "twilight-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TWILIGHT_1 },
+  "twilight-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TWILIGHT_2 },
+  "twilight-3": { provider: "openai", model: "gpt-image-2", locked: true, prompt: TWILIGHT_3 },
 };
 
 function uint8ToBase64(bytes: Uint8Array): string {

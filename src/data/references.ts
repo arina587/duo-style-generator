@@ -35,6 +35,10 @@ export const categories: Category[] = [
   { id: 'wallstreet',      name: 'The Wolf of Wall Street', tag: 'Film', cover: '/styles/wallstreet/wallstreet1.jpg',           category: 'other', inputMode: 'single' },
   { id: 'americanpsycho',  name: 'American Psycho',          tag: 'Film', cover: '/styles/americanpsycho/americanpsycho1.jpg',   category: 'other', inputMode: 'single' },
   { id: 'fightclub',       name: 'Fight Club',               tag: 'Film', cover: '/styles/fightclub/fightclub1.jpg',             category: 'other', inputMode: 'single' },
+  // Row 6: The Notebook | 500 Days of Summer | Twilight
+  { id: 'thenotebook',     name: 'The Notebook',             tag: 'Film', cover: '/styles/thenotebook/thenotebook1.jpg',         category: 'movie' },
+  { id: '500daysofsummer', name: '500 Days of Summer',       tag: 'Film', cover: '/styles/500daysofsummer/500daysofsummer1.jpg', category: 'movie' },
+  { id: 'twilight',        name: 'Twilight',                 tag: 'Film', cover: '/styles/twilight/twilight1.jpg',               category: 'movie' },
 ];
 
 export function getRefsForCategory(categoryId: string): ReferenceItem[] {
@@ -109,4 +113,19 @@ export const references: ReferenceItem[] = [
   { id: 'fightclub-1', style: 'fightclub', label: 'Fight Club', image: '/styles/fightclub/fightclub1.jpg', inputMode: 'single' },
   { id: 'fightclub-2', style: 'fightclub', label: 'Fight Club', image: '/styles/fightclub/fightclub2.jpg', inputMode: 'single' },
   { id: 'fightclub-3', style: 'fightclub', label: 'Fight Club', image: '/styles/fightclub/fightclub3.jpg', inputMode: 'single' },
+
+  // ── The Notebook ──
+  { id: 'thenotebook-1', style: 'thenotebook', label: 'The Notebook', image: '/styles/thenotebook/thenotebook1.jpg' },
+  { id: 'thenotebook-2', style: 'thenotebook', label: 'The Notebook', image: '/styles/thenotebook/thenotebook2.jpg' },
+  { id: 'thenotebook-3', style: 'thenotebook', label: 'The Notebook', image: '/styles/thenotebook/thenotebook3.jpg' },
+
+  // ── 500 Days of Summer ──
+  { id: '500daysofsummer-1', style: '500daysofsummer', label: '500 Days of Summer', image: '/styles/500daysofsummer/500daysofsummer1.jpg' },
+  { id: '500daysofsummer-2', style: '500daysofsummer', label: '500 Days of Summer', image: '/styles/500daysofsummer/500daysofsummer2.jpg' },
+  { id: '500daysofsummer-3', style: '500daysofsummer', label: '500 Days of Summer', image: '/styles/500daysofsummer/500daysofsummer3.jpg' },
+
+  // ── Twilight ──
+  { id: 'twilight-1', style: 'twilight', label: 'Twilight', image: '/styles/twilight/twilight1.jpg' },
+  { id: 'twilight-2', style: 'twilight', label: 'Twilight', image: '/styles/twilight/twilight2.jpg' },
+  { id: 'twilight-3', style: 'twilight', label: 'Twilight', image: '/styles/twilight/twilight3.jpg' },
 ];
