@@ -98,6 +98,9 @@ export const references: ReferenceItem[] = [
   { id: 'collage-4', style: 'collage', label: 'Me Before You',     image: '/styles/collage/collage4.jpg' },
   { id: 'collage-5', style: 'collage', label: 'Mr. & Mrs. Smith',  image: '/styles/collage/collage5.jpg' },
   { id: 'collage-6', style: 'collage', label: 'Spider-Man',        image: '/styles/collage/collage6.jpg' },
+  { id: 'collage-7', style: 'collage', label: 'The Notebook',      image: '/styles/collage/collage7.jpg' },
+  { id: 'collage-8', style: 'collage', label: 'Twilight',          image: '/styles/collage/collage8.jpg' },
+  { id: 'collage-9', style: 'collage', label: '500 Days of Summer', image: '/styles/collage/collage9.jpg' },
 
   // ── The Wolf of Wall Street ──
   { id: 'wallstreet-1', style: 'wallstreet', label: 'The Wolf of Wall Street', image: '/styles/wallstreet/wallstreet1.jpg', inputMode: 'single' },

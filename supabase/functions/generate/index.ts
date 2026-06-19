@@ -3596,6 +3596,136 @@ The final image must look like two authentic photographs of the uploaded individ
 
 Negative prompt: face-only replacement, partial identity transfer, original actor facial features, original actor resemblance, identity blending, face morphing, facial distortion, stretched face, compressed face, warped face, altered facial proportions, incorrect facial geometry, changed eye spacing, changed jawline, changed nose shape, changed facial structure, unchanged blurred character, unchanged foreground character, unchanged background character, original characters remaining anywhere in the image, changed emotion, changed expression, changed smile, changed gaze direction, changed head angle, changed posture, changed body proportions, changed physique, changed framing, changed composition, weak likeness, inaccurate facial features, distorted face, asymmetrical eyes, crossed eyes, altered hairstyle, altered body type, merged subjects, shared frame, CGI, 3D render, cartoon, anime, illustration, painting, blurry face, low resolution, artifacts, ghosting, double face, duplicated body parts, extra fingers, malformed hands, watermark, logo, text.`;
 
+const COLLAGE_7 = `Identity replacement only. Preserve the original image structure exactly. Using the provided split-frame portrait collage as the master reference and the separately uploaded male and female photos as identity references, completely replace the original subjects with the exact individuals from the uploaded reference photos.
+
+The uploaded photos define ONLY identity. They must NOT define pose, head angle, face angle, gaze direction, expression, hairstyle placement, camera angle, composition, framing, lighting, body position, or image layout.
+
+Critical requirement: preserve the exact two-panel composition of the original image. The final image must remain a vertically stacked split-frame collage consisting of two completely separate portraits. Do not merge the subjects into the same scene. Do not make them interact. Maintain the original separation between the upper and lower frames.
+
+Upper frame:
+Replace the original woman with the exact female identity from the uploaded female reference photo. Preserve the exact pose, head tilt, facial angle, expression, eye direction, shoulder position, neck angle, body orientation, camera distance, framing, lighting, and overall composition from the original upper portrait.
+
+Lower frame:
+Replace the original man with the exact male identity from the uploaded male reference photo. Preserve the exact pose, head angle, facial orientation, gaze direction, expression, shoulder position, neck angle, body orientation, camera distance, framing, lighting, and overall composition from the original lower portrait.
+
+The model must reconstruct both uploaded individuals in full 3D and generate them from the exact viewing angles shown in the reference collage. Ignore any differences in face angle, gaze, expression, or pose in the uploaded identity photos. Match the original reference portraits exactly.
+
+Transfer and preserve with maximum accuracy:
+- exact facial structure
+- exact facial proportions
+- exact eye shape
+- exact eyebrow shape
+- exact nose shape
+- exact lips
+- exact jawline
+- exact cheekbones
+- exact skin tone
+- exact skin texture
+- exact hairstyle
+- exact hair color
+- exact age characteristics
+- exact body type
+- exact overall appearance
+
+Preserve exactly:
+- split-frame collage layout
+- upper portrait composition
+- lower portrait composition
+- scene environment and background
+- lighting setup and direction
+- shallow depth of field
+- camera perspective
+- crop and framing
+- color grading
+- cinematic romantic-drama photography aesthetic
+
+The final image must look like two authentic photographs of the uploaded individuals captured separately in the exact positions, framing, and camera angles shown in the original collage.
+
+Ultra photorealistic, premium DSLR photography, realistic skin pores, realistic hair strands, natural anatomy, cinematic realism, realistic depth of field, seamless identity integration, highly detailed, flawless compositing.
+
+Negative prompt: merged subjects, couple portrait, shared frame, interaction between subjects, changed layout, changed framing, changed crop, changed camera angle, changed pose, changed head angle, changed gaze direction, changed composition, face morphing, identity mixing, weak likeness, distorted face, asymmetrical eyes, CGI, 3D render, cartoon, anime, blurry face, low resolution, artifacts, watermark, logo, text.`
+
+const COLLAGE_8 = `Identity replacement only. Preserve the original image structure, composition, emotions, and scene exactly. Using the provided split-frame portrait collage as the master reference and the separately uploaded male and female photos as identity references, completely replace the original subjects with the exact individuals from the uploaded reference photos.
+
+The uploaded photos define ONLY identity, physical appearance, body type, facial structure, skin characteristics, hair, and overall likeness. The original collage defines ALL emotions, expressions, pose, body positioning, head angle, gaze direction, posture, camera angle, framing, composition, lighting, and atmosphere.
+
+Critical requirement: preserve the exact two-panel collage layout. The image must remain as two completely separate portraits. Do not merge the subjects into one scene. Do not make them interact. Keep the exact separation between frames.
+
+Upper frame:
+Replace the original woman with the exact female identity from the uploaded female reference photo. Preserve her exact pose, head tilt, facial angle, expression, eye direction, shoulder position, neck angle, body orientation, camera distance, framing, and lighting from the original upper portrait.
+
+Lower frame:
+Replace the original man with the exact male identity from the uploaded male reference photo. Preserve his exact pose, head angle, facial orientation, gaze direction, expression, shoulder position, neck angle, body orientation, camera distance, framing, and lighting from the original lower portrait.
+
+The model must reconstruct both uploaded individuals in full 3D and generate them from the exact viewing angles shown in the reference collage. Ignore any pose, expression, or head angle differences in the uploaded identity photos. Reconstruct and place the identities to match the original reference exactly.
+
+Transfer and preserve with maximum accuracy:
+- exact facial structure and proportions
+- exact eye shape and spacing
+- exact eyebrow shape
+- exact nose shape
+- exact lips and jawline
+- exact cheekbones and facial geometry
+- exact skin tone and texture
+- exact hairstyle, hairline, hair color
+- exact age characteristics
+- exact body type and proportions
+- exact overall appearance
+
+Preserve exactly:
+- split-frame collage layout
+- both portrait compositions
+- scene environment and atmosphere
+- moody cinematic lighting
+- shallow depth of field
+- color grading
+- camera perspective and framing
+
+The final image must look like two authentic photographs of the uploaded individuals in the exact positions, framing, and emotional states shown in the original collage.
+
+Ultra photorealistic, premium DSLR photography, realistic skin pores, realistic hair strands, natural anatomy, cinematic realism, seamless identity integration, highly detailed, flawless compositing.
+
+Negative prompt: merged subjects, shared frame, interaction between subjects, changed layout, changed framing, changed camera angle, changed pose, changed head angle, changed gaze, changed composition, face morphing, identity mixing, weak likeness, distorted face, asymmetrical eyes, CGI, 3D render, cartoon, anime, blurry face, artifacts, watermark, logo, text.`
+
+const COLLAGE_9 = `Identity replacement only. Preserve the original image structure exactly. Using the provided split-frame portrait collage as the master reference and the separately uploaded male and female photos as identity references, completely replace the original subjects with the exact individuals from the uploaded reference photos.
+
+The uploaded photos define ONLY identity. They must NOT define pose, head angle, face angle, gaze direction, expression, hairstyle placement, camera angle, composition, framing, lighting, body position, or image layout.
+
+Critical requirement: preserve the exact two-panel composition of the original image. The final image must remain a vertically stacked split-frame collage. Do not merge the subjects into the same scene. Do not make them interact. Maintain the original separation between the upper and lower frames.
+
+Upper frame:
+Replace the original woman with the exact female identity from the uploaded female reference photo. Preserve the exact pose, head tilt, facial angle, expression, eye direction, shoulder position, neck angle, body orientation, camera distance, framing, and lighting from the original upper portrait.
+
+Lower frame:
+Replace the original man with the exact male identity from the uploaded male reference photo. Preserve the exact pose, head angle, facial orientation, gaze direction, expression, shoulder position, neck angle, body orientation, camera distance, framing, and lighting from the original lower portrait.
+
+The model must reconstruct both uploaded individuals in full 3D and generate them from the exact viewing angles shown in the reference collage. Ignore any differences in face angle, gaze, expression, or pose in the uploaded identity photos. Match the original reference portraits exactly.
+
+Transfer and preserve with maximum accuracy:
+- exact facial structure and proportions
+- exact eye shape and eyebrow shape
+- exact nose, lips, jawline, cheekbones
+- exact skin tone and texture
+- exact hairstyle, hair color, and hairline
+- exact age characteristics and body type
+- exact overall appearance
+
+Preserve exactly:
+- split-frame collage layout
+- both portrait compositions
+- scene environment and background
+- lighting setup and direction
+- depth of field and background blur
+- camera perspective, crop, and framing
+- color grading
+- cinematic indie photography aesthetic
+
+The final image must look like two authentic photographs of the uploaded individuals captured separately in the exact positions, framing, and camera angles shown in the original collage.
+
+Ultra photorealistic, premium DSLR photography, realistic skin pores, realistic hair strands, natural anatomy, cinematic realism, realistic depth of field, seamless identity integration, highly detailed, flawless compositing.
+
+Negative prompt: merged subjects, couple portrait, shared frame, interaction between subjects, changed layout, changed framing, changed crop, changed camera angle, changed pose, changed head angle, changed gaze direction, changed composition, face morphing, identity mixing, weak likeness, distorted face, asymmetrical eyes, CGI, 3D render, cartoon, anime, blurry face, low resolution, artifacts, watermark, logo, text.`
+
 const SMITH_1 = `Identity replacement only. Preserve the original scene exactly. Using the provided ballroom scene image as the composition reference and the separately uploaded male and female photos as identity references, completely replace the original couple with the exact individuals from the uploaded reference images while preserving the original photograph in every other aspect. Keep the exact composition, framing, camera angle, crop, body positioning, hand placement, facial proximity, head tilt, gaze direction, near-kiss moment, slow-dance pose, romantic interaction, emotional tension, ballroom environment, blurred guests in the background, shallow depth of field, cinematic bokeh, warm golden lighting, and overall atmosphere. Replace the male subject with the exact man from the male reference image, preserving his recognizable facial identity, facial proportions, hairstyle, skin tone, age characteristics, and overall appearance. Replace the female subject with the exact woman from the female reference image, preserving her recognizable facial identity, facial proportions, hairstyle, skin tone, age characteristics, and overall appearance. Maintain the original elegant formal attire style, including the dark suit and black sleeveless evening dress, adapted naturally to the new identities. The final result must look like an authentic high-end cinematic photograph captured in a luxury ballroom, not a face swap. Perfect identity preservation, seamless photorealistic integration, realistic skin texture, natural facial expressions, realistic anatomy, anatomically correct hands and fingers, natural body proportions, authentic clothing folds, premium DSLR photography, 85mm lens, f/1.8, ultra photorealistic movie still, film-grade color grading, natural shadows, realistic depth, flawless compositing. Negative prompt: altered pose, changed composition, changed framing, changed camera angle, changed lighting, changed background, face morphing, identity mixing, weak likeness, bad face swap, distorted face, asymmetrical eyes, crossed eyes, malformed hands, extra fingers, fused fingers, missing fingers, duplicated fingers, duplicated limbs, broken anatomy, unrealistic skin, plastic skin, CGI, 3D render, cartoon, anime, illustration, painting, blurry face, low resolution, artifacts, ghosting, double face, duplicated body parts, watermark, logo, text.`;
 
 const SMITH_2 = `Identity replacement only. Preserve the original scene exactly. Using the provided kitchen scene image as the composition reference and the separately uploaded male and female photos as identity references, completely replace the original couple with the exact individuals from the uploaded reference images while preserving the original photograph in every other aspect. Keep the exact composition, framing, crop, camera angle, body positions, facial expressions, eye contact, hand placement, distance between subjects, posture, interaction, kitchen environment, countertop, sink, faucet, strawberry in hand, cooking interaction, background details, depth of field, lighting, and overall atmosphere. Replace the male subject with the exact man from the uploaded male reference image, preserving his recognizable facial identity, facial proportions, hairstyle, skin tone, age characteristics, and overall appearance while maintaining the original body position, smile, gaze direction, and white V-neck T-shirt. Replace the female subject with the exact woman from the uploaded female reference image, preserving her recognizable facial identity, facial proportions, hairstyle, skin tone, age characteristics, and overall appearance while maintaining the original body position, smile, gaze direction, hand placement, and oversized white button-up shirt. Preserve the playful romantic domestic interaction, natural chemistry, relaxed body language, intimate everyday moment, warm indoor lighting, soft shadows, shallow depth of field, cinematic realism, and candid lifestyle photography aesthetic. The final image must look like a genuine photograph of the two uploaded individuals naturally sharing a moment together in a modern kitchen, not a face swap. Perfect identity preservation, seamless photorealistic integration, realistic skin texture, natural facial expressions, realistic anatomy, anatomically correct hands and fingers, authentic clothing folds, realistic body proportions, premium DSLR photography, 50mm lens, f/2.0, ultra photorealistic, cinematic lifestyle movie still, natural color grading, realistic depth, flawless compositing. Negative prompt: altered pose, changed composition, changed framing, changed camera angle, changed lighting, changed background, changed clothing style, face morphing, identity mixing, weak likeness, poor face swap, distorted face, asymmetrical eyes, crossed eyes, malformed hands, extra fingers, fused fingers, missing fingers, duplicated fingers, duplicated limbs, broken anatomy, unrealistic skin, plastic skin, CGI, 3D render, cartoon, anime, illustration, painting, blurry face, low resolution, artifacts, ghosting, double face, duplicated body parts, watermark, logo, text.`;
@@ -3705,6 +3835,9 @@ const STYLE_CONFIG: Record<string, { provider: "replicate" | "openai"; model: st
   "collage-4": { provider: "openai", model: "gpt-image-2", locked: true, prompt: COLLAGE_4 },
   "collage-5": { provider: "openai", model: "gpt-image-2", locked: true, prompt: COLLAGE_5 },
   "collage-6": { provider: "openai", model: "gpt-image-2", locked: true, prompt: COLLAGE_6 },
+  "collage-7": { provider: "openai", model: "gpt-image-2", locked: true, prompt: COLLAGE_7 },
+  "collage-8": { provider: "openai", model: "gpt-image-2", locked: true, prompt: COLLAGE_8 },
+  "collage-9": { provider: "openai", model: "gpt-image-2", locked: true, prompt: COLLAGE_9 },
   // ── Mr. & Mrs. Smith ──
   "smith-1": { provider: "openai", model: "gpt-image-2", locked: true, prompt: SMITH_1 },
   "smith-2": { provider: "openai", model: "gpt-image-2", locked: true, prompt: SMITH_2 },
