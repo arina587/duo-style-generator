@@ -1040,6 +1040,7 @@ function App() {
           generationPhase={generationPhase}
           generationError={generationError}
           isPollingRecovering={isPollingRecovering}
+          selectedRef={selectedRef}
         />
       )}
     </>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Download, ArrowLeft, Sparkles, Loader2, AlertCircle, Wand2, ExternalLink, RefreshCw, Copy, Check } from 'lucide-react';
 import type { GenerationPhase, GenerationError } from '../App';
+import type { ReferenceItem } from '../data/references';
 
 interface ResultProps {
   onBack: () => void;
@@ -14,6 +15,7 @@ interface ResultProps {
   generationPhase: GenerationPhase;
   generationError: GenerationError | null;
   isPollingRecovering?: boolean;
+  selectedRef?: ReferenceItem | null;
 }
 
 interface DebugInfo {
@@ -35,6 +37,7 @@ export default function Result({
   generationPhase,
   generationError,
   isPollingRecovering = false,
+  selectedRef,
 }: ResultProps) {
   const retryCount = useRef(0);
   const [retryKey, setRetryKey] = useState(0);
@@ -43,6 +46,12 @@ export default function Result({
   const [debugFetching, setDebugFetching] = useState(false);
   const [copyDone, setCopyDone] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
+
+  // ── Fake progress ──
+  const [fakeProgress, setFakeProgress] = useState(0);
+  const fakeProgressRef = useRef(0);
+  const progressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const prevIsGeneratingRef = useRef(false);
 
   const displaySrc = generatedImageUrl || rawImageUrl;
 
@@ -99,6 +108,54 @@ export default function Result({
       })
       .finally(() => setDebugFetching(false));
   }, [imgLoadFailed, displaySrc]);
+
+  // Reset / complete progress when generation state changes
+  useEffect(() => {
+    if (isGenerating && !prevIsGeneratingRef.current) {
+      fakeProgressRef.current = 0;
+      setFakeProgress(0);
+    }
+    if (!isGenerating && prevIsGeneratingRef.current && !generationError) {
+      fakeProgressRef.current = 100;
+      setFakeProgress(100);
+    }
+    prevIsGeneratingRef.current = isGenerating;
+  }, [isGenerating, generationError]);
+
+  // Advance progress while generating
+  useEffect(() => {
+    if (progressTimerRef.current !== null) {
+      clearTimeout(progressTimerRef.current);
+      progressTimerRef.current = null;
+    }
+    if (!isGenerating || isPollingRecovering) return;
+
+    const phaseTarget = generationPhase === 'uploading' ? 15
+      : generationPhase === 'starting' ? 30
+      : 99;
+
+    const tick = () => {
+      const cur = fakeProgressRef.current;
+      if (cur >= phaseTarget) return;
+      const remaining = phaseTarget - cur;
+      const step = remaining > 30 ? 0.7 + Math.random() * 0.5
+        : remaining > 15 ? 0.35 + Math.random() * 0.3
+        : remaining > 5 ? 0.15 + Math.random() * 0.15
+        : 0.04 + Math.random() * 0.08;
+      const next = Math.min(phaseTarget, cur + step);
+      fakeProgressRef.current = next;
+      setFakeProgress(Math.floor(next));
+      progressTimerRef.current = setTimeout(tick, 140 + Math.random() * 110);
+    };
+    tick();
+
+    return () => {
+      if (progressTimerRef.current !== null) {
+        clearTimeout(progressTimerRef.current);
+        progressTimerRef.current = null;
+      }
+    };
+  }, [isGenerating, generationPhase, isPollingRecovering]);
 
   const MAX_AUTO_RETRIES = 2;
   const RETRY_DELAY_MS = 1000;
@@ -217,6 +274,18 @@ export default function Result({
       }
     }
   };
+
+  const stageText = isPollingRecovering
+    ? 'Connection interrupted — still trying...'
+    : generationPhase === 'uploading'
+    ? 'Uploading your photos...'
+    : generationPhase === 'starting'
+    ? 'Preparing your cinematic scene...'
+    : fakeProgress < 45 ? 'Building your movie frame...'
+    : fakeProgress < 62 ? 'Matching lighting and composition...'
+    : fakeProgress < 78 ? 'Applying final details...'
+    : fakeProgress < 91 ? 'Polishing every pixel...'
+    : 'Almost ready...';
 
   const errorType = generationError?.type ?? 'unknown';
   const isTimeoutError = !isGenerating && !!generationError && errorType === 'timeout';
@@ -351,28 +420,106 @@ export default function Result({
 
             {/* ── State 1: Generating ── */}
             {isGenerating && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center animate-fade-in">
-                <div className="relative w-16 h-16 mb-5">
-                  <div className="absolute inset-0 rounded-full border-2" style={{ borderColor: '#d8ccea' }} />
-                  <div className="absolute inset-0 rounded-full border-t-2 border-[#9b7dd4] animate-spin" />
-                  <div className="absolute inset-2.5 rounded-full bg-white flex items-center justify-center">
-                    <Loader2 className="w-6 h-6 text-[#9b7dd4] animate-spin" />
-                  </div>
-                </div>
-                <p className="font-display font-bold text-[#2d2642] text-base mb-1.5">{phaseLabel[generationPhase].detail}</p>
-                <p className="text-[#7a6f96] text-sm font-body">
-                  {isPollingRecovering
-                    ? 'Connection interrupted — still trying to retrieve your result...'
-                    : generationPhase === 'generating' ? 'Usually takes under a minute' : 'Please wait...'}
-                </p>
-                <div className="mt-4 flex justify-center gap-1.5">
-                  {[0, 1, 2].map((i) => (
+              <div className="absolute inset-0 overflow-hidden animate-fade-in">
+
+                {/* Cinematic background: reference image with zoom */}
+                {selectedRef && (
+                  <img
+                    src={selectedRef.image}
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-cover animate-zoom-pulse"
+                    style={{ filter: 'brightness(0.28) saturate(0.75)' }}
+                  />
+                )}
+
+                {/* Dark gradient overlay */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: selectedRef
+                      ? 'linear-gradient(170deg, rgba(8,5,20,0.15) 0%, rgba(8,5,20,0.52) 42%, rgba(8,5,20,0.90) 100%)'
+                      : 'linear-gradient(145deg, #0a0819 0%, #130d2a 100%)',
+                  }}
+                />
+
+                {/* Content */}
+                <div className="absolute inset-0 flex flex-col items-center justify-end px-6 pb-6">
+
+                  {/* Reference image preview with glow — top center */}
+                  {selectedRef && (
+                    <div className="absolute top-5 inset-x-0 flex justify-center pointer-events-none">
+                      <div className="animate-glow-ring rounded-2xl overflow-hidden" style={{ width: 76, height: 76 }}>
+                        <img
+                          src={selectedRef.image}
+                          alt=""
+                          aria-hidden="true"
+                          className="w-full h-full object-cover"
+                          style={{ filter: 'saturate(0.85) brightness(0.88)' }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Title label */}
+                  <p
+                    className="text-[10px] font-extrabold font-body tracking-widest uppercase text-center mb-1"
+                    style={{ color: 'rgba(210,190,255,0.60)', letterSpacing: '0.15em' }}
+                  >
+                    {isPollingRecovering ? 'Reconnecting' : 'Creating Your Fusion'}
+                  </p>
+
+                  {/* Stage text — key triggers fade-in on change */}
+                  <p
+                    key={stageText}
+                    className="text-[12px] font-body text-center mb-5 animate-fade-in"
+                    style={{ color: isPollingRecovering ? '#fbbf24' : 'rgba(205,185,245,0.72)' }}
+                  >
+                    {stageText}
+                  </p>
+
+                  {/* Progress bar track */}
+                  <div className="w-full mb-2.5">
                     <div
-                      key={i}
-                      className="w-1.5 h-1.5 rounded-full animate-pulse-soft"
-                      style={{ background: '#9b7dd4', animationDelay: `${i * 0.3}s` }}
-                    />
-                  ))}
+                      className="relative w-full rounded-full overflow-hidden"
+                      style={{ height: 3, background: 'rgba(255,255,255,0.10)' }}
+                    >
+                      {/* Fill */}
+                      <div
+                        className="absolute inset-y-0 left-0 rounded-full"
+                        style={{
+                          width: `${fakeProgress}%`,
+                          transition: 'width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                          background: isPollingRecovering
+                            ? 'linear-gradient(90deg, #b45309, #fbbf24)'
+                            : 'linear-gradient(90deg, #7c5cbf, #b49cdb, #ddd0f5)',
+                          boxShadow: isPollingRecovering
+                            ? '0 0 8px rgba(251,191,36,0.55)'
+                            : '0 0 10px rgba(180,156,219,0.75)',
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Percentage row */}
+                  <div className="flex items-center justify-between w-full">
+                    <span
+                      className="text-[10px] font-body font-bold uppercase tracking-widest"
+                      style={{ color: 'rgba(180,155,220,0.40)' }}
+                    >
+                      Progress
+                    </span>
+                    <span
+                      className="font-display font-bold tabular-nums"
+                      style={{
+                        fontSize: '1.05rem',
+                        color: isPollingRecovering ? '#fbbf24' : 'rgba(225,212,252,0.92)',
+                      }}
+                    >
+                      {fakeProgress}%
+                    </span>
+                  </div>
+
                 </div>
               </div>
             )}
