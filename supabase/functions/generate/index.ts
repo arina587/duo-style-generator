@@ -3596,7 +3596,76 @@ The final image must look like two authentic photographs of the uploaded individ
 
 Negative prompt: face-only replacement, partial identity transfer, original actor facial features, original actor resemblance, identity blending, face morphing, facial distortion, stretched face, compressed face, warped face, altered facial proportions, incorrect facial geometry, changed eye spacing, changed jawline, changed nose shape, changed facial structure, unchanged blurred character, unchanged foreground character, unchanged background character, original characters remaining anywhere in the image, changed emotion, changed expression, changed smile, changed gaze direction, changed head angle, changed posture, changed body proportions, changed physique, changed framing, changed composition, weak likeness, inaccurate facial features, distorted face, asymmetrical eyes, crossed eyes, altered hairstyle, altered body type, merged subjects, shared frame, CGI, 3D render, cartoon, anime, illustration, painting, blurry face, low resolution, artifacts, ghosting, double face, duplicated body parts, extra fingers, malformed hands, watermark, logo, text.`;
 
-const COLLAGE_7 = `Identity replacement only. Complete subject replacement with zero identity retention from the reference image.
+const COLLAGE_7 = `CRITICAL OVERRIDE:
+
+The reference people must be treated as empty mannequins with no usable anatomy.
+
+Do not use the reference people as body templates.
+Do not use the reference people as anatomy templates.
+Do not use the reference people as physique templates.
+
+Destroy all original human anatomy before generation.
+
+Delete completely:
+- face
+- head
+- neck
+- shoulders
+- chest
+- torso
+- waist
+- hips
+- arms
+- hands
+- legs
+- body proportions
+- silhouette
+- physique
+- body mass distribution
+
+The reference people must become empty pose skeletons only.
+
+Only keep:
+- pose skeleton
+- camera angle
+- composition
+- lighting
+- environment
+- emotion
+
+Then build entirely new people from uploaded photos.
+
+The uploaded photos must define 100% of:
+- anatomy
+- physique
+- body proportions
+- silhouette
+- body mass
+- shoulders
+- torso
+- limbs
+- neck
+- head
+- face
+
+Important:
+
+Reference people = pose skeleton only.
+Uploaded people = complete humans.
+
+Human anatomy replacement is mandatory.
+Body replacement is mandatory.
+Physique replacement is mandatory.
+
+Generate the uploaded people as complete new humans.
+
+Do not attach uploaded faces to reference bodies.
+Do not attach uploaded heads to reference necks.
+Build complete new bodies from uploaded identities.
+
+Full-body transfer is mandatory. Face-only replacement is forbidden.
+
+Identity replacement only. Complete subject replacement with zero identity retention from the reference image.
 
 Using the provided split-frame collage as the master scene reference and the separately uploaded male and female photos as identity references, completely remove all original subjects from the reference image and replace them with the exact individuals from the uploaded photos.
 
@@ -3628,11 +3697,12 @@ Critical priority order:
 
 1. Exact identity from uploaded photos.
 2. Zero reference facial geometry usage.
-3. Full-person reconstruction.
-4. Emotion transfer.
-5. Pose transfer.
-6. Composition.
-7. Lighting.
+3. Zero reference body anatomy usage.
+4. Full-body reconstruction.
+5. Emotion transfer.
+6. Pose transfer.
+7. Composition.
+8. Lighting.
 
 Critical zero-reference-face rule:
 
@@ -3651,8 +3721,6 @@ Do not use reference faces for:
 Reference faces = 0% appearance contribution.
 Uploaded photos = 100% appearance contribution.
 
-If any conflict exists between uploaded identity and reference facial structure, always choose uploaded identity.
-
 Critical anti-identity-mixing requirement:
 
 Absolutely no facial blending is allowed.
@@ -3665,6 +3733,30 @@ Delete original people completely.
 
 Build entirely new facial and body geometry from uploaded photos only.
 
+Critical reconstruction rule:
+
+Step 1:
+Delete original people completely.
+
+Step 2:
+Delete original anatomy completely.
+
+Step 3:
+Extract full identity from uploaded photos.
+
+Step 4:
+Reconstruct entirely new 3D people from uploaded photos only.
+
+Step 5:
+Apply reference pose, emotion, gaze, and lighting.
+
+Never start from reference people.
+
+Always start from uploaded identities.
+
+Identity preservation is more important than pose accuracy.
+Identity preservation is more important than expression accuracy.
+
 Critical 3D identity reconstruction requirement:
 
 This is NOT a face swap.
@@ -3672,9 +3764,8 @@ This is NOT a face swap.
 Do NOT replace only the face.
 Do NOT replace only the head.
 Do NOT keep original body proportions.
+Do NOT keep original body silhouette.
 Do NOT paste uploaded faces onto reference bodies.
-
-This task requires full identity reconstruction.
 
 The model must fully reconstruct both uploaded individuals in 3D and generate entirely new photorealistic renders matching the reference scene.
 
@@ -3744,12 +3835,6 @@ Preserve ONLY:
 - identical posture
 - identical framing
 
-Critical upper-frame pose:
-
-The woman is standing with her body turned away from camera while looking back over her shoulder.
-
-This exact pose must be preserved.
-
 Lower frame:
 
 Replace the original man with the exact uploaded male identity.
@@ -3766,33 +3851,6 @@ Preserve ONLY:
 - identical hand placement
 - identical body orientation
 - identical framing
-
-Critical full-person replacement requirement:
-
-Replace the uploaded people fully, including:
-- face
-- head
-- skull shape
-- hair
-- hairline
-- forehead
-- ears
-- neck
-- shoulders
-- torso
-- arms
-- hands
-- body proportions
-- physique
-- silhouette
-- posture
-- skin characteristics
-- age characteristics
-- overall appearance
-
-No pasted-face appearance.
-No head-swap appearance.
-No partial replacement.
 
 Preserve exactly:
 - split-frame collage layout
@@ -3813,20 +3871,21 @@ Preserve exactly:
 Highest priority:
 
 1. Complete removal of original reference identities.
-2. Perfect transfer of uploaded people.
-3. Zero facial blending.
-4. Zero reference face contribution.
-5. Full-person transfer.
-6. Exact emotion transfer.
-7. Exact head angle and gaze direction.
-8. Photorealistic seamless result.
+2. Complete removal of original reference anatomy.
+3. Perfect transfer of uploaded people.
+4. Zero facial blending.
+5. Zero body blending.
+6. Full-body transfer.
+7. Exact emotion transfer.
+8. Exact head angle and gaze direction.
+9. Photorealistic seamless result.
 
 The final image must look like authentic cinematic photographs of the uploaded individuals captured in these exact moments with identical expressions, identical emotions, identical head poses, identical body language, and identical atmosphere.
 
 Ultra photorealistic, premium DSLR photography, realistic skin pores, realistic hair strands, realistic anatomy, realistic body proportions, seamless identity integration, cinematic realism, highly detailed.
 
 Negative prompt:
-reference face geometry, reference facial structure, original actor facial features, original actor resemblance, identity blending, facial blending, face morphing, face swap, head swap, partial replacement, pasted face, pasted head, weak likeness, inaccurate facial features, distorted face, asymmetrical eyes, altered facial proportions, changed expression, changed emotion, changed gaze direction, changed head angle, changed posture, changed body proportions, CGI, 3D render, cartoon, anime, illustration, painting, blurry face, low resolution, artifacts, ghosting, double face, watermark, logo, text.`
+reference face geometry, reference body anatomy, original actor facial features, original actor body proportions, original actor resemblance, identity blending, facial blending, body blending, face morphing, face swap, head swap, partial replacement, pasted face, pasted head, weak likeness, inaccurate facial features, distorted face, asymmetrical eyes, altered facial proportions, changed expression, changed emotion, changed gaze direction, changed head angle, changed posture, changed body proportions, CGI, 3D render, cartoon, anime, illustration, painting, blurry face, low resolution, artifacts, ghosting, double face, watermark, logo, text.`
 
 const COLLAGE_8 = `Identity replacement only. Complete subject replacement with zero identity retention from the reference image.
 
