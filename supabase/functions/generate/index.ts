@@ -1357,45 +1357,11 @@ Negative prompt:
 
 changed background, different ship design, altered environment, incorrect deck structure, unrealistic scenery, low quality, blurry face, distorted anatomy, malformed hands, bad hands, deformed fingers, fused fingers, extra fingers, missing fingers, six fingers, duplicate fingers, warped limbs, broken anatomy, unrealistic proportions, asymmetrical hands, plastic skin, cartoon, anime, CGI, 3D render, oversaturated colors, watermark, logo, text, poorly drawn hands, mutated hands, distorted wrists, unnatural pose`;
 
-const THENOTEBOOK_1 = `Replace the two people in the template image with the two people from the provided reference photos.
+const THENOTEBOOK_1 = `Complete full-body identity replacement only. Treat all people in the reference image as empty pose skeletons with zero usable identity and zero usable anatomy. Completely delete and ignore 100% of the original people before generation: face, head, skull shape, neck, shoulders, torso, arms, hands, body proportions, silhouette, physique, facial geometry, facial structure, body anatomy. The reference image provides ONLY pose, composition, camera angle, lighting, environment, emotion, facial expression, gaze direction, head angle, and body posture. The uploaded male and female photos provide 100% of human appearance and anatomy. Build entirely new people from uploaded photos only. Do NOT use reference faces as geometry, mesh, scaffold, or template. Do NOT use reference bodies as anatomy templates. No facial blending and no body blending allowed. Zero identity contribution from reference people. This is NOT a face swap and NOT a head swap. Do not attach uploaded faces onto reference bodies. Reconstruct both uploaded people completely from head to toe as unified identities, preserving exactly their facial proportions, skull shape, forehead, eyes, eye spacing, eyebrows, nose shape, lips, mouth, jawline, chin, cheekbones, ears, hairline, hairstyle, hair texture, skin tone, skin texture, facial asymmetry, distinctive features, body proportions, physique, silhouette, shoulders, torso, limbs, and overall appearance with maximum fidelity. Identity accuracy is the highest priority. The final people must be instantly recognizable as the exact same real individuals from the uploaded photos, not approximations or lookalikes. Preserve identity more than pose accuracy and more than expression accuracy. First reconstruct the uploaded people fully in 3D, then apply the reference pose. Never start from reference people, always start from uploaded identities. Re-render the uploaded people into the reference scene as complete new humans. The uploaded photos may show different angles, head tilts, expressions, or gaze direction—ignore all of that and rotate them into the exact head angle, neck angle, body angle, posture, and gaze direction shown in the reference image while keeping identity fully intact with no distortion or identity drift. Ignore emotions from uploaded photos and recreate the exact same emotional expressions from the reference image, preserving identical smile intensity, lip shape, eye expression, eyelid openness, eyebrow tension, cheek movement, facial muscle tension, and emotional intensity. Final result must look like authentic cinematic photography of the uploaded people naturally captured in this exact scene with seamless photorealistic integration, realistic anatomy, realistic skin pores, realistic hair strands, realistic proportions, and zero trace of the original reference identities. Negative prompt: reference face geometry, reference body anatomy, identity blending, facial blending, body blending, face morphing, face swap, head swap, partial replacement, pasted face, weak likeness, distorted face, asymmetrical eyes, altered proportions, changed expression, changed pose, CGI, cartoon, painting, low resolution, blurry, artifacts, ghosting, watermark, text.`
 
-Female reference: Replace the woman in the template with the exact woman from the female reference photo. Preserve her complete facial identity, hairstyle, hair color, skin tone, body proportions, facial expression, and overall appearance.
+const THENOTEBOOK_2 = ``
 
-Male reference: Replace the man in the template with the exact man from the male reference photo. Preserve his complete facial identity, hairstyle, hair color, skin tone, body proportions, facial expression, and overall appearance.
-
-Transfer the complete bodies of both people — face, head, hair, torso, arms, hands, body proportions — not just faces. Do not perform a simple face swap.
-
-Maintain the exact pose, body position, physical proximity, and emotional connection between the two people as shown in the template image.
-
-Preserve the scene composition, camera angle, framing, depth of field, lighting setup, color palette, romantic cinematic atmosphere, and all background elements exactly as in the template image.
-
-Photorealistic, high detail, natural skin texture, romantic cinematic lighting, seamless integration.
-
-Do not modify the background, environment, or image composition. Only replace both people.`
-
-const THENOTEBOOK_2 = `Replace both people in the template image with the two individuals from the provided reference photos. Use the reference photos as the exact source of each person's identity, including facial features, hairstyle, hair color, skin tone, body shape, body proportions, and overall appearance.
-
-Each person should naturally recreate the pose, facial expression, emotion, gaze, head position, body language, and overall attitude shown in the template image while maintaining their own appearance from the reference.
-
-Transfer the entire body of each person, including face, head, torso, arms, hands, body shape, and proportions. Do not perform a simple face swap. The result should depict the two reference people naturally occupying the positions of the people in the template image.
-
-Keep the camera angle, framing, clothing style, lighting, shadows, depth of field, perspective, romantic atmosphere, and overall composition from the template image.
-
-Photorealistic, realistic anatomy, natural skin texture, seamless integration, high detail, romantic cinematic photography.
-
-Do not modify the background, environment, or image composition. Only replace both people.`
-
-const THENOTEBOOK_3 = `Perform a precise photorealistic identity replacement of both people in the template image using the two provided reference photos. The final image must look like a real cinematic photograph with the referenced people naturally present in the scene.
-
-Female identity: Replace the woman with the woman from the female reference. Transfer her exact facial features, hairstyle, skin tone, body proportions, and natural expression.
-
-Male identity: Replace the man with the man from the male reference. Transfer his exact facial features, hairstyle, skin tone, body proportions, and natural expression.
-
-Preserve the exact body position, pose, physical proximity, emotional dynamic, and intimate connection between the two people from the template. Keep all original clothing style, lighting, background, scene composition, camera framing, and cinematic atmosphere unchanged.
-
-Photorealistic, high detail, seamless compositing, natural skin texture, realistic anatomy, romantic cinematic mood.
-
-Do not modify the background or environment. Only replace both people.`
+const THENOTEBOOK_3 = ``
 
 const SUMMER500_1 = `Replace the two people in the template image with the two people from the provided reference photos.
 
