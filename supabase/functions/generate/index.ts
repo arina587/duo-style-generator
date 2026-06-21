@@ -1403,45 +1403,11 @@ Photorealistic, high detail, seamless compositing, natural skin texture, realist
 
 Do not modify the background or environment. Only replace both people.`
 
-const TWILIGHT_1 = `Replace the two people in the template image with the two people from the provided reference photos.
+const TWILIGHT_1 = `Complete full-body identity replacement only. Treat both people in the reference image as empty pose skeletons with zero usable identity and zero usable anatomy. Completely delete and ignore 100% of the original people before generation: face, head, skull shape, neck, shoulders, torso, arms, hands, body proportions, silhouette, physique, facial geometry, facial structure, body anatomy. The reference image provides ONLY pose, composition, camera angle, lighting, environment, emotion, facial expression, gaze direction, head angle, body angle, sitting position, and posture. The uploaded male and female photos provide 100% of human appearance and anatomy. Build entirely new people from uploaded photos only. Do NOT use reference faces as geometry, mesh, scaffold, or template. Do NOT use reference bodies as anatomy templates. No facial blending and no body blending allowed. Zero identity contribution from reference people. This is NOT a face swap and NOT a head swap. Do not attach uploaded faces onto reference bodies. Reconstruct both uploaded people completely from head to toe as unified identities, preserving exactly their facial proportions, skull shape, forehead, eyes, eye spacing, eyebrows, nose shape, lips, mouth, jawline, chin, cheekbones, ears, hairline, hairstyle, hair texture, skin tone, skin texture, facial asymmetry, distinctive features, body proportions, physique, silhouette, shoulders, torso, limbs, and overall appearance with maximum fidelity. Identity accuracy is the highest priority. The final people must be instantly recognizable as the exact same real individuals from the uploaded photos, not approximations or lookalikes. Never start from reference people, always start from uploaded identities. First reconstruct the uploaded people fully in 3D, then apply the reference pose. The uploaded photos may show different angles, head tilts, expressions, or gaze direction—ignore all of that and rotate them into the exact angles shown in the reference image while keeping identity fully intact. This scene requires accurate downward face reconstruction because both subjects are looking downward. Preserve facial proportions perfectly under low light and downward head tilt. Do not distort facial geometry because of shadows, reflections, or camera angle. Preserve exactly: both subjects sitting close together at the piano, identical body spacing, identical shoulder distance, identical sitting posture, identical head tilt downward, identical gaze direction toward piano keys, identical body orientation, identical subtle body language. Preserve exact emotional tone: quiet intimacy, calm emotional focus, subtle connection, gentle seriousness, soft contemplative expression. Ignore emotions from uploaded photos and recreate the exact same emotional expressions from the reference image. Reflection consistency is mandatory: reflections visible on the piano surface must match the newly generated uploaded identities and must not contain any features from the reference people. No old faces or mixed identities may appear in reflections. Preserve environment exactly: grand piano, piano reflections, cold blue cinematic lighting, dark room atmosphere, shadows, composition, framing, and depth. Final result must look like authentic cinematic photography of the uploaded people naturally captured in this exact moment with seamless photorealistic integration, realistic anatomy, realistic skin pores, realistic hair strands, realistic proportions, realistic reflections, cinematic low-light realism, and zero trace of the original reference identities. Negative prompt: reference face geometry, reference body anatomy, identity blending, facial blending, body blending, face morphing, face swap, head swap, partial replacement, pasted face, weak likeness, distorted face, distorted jawline, asymmetrical eyes, altered proportions, changed expression, changed pose, incorrect reflections, mixed reflections, old reflection face, CGI, cartoon, painting, low resolution, blurry, artifacts, ghosting, watermark, text.`
 
-Female reference: Replace the woman in the template with the exact woman from the female reference photo. Preserve her complete facial identity, hairstyle, hair color, skin tone, body proportions, facial expression, and overall appearance.
+const TWILIGHT_2 = ``
 
-Male reference: Replace the man in the template with the exact man from the male reference photo. Preserve his complete facial identity, hairstyle, skin tone, body proportions, facial expression, and overall appearance.
-
-Transfer the complete bodies of both people — face, head, hair, torso, arms, hands, body proportions — not just faces. Do not perform a simple face swap.
-
-Maintain the exact pose, body position, physical proximity, and intense emotional connection between the two people as shown in the template image.
-
-Preserve the scene composition, camera angle, framing, depth of field, lighting setup, moody color palette, supernatural cinematic atmosphere, and all background elements exactly as in the template image.
-
-Photorealistic, high detail, natural skin texture, moody cinematic lighting, seamless integration.
-
-Do not modify the background, environment, or image composition. Only replace both people.`
-
-const TWILIGHT_2 = `Replace both people in the template image with the two individuals from the provided reference photos. Use the reference photos as the exact source of each person's identity, including facial features, hairstyle, hair color, skin tone, body shape, body proportions, and overall appearance.
-
-Each person should naturally recreate the pose, facial expression, emotion, gaze, head position, body language, and overall attitude shown in the template image while maintaining their own appearance from the reference.
-
-Transfer the entire body of each person, including face, head, torso, arms, hands, body shape, and proportions. Do not perform a simple face swap. The result should depict the two reference people naturally occupying the positions of the people in the template image.
-
-Keep the camera angle, framing, clothing style, lighting, shadows, depth of field, perspective, moody supernatural atmosphere, and overall composition from the template image.
-
-Photorealistic, realistic anatomy, natural skin texture, seamless integration, high detail, moody cinematic photography.
-
-Do not modify the background, environment, or image composition. Only replace both people.`
-
-const TWILIGHT_3 = `Perform a precise photorealistic identity replacement of both people in the template image using the two provided reference photos. The final image must look like a real cinematic photograph with the referenced people naturally present in the scene.
-
-Female identity: Replace the woman with the woman from the female reference. Transfer her exact facial features, hairstyle, skin tone, body proportions, and natural expression.
-
-Male identity: Replace the man with the man from the male reference. Transfer his exact facial features, hairstyle, skin tone, body proportions, and natural expression.
-
-Preserve the exact body position, pose, physical proximity, emotional intensity, and connection between the two people from the template. Keep all original clothing style, lighting, background, scene composition, camera framing, and moody cinematic atmosphere unchanged.
-
-Photorealistic, high detail, seamless compositing, natural skin texture, realistic anatomy, supernatural cinematic mood.
-
-Do not modify the background or environment. Only replace both people.`
+const TWILIGHT_3 = ``
 
 const WALLSTREET_1 = `Replace only the main person in the center of the image with the person from the uploaded reference photo.
 
