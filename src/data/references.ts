@@ -35,6 +35,9 @@ export const categories: Category[] = [
   { id: 'wallstreet',      name: 'The Wolf of Wall Street', tag: 'Film', cover: '/styles/wallstreet/wallstreet1.jpg',           category: 'other', inputMode: 'single' },
   { id: 'americanpsycho',  name: 'American Psycho',          tag: 'Film', cover: '/styles/americanpsycho/americanpsycho1.jpg',   category: 'other', inputMode: 'single' },
   { id: 'fightclub',       name: 'Fight Club',               tag: 'Film', cover: '/styles/fightclub/fightclub1.jpg',             category: 'other', inputMode: 'single' },
+  // Row 5b: Terminator | The Fast and the Furious
+  { id: 'terminator',      name: 'Terminator',               tag: 'Film', cover: '/styles/terminator/terminator1.jpg',           category: 'other', inputMode: 'single' },
+  { id: 'thefast',         name: 'The Fast and the Furious', tag: 'Film', cover: '/styles/thefast/thefast1.jpg',                 category: 'other', inputMode: 'single' },
   // Row 6: The Notebook | 500 Days of Summer | Twilight
   { id: 'thenotebook',     name: 'The Notebook',             tag: 'Film', cover: '/styles/thenotebook/thenotebook1.jpg',         category: 'movie' },
   { id: '500daysofsummer', name: '500 Days of Summer',       tag: 'Film', cover: '/styles/500daysofsummer/500daysofsummer1.jpg', category: 'movie' },
@@ -116,6 +119,16 @@ export const references: ReferenceItem[] = [
   { id: 'fightclub-1', style: 'fightclub', label: 'Fight Club', image: '/styles/fightclub/fightclub1.jpg', inputMode: 'single' },
   { id: 'fightclub-2', style: 'fightclub', label: 'Fight Club', image: '/styles/fightclub/fightclub2.jpg', inputMode: 'single' },
   { id: 'fightclub-3', style: 'fightclub', label: 'Fight Club', image: '/styles/fightclub/fightclub3.jpg', inputMode: 'single' },
+
+  // ── Terminator ──
+  { id: 'terminator-1', style: 'terminator', label: 'Terminator', image: '/styles/terminator/terminator1.jpg', inputMode: 'single' },
+  { id: 'terminator-2', style: 'terminator', label: 'Terminator', image: '/styles/terminator/terminator2.jpg', inputMode: 'single' },
+  { id: 'terminator-3', style: 'terminator', label: 'Terminator', image: '/styles/terminator/terminator3.jpg', inputMode: 'single' },
+
+  // ── The Fast and the Furious ──
+  { id: 'thefast-1', style: 'thefast', label: 'The Fast and the Furious', image: '/styles/thefast/thefast1.jpg', inputMode: 'single' },
+  { id: 'thefast-2', style: 'thefast', label: 'The Fast and the Furious', image: '/styles/thefast/thefast2.jpg', inputMode: 'single' },
+  { id: 'thefast-3', style: 'thefast', label: 'The Fast and the Furious', image: '/styles/thefast/thefast3.jpg', inputMode: 'single' },
 
   // ── The Notebook ──
   { id: 'thenotebook-1', style: 'thenotebook', label: 'The Notebook', image: '/styles/thenotebook/thenotebook1.jpg' },
