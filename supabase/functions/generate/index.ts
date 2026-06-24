@@ -1738,7 +1738,53 @@ Do not modify the background, environment, objects, or image composition.
 
 Photorealistic, physically accurate integration, realistic anatomy, realistic skin texture, seamless integration, cinematic realism, premium film-quality result.`
 
-const TERMINATOR_3 = ``
+const TERMINATOR_3 = `Replace only the main person in the image with the person from the uploaded reference photo.
+
+Identity preservation is the absolute top priority.
+
+The reference photo is the only source of identity, face, body, and physical appearance. Preserve the exact facial identity and body characteristics of the reference person with maximum fidelity.
+
+Keep exact face shape, facial proportions, facial structure, bone structure, eye shape, eyelids, eyebrows, nose shape, nostrils, lips, mouth shape, jawline, chin, cheek structure, skin texture, skin pores, facial asymmetry, hairline, hairstyle, hair texture, body proportions, physique, shoulder width, neck structure, arm proportions, hand shape, posture tendencies, and all unique physical characteristics.
+
+Do NOT redesign, beautify, stylize, enhance, sculpt, or modify facial anatomy or body shape. Do NOT add cheekbones, stronger jawline, sharper facial structure, or heroic body proportions. Keep the person anatomically true to the reference photo.
+
+Identity comes exclusively from the reference photo. Expression, pose, and scene styling come exclusively from the template image.
+
+The facial expression is the highest priority after identity preservation.
+
+Precisely recreate the exact emotional state from the template image: cold, emotionless, dominant, rigid, highly controlled, intimidating calmness, and complete emotional suppression.
+
+Match the exact eye direction, fixed stare, gaze intensity, eyelid tension, brow tension, facial muscle rigidity, jaw tension, mouth rigidity, lip compression, head angle, head rotation, head tilt, and psychological presence.
+
+There must be no smile, no warmth, no friendliness, no softness, and no visible emotion. The expression must remain rigid, calm, cold, dominant, and machine-like.
+
+The eyes are the most important element. Recreate the same cold, fixed, emotionless stare with maximum psychological intensity and zero emotional warmth.
+
+Transfer the entire body and pose from the template image, including shoulders, torso, neck, posture, and body stance. Reconstruct the body using the reference person's true body proportions and anatomy while adapting naturally to the scene perspective.
+
+The head rotation, body position, stance, and posture must match the template image exactly while preserving the reference person's identity.
+
+Do not perform face swap or body paste. Reconstruct the entire person naturally inside the scene.
+
+The inserted person must look physically present in the original scene, not composited, pasted, or edited.
+
+Strong scene adaptation is required:
+- match exact lighting direction
+- match shadow placement on face and body
+- match high contrast sunlight
+- match warm highlights and cool shadows
+- match cinematic contrast and exposure
+- match reflections on sunglasses and leather jacket
+- match perspective and lens compression
+- match depth of field and focus plane
+
+Apply the same skin rendering, shadow structure, color grading, cinematic contrast, image texture, warm highlights, and gritty action-movie visual style as the template image.
+
+Keep the sunglasses, leather jacket, body posture, camera angle, framing, environment, lighting setup, and composition unchanged.
+
+Do not modify the background, environment, objects, or image composition.
+
+Photorealistic, physically accurate integration, realistic anatomy, realistic skin texture, seamless integration, cinematic realism, premium film-quality result.`
 
 // ── The Fast and the Furious ──
 
