@@ -1645,47 +1645,54 @@ Photorealistic, seamless integration, realistic anatomy, natural skin texture, r
 
 // ── Terminator ──
 
-const TERMINATOR_1 = `Replace only the main person in the image with the person from the uploaded reference photo.
+const TERMINATOR_1 = `Replace only the main person on the motorcycle with the person from the uploaded reference photo.
 
-Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, arm proportions, hand shape, posture characteristics, and overall appearance.
+Identity preservation is the absolute top priority.
 
-Keep the exact facial expression, emotion, gaze direction, head position, pose, body language, arm placement, hand position, and overall attitude from the template image. The replaced person should adopt the exact stance, posture, and energy of the original subject while maintaining the reference person's complete appearance and identity.
+The reference photo is the only source of identity. Preserve the exact facial identity and body characteristics of the reference person with maximum fidelity. Keep exact face shape, facial proportions, bone structure, eye shape, eyelids, eyebrows, nose shape, lips, jawline, chin, cheek structure, skin texture, hairline, hairstyle, hair texture, body proportions, physique, shoulder width, neck structure, arm proportions, hand shape, posture tendencies, and all unique physical characteristics.
 
-Preserve the reference person's face completely. Do not perform a face swap. Do not blend, copy, or inherit any facial features, bone structure, facial proportions, nose shape, eye shape, mouth shape, jaw shape, or cheek structure from the original character. Reconstruct the complete person from the reference photo in the exact pose and posture of the original subject.
+Do NOT redesign, beautify, enhance, stylize, or modify the person's facial structure or body shape. Do NOT add cheekbones, stronger jawline, or any facial enhancements. Keep the face and body anatomically true to the reference photo.
 
-Maintain the exact cinematic sci-fi lighting, dark atmospheric tones, shadows, contrast, color grading, and gritty industrial visual style of the template image. Match the dramatic lighting conditions, depth of field, and overall cinematic composition exactly.
+Identity comes exclusively from the reference photo. Expression, pose, and scene styling come exclusively from the template image.
 
-Do not modify the background, environment, props, lighting setup, atmosphere, or image composition. Only replace the person.
+The facial expression is extremely important.
 
-Photorealistic, seamless integration, realistic anatomy, natural skin texture, cinematic photography, high detail, realistic shadows, realistic facial structure, premium film-quality realism.`
+Precisely recreate the exact emotional state from the template image: cold, emotionless, dominant, highly controlled, intimidating calmness, and complete emotional suppression.
 
-const TERMINATOR_2 = `Replace only the main person in the image with the person from the uploaded reference photo.
+Match the exact eye direction, gaze intensity, eyelid tension, brow tension, jaw tension, mouth neutrality, head angle, head rotation, head tilt, and facial muscle rigidity.
 
-Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, posture characteristics, and overall appearance.
+There must be no smile, no warmth, no friendliness, no visible emotion. The expression should remain rigid, calm, cold, and dominant.
 
-Keep the exact facial expression, gaze direction, head position, pose, body language, and overall attitude from the template image. Transfer the complete person, including face, head, hair, neck, shoulders, chest, torso, arms, hands, and overall physique, fully adapted to match the reference person's appearance and proportions.
+The eyes are critical. Recreate the same cold, fixed, forward-facing stare with minimal emotion and maximum psychological intensity.
 
-The reference photo is the only source of identity and appearance. Do not blend or inherit any facial features, bone structure, or proportions from the original subject. Reconstruct the complete person from the reference photo.
+Transfer the entire body and pose from the template image, including shoulders, torso, arms, hands, body angle, and motorcycle riding posture. Reconstruct the body using the reference person's true body proportions and anatomy while adapting naturally to the scene perspective.
 
-Match the exact cinematic lighting, dark tones, contrast, skin shading, shadow structure, color grading, and visual atmosphere of the template image. Preserve realistic skin texture, natural shadow transitions, and seamless integration with the scene environment.
+The head rotation, body position, and posture must match the template image exactly while preserving the reference person's identity.
 
-Do not modify the background, environment, objects, atmosphere, lighting setup, or image composition. Only replace the person.
+Do not perform a face swap or body paste. Reconstruct the entire person naturally inside the scene.
 
-Photorealistic, seamless integration, realistic anatomy, natural skin texture, realistic shadows, realistic facial structure, cinematic photography, high detail, premium film-quality realism.`
+The inserted person must look physically present in the original scene, not composited, pasted, or edited.
 
-const TERMINATOR_3 = `Replace only the main person in the image with the person from the uploaded reference photo.
+Strong scene adaptation is required:
+- match exact lighting direction
+- match shadow placement on face and body
+- match warm cinematic lighting
+- match contrast and exposure
+- match reflections on sunglasses and jacket
+- match perspective and lens compression
+- match depth of field and focus plane
 
-Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, posture characteristics, and overall appearance.
+Apply the same skin rendering, shadow structure, color grading, cinematic contrast, image texture, and gritty film-like visual style as the template image.
 
-Do not perform a face swap. Do not keep any facial features, body proportions, anatomy, shoulders, neck, arms, hands, or physique from the original subject. Reconstruct the complete person from the reference photo in the exact pose, posture, body language, gaze direction, expression, and attitude of the template subject.
+Keep the motorcycle, sunglasses, leather jacket, hand positions, camera angle, framing, environment, lighting setup, and composition unchanged.
 
-Match the exact cinematic lighting, shadows, contrast, skin texture, facial contours, highlights, depth, color grading, and visual atmosphere of the template image.
+Do not modify the background, motorcycle, environment, or image composition.
 
-The inserted person should appear naturally photographed in the scene, not composited, pasted, or edited. Preserve realistic facial volume, realistic shadow transitions, realistic skin texture, and seamless integration.
+Photorealistic, physically accurate integration, realistic anatomy, realistic skin texture, seamless integration, cinematic realism, premium film-quality result.`
 
-Keep the exact pose, hand placement, body posture, camera angle, framing, background, environment, depth of field, and composition unchanged. Do not modify the background, environment, objects, atmosphere, or lighting setup.
+const TERMINATOR_2 = ``
 
-Photorealistic, seamless integration, realistic anatomy, natural skin texture, realistic shadows, realistic facial structure, cinematic photography, high detail, premium film-quality realism.`
+const TERMINATOR_3 = ``
 
 // ── The Fast and the Furious ──
 
