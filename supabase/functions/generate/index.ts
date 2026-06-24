@@ -1792,15 +1792,45 @@ const THEFAST_1 = `Replace only the man on the right side wearing the black shir
 
 Do not modify the man on the left side in the white shirt. Keep the left person exactly unchanged.
 
-The right-side person must be fully replaced.
+The original right-side person must be completely removed from the image.
 
-Identity preservation and full body replacement are the absolute top priorities.
+Perform a full-person replacement, not a face replacement.
+
+Remove 100% of the original right-side person, including:
+- face
+- head
+- hair
+- neck
+- shoulders
+- chest
+- torso
+- waist
+- arms
+- elbows
+- forearms
+- wrists
+- hands
+- fingers
+- hips
+- legs
+- body proportions
+- physique
+- height
+- muscle mass
+- body fat distribution
+- posture characteristics
+
+Keep 0% of the original right-side person's anatomy or physical characteristics.
+
+Zero anatomical data from the original right-side person may remain in the final image.
+
+Priority 1: Preserve the reference person's identity, face, body proportions, height, and anatomy with maximum fidelity.
+Priority 2: Recreate the exact pose, crossed-arm body language, facial expression, and emotional presence of the right-side subject.
+Priority 3: Fully integrate the person into the scene with physically accurate lighting, shadows, and cinematic realism.
 
 The reference photo is the only source of identity, face, body, height, proportions, physique, and physical structure.
 
-Completely replace the original right-side person with the reference person, including face, head, hair, neck, shoulders, chest, torso, waist, arms, elbows, forearms, wrists, hands, fingers, hips, legs, body proportions, height, muscle mass, body fat distribution, physique, and overall body structure.
-
-Do NOT keep any body structure, proportions, anatomy, musculature, shoulder width, arm thickness, neck thickness, torso width, body mass, height, or physique from the original right-side person.
+The final right-side person must be entirely rebuilt using only the reference person's identity, anatomy, body proportions, and physical characteristics.
 
 Analyze the reference person's full body structure and preserve it with maximum fidelity:
 - exact height proportions
@@ -1815,12 +1845,15 @@ Analyze the reference person's full body structure and preserve it with maximum 
 - body fat distribution
 - posture tendencies
 
-The clothing must adapt to the reference person's body proportions naturally. Keep the same clothing style, but fit the clothes realistically to the new body.
+The clothing must adapt naturally to the reference person's body proportions. Keep the same clothing style, but fit the clothes realistically to the new body.
 
 Preserve the reference person's face with maximum fidelity:
 - exact face shape
 - facial proportions
+- facial structure
+- bone structure
 - eye shape
+- eyelids
 - eyebrows
 - nose
 - lips
@@ -1830,9 +1863,9 @@ Preserve the reference person's face with maximum fidelity:
 - facial asymmetry
 - all unique facial features
 
-Do not redesign, stylize, beautify, enhance, or modify facial anatomy or body shape.
+Do not redesign, stylize, beautify, enhance, sculpt, or modify facial anatomy or body shape.
 
-Identity, face, body, and proportions come exclusively from the reference photo. Expression, pose, and scene styling come exclusively from the template image.
+Identity comes exclusively from the reference photo. Expression, pose, and scene styling come exclusively from the template image.
 
 The facial expression is extremely important.
 
@@ -1846,7 +1879,24 @@ Transfer the entire pose from the right-side subject, including crossed arms, ha
 
 Do not perform face swap or body paste. Fully reconstruct the entire right-side person naturally inside the scene using the reference person's identity and body.
 
-The inserted person must look physically present in the original scene, not composited, pasted, or edited.
+The inserted person must be fully integrated into the scene with physically accurate lighting adaptation.
+
+Do not paste or overlay the person. Rebuild the person naturally inside the scene.
+
+Adapt the face and body to the exact lighting conditions of the template:
+- match shadow direction exactly
+- match shadow softness and shadow density
+- match facial shadow placement on cheeks, jawline, nose, neck, and eye sockets
+- match ambient bounce light from the environment
+- match reflected light from nearby cars
+- match warm street lighting
+- match warm skin highlights and cool shadow transitions
+- match contrast falloff across the face and body
+- match exposure rolloff and skin brightness
+
+The face must inherit the exact same shadow structure and lighting behavior as the original right-side subject.
+
+The skin must adapt naturally to the scene, including realistic shading, realistic facial depth, realistic skin texture under scene lighting, realistic light absorption, and realistic surface reflections.
 
 Strong scene adaptation is required:
 - match exact nighttime lighting
@@ -1857,9 +1907,13 @@ Strong scene adaptation is required:
 - match perspective and lens compression
 - match depth of field and focus plane
 
+The inserted person must look naturally photographed in the original scene, not cut out, pasted, composited, or edited.
+
+Preserve realistic face depth, natural skin shadow gradients, environmental light spill, realistic anatomy, and scene-consistent facial volume.
+
 Apply the same skin rendering, shadow structure, color grading, cinematic contrast, image texture, and realistic night-scene lighting as the template image.
 
-Keep the left person, both cars, street, background, lighting setup, camera angle, framing, and composition unchanged.
+Keep the black shirt, jeans, necklace, crossed-arm position, left person, both cars, street, background, lighting setup, camera angle, framing, and composition unchanged.
 
 Do not modify the left person, cars, background, environment, objects, or image composition.
 
