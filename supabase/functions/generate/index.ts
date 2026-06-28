@@ -1946,33 +1946,74 @@ Photorealistic, physically accurate full-body replacement with correct scene-bas
 
 // ── Mamma Mia! ──
 
-const MAMMAMIA_1 = `Replace only the main person in the image with the person from the uploaded reference photo.
+const MAMMAMIA_1 = `Replace only the target woman in the image with the person from the uploaded reference photo.
 
-Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, arm proportions, hand shape, posture characteristics, and overall appearance.
+Do not modify background, lighting, camera angle, composition, or any other elements.
 
-Keep the exact facial expression, emotion, gaze direction, head position, pose, body language, arm placement, and overall attitude from the template image. The replaced person should adopt the exact stance, posture, and energy of the original subject while maintaining the reference person's complete appearance and identity.
+The original woman must be completely removed and fully replaced.
 
-Preserve the reference person's face completely. Do not perform a face swap. Do not blend, copy, or inherit any facial features, bone structure, facial proportions, or physical characteristics from the original character. Reconstruct the complete person from the reference photo in the exact pose and posture of the original subject.
+Perform a FULL-BODY replacement ONLY (not face swap, not head swap, not partial edit).
 
-Maintain the exact cinematic romantic musical film aesthetic: warm Mediterranean summer lighting, vibrant saturated colors, golden sunlight, soft-focus background, joyful cinematic atmosphere, and the visual warmth characteristic of the Mamma Mia! film style. Match the lighting conditions, depth of field, and overall cinematic composition exactly.
+CRITICAL REQUIREMENT: full person transfer
+The entire person must be reconstructed from the reference photo as one coherent entity:
+face, head, hair, neck, shoulders, torso, arms, hands, legs, full body, proportions, and physique.
 
-Do not modify the background, environment, props, costume context, lighting setup, or image composition. Only replace the person.
+════════════════════════════════════
+POSE LOCK (HIGHEST PRIORITY)
+════════════════════════════════════
+Match the exact pose of the scene subject:
+- body orientation
+- seated posture
+- arm and hand positions
+- leg positioning
+- head tilt and rotation
+- spine alignment and weight distribution
 
-Photorealistic, seamless integration, realistic anatomy, natural skin texture, cinematic photography, high detail, realistic shadows, realistic facial structure, warm romantic lighting, premium film-quality realism.`
+════════════════════════════════════
+EMOTION LOCK (ABSOLUTE PRIORITY)
+════════════════════════════════════
+The facial expression MUST be an exact reproduction of the reference scene emotion.
 
-const MAMMAMIA_2 = `Replace only the main person in the image with the person from the uploaded reference photo.
+This is not a general emotion description — it is a precise facial-state transfer.
 
-Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, posture characteristics, and overall appearance.
+The following must be identical to the reference scene:
+- exact gaze direction and eye focus
+- exact eyelid openness and tension
+- exact eyebrow position and muscle activation
+- exact mouth shape (lip compression, relaxation, symmetry)
+- exact jaw tension and facial muscle tone
+- exact emotional intensity and psychological state
 
-Keep the exact facial expression, gaze direction, head position, pose, body language, and overall attitude from the template image. Transfer the complete person — face, head, hair, neck, shoulders, chest, torso, arms, hands, and overall physique — fully adapted to match the reference person's appearance and proportions.
+IMPORTANT:
+Do NOT reinterpret the emotion.
+Do NOT “approximate” expression.
+Do NOT soften or enhance facial emotion.
 
-The reference photo is the only source of identity and appearance. Do not blend or inherit any facial features, bone structure, or proportions from the original subject. Reconstruct the complete person from the reference photo.
+The expression must be copied as a precise facial configuration identical to the reference scene subject.
 
-Maintain the romantic summer Mediterranean cinematic aesthetic: warm golden-hour sunlight, vibrant vivid colors, joyful upbeat atmosphere, soft shallow depth of field, and the signature sun-drenched visual style of the Mamma Mia! film. Preserve realistic skin texture, natural shadow transitions, and seamless integration with the scene.
+════════════════════════════════════
+FULL BODY CONSISTENCY
+════════════════════════════════════
+The entire body must come from the reference person:
+- anatomy
+- proportions
+- posture tendencies
+- natural balance and joint behavior
 
-Do not modify the background, environment, objects, lighting setup, or image composition. Only replace the person.
+════════════════════════════════════
+LIGHTING INTEGRATION
+════════════════════════════════════
+- continuous lighting across face and body
+- physically correct shadows
+- consistent exposure and skin tone
+- no cutout effect
+- no pasted face appearance
 
-Photorealistic, seamless integration, realistic anatomy, natural skin texture, realistic shadows, realistic facial structure, cinematic photography, high detail, warm summer lighting, premium film-quality realism.`
+Identity must remain strictly from reference photo with no alteration.
+
+Photorealistic, full-body, physically accurate replacement with exact pose and exact emotion replication.`
+
+const MAMMAMIA_2 = ``
 
 const MAMMAMIA_3 = `Replace only the main person in the image with the person from the uploaded reference photo.
 
