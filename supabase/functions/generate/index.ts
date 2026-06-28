@@ -2013,7 +2013,102 @@ Identity must remain strictly from reference photo with no alteration.
 
 Photorealistic, full-body, physically accurate replacement with exact pose and exact emotion replication.`
 
-const MAMMAMIA_2 = ``
+const MAMMAMIA_2 = `Replace only the target woman in the image with the person from the uploaded reference photo.
+
+Do not modify background, architecture, lighting setup, camera angle, composition, or any other elements.
+
+The original woman must be completely removed and fully replaced.
+
+Perform a FULL-BODY replacement ONLY (not face swap, not head swap, not partial edit).
+
+════════════════════════════════════
+CRITICAL: COMPLETE HUMAN TRANSFER
+════════════════════════════════════
+The entire person must be reconstructed from the reference photo as a single coherent identity:
+face, head, hair, neck, shoulders, torso, arms, hands, legs, full body, proportions, posture, and physique.
+
+Do NOT:
+- reuse original body
+- mix identities
+- replace only face or head
+- distort proportions to fit scene
+
+The person must be transferred as a complete anatomical entity.
+
+════════════════════════════════════
+POSE LOCK (EXACT MATCH REQUIRED)
+════════════════════════════════════
+Match exactly the pose of the original woman:
+- seated posture and body orientation
+- arm placement and hand position
+- leg positioning and relaxation
+- head tilt and rotation
+- spine alignment and natural balance
+- interaction with environment (support surfaces, railing, ground contact)
+
+Pose must be identical, not approximate.
+
+════════════════════════════════════
+EMOTION LOCK (ABSOLUTE 1:1 REPLICATION)
+════════════════════════════════════
+The facial expression must be an exact replication of the reference scene emotion, INCLUDING a subtle natural light smile.
+
+Must match precisely:
+- eye direction, gaze, and focus
+- eyelid openness and micro-tension
+- eyebrow position and muscle activation
+- mouth shape and lip curvature
+- lip corner elevation (subtle, natural)
+- cheek muscle activation consistent with light smile
+- jaw relaxation and facial tone
+- overall emotional state and mood impression
+
+CRITICAL RULES:
+- Do NOT reinterpret emotion
+- Do NOT amplify or reduce smile intensity
+- Do NOT convert expression to neutral or exaggerated smile
+- Do NOT beautify or stylize emotion
+- Do NOT average facial expression
+
+The emotion must be transferred as a frozen, exact facial-state copy of the reference scene.
+
+════════════════════════════════════
+FULL BODY CONSISTENCY
+════════════════════════════════════
+- full anatomy from reference person
+- correct proportions and limb structure
+- natural seated weight distribution
+- realistic interaction with environment
+- physically plausible joint behavior
+
+════════════════════════════════════
+LIGHTING INTEGRATION (NO CUTOUT EFFECT)
+════════════════════════════════════
+- single coherent lighting system across face, neck, body
+- correct sun direction and shadow geometry
+- continuous shadow flow face → neck → torso → legs
+- correct ambient bounce from stone walls and blue interior
+- consistent exposure and skin tone across entire body
+
+CRITICAL:
+Eliminate any sign of compositing:
+- no pasted face look
+- no brightness mismatch
+- no edge halos
+- no separate lighting layers
+- no “photoshopped overlay” appearance
+
+════════════════════════════════════
+IDENTITY PRESERVATION (STRICT)
+════════════════════════════════════
+Identity must remain exactly from reference photo:
+- no facial modification
+- no body reshaping
+- no beautification
+- no stylization
+- no identity blending
+
+Photorealistic full-body replacement with exact pose transfer, exact emotion replication (including subtle smile), and physically correct lighting integration.`
 
 const MAMMAMIA_3 = `Replace only the main person in the image with the person from the uploaded reference photo.
 
