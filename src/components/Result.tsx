@@ -53,6 +53,20 @@ export default function Result({
   const progressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prevIsGeneratingRef = useRef(false);
 
+  // ── Stage message cycling ──
+  const generatingMsgs = [
+    'Building your movie frame...',
+    'Matching lighting and composition...',
+    'Applying cinematic color grading...',
+    'Generating cinematic composition...',
+    'Refining scene details...',
+    'Applying lighting effects...',
+    'Blending scene elements...',
+    'Finalizing cinematic look...',
+  ];
+  const [msgIndex, setMsgIndex] = useState(0);
+  const msgCycleRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const displaySrc = generatedImageUrl || rawImageUrl;
 
   const generationSucceeded =
@@ -112,8 +126,10 @@ export default function Result({
   // Reset / complete progress when generation state changes
   useEffect(() => {
     if (isGenerating && !prevIsGeneratingRef.current) {
-      fakeProgressRef.current = 0;
-      setFakeProgress(0);
+      // Jump to 5-10% immediately so the bar looks active from the first frame
+      const startVal = 5 + Math.floor(Math.random() * 6);
+      fakeProgressRef.current = startVal;
+      setFakeProgress(startVal);
     }
     if (!isGenerating && prevIsGeneratingRef.current && !generationError) {
       fakeProgressRef.current = 100;
@@ -122,7 +138,7 @@ export default function Result({
     prevIsGeneratingRef.current = isGenerating;
   }, [isGenerating, generationError]);
 
-  // Advance progress while generating
+  // 4-zone non-linear ticker — never freezes in the 95-99% range
   useEffect(() => {
     if (progressTimerRef.current !== null) {
       clearTimeout(progressTimerRef.current);
@@ -130,23 +146,60 @@ export default function Result({
     }
     if (!isGenerating || isPollingRecovering) return;
 
-    const phaseTarget = generationPhase === 'uploading' ? 15
-      : generationPhase === 'starting' ? 30
-      : 99;
-
     const tick = () => {
       const cur = fakeProgressRef.current;
-      if (cur >= phaseTarget) return;
-      const remaining = phaseTarget - cur;
-      const step = remaining > 30 ? 0.7 + Math.random() * 0.5
-        : remaining > 15 ? 0.35 + Math.random() * 0.3
-        : remaining > 5 ? 0.15 + Math.random() * 0.15
-        : 0.04 + Math.random() * 0.08;
-      const next = Math.min(phaseTarget, cur + step);
+
+      if (generationPhase === 'uploading') {
+        if (cur >= 15) return;
+        const next = Math.min(15, cur + 0.4 + Math.random() * 0.4);
+        fakeProgressRef.current = next;
+        setFakeProgress(Math.floor(next));
+        progressTimerRef.current = setTimeout(tick, 100 + Math.random() * 80);
+        return;
+      }
+
+      if (generationPhase === 'starting') {
+        if (cur >= 30) return;
+        const next = Math.min(30, cur + 0.3 + Math.random() * 0.3);
+        fakeProgressRef.current = next;
+        setFakeProgress(Math.floor(next));
+        progressTimerRef.current = setTimeout(tick, 120 + Math.random() * 80);
+        return;
+      }
+
+      // generating phase — 4 zones
+      if (cur >= 95) {
+        // Zone 4: oscillate 95–98.5, never freezes on a single digit
+        const drift = Math.random() * 0.55 - 0.15; // slight upward bias
+        const next = Math.max(95, Math.min(98.5, cur + drift));
+        fakeProgressRef.current = next;
+        setFakeProgress(Math.round(next));
+        progressTimerRef.current = setTimeout(tick, 900 + Math.random() * 1400);
+        return;
+      }
+      if (cur >= 85) {
+        // Zone 3: very slow 85–95
+        const next = Math.min(95, cur + 0.03 + Math.random() * 0.06);
+        fakeProgressRef.current = next;
+        setFakeProgress(Math.floor(next));
+        progressTimerRef.current = setTimeout(tick, 500 + Math.random() * 700);
+        return;
+      }
+      if (cur >= 60) {
+        // Zone 2: slow 60–85
+        const next = Math.min(85, cur + 0.1 + Math.random() * 0.15);
+        fakeProgressRef.current = next;
+        setFakeProgress(Math.floor(next));
+        progressTimerRef.current = setTimeout(tick, 250 + Math.random() * 350);
+        return;
+      }
+      // Zone 1: fast 0–60
+      const next = Math.min(60, cur + 0.5 + Math.random() * 0.6);
       fakeProgressRef.current = next;
       setFakeProgress(Math.floor(next));
-      progressTimerRef.current = setTimeout(tick, 140 + Math.random() * 110);
+      progressTimerRef.current = setTimeout(tick, 100 + Math.random() * 80);
     };
+
     tick();
 
     return () => {
@@ -155,6 +208,31 @@ export default function Result({
         progressTimerRef.current = null;
       }
     };
+  }, [isGenerating, generationPhase, isPollingRecovering]);
+
+  // Stage message cycling — changes on a timer, not locked to progress value
+  useEffect(() => {
+    if (msgCycleRef.current !== null) {
+      clearTimeout(msgCycleRef.current);
+      msgCycleRef.current = null;
+    }
+    if (!isGenerating || generationPhase !== 'generating' || isPollingRecovering) {
+      setMsgIndex(0);
+      return;
+    }
+    const cycle = () => {
+      setMsgIndex((i) => (i + 1) % generatingMsgs.length);
+      msgCycleRef.current = setTimeout(cycle, 3500 + Math.random() * 2000);
+    };
+    msgCycleRef.current = setTimeout(cycle, 3500 + Math.random() * 2000);
+    return () => {
+      if (msgCycleRef.current !== null) {
+        clearTimeout(msgCycleRef.current);
+        msgCycleRef.current = null;
+      }
+    };
+  // generatingMsgs is stable (defined inline above, same ref each render is fine here)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGenerating, generationPhase, isPollingRecovering]);
 
   const MAX_AUTO_RETRIES = 2;
@@ -281,11 +359,7 @@ export default function Result({
     ? 'Uploading your photos...'
     : generationPhase === 'starting'
     ? 'Preparing your cinematic scene...'
-    : fakeProgress < 45 ? 'Building your movie frame...'
-    : fakeProgress < 62 ? 'Matching lighting and composition...'
-    : fakeProgress < 78 ? 'Applying final details...'
-    : fakeProgress < 91 ? 'Polishing every pixel...'
-    : 'Almost ready...';
+    : generatingMsgs[msgIndex];
 
   const errorType = generationError?.type ?? 'unknown';
   const isTimeoutError = !isGenerating && !!generationError && errorType === 'timeout';

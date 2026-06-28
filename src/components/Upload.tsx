@@ -57,7 +57,7 @@ export default function Upload({
         const response = await fetch(selectedRef.image);
         const blob = await response.blob();
         const rawFile = new File([blob], 'reference.jpg', { type: blob.type || 'image/jpeg' });
-        const { file: resizedRef } = await resizeImage(rawFile, 900, 0.75);
+        const { file: resizedRef } = await resizeImage(rawFile, 1024, 0.82);
         console.log(`[UPLOAD] reference ready: size=${resizedRef.size} type=${resizedRef.type}`);
         setReferenceFile(resizedRef);
       } catch (err) {
@@ -160,7 +160,7 @@ export default function Upload({
     if (!file) return;
     setError('');
     normalizeUploadFile(file)
-      .then((normalized) => resizeImage(normalized))
+      .then((normalized) => resizeImage(normalized, 1024, 0.82))
       .then(({ file: resized, dataUrl }) => {
         setPhoto(resized);
         setPreview(dataUrl);
