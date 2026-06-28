@@ -1834,7 +1834,61 @@ The inserted person must look like they were originally photographed in this exa
 
 Photorealistic, physically accurate integration, seamless replacement, cinematic realism.`
 
-const THEFAST_2 = ``
+const THEFAST_2 = `Replace only the man sitting in the foreground on the left side (wearing the light blue shirt and sunglasses) with the person from the uploaded reference photo.
+
+Do not modify the man sitting on the right side, the car interior, lighting, background, or camera framing.
+
+The original left-side man must be completely removed and fully replaced.
+
+Perform a full-body reconstruction, not a face swap and not a partial edit.
+
+The new person must be fully reconstructed from the reference photo including face, head, hair, neck, shoulders, chest, torso, arms, hands, legs, and full body proportions.
+
+HIGHEST PRIORITY: identity fidelity (critical requirement)
+The face must be reconstructed with extreme precision from the reference photo:
+- exact facial structure and bone geometry
+- exact eye shape, eyelids, iris placement, gaze depth
+- exact nose structure, nostrils, bridge width and profile
+- exact lip shape, volume, and mouth structure
+- exact jawline, chin shape, cheekbone structure
+- exact skin texture, pores, and micro-details
+- exact facial asymmetry and unique imperfections
+- exact hairstyle, hairline, hair density, and hair texture
+
+Do NOT alter, beautify, stylize, or reinterpret the face in any way.
+Do NOT enhance jawline, cheekbones, symmetry, or masculinity/femininity.
+The identity must match the reference photo 1:1.
+
+Identity, facial features, body proportions, and physique must come exclusively from the reference photo.
+
+IMPORTANT: preserve original seated position and framing exactly.
+The person must remain seated in the front-left seat of the car.
+
+IMPORTANT: legs must remain partially out of frame as in the original composition.
+Do not force full-body visibility. Do not reframe the shot.
+
+The body must remain anatomically correct and naturally seated:
+- correct hip placement on seat
+- correct torso leaning angle
+- correct shoulder relaxation in seated posture
+- correct arm placement and interaction with seat position
+- correct head height relative to car roof and window line
+
+Clothing must adapt naturally to the reference body without changing style.
+
+Expression must match the original scene: calm, serious, controlled, confident, minimal emotion, no smile.
+
+Lighting and realism requirements:
+- match strong direct sunlight direction
+- match hard facial shadows and highlights
+- match sunglasses reflections
+- match car interior shadow occlusion
+- match cinematic contrast and color grading
+- match lens compression and depth of field
+
+The inserted person must look like they were originally photographed in this exact scene, not composited or pasted.
+
+Photorealistic, physically accurate full-body seated replacement with perfect identity preservation and seamless integration.`
 
 const THEFAST_3 = ``
 
