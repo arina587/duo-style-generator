@@ -1890,7 +1890,59 @@ The inserted person must look like they were originally photographed in this exa
 
 Photorealistic, physically accurate full-body seated replacement with perfect identity preservation and seamless integration.`
 
-const THEFAST_3 = ``
+const THEFAST_3 = `Replace only the target person with the person from the uploaded reference photo.
+
+Do not modify background, environment, camera angle, composition, or other people.
+
+The original person must be completely removed and fully replaced.
+
+Perform a full-body reconstruction, not a face swap and not a partial edit.
+
+The entire identity must come from the reference photo:
+face, head, neck, body, proportions, posture, and clothing adapted naturally to body shape.
+
+CRITICAL REQUIREMENT: match scene lighting exactly (shadow-driven realism)
+
+Carefully analyze the reference scene lighting and replicate it physically on the inserted person.
+
+The lighting on the subject must match the scene in a physically correct way:
+- replicate exact shadow direction visible in the reference scene
+- replicate shadow softness/hardness exactly as in the scene
+- replicate facial shadow structure (eye sockets, nose shadow, cheek planes, jaw shadow)
+- replicate neck-to-chin shadow transition exactly
+- replicate body shadow falloff consistent with environment lighting
+- replicate ambient occlusion in clothing folds and under arms
+
+IMPORTANT: do NOT apply generic lighting.
+You must reconstruct the same lighting pattern seen in the scene and map it onto the new person.
+
+CRITICAL: eliminate “photoshop cutout effect”
+
+The subject must NOT look pasted or overlaid.
+
+To avoid this:
+- face, neck, and body must share the same continuous shadow system
+- no brightness mismatch between face and body
+- no separately lit face layer
+- no artificial smoothing or beautification of skin
+
+The person must appear as if originally photographed in the scene under the same lighting conditions.
+
+Body integration requirements:
+- correct scale and perspective
+- correct stance and weight distribution
+- natural contact shadows with ground and objects
+
+Identity preservation (strict):
+- keep exact facial structure from reference photo
+- do not modify facial features to match scene
+- do not stylize or reinterpret identity
+
+Expression:
+- neutral / natural expression consistent with scene context
+- no artificial smile unless present in reference
+
+Photorealistic, physically accurate full-body replacement with correct scene-based shadow transfer and seamless cinematic integration.`
 
 // ── Mamma Mia! ──
 
