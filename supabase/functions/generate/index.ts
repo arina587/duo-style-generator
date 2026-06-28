@@ -1788,164 +1788,55 @@ Photorealistic, physically accurate integration, realistic anatomy, realistic sk
 
 // ── The Fast and the Furious ──
 
-const THEFAST_1 = `Replace only the man on the right side wearing the black shirt with the person from the uploaded reference photo.
+const THEFAST_1 = `Replace only the man on the right side with the person from the uploaded reference photo.
 
-Do not modify the man on the left side in the white shirt. Keep the left person exactly unchanged.
+Do not modify the man on the left side, the cars, the background, lighting, or camera framing.
 
-The original right-side person must be completely removed from the image.
+The original right-side person must be completely removed.
 
-Perform a full-person replacement, not a face replacement.
+Perform a full-body reconstruction, not a face swap and not a partial edit.
 
-Remove 100% of the original right-side person, including:
-- face
-- head
-- hair
-- neck
-- shoulders
-- chest
-- torso
-- waist
-- arms
-- elbows
-- forearms
-- wrists
-- hands
-- fingers
-- hips
-- legs
-- body proportions
-- physique
-- height
-- muscle mass
-- body fat distribution
-- posture characteristics
+The new person must be fully reconstructed from the reference photo including face, head, hair, neck, shoulders, chest, torso, waist, hips, arms, legs, and full anatomical body structure.
 
-Keep 0% of the original right-side person's anatomy or physical characteristics.
+The reference photo defines identity, body proportions, height, and physique.
 
-Zero anatomical data from the original right-side person may remain in the final image.
+The pose must match the original right-side subject (arms crossed, stance, body orientation).
 
-Priority 1: Preserve the reference person's identity, face, body proportions, height, and anatomy with maximum fidelity.
-Priority 2: Recreate the exact pose, crossed-arm body language, facial expression, and emotional presence of the right-side subject.
-Priority 3: Fully integrate the person into the scene with physically accurate lighting, shadows, and cinematic realism.
+IMPORTANT: The person must be reconstructed in full physical form (full body exists in the scene), but the camera framing must remain identical to the original image.
 
-The reference photo is the only source of identity, face, body, height, proportions, physique, and physical structure.
+This means:
+- do NOT change the camera angle
+- do NOT zoom out
+- do NOT reframe the image
+- do NOT reveal additional body parts beyond the original crop
 
-The final right-side person must be entirely rebuilt using only the reference person's identity, anatomy, body proportions, and physical characteristics.
+If the original image crops the legs, the new person must also be naturally cropped at the same level by the camera framing. The cropping is a result of the camera, not the body design.
 
-Analyze the reference person's full body structure and preserve it with maximum fidelity:
-- exact height proportions
-- body proportions
-- shoulder width
-- torso width
-- arm size
-- hand shape
-- body mass
-- physique
-- muscle distribution
-- body fat distribution
-- posture tendencies
+The body must remain anatomically correct and uncompressed. Do not shrink or force-fit the person into the frame.
 
-The clothing must adapt naturally to the reference person's body proportions. Keep the same clothing style, but fit the clothes realistically to the new body.
+Clothing must adapt naturally to the reference body proportions (black t-shirt, jeans).
 
-Preserve the reference person's face with maximum fidelity:
-- exact face shape
-- facial proportions
-- facial structure
-- bone structure
-- eye shape
-- eyelids
-- eyebrows
-- nose
-- lips
-- jawline
-- cheek structure
-- skin texture
-- facial asymmetry
-- all unique facial features
+Facial identity must remain identical to the reference photo without any structural changes.
 
-Do not redesign, stylize, beautify, enhance, sculpt, or modify facial anatomy or body shape.
+Expression must match the original subject: calm dominance, serious controlled emotion, minimal facial movement, no smile.
 
-Identity comes exclusively from the reference photo. Expression, pose, and scene styling come exclusively from the template image.
-
-The facial expression is extremely important.
-
-Precisely recreate the exact emotional state of the right-side subject: calm dominance, confidence, controlled strength, intimidating calmness, emotional restraint, and quiet authority.
-
-Match the exact eye direction, gaze intensity, facial muscle tension, jaw position, mouth neutrality, head angle, head rotation, head tilt, and emotional presence.
-
-There must be no smile, no exaggerated emotion, and no visible excitement. The expression should remain calm, dominant, serious, confident, and controlled.
-
-Transfer the entire pose from the right-side subject, including crossed arms, hand positions, body angle, stance, posture, and body language, while preserving the reference person's body proportions.
-
-Do not perform face swap or body paste. Fully reconstruct the entire right-side person naturally inside the scene using the reference person's identity and body.
-
-The inserted person must be fully integrated into the scene with physically accurate lighting adaptation.
-
-Do not paste or overlay the person. Rebuild the person naturally inside the scene.
-
-Adapt the face and body to the exact lighting conditions of the template:
-- match shadow direction exactly
-- match shadow softness and shadow density
-- match facial shadow placement on cheeks, jawline, nose, neck, and eye sockets
-- match ambient bounce light from the environment
-- match reflected light from nearby cars
-- match warm street lighting
-- match warm skin highlights and cool shadow transitions
-- match contrast falloff across the face and body
-- match exposure rolloff and skin brightness
-
-The face must inherit the exact same shadow structure and lighting behavior as the original right-side subject.
-
-The skin must adapt naturally to the scene, including realistic shading, realistic facial depth, realistic skin texture under scene lighting, realistic light absorption, and realistic surface reflections.
-
-Strong scene adaptation is required:
-- match exact nighttime lighting
-- match warm street lighting
-- match shadow placement on face and body
-- match reflections from surrounding cars
+Strong scene integration:
+- match nighttime street lighting
+- match warm street light direction and intensity
+- match shadow placement and softness
+- match reflections from cars
 - match cinematic contrast and exposure
-- match perspective and lens compression
-- match depth of field and focus plane
+- match lens compression and depth of field
 
-The inserted person must look naturally photographed in the original scene, not cut out, pasted, composited, or edited.
+Lighting must wrap naturally around face and body with physically correct shadows and bounce light.
 
-Preserve realistic face depth, natural skin shadow gradients, environmental light spill, realistic anatomy, and scene-consistent facial volume.
+The inserted person must look like they were originally photographed in this exact scene, not composited or pasted.
 
-Apply the same skin rendering, shadow structure, color grading, cinematic contrast, image texture, and realistic night-scene lighting as the template image.
+Photorealistic, physically accurate integration, seamless replacement, cinematic realism.`
 
-Keep the black shirt, jeans, necklace, crossed-arm position, left person, both cars, street, background, lighting setup, camera angle, framing, and composition unchanged.
+const THEFAST_2 = ``
 
-Do not modify the left person, cars, background, environment, objects, or image composition.
-
-Photorealistic, physically accurate integration, realistic anatomy, realistic skin texture, seamless integration, cinematic realism, premium film-quality result.`
-
-const THEFAST_2 = `Replace only the main person in the image with the person from the uploaded reference photo.
-
-Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, posture characteristics, and overall appearance.
-
-Keep the exact facial expression, gaze direction, head position, pose, body language, and overall attitude from the template image. Transfer the complete person including face, head, hair, neck, shoulders, chest, torso, arms, hands, and overall physique fully adapted to match the reference person.
-
-The reference photo is the only source of identity and appearance. Do not blend or inherit any facial features, bone structure, or proportions from the original subject.
-
-Match the exact cinematic lighting, color grading, contrast, skin shading, and visual atmosphere of the template image. Preserve realistic skin texture, natural shadow transitions, and seamless integration with the environment.
-
-Do not modify the background, car, environment, objects, atmosphere, lighting setup, or image composition. Only replace the person.
-
-Photorealistic, seamless integration, realistic anatomy, natural skin texture, realistic shadows, realistic facial structure, cinematic photography, high detail, premium film-quality realism.`
-
-const THEFAST_3 = `Replace only the main person in the image with the person from the uploaded reference photo.
-
-Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, posture characteristics, and overall appearance.
-
-Do not perform a face swap. Do not keep any facial features, body proportions, anatomy, shoulders, neck, arms, hands, or physique from the original subject. Reconstruct the complete person from the reference photo in the exact pose, posture, body language, gaze direction, expression, and attitude of the template subject.
-
-Match the exact cinematic lighting, shadows, contrast, skin texture, facial contours, highlights, depth, color grading, and visual atmosphere of the template image.
-
-The inserted person should appear naturally photographed in the scene, not composited, pasted, or edited. Preserve realistic facial volume, realistic shadow transitions, realistic skin texture, and seamless integration.
-
-Keep the exact pose, hand placement, body posture, camera angle, framing, background, environment, depth of field, and composition unchanged. Do not modify the background, car, environment, objects, or atmosphere.
-
-Photorealistic, seamless integration, realistic anatomy, natural skin texture, realistic shadows, realistic facial structure, cinematic photography, high detail, premium film-quality realism.`
+const THEFAST_3 = ``
 
 // ── Mamma Mia! ──
 
