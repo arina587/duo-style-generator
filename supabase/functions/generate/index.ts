@@ -2124,19 +2124,7 @@ Preserve all camera parameters (framing, lens, depth of field, composition, back
 
 // ── Rambo ──
 
-const RAMBO_1 = `Replace only the main person in the image with the person from the uploaded reference photo.
-
-Use the reference photo as the sole source of the person's identity: facial features, face structure, hairstyle, skin tone, body shape, body proportions, physique, neck shape, shoulder width, arm proportions, and overall appearance.
-
-Keep the exact facial expression, emotion, gaze direction, head position, pose, body language, arm placement, muscle tension, and overall attitude from the template image exactly as they appear. The replaced person must adopt the exact stance and posture of the original subject while fully maintaining the reference person's appearance and identity.
-
-Preserve the reference person's face completely. Do not perform a face swap. Do not blend, copy, or inherit any facial features, bone structure, facial proportions, or physical characteristics from the original character. Reconstruct the complete person from the reference photo in the exact pose and body posture of the template.
-
-Maintain the exact Rambo cinematic aesthetic: harsh jungle or action environment, dramatic directional lighting, gritty desaturated color grading, intense high-contrast shadows, sweat and dirt realism, explosive cinematic atmosphere, and the raw action-film visual quality characteristic of the Rambo franchise. Match the exact lighting conditions, depth of field, and overall cinematic composition.
-
-Do not modify the background, environment, weapons, props, clothing context, lighting setup, or image composition in any way. Only replace the person.
-
-Photorealistic, seamless integration, realistic anatomy, natural skin texture, realistic shadows, realistic facial structure, cinematic photography, high detail, gritty action-film realism, premium film-quality realism.`
+const RAMBO_1 = ``
 
 const RAMBO_2 = `Replace only the main person in the image with the person from the uploaded reference photo.
 
