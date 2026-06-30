@@ -40,6 +40,8 @@ export const categories: Category[] = [
   { id: 'thefast',         name: 'The Fast and the Furious', tag: 'Film', cover: '/styles/thefast/thefast1.jpg',                 category: 'other', inputMode: 'single' },
   // Row 5c: Mamma Mia!
   { id: 'mammamia',        name: 'Mamma Mia!',               tag: 'Film', cover: '/styles/mammamia/mammamia1.jpg',               category: 'other', inputMode: 'single' },
+  // Row 5d: Rambo
+  { id: 'rambo',           name: 'Rambo',                    tag: 'Film', cover: '/styles/rambo/rambo1.jpg',                     category: 'other', inputMode: 'single' },
   // Row 6: The Notebook | 500 Days of Summer | Twilight
   { id: 'thenotebook',     name: 'The Notebook',             tag: 'Film', cover: '/styles/thenotebook/thenotebook1.jpg',         category: 'movie' },
   { id: '500daysofsummer', name: '500 Days of Summer',       tag: 'Film', cover: '/styles/500daysofsummer/500daysofsummer1.jpg', category: 'movie' },
@@ -136,6 +138,11 @@ export const references: ReferenceItem[] = [
   { id: 'mammamia-1', style: 'mammamia', label: 'Mamma Mia!', image: '/styles/mammamia/mammamia1.jpg', inputMode: 'single' },
   { id: 'mammamia-2', style: 'mammamia', label: 'Mamma Mia!', image: '/styles/mammamia/mammamia2.jpg', inputMode: 'single' },
   { id: 'mammamia-3', style: 'mammamia', label: 'Mamma Mia!', image: '/styles/mammamia/mammamia3.jpg', inputMode: 'single' },
+
+  // ── Rambo ──
+  { id: 'rambo-1', style: 'rambo', label: 'Rambo', image: '/styles/rambo/rambo1.jpg', inputMode: 'single' },
+  { id: 'rambo-2', style: 'rambo', label: 'Rambo', image: '/styles/rambo/rambo2.jpg', inputMode: 'single' },
+  { id: 'rambo-3', style: 'rambo', label: 'Rambo', image: '/styles/rambo/rambo3.jpg', inputMode: 'single' },
 
   // ── The Notebook ──
   { id: 'thenotebook-1', style: 'thenotebook', label: 'The Notebook', image: '/styles/thenotebook/thenotebook1.jpg' },
