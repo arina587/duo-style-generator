@@ -2162,7 +2162,42 @@ no pasted face, no pasted head, no pasted body, no cutout edges, no halos, no li
 
 Final result must look like a real original photograph of the uploaded person riding the motorcycle in this exact scene, with exact pose, proportional anatomy, correct head size, exact intense emotion from the reference, and seamless lighting integration.`
 
-const RAMBO_2 = ``
+const RAMBO_2 = `Replace only the man in the reference image with the person from the uploaded reference photo.
+
+Do not change the waterfall, rocks, bow, quiver, clothing, lighting, camera angle, framing, perspective, background, or composition.
+
+Completely remove the original man. Recreate the uploaded person from scratch in exactly the same place. This is NOT a face swap, NOT a head swap, and NOT a Photoshop cut-and-paste.
+
+The uploaded person must replace the original character completely:
+face, head, hair, neck, shoulders, torso, arms, hands, legs, body proportions, physique, and full anatomy.
+
+Preserve the uploaded person's identity exactly. Do not mix facial features, body shape, muscles, skin tone, or proportions with the original character. Keep the uploaded person's natural physique and body proportions. Do not inherit the muscular build of the reference character.
+
+The body must be anatomically correct and proportional:
+natural head-to-body ratio, realistic neck connection, shoulders, torso, spine, arms, hips, legs, and hands. No oversized head, no undersized head, no twisted neck, no stretched limbs, and no impossible anatomy.
+
+Recreate the reference pose exactly:
+same body orientation, torso rotation, shoulder angle, head angle, gaze direction, arm position, elbow bend, wrist rotation, hand placement on the bow, leg position, stance, balance, and overall posture.
+
+If the uploaded person's head is facing another direction, naturally reconstruct and rotate it to match the reference while preserving 100% of the uploaded person's identity. Never paste the face onto another body.
+
+Facial expression and emotion are mandatory:
+the uploaded person must reproduce exactly the same serious, determined, intense expression as the reference. Match the gaze direction, eye openness, eyebrow tension, mouth shape, jaw tension, cheek tension, forehead tension, and overall facial muscle activation. Keep the uploaded person's facial features unchanged, but transfer the emotion completely from the reference.
+
+Hands must be anatomically correct:
+exactly five fingers on each hand, correct anatomy, natural joints, realistic grip on the bow, no fused fingers, no missing fingers, and no extra fingers.
+
+Keep the clothing, bow, quiver, straps, pants, and all equipment exactly as shown in the reference. Preserve the same fabric, folds, wrinkles, textures, and natural interaction with the body.
+
+Integrate the uploaded person naturally into the scene:
+match the sunlight direction, waterfall reflections, highlights, facial shadows, body shadows, ambient lighting, exposure, contrast, color temperature, skin shading, and moisture reflections. The face, neck, and body must share one consistent lighting system.
+
+The person must have realistic depth and volume, with natural shadows under the chin, neck, shoulders, arms, torso, and realistic contact shadows where the straps, clothing, quiver, and equipment touch the body.
+
+The result must never look like Photoshop:
+no pasted face, no pasted head, no pasted body, no cutout edges, no halos, no lighting mismatch, and no compositing artifacts.
+
+The final image must look like a real original photograph in which the uploaded person is naturally standing in front of the waterfall in this exact pose, with correct anatomy, proportional body, seamless lighting integration, and exactly the same pose, gaze, head angle, and intense emotion as the reference.`
 
 const RAMBO_3 = `Replace only the main person in the image with the person from the uploaded reference photo.
 
