@@ -2162,19 +2162,7 @@ no pasted face, no pasted head, no pasted body, no cutout edges, no halos, no li
 
 Final result must look like a real original photograph of the uploaded person riding the motorcycle in this exact scene, with exact pose, proportional anatomy, correct head size, exact intense emotion from the reference, and seamless lighting integration.`
 
-const RAMBO_2 = `Replace only the main person in the image with the person from the uploaded reference photo.
-
-Use the reference photo as the source of the person's identity, facial features, hairstyle, skin tone, body shape, body proportions, physique, shoulder width, neck shape, posture characteristics, and overall appearance.
-
-Keep the exact facial expression, gaze direction, head position, pose, body language, and overall attitude from the template image. Transfer the complete person — face, head, hair, neck, shoulders, chest, torso, arms, hands, and overall physique — fully adapted to match the reference person's appearance and proportions.
-
-The reference photo is the only source of identity and appearance. Do not blend or inherit any facial features, bone structure, or proportions from the original subject. Reconstruct the complete person from the reference photo in the exact pose and posture of the template.
-
-Maintain the intense Rambo cinematic atmosphere: dramatic high-contrast action lighting, gritty natural or military environment, desaturated earthy color grading, dust particles, sweat realism, explosive tension, and the raw visceral visual style of the Rambo films. Preserve realistic skin texture, natural shadow transitions, and seamless integration.
-
-Do not modify the background, environment, props, clothing context, lighting setup, or image composition. Only replace the person.
-
-Photorealistic, seamless integration, realistic anatomy, natural skin texture, realistic shadows, realistic facial structure, cinematic photography, high detail, gritty action-film color grading, premium film-quality realism.`
+const RAMBO_2 = ``
 
 const RAMBO_3 = `Replace only the main person in the image with the person from the uploaded reference photo.
 
