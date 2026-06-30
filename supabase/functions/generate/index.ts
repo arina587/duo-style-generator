@@ -2124,7 +2124,235 @@ Preserve all camera parameters (framing, lens, depth of field, composition, back
 
 // ── Rambo ──
 
-const RAMBO_1 = ``
+const RAMBO_1 = `Replace only the man riding the motorcycle with the person from the uploaded reference photo.
+
+Do not modify the motorcycle, road, police car, forest, background, lighting, camera angle, perspective, framing, composition, or any other objects in the scene.
+
+Completely remove the original rider from the image. He must no longer exist anywhere in the frame.
+
+This is NOT a face swap, NOT a head swap, and NOT a Photoshop-style edit.
+
+Completely reconstruct the uploaded person from scratch in this exact scene.
+
+════════════════════════════════════
+FULL PERSON RECONSTRUCTION (CRITICAL)
+════════════════════════════════════
+
+Recreate the uploaded person as a completely new, fully integrated human inside this scene.
+
+Transfer the uploaded person entirely:
+
+- exact face
+- exact facial proportions
+- exact eyes
+- exact nose
+- exact lips
+- exact jawline
+- exact hairstyle
+- exact hairline
+- exact ears
+- exact neck
+- exact shoulders
+- exact torso
+- exact arms
+- exact hands
+- exact legs
+- exact body proportions
+- exact physique from the uploaded photo
+
+Do NOT mix any facial or body features with the original rider.
+
+The uploaded person's identity must remain 100% recognizable.
+
+════════════════════════════════════
+BODY & PHYSIQUE
+════════════════════════════════════
+
+Analyze the uploaded person's physique and rebuild it accurately.
+
+Keep:
+
+- original shoulder width
+- original chest proportions
+- original waist
+- original arm thickness
+- original neck thickness
+- original body proportions
+- original head size relative to body
+
+Do NOT inherit the reference rider's muscles or body shape.
+
+Only transfer the pose, never the body type.
+
+════════════════════════════════════
+ANATOMICAL ACCURACY
+════════════════════════════════════
+
+The reconstructed person must be physically believable.
+
+- proportional head
+- proportional neck
+- proportional torso
+- proportional shoulders
+- proportional arms
+- proportional hands
+- proportional legs
+
+No stretched limbs.
+
+No compressed body.
+
+No oversized head.
+
+No undersized head.
+
+No twisted neck.
+
+No impossible anatomy.
+
+No unnatural shoulder rotation.
+
+Everything must look anatomically correct.
+
+════════════════════════════════════
+HEAD RECONSTRUCTION
+════════════════════════════════════
+
+Never paste the uploaded face onto another body.
+
+Instead, regenerate the uploaded person's head naturally in the correct viewing angle.
+
+If the reference shows the head facing forward or at another angle, rotate and reconstruct the uploaded person's head naturally while preserving their facial identity.
+
+The head must connect naturally to the neck and shoulders.
+
+No pasted-face appearance.
+
+════════════════════════════════════
+POSE (VERY IMPORTANT)
+════════════════════════════════════
+
+Recreate exactly the same riding pose.
+
+Match precisely:
+
+- torso lean
+- shoulder angle
+- elbow bend
+- wrist rotation
+- hand placement
+- finger placement
+- grip on handlebars
+- hip position
+- knee position
+- body balance
+- riding posture
+
+The uploaded person's body must naturally assume this pose.
+
+It should never look like a cut-out placed onto the motorcycle.
+
+════════════════════════════════════
+FACIAL EXPRESSION (CRITICAL)
+════════════════════════════════════
+
+Keep the uploaded person's identity while reproducing exactly the same emotion as the reference.
+
+Match precisely:
+
+- intense focused stare
+- determined expression
+- eyebrow tension
+- eye openness
+- gaze direction
+- mouth shape
+- jaw tension
+- facial muscle tension
+
+Do not soften the emotion.
+
+Do not smile.
+
+The emotion must be identical to the reference.
+
+════════════════════════════════════
+HANDS
+════════════════════════════════════
+
+Hands must be anatomically correct.
+
+- exactly five fingers on each hand
+- natural joints
+- realistic thumb placement
+- realistic grip
+- no fused fingers
+- no extra fingers
+- no missing fingers
+
+════════════════════════════════════
+LIGHTING & SCENE INTEGRATION (VERY IMPORTANT)
+════════════════════════════════════
+
+The uploaded person must look like they were originally photographed in this scene.
+
+Adapt the entire reconstructed person to the environment:
+
+- identical sunlight direction
+- identical shadow direction
+- identical facial shadows
+- identical body shadows
+- identical highlights
+- identical ambient forest lighting
+- identical reflected light from the road
+- identical skin shading
+- identical exposure
+- identical contrast
+- identical color temperature
+
+The face, neck and entire body must receive the same lighting as every other object in the scene.
+
+Generate realistic contact shadows where the body interacts with the motorcycle.
+
+Hair must naturally respond to the sunlight.
+
+The reconstructed person must have realistic depth and volume, not appear flat.
+
+Absolutely no Photoshop appearance.
+
+No pasted face.
+
+No pasted head.
+
+No pasted body.
+
+No visible cutout edges.
+
+No halos.
+
+No mismatched lighting.
+
+The person must look completely embedded into the photograph, as if the image had originally been captured with them riding the motorcycle.
+
+════════════════════════════════════
+CLOTHING
+════════════════════════════════════
+
+Preserve the clothing exactly as shown in the reference scene.
+
+Keep:
+
+- identical tank top
+- identical pants
+- identical fabric
+- identical folds
+- identical wrinkles
+- natural interaction with the body and motorcycle
+
+════════════════════════════════════
+FINAL RESULT
+════════════════════════════════════
+
+The final image must be indistinguishable from a real photograph. The uploaded person should appear naturally reconstructed inside the scene with perfect anatomy, correct body proportions, seamless lighting integration, realistic shadows and depth, exact riding pose, and exactly the same intense emotion as the reference, with absolutely no signs of face swapping, cut-and-paste editing, or Photoshop compositing.`
 
 const RAMBO_2 = `Replace only the main person in the image with the person from the uploaded reference photo.
 
