@@ -25,6 +25,23 @@ interface DebugInfo {
   error?: string;
 }
 
+const STAGES = [
+  'Photos uploaded',
+  'Preparing scene',
+  'Generating cinematic composition',
+  'Matching lighting and colors',
+  'Finalizing details',
+];
+
+const TIPS = [
+  'Well-lit photos usually produce the best results.',
+  'Higher quality photos improve facial accuracy.',
+  'Your movie scene is recreated using AI while preserving the cinematic style.',
+  'Some movie styles require more processing time than others.',
+  'Front-facing photos give the most accurate results.',
+  'Matching the reference angle closely improves the final result.',
+];
+
 export default function Result({
   onBack,
   onStartOver,
@@ -47,25 +64,17 @@ export default function Result({
   const [copyDone, setCopyDone] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
 
-  // ── Fake progress ──
-  const [fakeProgress, setFakeProgress] = useState(0);
-  const fakeProgressRef = useRef(0);
-  const progressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const prevIsGeneratingRef = useRef(false);
+  // ── Generation stages ──
+  const [stageIndex, setStageIndex] = useState(0);
+  const stageTimer3Ref = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const stageTimer4Ref = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── Stage message cycling ──
-  const generatingMsgs = [
-    'Building your movie frame...',
-    'Matching lighting and composition...',
-    'Applying cinematic color grading...',
-    'Generating cinematic composition...',
-    'Refining scene details...',
-    'Applying lighting effects...',
-    'Blending scene elements...',
-    'Finalizing cinematic look...',
-  ];
-  const [msgIndex, setMsgIndex] = useState(0);
-  const msgCycleRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // ── Rotating tips ──
+  const [tipIndex, setTipIndex] = useState(0);
+  const tipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // ── Tracks isGenerating transitions ──
+  const prevIsGeneratingRef = useRef(false);
 
   const displaySrc = generatedImageUrl || rawImageUrl;
 
@@ -90,13 +99,11 @@ export default function Result({
   useEffect(() => {
     if (displaySrc !== prevUrl.current) {
       prevUrl.current = displaySrc;
-
       retryCount.current = 0;
       setRetryKey(0);
       setIsRetrying(false);
       setDebugInfo(null);
       setImgLoaded(false);
-
       console.log('[IMG] new url set:', displaySrc.substring(0, 100), 'ua:', navigator.userAgent.substring(0, 80));
     }
   }, [displaySrc]);
@@ -107,9 +114,7 @@ export default function Result({
     setDebugFetching(true);
     setDebugInfo(null);
 
-    fetch(displaySrc, {
-      cache: 'no-store',
-    })
+    fetch(displaySrc, { cache: 'no-store' })
       .then(async (res) => {
         const blob = await res.blob();
         const info: DebugInfo = { status: res.status, type: blob.type, size: blob.size };
@@ -123,117 +128,60 @@ export default function Result({
       .finally(() => setDebugFetching(false));
   }, [imgLoadFailed, displaySrc]);
 
-  // Reset / complete progress when generation state changes
+  // Track generation start / end transitions
   useEffect(() => {
     if (isGenerating && !prevIsGeneratingRef.current) {
-      // Jump to 5-10% immediately so the bar looks active from the first frame
-      const startVal = 5 + Math.floor(Math.random() * 6);
-      fakeProgressRef.current = startVal;
-      setFakeProgress(startVal);
+      // New generation started — reset stages and tips
+      setStageIndex(0);
+      setTipIndex(0);
     }
     if (!isGenerating && prevIsGeneratingRef.current && !generationError) {
-      fakeProgressRef.current = 100;
-      setFakeProgress(100);
+      // Generation completed successfully — mark all stages done
+      setStageIndex(STAGES.length);
     }
     prevIsGeneratingRef.current = isGenerating;
   }, [isGenerating, generationError]);
 
-  // 4-zone non-linear ticker — never freezes in the 95-99% range
+  // Advance stage based on generationPhase
   useEffect(() => {
-    if (progressTimerRef.current !== null) {
-      clearTimeout(progressTimerRef.current);
-      progressTimerRef.current = null;
-    }
+    if (!isGenerating) return;
+    if (generationPhase === 'uploading') setStageIndex((s) => Math.min(s, 0));
+    if (generationPhase === 'starting')  setStageIndex((s) => Math.max(s, 1));
+    if (generationPhase === 'generating') setStageIndex((s) => Math.max(s, 2));
+  }, [isGenerating, generationPhase]);
+
+  // Time-based stage advancement during 'generating' phase
+  useEffect(() => {
+    if (stageTimer3Ref.current) clearTimeout(stageTimer3Ref.current);
+    if (stageTimer4Ref.current) clearTimeout(stageTimer4Ref.current);
+
+    if (!isGenerating || generationPhase !== 'generating') return;
+
+    stageTimer3Ref.current = setTimeout(() => setStageIndex((s) => Math.max(s, 3)), 38_000);
+    stageTimer4Ref.current = setTimeout(() => setStageIndex((s) => Math.max(s, 4)), 63_000);
+
+    return () => {
+      if (stageTimer3Ref.current) clearTimeout(stageTimer3Ref.current);
+      if (stageTimer4Ref.current) clearTimeout(stageTimer4Ref.current);
+    };
+  }, [isGenerating, generationPhase]);
+
+  // Rotate tips while generating
+  useEffect(() => {
+    if (tipTimerRef.current) clearTimeout(tipTimerRef.current);
+
     if (!isGenerating || isPollingRecovering) return;
 
-    const tick = () => {
-      const cur = fakeProgressRef.current;
-
-      if (generationPhase === 'uploading') {
-        if (cur >= 15) return;
-        const next = Math.min(15, cur + 0.4 + Math.random() * 0.4);
-        fakeProgressRef.current = next;
-        setFakeProgress(Math.floor(next));
-        progressTimerRef.current = setTimeout(tick, 100 + Math.random() * 80);
-        return;
-      }
-
-      if (generationPhase === 'starting') {
-        if (cur >= 30) return;
-        const next = Math.min(30, cur + 0.3 + Math.random() * 0.3);
-        fakeProgressRef.current = next;
-        setFakeProgress(Math.floor(next));
-        progressTimerRef.current = setTimeout(tick, 120 + Math.random() * 80);
-        return;
-      }
-
-      // generating phase — 4 zones
-      if (cur >= 95) {
-        // Zone 4: oscillate 95–98.5, never freezes on a single digit
-        const drift = Math.random() * 0.55 - 0.15; // slight upward bias
-        const next = Math.max(95, Math.min(98.5, cur + drift));
-        fakeProgressRef.current = next;
-        setFakeProgress(Math.round(next));
-        progressTimerRef.current = setTimeout(tick, 900 + Math.random() * 1400);
-        return;
-      }
-      if (cur >= 85) {
-        // Zone 3: very slow 85–95
-        const next = Math.min(95, cur + 0.03 + Math.random() * 0.06);
-        fakeProgressRef.current = next;
-        setFakeProgress(Math.floor(next));
-        progressTimerRef.current = setTimeout(tick, 500 + Math.random() * 700);
-        return;
-      }
-      if (cur >= 60) {
-        // Zone 2: slow 60–85
-        const next = Math.min(85, cur + 0.1 + Math.random() * 0.15);
-        fakeProgressRef.current = next;
-        setFakeProgress(Math.floor(next));
-        progressTimerRef.current = setTimeout(tick, 250 + Math.random() * 350);
-        return;
-      }
-      // Zone 1: fast 0–60
-      const next = Math.min(60, cur + 0.5 + Math.random() * 0.6);
-      fakeProgressRef.current = next;
-      setFakeProgress(Math.floor(next));
-      progressTimerRef.current = setTimeout(tick, 100 + Math.random() * 80);
-    };
-
-    tick();
-
-    return () => {
-      if (progressTimerRef.current !== null) {
-        clearTimeout(progressTimerRef.current);
-        progressTimerRef.current = null;
-      }
-    };
-  }, [isGenerating, generationPhase, isPollingRecovering]);
-
-  // Stage message cycling — changes on a timer, not locked to progress value
-  useEffect(() => {
-    if (msgCycleRef.current !== null) {
-      clearTimeout(msgCycleRef.current);
-      msgCycleRef.current = null;
-    }
-    if (!isGenerating || generationPhase !== 'generating' || isPollingRecovering) {
-      setMsgIndex(0);
-      return;
-    }
     const cycle = () => {
-      setMsgIndex((i) => (i + 1) % generatingMsgs.length);
-      msgCycleRef.current = setTimeout(cycle, 3500 + Math.random() * 2000);
+      setTipIndex((i) => (i + 1) % TIPS.length);
+      tipTimerRef.current = setTimeout(cycle, 6000 + Math.random() * 2000);
     };
-    msgCycleRef.current = setTimeout(cycle, 3500 + Math.random() * 2000);
+    tipTimerRef.current = setTimeout(cycle, 6500 + Math.random() * 1500);
+
     return () => {
-      if (msgCycleRef.current !== null) {
-        clearTimeout(msgCycleRef.current);
-        msgCycleRef.current = null;
-      }
+      if (tipTimerRef.current) clearTimeout(tipTimerRef.current);
     };
-  // generatingMsgs is stable (defined inline above, same ref each render is fine here)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isGenerating, generationPhase, isPollingRecovering]);
+  }, [isGenerating, isPollingRecovering]);
 
   const MAX_AUTO_RETRIES = 2;
   const RETRY_DELAY_MS = 1000;
@@ -243,21 +191,16 @@ export default function Result({
 
     if (retryCount.current < MAX_AUTO_RETRIES) {
       retryCount.current += 1;
-
       console.log('[IMG RETRY] attempt=' + retryCount.current + '/' + MAX_AUTO_RETRIES + ' delay=' + RETRY_DELAY_MS + 'ms url=' + displaySrc.substring(0, 100));
-
       setIsRetrying(true);
-
       setTimeout(() => {
         setIsRetrying(false);
         setRetryKey(k => k + 1);
       }, RETRY_DELAY_MS);
-
       return;
     }
 
     console.log('[IMG RETRY EXHAUSTED] attempts=' + retryCount.current + ' url=' + displaySrc.substring(0, 100));
-
     setIsRetrying(false);
     onImgError(displaySrc);
   };
@@ -288,8 +231,6 @@ export default function Result({
     if (!url) return;
 
     try {
-      // Preferred: fetch as blob and use object URL so the browser always
-      // treats it as a download rather than navigation (works for data: too)
       const blob = await resolveBlob(url);
       const objectUrl = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -301,9 +242,8 @@ export default function Result({
       document.body.removeChild(link);
       setTimeout(() => URL.revokeObjectURL(objectUrl), 5000);
     } catch {
-      // Fallback for cross-origin CDN URLs where fetch may be blocked
       const link = document.createElement('a');
-      link.href = url;
+      link.href = rawImageUrl || generatedImageUrl;
       link.download = 'duo-style-fusion.jpg';
       link.target = '_blank';
       document.body.appendChild(link);
@@ -318,7 +258,6 @@ export default function Result({
 
     try {
       const blob = await resolveBlob(url);
-      // Clipboard API requires image/png; convert if needed
       let pngBlob = blob;
       if (blob.type !== 'image/png') {
         pngBlob = await new Promise<Blob>((resolve, reject) => {
@@ -353,41 +292,27 @@ export default function Result({
     }
   };
 
-  const stageText = isPollingRecovering
-    ? 'Connection interrupted — still trying...'
-    : generationPhase === 'uploading'
-    ? 'Uploading your photos...'
-    : generationPhase === 'starting'
-    ? 'Preparing your cinematic scene...'
-    : generatingMsgs[msgIndex];
-
   const errorType = generationError?.type ?? 'unknown';
   const isTimeoutError = !isGenerating && !!generationError && errorType === 'timeout';
   const isModerationError = !isGenerating && !!generationError && errorType === 'moderation';
   const isUploadError = !isGenerating && !!generationError && errorType === 'upload';
   const isPostError = !isGenerating && errorPhase === 'starting_generation' && errorType !== 'moderation';
-  // True connection/network issue during polling — only network type, not backend job failures
   const isPollError = !isGenerating && errorPhase === 'polling_generation' && errorType === 'network';
-  // Backend provider reported the job as failed/canceled
   const isBackendJobFailed = !isGenerating && errorPhase === 'polling_generation' && errorType === 'server';
-  // Job succeeded but output URL was invalid or missing
   const isValidationFailed = !isGenerating && errorPhase === 'validating_result';
 
-  const phaseLabel: Record<GenerationPhase, { heading: string; subtitle: string; detail: string }> = {
+  const phaseLabel: Record<GenerationPhase, { heading: string; subtitle: string }> = {
     uploading: {
       heading: 'Uploading Images',
       subtitle: 'Securely uploading your photos',
-      detail: 'Uploading images...',
     },
     starting: {
-      heading: 'Starting Generation',
-      subtitle: 'Sending request to the AI',
-      detail: 'Starting generation...',
+      heading: 'Preparing Your Scene',
+      subtitle: 'Setting up the cinematic generation',
     },
     generating: {
-      heading: 'Creating Your Fusion',
-      subtitle: 'AI is crafting your styled photo — this may take a minute',
-      detail: 'Generating your fusion...',
+      heading: 'Creating Your Cinematic Scene',
+      subtitle: 'This usually takes around a minute while the AI recreates your movie scene.',
     },
   };
 
@@ -428,9 +353,7 @@ export default function Result({
     subtitle = 'Please try again';
   }
 
-  // Hide heading section once the image is successfully showing — let the image speak
-  const hideHeading =
-    imgLoaded;
+  const hideHeading = imgLoaded;
 
   console.log('[ERROR RENDER]', {
     generationError,
@@ -474,7 +397,7 @@ export default function Result({
 
       <div className="max-w-3xl mx-auto px-5 lg:px-8 py-8">
 
-        {/* Page heading — hidden once image is visible so nothing competes with it */}
+        {/* Page heading — hidden once image is visible */}
         {!hideHeading && (
           <div className="text-center mb-7 animate-fade-in">
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#2d2642] mb-1.5">{heading}</h2>
@@ -482,13 +405,6 @@ export default function Result({
           </div>
         )}
 
-        {/* Result card.
-            aspect-ratio:1/1 gives the container a fixed, predictable size that
-            does not depend on the image's intrinsic dimensions. All states
-            (loading, image, error, idle) are absolutely positioned inside it so
-            nothing can push or pull the container size. The single <img> path
-            with absolute inset-0 + object-cover is used for every provider and
-            URL type (base64, blob, CDN) — there is no provider-specific branch. */}
         <div className="card-premium overflow-hidden mb-6 mx-auto" style={{ transition: 'box-shadow 0.3s', maxWidth: '480px' }}>
           <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1 / 1', background: 'linear-gradient(145deg, #f3eefa, #ede6f6)' }}>
 
@@ -496,112 +412,197 @@ export default function Result({
             {isGenerating && (
               <div className="absolute inset-0 overflow-hidden animate-fade-in">
 
-                {/* Cinematic background: reference image with zoom */}
+                {/* Cinematic background: reference image with slow zoom */}
                 {selectedRef && (
                   <img
                     src={selectedRef.image}
                     alt=""
                     aria-hidden="true"
                     className="absolute inset-0 w-full h-full object-cover animate-zoom-pulse"
-                    style={{ filter: 'brightness(0.28) saturate(0.75)' }}
+                    style={{ filter: 'brightness(0.18) saturate(0.55)' }}
                   />
                 )}
 
-                {/* Dark gradient overlay */}
+                {/* Multi-layer dark gradient overlay */}
                 <div
                   className="absolute inset-0"
                   style={{
                     background: selectedRef
-                      ? 'linear-gradient(170deg, rgba(8,5,20,0.15) 0%, rgba(8,5,20,0.52) 42%, rgba(8,5,20,0.90) 100%)'
-                      : 'linear-gradient(145deg, #0a0819 0%, #130d2a 100%)',
+                      ? 'linear-gradient(180deg, rgba(4,2,14,0.30) 0%, rgba(4,2,14,0.55) 38%, rgba(4,2,14,0.93) 100%)'
+                      : 'linear-gradient(145deg, #070514 0%, #0e0825 100%)',
                   }}
                 />
 
-                {/* Content */}
-                <div className="absolute inset-0 flex flex-col items-center justify-end px-6 pb-6">
+                {/* Soft radial glow from center */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(ellipse 70% 55% at 50% 38%, rgba(155,125,212,0.08) 0%, transparent 70%)',
+                  }}
+                />
 
-                  {/* Reference image preview with glow — top center */}
-                  {selectedRef && (
-                    <div className="absolute top-5 inset-x-0 flex justify-center pointer-events-none">
-                      <div className="animate-glow-ring rounded-2xl overflow-hidden" style={{ width: 76, height: 76 }}>
+                {/* Content layout */}
+                <div className="absolute inset-0 flex flex-col items-center justify-between px-5 py-5">
+
+                  {/* Top: reference thumbnail + scene label */}
+                  {selectedRef ? (
+                    <div className="flex flex-col items-center gap-1.5 pointer-events-none">
+                      <div
+                        className="animate-glow-ring overflow-hidden"
+                        style={{ width: 68, height: 68, borderRadius: 16 }}
+                      >
                         <img
                           src={selectedRef.image}
                           alt=""
                           aria-hidden="true"
                           className="w-full h-full object-cover"
-                          style={{ filter: 'saturate(0.85) brightness(0.88)' }}
+                          style={{ filter: 'saturate(0.75) brightness(0.88)' }}
                         />
                       </div>
+                      <p
+                        className="text-[9px] font-extrabold uppercase font-body"
+                        style={{ color: 'rgba(195,170,245,0.42)', letterSpacing: '0.18em' }}
+                      >
+                        {selectedRef.label}
+                      </p>
                     </div>
+                  ) : (
+                    <div />
                   )}
 
-                  {/* Title label */}
-                  <p
-                    className="text-[10px] font-extrabold font-body tracking-widest uppercase text-center mb-1"
-                    style={{ color: 'rgba(210,190,255,0.60)', letterSpacing: '0.15em' }}
+                  {/* Bottom: glassmorphism panel */}
+                  <div
+                    className="w-full rounded-2xl px-4 py-4"
+                    style={{
+                      background: 'rgba(7,4,22,0.78)',
+                      border: '1px solid rgba(180,156,219,0.18)',
+                      backdropFilter: 'blur(20px)',
+                      WebkitBackdropFilter: 'blur(20px)',
+                      boxShadow: '0 8px 32px rgba(0,0,0,0.50), inset 0 1px 0 rgba(255,255,255,0.05)',
+                    }}
                   >
-                    {isPollingRecovering ? 'Reconnecting' : 'Creating Your Fusion'}
-                  </p>
-
-                  {/* Stage text — key triggers fade-in on change */}
-                  <p
-                    key={stageText}
-                    className="text-[12px] font-body text-center mb-5 animate-fade-in"
-                    style={{ color: isPollingRecovering ? '#fbbf24' : 'rgba(205,185,245,0.72)' }}
-                  >
-                    {stageText}
-                  </p>
-
-                  {/* Progress bar track */}
-                  <div className="w-full mb-2.5">
-                    <div
-                      className="relative w-full rounded-full overflow-hidden"
-                      style={{ height: 3, background: 'rgba(255,255,255,0.10)' }}
-                    >
-                      {/* Fill */}
+                    {/* Connection recovery banner */}
+                    {isPollingRecovering && (
                       <div
-                        className="absolute inset-y-0 left-0 rounded-full"
+                        className="flex items-start gap-2 mb-3 px-3 py-2 rounded-xl"
+                        style={{ background: 'rgba(251,191,36,0.09)', border: '1px solid rgba(251,191,36,0.28)' }}
+                      >
+                        <div className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse flex-shrink-0 mt-0.5" />
+                        <p className="text-[10.5px] leading-snug font-bold font-body" style={{ color: '#fbbf24' }}>
+                          Connection interrupted.<br />
+                          Still trying to retrieve your result...
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Title */}
+                    <p
+                      className="text-[9.5px] font-extrabold uppercase font-body mb-0.5"
+                      style={{ color: 'rgba(190,165,240,0.42)', letterSpacing: '0.17em' }}
+                    >
+                      {isPollingRecovering ? 'Reconnecting' : 'AI Generation'}
+                    </p>
+                    <p
+                      className="text-[13px] font-bold font-body mb-3.5"
+                      style={{ color: 'rgba(232,218,255,0.96)', lineHeight: 1.35 }}
+                    >
+                      {isPollingRecovering
+                        ? 'Reconnecting to your generation...'
+                        : 'Creating your cinematic scene'}
+                    </p>
+
+                    {/* Generation stages */}
+                    <div className="space-y-1.5 mb-3.5">
+                      {STAGES.map((stage, i) => {
+                        const isComplete = i < stageIndex;
+                        const isActive   = i === stageIndex && stageIndex < STAGES.length;
+                        return (
+                          <div key={i} className="flex items-center gap-2.5">
+
+                            {/* Stage icon */}
+                            <div className="flex-shrink-0 w-4 h-4 flex items-center justify-center">
+                              {isComplete ? (
+                                <div
+                                  className="w-4 h-4 rounded-full flex items-center justify-center"
+                                  style={{ background: 'rgba(155,125,212,0.22)', border: '1px solid rgba(155,125,212,0.55)' }}
+                                >
+                                  <svg viewBox="0 0 10 10" fill="none" className="w-2.5 h-2.5">
+                                    <path d="M2 5l2 2 4-4" stroke="#b49cdb" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                                  </svg>
+                                </div>
+                              ) : isActive ? (
+                                <div
+                                  className="w-3.5 h-3.5 rounded-full animate-spin"
+                                  style={{
+                                    border: '1.5px solid rgba(180,156,219,0.20)',
+                                    borderTopColor: '#c4a8e8',
+                                  }}
+                                />
+                              ) : (
+                                <div
+                                  className="w-2 h-2 rounded-full mx-auto"
+                                  style={{ background: 'rgba(255,255,255,0.09)', border: '1px solid rgba(255,255,255,0.14)' }}
+                                />
+                              )}
+                            </div>
+
+                            {/* Stage label */}
+                            <span
+                              className="text-[11.5px] font-body transition-all duration-500"
+                              style={{
+                                color: isComplete
+                                  ? 'rgba(180,156,219,0.82)'
+                                  : isActive
+                                  ? 'rgba(238,225,255,1.0)'
+                                  : 'rgba(255,255,255,0.22)',
+                                fontWeight: isActive ? 700 : 500,
+                              }}
+                            >
+                              {stage}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Infinite shimmer loading bar */}
+                    <div
+                      className="relative w-full rounded-full overflow-hidden mb-3"
+                      style={{ height: 2.5, background: 'rgba(255,255,255,0.07)' }}
+                    >
+                      <div
+                        className="absolute inset-y-0 animate-shimmer"
                         style={{
-                          width: `${fakeProgress}%`,
-                          transition: 'width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                          width: '28%',
+                          borderRadius: '100px',
                           background: isPollingRecovering
-                            ? 'linear-gradient(90deg, #b45309, #fbbf24)'
-                            : 'linear-gradient(90deg, #7c5cbf, #b49cdb, #ddd0f5)',
-                          boxShadow: isPollingRecovering
-                            ? '0 0 8px rgba(251,191,36,0.55)'
-                            : '0 0 10px rgba(180,156,219,0.75)',
+                            ? 'linear-gradient(90deg, transparent, rgba(251,191,36,0.85), transparent)'
+                            : 'linear-gradient(90deg, transparent, rgba(180,156,219,0.85), rgba(222,206,255,1), rgba(180,156,219,0.85), transparent)',
                         }}
                       />
                     </div>
-                  </div>
 
-                  {/* Percentage row */}
-                  <div className="flex items-center justify-between w-full">
-                    <span
-                      className="text-[10px] font-body font-bold uppercase tracking-widest"
-                      style={{ color: 'rgba(180,155,220,0.40)' }}
-                    >
-                      Progress
-                    </span>
-                    <span
-                      className="font-display font-bold tabular-nums"
-                      style={{
-                        fontSize: '1.05rem',
-                        color: isPollingRecovering ? '#fbbf24' : 'rgba(225,212,252,0.92)',
-                      }}
-                    >
-                      {fakeProgress}%
-                    </span>
+                    {/* Rotating tip */}
+                    {!isPollingRecovering && (
+                      <p
+                        key={tipIndex}
+                        className="text-[10px] font-body text-center animate-fade-in"
+                        style={{
+                          color: 'rgba(158,138,200,0.52)',
+                          fontStyle: 'italic',
+                          lineHeight: 1.45,
+                          minHeight: 14,
+                        }}
+                      >
+                        {TIPS[tipIndex]}
+                      </p>
+                    )}
                   </div>
-
                 </div>
               </div>
             )}
 
-            {/* ── State 2: Image ──
-                One rendering path for all providers + URL types.
-                absolute inset-0 + w-full h-full + object-cover fills the
-                container edge-to-edge, centered, on every device. */}
+            {/* ── State 2: Image ── */}
             {!isGenerating && showImage && (
               <img
                 key={retryKey}
@@ -621,8 +622,7 @@ export default function Result({
               />
             )}
 
-            {/* ── Floating action bar — only shown after image has painted ──
-                Sits at the bottom of the image, never over non-image states. */}
+            {/* ── Floating action bar — only shown after image has painted ── */}
             {showActions && (
               <div
                 className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-4 py-3 animate-fade-in"
@@ -631,7 +631,6 @@ export default function Result({
                   pointerEvents: 'auto',
                 }}
               >
-                {/* Left: Create Another */}
                 <button
                   onClick={onStartOver}
                   className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold font-body text-white transition-opacity hover:opacity-80 active:opacity-70"
@@ -641,7 +640,6 @@ export default function Result({
                   New
                 </button>
 
-                {/* Right: Copy + Save */}
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleCopy}
@@ -838,9 +836,7 @@ export default function Result({
               </div>
             )}
 
-            {/* ── State 5: Empty idle ──
-                Only shown when there is truly nothing — no image, no error,
-                not generating. Once any image URL is set this state disappears. */}
+            {/* ── State 5: Empty idle ── */}
             {!isGenerating &&
              !displaySrc &&
              !generationError && !errorMessage && (
@@ -855,7 +851,7 @@ export default function Result({
           </div>
         </div>
 
-        {/* Below-card action row — visible when image is loaded, supplements the in-image bar */}
+        {/* Below-card action row — visible when image is loaded */}
         {showActions && (
           <div className="flex flex-col sm:flex-row gap-3 justify-center animate-fade-in">
             <button

@@ -377,6 +377,12 @@
   .animate-zoom-pulse { animation: zoom-pulse 9s ease-in-out infinite; }
   .animate-glow-ring  { animation: glow-ring-pulse 2.8s ease-in-out infinite; }
 
+  @keyframes shimmer-slide {
+    from { transform: translateX(-180%); }
+    to   { transform: translateX(520%); }
+  }
+  .animate-shimmer { animation: shimmer-slide 2.1s ease-in-out infinite; }
+
   /* ─── Scrollbar ─── */
   ::-webkit-scrollbar { width: 4px; height: 4px; }
   ::-webkit-scrollbar-track { background: #f5f0fa; }
